@@ -38,6 +38,7 @@
 		<downloadSources>true</downloadSources>
 		<downloadJavadocs>true</downloadJavadocs>
 		<java.version>11</java.version>
+		<framework-core.version>[0.0,)</framework-core.version>
 		<framework-online.version>[0.0,)</framework-online.version>
 		<framework-batch.version>[0.0,)</framework-batch.version>
 		<framework-daemon.version>[0.0,)</framework-daemon.version>
@@ -54,8 +55,23 @@
 			</dependency>
 			<dependency>
 				<groupId>mgkim.framework</groupId>
+				<artifactId>framework-core</artifactId>
+				<version>${framework-core.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>mgkim.framework</groupId>
 				<artifactId>framework-online</artifactId>
 				<version>${framework-online.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>mgkim.framework</groupId>
+				<artifactId>framework-batch</artifactId>
+				<version>${framework-batch.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>mgkim.framework</groupId>
+				<artifactId>framework-daemon</artifactId>
+				<version>${framework-daemon.version}</version>
 			</dependency>
 			<!-- //framework -->
 		</dependencies>
