@@ -45,7 +45,7 @@
 	
 	<dependencyManagement>
 		<dependencies>
-			<!-- mgkim -->
+			<!-- framework -->
 			<dependency>
 				<groupId>mgkim.bom</groupId>
 				<artifactId>framework-bom</artifactId>
@@ -57,7 +57,7 @@
 				<artifactId>framework-online</artifactId>
 				<version>${framework-online.version}</version>
 			</dependency>
-			<!-- //mgkim -->
+			<!-- //framework -->
 		</dependencies>
 	</dependencyManagement>
 	

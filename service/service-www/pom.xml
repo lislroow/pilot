@@ -43,10 +43,12 @@
 	</scm>
 	
 	<dependencies>
+		<!-- framework -->
 		<dependency>
 			<groupId>mgkim.framework</groupId>
 			<artifactId>framework-online</artifactId>
 		</dependency>
+		<!-- //framework -->
 	</dependencies>
 	
 	<build>

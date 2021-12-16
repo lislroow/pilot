@@ -47,13 +47,13 @@
 	</properties>
 	
 	<dependencies>
-		<!-- mgkim -->
+		<!-- framework -->
 		<dependency>
 			<groupId>mgkim.framework</groupId>
 			<artifactId>framework-core</artifactId>
 			<version>${framework-core.version}</version>
 		</dependency>
-		<!-- //mgkim -->
+		<!-- //framework -->
 	</dependencies>
 	
 	<build>
