@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>mgkim.bom</groupId>
 	<artifactId>framework-bom</artifactId>
-	<version>0.5-SNAPSHOT</version>
+	<version>0.6-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<url>https://github.com/lislroow/pilot.git</url>
@@ -16,9 +16,7 @@
 	</repositories>
 	
 	<scm>
-		<!-- <connection>scm:svn:svn://develop/prototype/trunk/bom/framework-bom</connection> -->
 		<connection>scm:git:${project.scm.url}</connection>
-		<tag>HEAD</tag>
 	</scm>
 	
 	<!-- only from bom project -->
@@ -399,11 +397,10 @@
 					<version>3.0.0-M1</version>
 					<configuration>
 						<autoVersionSubmodules>true</autoVersionSubmodules>
-						<!-- 
-						<goals>deploy</goals>
-						<username>mgkim</username>
+						<!-- <username>mgkim</username>
 						<password>1</password> -->
-						<scmCommentPrefix>[ci skip]</scmCommentPrefix>
+						<goals>deploy</goals>
+						<scmCommentPrefix>[jenkins]</scmCommentPrefix>
 					</configuration>
 				</plugin>
 				<plugin>
