@@ -15,7 +15,8 @@
 	</repositories>
 	
 	<scm>
-		<connection>scm:svn:svn://develop/prototype/trunk/bom/framework-bom</connection>
+		<!-- <connection>scm:svn:svn://develop/prototype/trunk/bom/framework-bom</connection> -->
+		<connection>scm:git:git://github.com/lislroow/pilot.git</connection>
 	</scm>
 	
 	<!-- only from bom project -->
