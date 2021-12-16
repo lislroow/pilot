@@ -397,8 +397,6 @@
 					<version>3.0.0-M1</version>
 					<configuration>
 						<autoVersionSubmodules>true</autoVersionSubmodules>
-						<!-- <username>mgkim</username>
-						<password>1</password> -->
 						<goals>deploy</goals>
 						<scmCommentPrefix>[jenkins]</scmCommentPrefix>
 					</configuration>
