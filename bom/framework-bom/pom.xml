@@ -18,7 +18,7 @@
 		<!-- <connection>scm:svn:svn://develop/prototype/trunk/bom/framework-bom</connection> -->
 		<connection>scm:git:${project.scm.url}</connection>
 		<developerConnection>scm:git:${project.scm.url}</developerConnection>
-		<url>${project.scm.url}</url>
+		<url>https://github.com/lislroow/pilot.git</url>
 		<tag>HEAD</tag>
 	</scm>
 	
@@ -43,7 +43,7 @@
 		<io.springfox.version>2.10.5</io.springfox.version>
 		<io.swagger.parser.v3.version>2.0.27</io.swagger.parser.v3.version>
 		<io.swagger.core.v3.version>2.1.10</io.swagger.core.v3.version>
-		<project.scm.url>https://github.com/lislroow/pilot.git</project.scm.url>
+		<project.scm.url>git://github.com/lislroow/pilot.git</project.scm.url>
 	</properties>
 	
 	<dependencyManagement>
