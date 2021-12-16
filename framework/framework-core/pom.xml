@@ -8,9 +8,10 @@
 	</parent>
 	<groupId>mgkim.framework</groupId>
 	<artifactId>framework-core</artifactId>
-	<version>0.4-SNAPSHOT</version>
+	<version>0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>${project.groupId}:${project.artifactId}</name>
+	<url>https://github.com/lislroow/pilot.git</url>
 	
 	<profiles>
 		<profile>
@@ -38,7 +39,7 @@
 	</repositories>
 	
 	<scm>
-		<connection>scm:svn:svn://develop/prototype/trunk/framework/framework-core</connection>
+		<connection>scm:git:git@github.com:lislroow/pilot.git</connection>
 	</scm>
 	
 	<properties>
