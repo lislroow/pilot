@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>mgkim.service</groupId>
 	<artifactId>service-www</artifactId>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.1</version>
 	<packaging>war</packaging>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<url>https://github.com/lislroow/pilot.git</url>
@@ -40,7 +40,8 @@
 	
 	<scm>
 		<connection>scm:git:git@github.com:lislroow/pilot.git</connection>
-	</scm>
+	  <tag>service-www-0.1</tag>
+  </scm>
 	
 	<dependencies>
 		<!-- framework -->
