@@ -18,8 +18,8 @@
 	<scm>
 		<!-- <connection>scm:svn:svn://develop/prototype/trunk/bom/framework-bom</connection> -->
 		<connection>scm:git:${project.scm.url}</connection>
-	  <tag>HEAD</tag>
-  </scm>
+		<tag>HEAD</tag>
+	</scm>
 	
 	<!-- only from bom project -->
 	<distributionManagement>
