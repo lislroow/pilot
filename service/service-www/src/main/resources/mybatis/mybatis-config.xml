@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<settings>
+		<setting name="cacheEnabled" value="false" />
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+		<setting name="jdbcTypeForNull" value="VARCHAR" />
+		<setting name="logImpl" value="NO_LOGGING" />
+		<setting name="defaultStatementTimeout" value="600" /><!-- mybatis의 sql 수행이 15초를 넘을 경우 SQLTimeoutException: ORA-01013 예외가 발생함 -->
+	</settings>
+
+	<plugins>
+		<!-- <plugin interceptor="mgkim.proto.www.com.mybatis.ComSqlInterceptorImpl" /> -->
+		<plugin interceptor="mgkim.core.com.sql.ComSqlInterceptor" />
+	</plugins>
+
+</configuration>

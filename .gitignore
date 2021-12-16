@@ -1,0 +1,11 @@
+/target
+/.settings
+/.externalToolBuilders
+/pom.xml.versionsBackup
+/bin
+/**/target
+/**/.settings
+/**/.externalToolBuilders
+/**/pom.xml.versionsBackup
+/**/bin
+/.svn

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>mgkim.bom</groupId>
+		<artifactId>service-bom</artifactId>
+		<version>0.1</version>
+	</parent>
+	<groupId>mgkim.service</groupId>
+	<artifactId>service-www</artifactId>
+	<version>0.4-SNAPSHOT</version>
+	<packaging>war</packaging>
+	<name>${project.groupId}:${project.artifactId}</name>
+	
+	<profiles>
+		<profile>
+			<id>snapshot</id>
+			<properties>
+				<repository.url>http://nexus/repository/maven-group-snapshot/</repository.url>
+			</properties>
+		</profile>
+		<profile>
+			<id>release</id>
+			<properties>
+				<repository.url>http://nexus/repository/maven-group-release/</repository.url>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+	</profiles>
+	
+	<repositories>
+		<repository>
+			<id>maven-group</id>
+			<url>${repository.url}</url>
+		</repository>
+	</repositories>
+	
+	<scm>
+		<connection>scm:svn:svn://develop/prototype/trunk/service/service-www</connection>
+	</scm>
+	
+	<dependencies>
+		<dependency>
+			<groupId>mgkim.framework</groupId>
+			<artifactId>framework-online</artifactId>
+		</dependency>
+	</dependencies>
+	
+	<build>
+		<defaultGoal>install</defaultGoal>
+		<directory>${basedir}/target</directory>
+		<finalName>${project.artifactId}-${project.version}</finalName>
+	</build>
+
+</project>

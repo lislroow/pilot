@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mgkim.proto.www.cmm.mapper.CmmSessionStatusMngMapper">
+
+	<insert id="insertNewStatus" parameterType="KToken">
+		MERGE /* mgkim.proto.www.cmm.mapper.ComSessionMapper.insertNewSession */
+			INTO MGCB151TS /* MGCB_사용자세션상태 */
+			USING DUAL
+				ON (SSID = #{ssid}
+				AND USER_ID = #{userId}
+				AND AUMTH_TPCD = #{aumthTpcd}
+				AND SS_STCD IN ('00', '20')) /* 00: 로그인, 20: 세션만료 */
+		WHEN MATCHED THEN
+			UPDATE SET
+				  SS_STCD = '00'
+				, EXPIRE_DTTM = SYSDATE + #{ssvaldSec} / (24*60*60)
+				, SSVALD_SEC = #{ssvaldSec}
+				, LOGIN_DTTM = TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS')
+				, PRIVATE_KEY = null
+				, PUBLIC_KEY = null
+				, SYM_KEY = null
+				, BROWS_INF = #{browsInf}
+		WHEN NOT MATCHED THEN
+			INSERT (
+				  USER_ID
+				, AUMTH_TPCD
+				, SSID
+				, SS_STCD
+				, EXPIRE_DTTM
+				, SSVALD_SEC
+				, LOGIN_DTTM
+				, BROWS_INF
+				, IP
+			) VALUES (
+				  #{userId}
+				, #{aumthTpcd}
+				, #{ssid}
+				, '00'
+				, SYSDATE + #{ssvaldSec} / (24*60*60)
+				, #{ssvaldSec}
+				, TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS')
+				, #{browsInf}
+				, #{ip}
+			)
+	</insert>
+
+	<select id="selectStatusForIsLogin" parameterType="KToken" resultType="CmmSessionStatusVO">
+		SELECT /* mgkim.proto.www.cmm.mapper.CmmSessionStatusMngMapper.selectStatusForIsLogin */
+				  USER_ID
+				, AUMTH_TPCD
+				, SSID
+				, LOGIN_DTTM
+				, SS_STCD
+				, EXPIRE_DTTM
+				, BROWS_INF
+				, IP
+		FROM	  MGCB151TS /* MGCB_사용자세션상태 */
+		WHERE   USER_ID = #{userId}
+			AND  AUMTH_TPCD = #{aumthTpcd}
+			AND  SSID = #{ssid}
+	</select>
+
+	<select id="selectStatusListForDupl" parameterType="KToken" resultType="CmmSessionStatusVO">
+		SELECT /* mgkim.proto.www.cmm.mapper.CmmSessionStatusMngMapper.selectStatusListForDupl */
+				  USER_ID
+				, AUMTH_TPCD
+				, SSID
+				, LOGIN_DTTM
+				, SS_STCD
+				, EXPIRE_DTTM
+				, BROWS_INF
+				, IP
+		FROM	  MGCB151TS /* MGCB_사용자세션상태 */
+		WHERE   USER_ID = #{userId}
+	</select>
+
+
+	<update id="updateDupl" parameterType="CmmSessionMngListVO">
+		UPDATE /* mgkim.proto.www.cmm.mapper.CmmSessionStatusMngMapper.updateDupl */
+			MGCB151TS /* MGCB_사용자세션상태 */ SET
+				  SS_STCD = '10' /* 10: 중복로그인 */
+		WHERE	  /* 주의: WHERE에 조건은 반드시 있어야함  */
+		<choose>
+			<when test='sessionList == null or sessionList.size() == 0'>
+				<![CDATA[
+				1 <> 1
+				]]>
+			</when>
+			<otherwise>
+				SSID IN
+				<foreach collection="sessionList" item="item" separator="," open="(" close=")">
+					#{item.ssid}
+				</foreach>
+			</otherwise>
+		</choose>
+	</update>
+
+	<update id="updateRefresh" parameterType="CmmSessionMngListVO">
+		UPDATE /* mgkim.proto.www.cmm.mapper.CmmSessionStatusMngMapper.updateRefreshList */
+			MGCB151TS /* MGCB_사용자세션상태 */ SET
+				  EXPIRE_DTTM = SYSDATE + SSVALD_SEC / (24*60*60)
+		WHERE	  SS_STCD = '00'
+		<choose>
+			<when test='sessionList != null and sessionList.size() > 0'>
+				AND SSID IN
+				<foreach collection="sessionList" item="item" separator="," open="(" close=")">
+					#{item.ssid}
+				</foreach>
+			</when>
+			<otherwise>
+				<![CDATA[ AND 1 <> 1 ]]>
+			</otherwise>
+		</choose>
+	</update>
+
+	<update id="updateLoginToExpire">
+	<![CDATA[
+		UPDATE /* mgkim.proto.www.cmm.mapper.CmmSessionStatusMngMapper.updateExpire */
+			MGCB151TS /* MGCB_사용자세션상태 */ SET
+				  SS_STCD = '20' /* 20: 세션만료 */
+		WHERE	  EXPIRE_DTTM <= SYSDATE
+			AND  SS_STCD = '00' /* 00: 로그인 */
+	]]>
+	</update>
+
+	<update id="updateExpireToLogout">
+	<![CDATA[
+		UPDATE /* mgkim.proto.www.cmm.mapper.CmmSessionStatusMngMapper.updateLogout */
+			MGCB151TS /* MGCB_사용자세션상태 */ SET
+				 SS_STCD = '30' /* 30: 로그아웃 */
+		WHERE  EXPIRE_DTTM + 10/(24*60*60) <= SYSDATE
+			AND SS_STCD IN ('10', '20') /* 10: 중복로그인, 20: 세션만료 */
+	]]>
+	</update>
+
+	<delete id="insertMoveToHistory">
+	<![CDATA[
+		INSERT /* mgkim.proto.www.cmm.mapper.CmmSessionStatusMngMapper.insertLogoutHistory */
+			INTO MGCB152TH /* MGCB_사용자세션이력 */ (
+				  USER_ID
+				, AUMTH_TPCD
+				, SSID
+				, LOGIN_DTTM
+				, LOGOUT_DTTM
+				, SSVALD_SEC
+				, BROWS_INF
+				, IP
+			)
+		SELECT  A.USER_ID
+				, A.AUMTH_TPCD
+				, A.SSID
+				, A.LOGIN_DTTM
+				, TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS') AS LOGOUT_DTTM
+				, SSVALD_SEC
+				, BROWS_INF AS BROWS_INF
+				, IP AS IP
+		FROM	  MGCB151TS A /* MGCB_사용자세션상태 */
+		WHERE	  A.EXPIRE_DTTM + 20/(24*60*60) <= SYSDATE
+			AND  A.SS_STCD = '30' /* 30: 로그아웃 */
+			AND  NOT EXISTS (
+				SELECT  1
+				FROM	  MGCB152TH B /* MGCB_사용자세션이력 */
+				WHERE	  A.USER_ID = B.USER_ID
+					AND  A.AUMTH_TPCD = B.AUMTH_TPCD
+					AND  A.SSID = B.SSID
+					AND  A.LOGIN_DTTM = B.LOGIN_DTTM
+			)
+	]]>
+	</delete>
+
+	<delete id="deleteLogout">
+	<![CDATA[
+		DELETE /* mgkim.proto.www.cmm.mapper.CmmSessionStatusMngMapper.deleteLogout */
+		FROM	  MGCB151TS A /* MGCB_사용자세션이력 */
+		WHERE	  A.EXPIRE_DTTM <= SYSDATE
+			AND A.SS_STCD = '30' /* 30: 로그아웃 */
+			AND EXISTS (
+				SELECT 1
+				FROM	  MGCB152TH B /* MGCB_사용자세션이력 */
+				WHERE	  A.USER_ID = B.USER_ID
+					AND  A.AUMTH_TPCD = B.AUMTH_TPCD
+					AND  A.SSID = B.SSID
+					AND  A.LOGIN_DTTM = B.LOGIN_DTTM
+			)
+	]]>
+	</delete>
+
+</mapper>

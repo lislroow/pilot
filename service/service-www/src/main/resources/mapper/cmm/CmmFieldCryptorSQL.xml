@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mgkim.proto.www.cmm.mapper.CmmFieldCryptorMapper">
+
+	<insert id="saveRsaKey" parameterType="CmmFieldCryptoVO">
+		UPDATE /* mgkim.proto.www.cmm.mapper.CmmFieldCryptorMapper.saveRsaKey */
+			MGCB151TS /* MGCB_사용자세션상태 */
+			SET
+				  PRIVATE_KEY = #{privateKey}
+				, PUBLIC_KEY = #{publicKey}
+		WHERE	  USER_ID = #{ssuserId}
+			AND  AUMTH_TPCD = #{aumthTpcd}
+			AND  SSID = #{ssid}
+	</insert>
+
+	<insert id="saveSymKey" parameterType="CmmFieldCryptoVO">
+		UPDATE /* mgkim.proto.www.cmm.mapper.CmmFieldCryptorMapper.saveSymKey */
+			MGCB151TS /* MGCB_사용자세션상태 */
+			SET
+				  SYM_KEY = #{symKey}
+		WHERE	  USER_ID = #{ssuserId}
+			AND  AUMTH_TPCD = #{aumthTpcd}
+			AND  SSID = #{ssid}
+	</insert>
+
+	<select id="selectFieldCryptoKey" parameterType="KToken" resultType="CmmFieldCryptoVO">
+		SELECT /* mgkim.proto.www.cmm.mapper.CmmFieldCryptorMapper.selectFieldCryptoKey */
+				  PRIVATE_KEY
+				, SYM_KEY
+		FROM	  MGCB151TS /* MGCB_사용자세션상태 */
+		WHERE	  USER_ID = #{ssuserId}
+			AND  AUMTH_TPCD = #{aumthTpcd}
+			AND  SSID = #{ssid}
+	</select>
+</mapper>

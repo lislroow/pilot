@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper">
+
+
+	<!-- 1.1) 권한 -->
+	<delete id="deleteRoleAll" parameterType="InitLoadMockVO">
+		DELETE /* mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper.deleteRoleAll */
+		FROM	  MGCB202TM /* MGCB_권한정보 */
+		WHERE	  SITE_TPCD = #{siteTpcd}
+	</delete>
+
+	<insert id="insertRole" parameterType="InitLoadMockVO">
+		MERGE /* mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper.insertRole */
+			INTO MGCB202TM /* MGCB_권한정보 */
+			USING DUAL
+				ON (SITE_TPCD = #{siteTpcd}
+				AND ROLE_ID = #{roleId})
+		WHEN MATCHED THEN
+			UPDATE SET
+				  LAST_MODFR_NO = 'SYSTEM'
+				, LAST_MODF_DTTM = SYSDATE
+		WHEN NOT MATCHED THEN
+			INSERT (
+				  SITE_TPCD
+				, ROLE_ID
+				, ROLE_NM
+				, USE_YN
+				, FIRST_REGIR_NO
+				, FIRST_REGI_DTTM
+				, LAST_MODFR_NO
+				, LAST_MODF_DTTM
+			) VALUES (
+				  #{siteTpcd}
+				, #{roleId}
+				, #{roleNm}
+				, 'Y'
+				, 'SYSTEM'
+				, SYSDATE
+				, 'SYSTEM'
+				, SYSDATE
+			)
+	</insert>
+	<!-- // 1.1) 권한 -->
+
+
+	<!-- 1.2) 권한그룹 -->
+	<delete id="deleteRgrpAll" parameterType="InitLoadMockVO">
+		DELETE /* mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper.deleteRgrpAll */
+		FROM	  MGCB201TM /* MGCB_권한그룹정보 */
+		WHERE	  SITE_TPCD = #{siteTpcd}
+	</delete>
+
+	<insert id="insertRgrp" parameterType="InitLoadMockVO">
+		MERGE /* mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper.insertRgrp */
+			INTO MGCB201TM /* MGCB_권한그룹정보 */
+			USING DUAL
+				ON (SITE_TPCD = #{siteTpcd}
+				AND RGRP_ID = #{rgrpId})
+		WHEN MATCHED THEN
+			UPDATE SET
+				  LAST_MODFR_NO = 'SYSTEM'
+				, LAST_MODF_DTTM = SYSDATE
+		WHEN NOT MATCHED THEN
+			INSERT (
+				  SITE_TPCD
+				, RGRP_ID
+				, RGRP_NM
+				, USE_YN
+				, FIRST_REGIR_NO
+				, FIRST_REGI_DTTM
+				, LAST_MODFR_NO
+				, LAST_MODF_DTTM
+			) VALUES (
+				  #{siteTpcd}
+				, #{rgrpId}
+				, #{rgrpNm}
+				, 'Y'
+				, 'SYSTEM'
+				, SYSDATE
+				, 'SYSTEM'
+				, SYSDATE
+			)
+	</insert>
+	<!-- // 1.2) 권한그룹 -->
+
+
+	<!-- 1.3) 권한그룹설정 -->
+	<delete id="deleteRoleRpgrAll" parameterType="InitLoadMockVO">
+		DELETE /* mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper.deleteRoleRpgrAll */
+		FROM	  MGCB221TR /* MGCB_권한그룹설정 */
+		WHERE	  SITE_TPCD = #{siteTpcd}
+	</delete>
+
+	<insert id="insertRoleRpgr" parameterType="InitLoadMockVO">
+		MERGE /* mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper.insertRoleRpgr */
+			INTO MGCB221TR /* MGCB_권한그룹설정 */
+			USING DUAL
+				ON (SITE_TPCD = #{siteTpcd}
+				AND RGRP_ID = #{rgrpId}
+				AND ROLE_ID = #{roleId})
+		WHEN MATCHED THEN
+			UPDATE SET
+				  LAST_MODFR_NO = 'SYSTEM'
+				, LAST_MODF_DTTM = SYSDATE
+		WHEN NOT MATCHED THEN
+			INSERT (
+				  SITE_TPCD
+				, RGRP_ID
+				, ROLE_ID
+				, FIRST_REGIR_NO
+				, FIRST_REGI_DTTM
+				, LAST_MODFR_NO
+				, LAST_MODF_DTTM
+			) VALUES (
+				  #{siteTpcd}
+				, #{rgrpId}
+				, #{roleId}
+				, 'SYSTEM'
+				, SYSDATE
+				, 'SYSTEM'
+				, SYSDATE
+			)
+	</insert>
+	<!-- // 1.3) 권한그룹설정 -->
+
+
+	<!-- 2.1) uri(raw) -->
+	<delete id="deleteUriRawAll" parameterType="CmmUriVO">
+		DELETE /* mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper.deleteUriRawAll */
+		FROM	  MGCB302TT /* MGCB_uri기본정보 */
+		WHERE	  SITE_TPCD = #{siteTpcd}
+	</delete>
+
+	<insert id="insertUriRaw" parameterType="CmmUriVO">
+		MERGE /* mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper.insertUriRaw */
+			INTO MGCB302TT /* MGCB_uri정보raw */
+			USING DUAL
+				ON (SITE_TPCD = #{siteTpcd}
+				AND URI_VAL = #{uriVal})
+		WHEN MATCHED THEN
+			UPDATE SET
+				  URI_NM = #{uriNm}
+				, LAST_MODFR_NO = 'SYSTEM'
+				, LAST_MODF_DTTM = SYSDATE
+		WHEN NOT MATCHED THEN
+			INSERT (
+				  SITE_TPCD
+				, URI_VAL
+				, URI_NM
+				, URI_PTRN_YN
+				, URI_RESP_TPCD
+				, FIRST_REGIR_NO
+				, FIRST_REGI_DTTM
+				, LAST_MODFR_NO
+				, LAST_MODF_DTTM
+			) VALUES (
+				  #{siteTpcd}
+				, #{uriVal}
+				, #{uriNm}
+				, #{uriPtrnYn}
+				, #{uriRespTpcd}
+				, 'SYSTEM'
+				, SYSDATE
+				, 'SYSTEM'
+				, SYSDATE
+			)
+	</insert>
+	<!-- // 2.1) uri(raw) -->
+
+	<!-- 2.2) uri -->
+	<delete id="deleteUriAll" parameterType="InitLoadMockVO">
+		DELETE /* mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper.deleteUriAll */
+		FROM	  MGCB301TM /* MGCB_uri기본정보 */
+		WHERE	  SITE_TPCD = #{siteTpcd}
+	</delete>
+
+	<insert id="insertUri" parameterType="InitLoadMockVO">
+	<![CDATA[
+		INSERT /* mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper.insertUri */
+			INTO MGCB301TM /* MGCB_uri기본정보 */ (
+				  SITE_TPCD
+				, URI_ID
+				, MPNO /* 매칭우선순위 */
+				, URI_VAL
+				, URI_NM
+				, URI_PTRN_YN
+				, URI_RESP_TPCD
+				, USE_YN
+				, FIRST_REGIR_NO
+				, FIRST_REGI_DTTM
+				, LAST_MODFR_NO
+				, LAST_MODF_DTTM
+			)
+		SELECT  B.SITE_TPCD
+				, 'U'||LPAD(ROWNUM, 5, '0') AS URI_ID
+				, DECODE(B.URI_PTRN_YN, 'Y', 90, 10) AS MPNO /* 패턴형uri 일 경우 매칭우선순위를 낮게 설정함 */
+				, B.URI_VAL
+				, B.URI_NM
+				, B.URI_PTRN_YN
+				, B.URI_RESP_TPCD
+				, B.USE_YN
+				, B.FIRST_REGIR_NO
+				, B.FIRST_REGI_DTTM
+				, B.LAST_MODFR_NO
+				, SYSDATE
+		FROM (
+			SELECT  A.SITE_TPCD
+					, 'U'||LPAD(ROWNUM, 5, '0') AS URI_ID
+					, A.URI_VAL
+					, A.URI_NM
+					, A.URI_PTRN_YN
+					, A.URI_RESP_TPCD
+					, 'Y' AS USE_YN
+					, A.FIRST_REGIR_NO
+					, A.FIRST_REGI_DTTM
+					, A.LAST_MODFR_NO
+					, A.LAST_MODF_DTTM
+			FROM	  MGCB302TT A /* MGCB_uri정보raw */
+			WHERE	  A.SITE_TPCD = #{siteTpcd}
+				AND  NOT EXISTS (
+					SELECT  1
+					FROM	  MGCB301TM B /* MGCB_uri기본정보 */
+					WHERE	  A.SITE_TPCD = B.SITE_TPCD
+						AND  A.URI_VAL = B.URI_VAL
+				)
+			ORDER BY URI_PTRN_YN DESC, URI_VAL ASC
+		) B
+	]]>
+	</insert>
+	<!-- // 2.2) uri -->
+
+
+	<!-- 2.3) uri권한 -->
+	<delete id="deleteUriRpgrAll" parameterType="InitLoadMockVO">
+		DELETE /* mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper.deleteUriRpgrAll */
+		FROM	  MGCB241TR /* MGCB_uri권한그룹매핑 */
+		WHERE	  SITE_TPCD = #{siteTpcd}
+	</delete>
+
+	<insert id="insertUriRpgr" parameterType="InitLoadMockVO">
+		INSERT /* mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper.insertUri */
+			INTO MGCB241TR /* MGCB_uri권한그룹매핑 */ (
+				  SITE_TPCD
+				, RGRP_ID
+				, URI_ID
+				, FIRST_REGIR_NO
+				, FIRST_REGI_DTTM
+				, LAST_MODFR_NO
+				, LAST_MODF_DTTM
+			)
+		SELECT  A.SITE_TPCD
+				, #{rgrpId}
+				, A.URI_ID
+				, 'SYSTEM'
+				, SYSDATE
+				, 'SYSTEM'
+				, SYSDATE
+		FROM	  MGCB301TM A /* MGCB_uri기본정보 */
+		WHERE	  A.SITE_TPCD = #{siteTpcd}
+			AND  A.URI_PTRN_YN = 'N'
+	</insert>
+	<!-- // 2.3) uri권한 -->
+
+
+	<!-- 3.1) 사용자(raw) -->
+	<delete id="deleteUserRawAll" parameterType="InitLoadMockVO">
+		DELETE /* mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper.deleteUriRawAll */
+		FROM	  MGCB102TT /* MGCB_사용자정보raw */
+		WHERE	  SITE_TPCD = #{siteTpcd}
+	</delete>
+
+	<insert id="insertUserRaw" parameterType="InitLoadMockVO">
+		MERGE /* mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper.insertUriRaw */
+			INTO MGCB102TT /* MGCB_사용자정보raw */
+			USING DUAL
+				ON (SITE_TPCD = #{siteTpcd}
+				AND USER_ID = #{userId})
+		WHEN MATCHED THEN
+			UPDATE SET
+				  LAST_MODFR_NO = 'SYSTEM'
+				, LAST_MODF_DTTM = SYSDATE
+		WHEN NOT MATCHED THEN
+			INSERT (
+				  SITE_TPCD
+				, USER_ID
+				, USER_NM
+				, EMAIL
+				, AUMTH_TPCD_LIST
+				, INACTV_YN
+				, LOCK_YN
+				, LOGIN_FAIL_CNT
+				, PWCHG_DT
+				, SSVALD_SEC
+				, FIRST_REGIR_NO
+				, FIRST_REGI_DTTM
+				, LAST_MODFR_NO
+				, LAST_MODF_DTTM
+			) VALUES (
+				  #{siteTpcd}
+				, #{userId}
+				, #{userNm}
+				, #{email}
+				, #{aumthTpcdList}
+				, #{inactvYn}
+				, #{lockYn}
+				, #{loginFailCnt}
+				, #{pwchgDt}
+				, #{ssvaldSec}
+				, 'SYSTEM'
+				, SYSDATE
+				, 'SYSTEM'
+				, SYSDATE
+			)
+	</insert>
+	<!-- // 3.1) 사용자(raw) -->
+
+
+	<!-- 3.2) 사용자 -->
+	<delete id="deleteUserAll" parameterType="InitLoadMockVO">
+		DELETE /* mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper.deleteUriAll */
+		FROM	  MGCB101TM /* MGCB_사용자정보 */
+		WHERE	  SITE_TPCD = #{siteTpcd}
+	</delete>
+
+	<insert id="insertUser" parameterType="InitLoadMockVO">
+	<![CDATA[
+		INSERT /* mgkim.proto.www.sys.com.mapper.ComSessionStatusMngMapper.insertLogoutHistory */
+			INTO MGCB101TM /* MGCB_사용자정보 */ (
+				  SITE_TPCD
+				, USER_ID
+				, USER_NM
+				, EMAIL
+				, FIRST_REGIR_NO
+				, FIRST_REGI_DTTM
+				, LAST_MODFR_NO
+				, LAST_MODF_DTTM
+			)
+		SELECT
+				  A.SITE_TPCD
+				, A.USER_ID
+				, A.USER_NM
+				, A.EMAIL
+				, A.FIRST_REGIR_NO
+				, A.FIRST_REGI_DTTM
+				, A.LAST_MODFR_NO
+				, A.LAST_MODF_DTTM
+		FROM	  MGCB102TT A /* MGCB_사용자정보raw */
+		WHERE	  A.SITE_TPCD = #{siteTpcd}
+			AND  NOT EXISTS (
+				SELECT  1
+				FROM	  MGCB101TM B /* MGCB_uri기본정보 */
+				WHERE	  A.SITE_TPCD = B.SITE_TPCD
+					AND  A.USER_ID = B.USER_ID
+			)
+		ORDER BY USER_ID ASC
+	]]>
+	</insert>
+
+	<insert id="insertLoginPolicy" parameterType="InitLoadMockVO">
+	<![CDATA[
+		INSERT /* mgkim.proto.www.sys.com.mapper.ComSessionStatusMngMapper.insertLogoutHistory */
+			INTO MGCB121TM /* MGCB_사용자로그인정책정보 */ (
+				  SITE_TPCD
+				, USER_ID
+				, AUMTH_TPCD_LIST
+				, INACTV_YN
+				, LOCK_YN
+				, LOGIN_FAIL_CNT
+				, PWCHG_DT
+				, SSVALD_SEC
+				, FIRST_REGIR_NO
+				, FIRST_REGI_DTTM
+				, LAST_MODFR_NO
+				, LAST_MODF_DTTM
+			)
+		SELECT
+				  A.SITE_TPCD
+				, A.USER_ID
+				, A.AUMTH_TPCD_LIST
+				, A.INACTV_YN
+				, A.LOCK_YN
+				, A.LOGIN_FAIL_CNT
+				, A.PWCHG_DT
+				, A.SSVALD_SEC
+				, A.FIRST_REGIR_NO
+				, A.FIRST_REGI_DTTM
+				, A.LAST_MODFR_NO
+				, A.LAST_MODF_DTTM
+		FROM	  MGCB102TT A /* MGCB_사용자정보raw */
+		WHERE	  A.SITE_TPCD = #{siteTpcd}
+			AND  NOT EXISTS (
+				SELECT  1
+				FROM	  MGCB121TM B /* MGCB_사용자로그인정책정보 */
+				WHERE	  A.SITE_TPCD = B.SITE_TPCD
+					AND  A.USER_ID = B.USER_ID
+			)
+		ORDER BY USER_ID ASC
+	]]>
+	</insert>
+	<!-- // 3.2) 사용자 -->
+
+
+
+	<!-- 3.3) 사용자권한 -->
+	<delete id="deleteUserRpgrAll" parameterType="InitLoadMockVO">
+		DELETE /* mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper.deleteUserRpgrAll */
+		FROM	  MGCB231TR /* MGCB_사용자권한그룹매핑 */
+		WHERE	  SITE_TPCD = #{siteTpcd}
+	</delete>
+
+	<insert id="insertUserRpgr" parameterType="InitLoadMockVO">
+		MERGE /* mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper.insertUserRpgr */
+			INTO MGCB231TR /* MGCB_사용자권한그룹매핑 */
+			USING DUAL
+				ON (SITE_TPCD = #{siteTpcd}
+				AND RGRP_ID = #{rgrpId}
+				AND USER_ID = #{userId})
+		WHEN MATCHED THEN
+			UPDATE SET
+				  LAST_MODFR_NO = 'SYSTEM'
+				, LAST_MODF_DTTM = SYSDATE
+		WHEN NOT MATCHED THEN
+			INSERT (
+				  SITE_TPCD
+				, RGRP_ID
+				, USER_ID
+				, FIRST_REGIR_NO
+				, FIRST_REGI_DTTM
+				, LAST_MODFR_NO
+				, LAST_MODF_DTTM
+			) VALUES (
+				  #{siteTpcd}
+				, #{rgrpId}
+				, #{userId}
+				, 'SYSTEM'
+				, SYSDATE
+				, 'SYSTEM'
+				, SYSDATE
+			)
+	</insert>
+	<!-- // 3.3) 사용자권한 -->
+
+</mapper>
