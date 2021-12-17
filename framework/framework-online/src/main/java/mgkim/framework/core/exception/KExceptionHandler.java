@@ -98,11 +98,11 @@ public class KExceptionHandler {
 			String clazzName = ex.getClass().getName();
 
 			// 1.2) `exception` 매핑: 알려진 예외 클래스
-			if("mgkim.framework.online.com.exception.KException".equals(clazzName)) {
+			if("mgkim.framework.core.exception.KException".equals(clazzName)) {
 				exception = (KException) ex;
-			} else if("mgkim.framework.online.com.exception.KSqlException".equals(clazzName)) {
+			} else if("mgkim.framework.core.exception.KSqlException".equals(clazzName)) {
 				exception = (KException) ex;
-			} else if("mgkim.framework.online.com.exception.KSysException".equals(clazzName)) {
+			} else if("mgkim.framework.core.exception.KSysException".equals(clazzName)) {
 				exception = (KException) ex;
 				if("".equals(exception.getId())) {
 					exception = new KException(KMessage.E9998);
