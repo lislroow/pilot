@@ -2,7 +2,7 @@ package mgkim.proto.www.api.cmm.file.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import mgkim.core.com.dto.KCmmVO;
+import mgkim.online.com.dto.KCmmVO;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FileVO extends KCmmVO {

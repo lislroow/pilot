@@ -2,16 +2,16 @@ package mgkim.proto.www.cmm;
 
 import java.text.MessageFormat;
 
-import mgkim.core.cmm.CmmDtoLog;
-import mgkim.core.com.annotation.KBean;
-import mgkim.core.com.dto.KInDTO;
-import mgkim.core.com.env.KContext;
-import mgkim.core.com.env.KContext.AttrKey;
-import mgkim.core.com.logging.KLog;
-import mgkim.core.com.logging.KLogSign;
-import mgkim.core.com.logging.KLogSys;
-import mgkim.core.com.util.KObjectUtil;
-import mgkim.core.com.util.KStringUtil;
+import mgkim.online.cmm.CmmDtoLog;
+import mgkim.online.com.annotation.KBean;
+import mgkim.online.com.dto.KInDTO;
+import mgkim.online.com.env.KContext;
+import mgkim.online.com.env.KContext.AttrKey;
+import mgkim.online.com.logging.KLog;
+import mgkim.online.com.logging.KLogSign;
+import mgkim.online.com.logging.KLogSys;
+import mgkim.online.com.util.KObjectUtil;
+import mgkim.online.com.util.KStringUtil;
 
 @KBean
 public class CmmDtoLogImpl implements CmmDtoLog {

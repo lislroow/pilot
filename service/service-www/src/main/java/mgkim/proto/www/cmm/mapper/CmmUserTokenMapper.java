@@ -2,7 +2,7 @@ package mgkim.proto.www.cmm.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import mgkim.core.cmm.vo.token.CmmOpenapiTokenVO;
+import mgkim.online.cmm.vo.token.CmmOpenapiTokenVO;
 
 @Mapper
 public interface CmmUserTokenMapper {

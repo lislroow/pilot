@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import mgkim.core.cmm.vo.reloadableconf.CmmReloadableConfVO;
+import mgkim.online.cmm.vo.reloadableconf.CmmReloadableConfVO;
 
 @Mapper
 public interface CmmReloadableConfMngMapper {

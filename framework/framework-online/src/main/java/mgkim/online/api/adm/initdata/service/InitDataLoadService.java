@@ -6,11 +6,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import mgkim.core.cmm.vo.uri.CmmUriVO;
-import mgkim.core.com.mgr.ComUriListMgr;
-import mgkim.core.com.util.KDateUtil;
 import mgkim.online.api.adm.initdata.mapper.InitDataLoadMapper;
 import mgkim.online.api.adm.initdata.vo.InitLoadMockVO;
+import mgkim.online.cmm.vo.uri.CmmUriVO;
+import mgkim.online.com.mgr.ComUriListMgr;
+import mgkim.online.com.util.KDateUtil;
 
 @Service
 public class InitDataLoadService {

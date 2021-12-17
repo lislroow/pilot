@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import mgkim.core.cmm.vo.apitxlog.CmmApiTxLogVO;
-import mgkim.core.com.dto.KCmmVO;
-import mgkim.core.com.dto.KInPageDTO;
-import mgkim.core.com.dto.KOutPageDTO;
-import mgkim.core.com.env.KConstant;
 import mgkim.online.api.adm.apitxlog.service.ApiTxLogService;
+import mgkim.online.cmm.vo.apitxlog.CmmApiTxLogVO;
+import mgkim.online.com.dto.KCmmVO;
+import mgkim.online.com.dto.KInPageDTO;
+import mgkim.online.com.dto.KOutPageDTO;
+import mgkim.online.com.env.KConstant;
 
 @Api( tags = { KConstant.SWG_SYSTEM_COMMON } )
 @RestController

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper">
+<mapper namespace="mgkim.online.api.adm.initdata.mapper.InitDataLoadMapper">
 
 
 	<!-- 1.1) 권한 -->
 	<delete id="deleteRoleAll" parameterType="InitLoadMockVO">
-		DELETE /* mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper.deleteRoleAll */
+		DELETE /* mgkim.online.api.adm.initdata.mapper.InitDataLoadMapper.deleteRoleAll */
 		FROM	  MGCB202TM /* MGCB_권한정보 */
 		WHERE	  SITE_TPCD = #{siteTpcd}
 	</delete>
 
 	<insert id="insertRole" parameterType="InitLoadMockVO">
-		MERGE /* mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper.insertRole */
+		MERGE /* mgkim.online.api.adm.initdata.mapper.InitDataLoadMapper.insertRole */
 			INTO MGCB202TM /* MGCB_권한정보 */
 			USING DUAL
 				ON (SITE_TPCD = #{siteTpcd}
@@ -46,13 +46,13 @@
 
 	<!-- 1.2) 권한그룹 -->
 	<delete id="deleteRgrpAll" parameterType="InitLoadMockVO">
-		DELETE /* mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper.deleteRgrpAll */
+		DELETE /* mgkim.online.api.adm.initdata.mapper.InitDataLoadMapper.deleteRgrpAll */
 		FROM	  MGCB201TM /* MGCB_권한그룹정보 */
 		WHERE	  SITE_TPCD = #{siteTpcd}
 	</delete>
 
 	<insert id="insertRgrp" parameterType="InitLoadMockVO">
-		MERGE /* mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper.insertRgrp */
+		MERGE /* mgkim.online.api.adm.initdata.mapper.InitDataLoadMapper.insertRgrp */
 			INTO MGCB201TM /* MGCB_권한그룹정보 */
 			USING DUAL
 				ON (SITE_TPCD = #{siteTpcd}
@@ -87,13 +87,13 @@
 
 	<!-- 1.3) 권한그룹설정 -->
 	<delete id="deleteRoleRpgrAll" parameterType="InitLoadMockVO">
-		DELETE /* mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper.deleteRoleRpgrAll */
+		DELETE /* mgkim.online.api.adm.initdata.mapper.InitDataLoadMapper.deleteRoleRpgrAll */
 		FROM	  MGCB221TR /* MGCB_권한그룹설정 */
 		WHERE	  SITE_TPCD = #{siteTpcd}
 	</delete>
 
 	<insert id="insertRoleRpgr" parameterType="InitLoadMockVO">
-		MERGE /* mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper.insertRoleRpgr */
+		MERGE /* mgkim.online.api.adm.initdata.mapper.InitDataLoadMapper.insertRoleRpgr */
 			INTO MGCB221TR /* MGCB_권한그룹설정 */
 			USING DUAL
 				ON (SITE_TPCD = #{siteTpcd}
@@ -127,13 +127,13 @@
 
 	<!-- 2.1) uri(raw) -->
 	<delete id="deleteUriRawAll" parameterType="CmmUriVO">
-		DELETE /* mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper.deleteUriRawAll */
+		DELETE /* mgkim.online.api.adm.initdata.mapper.InitDataLoadMapper.deleteUriRawAll */
 		FROM	  MGCB302TT /* MGCB_uri기본정보 */
 		WHERE	  SITE_TPCD = #{siteTpcd}
 	</delete>
 
 	<insert id="insertUriRaw" parameterType="CmmUriVO">
-		MERGE /* mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper.insertUriRaw */
+		MERGE /* mgkim.online.api.adm.initdata.mapper.InitDataLoadMapper.insertUriRaw */
 			INTO MGCB302TT /* MGCB_uri정보raw */
 			USING DUAL
 				ON (SITE_TPCD = #{siteTpcd}
@@ -170,14 +170,14 @@
 
 	<!-- 2.2) uri -->
 	<delete id="deleteUriAll" parameterType="InitLoadMockVO">
-		DELETE /* mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper.deleteUriAll */
+		DELETE /* mgkim.online.api.adm.initdata.mapper.InitDataLoadMapper.deleteUriAll */
 		FROM	  MGCB301TM /* MGCB_uri기본정보 */
 		WHERE	  SITE_TPCD = #{siteTpcd}
 	</delete>
 
 	<insert id="insertUri" parameterType="InitLoadMockVO">
 	<![CDATA[
-		INSERT /* mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper.insertUri */
+		INSERT /* mgkim.online.api.adm.initdata.mapper.InitDataLoadMapper.insertUri */
 			INTO MGCB301TM /* MGCB_uri기본정보 */ (
 				  SITE_TPCD
 				, URI_ID
@@ -233,13 +233,13 @@
 
 	<!-- 2.3) uri권한 -->
 	<delete id="deleteUriRpgrAll" parameterType="InitLoadMockVO">
-		DELETE /* mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper.deleteUriRpgrAll */
+		DELETE /* mgkim.online.api.adm.initdata.mapper.InitDataLoadMapper.deleteUriRpgrAll */
 		FROM	  MGCB241TR /* MGCB_uri권한그룹매핑 */
 		WHERE	  SITE_TPCD = #{siteTpcd}
 	</delete>
 
 	<insert id="insertUriRpgr" parameterType="InitLoadMockVO">
-		INSERT /* mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper.insertUri */
+		INSERT /* mgkim.online.api.adm.initdata.mapper.InitDataLoadMapper.insertUri */
 			INTO MGCB241TR /* MGCB_uri권한그룹매핑 */ (
 				  SITE_TPCD
 				, RGRP_ID
@@ -265,13 +265,13 @@
 
 	<!-- 3.1) 사용자(raw) -->
 	<delete id="deleteUserRawAll" parameterType="InitLoadMockVO">
-		DELETE /* mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper.deleteUriRawAll */
+		DELETE /* mgkim.online.api.adm.initdata.mapper.InitDataLoadMapper.deleteUriRawAll */
 		FROM	  MGCB102TT /* MGCB_사용자정보raw */
 		WHERE	  SITE_TPCD = #{siteTpcd}
 	</delete>
 
 	<insert id="insertUserRaw" parameterType="InitLoadMockVO">
-		MERGE /* mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper.insertUriRaw */
+		MERGE /* mgkim.online.api.adm.initdata.mapper.InitDataLoadMapper.insertUriRaw */
 			INTO MGCB102TT /* MGCB_사용자정보raw */
 			USING DUAL
 				ON (SITE_TPCD = #{siteTpcd}
@@ -318,7 +318,7 @@
 
 	<!-- 3.2) 사용자 -->
 	<delete id="deleteUserAll" parameterType="InitLoadMockVO">
-		DELETE /* mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper.deleteUriAll */
+		DELETE /* mgkim.online.api.adm.initdata.mapper.InitDataLoadMapper.deleteUriAll */
 		FROM	  MGCB101TM /* MGCB_사용자정보 */
 		WHERE	  SITE_TPCD = #{siteTpcd}
 	</delete>
@@ -404,13 +404,13 @@
 
 	<!-- 3.3) 사용자권한 -->
 	<delete id="deleteUserRpgrAll" parameterType="InitLoadMockVO">
-		DELETE /* mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper.deleteUserRpgrAll */
+		DELETE /* mgkim.online.api.adm.initdata.mapper.InitDataLoadMapper.deleteUserRpgrAll */
 		FROM	  MGCB231TR /* MGCB_사용자권한그룹매핑 */
 		WHERE	  SITE_TPCD = #{siteTpcd}
 	</delete>
 
 	<insert id="insertUserRpgr" parameterType="InitLoadMockVO">
-		MERGE /* mgkim.core.api.adm.initdata.mapper.InitDataLoadMapper.insertUserRpgr */
+		MERGE /* mgkim.online.api.adm.initdata.mapper.InitDataLoadMapper.insertUserRpgr */
 			INTO MGCB231TR /* MGCB_사용자권한그룹매핑 */
 			USING DUAL
 				ON (SITE_TPCD = #{siteTpcd}

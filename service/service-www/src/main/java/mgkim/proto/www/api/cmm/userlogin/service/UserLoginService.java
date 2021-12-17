@@ -3,7 +3,7 @@ package mgkim.proto.www.api.cmm.userlogin.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import mgkim.core.com.session.KToken;
+import mgkim.online.com.session.KToken;
 import mgkim.proto.www.api.cmm.userlogin.mapper.UserLoginMapper;
 import mgkim.proto.www.cmm.vo.CmmUserLoginPolicyVO;
 

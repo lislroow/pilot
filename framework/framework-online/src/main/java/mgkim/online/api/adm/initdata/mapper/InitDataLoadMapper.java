@@ -1,7 +1,7 @@
 package mgkim.online.api.adm.initdata.mapper;
 
-import mgkim.core.cmm.vo.uri.CmmUriVO;
 import mgkim.online.api.adm.initdata.vo.InitLoadMockVO;
+import mgkim.online.cmm.vo.uri.CmmUriVO;
 
 public interface InitDataLoadMapper {
 	// ##############

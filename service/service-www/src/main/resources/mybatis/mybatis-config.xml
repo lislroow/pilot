@@ -12,7 +12,7 @@
 
 	<plugins>
 		<!-- <plugin interceptor="mgkim.proto.www.com.mybatis.ComSqlInterceptorImpl" /> -->
-		<plugin interceptor="mgkim.core.com.sql.ComSqlInterceptor" />
+		<plugin interceptor="mgkim.online.com.sql.ComSqlInterceptor" />
 	</plugins>
 
 </configuration>

@@ -9,15 +9,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import mgkim.core.cmm.vo.debug.CmmDebugVO;
-import mgkim.core.com.dto.KInDTO;
-import mgkim.core.com.dto.KOutDTO;
-import mgkim.core.com.env.KConstant;
-import mgkim.core.com.exception.KMessage;
-import mgkim.core.com.logging.KLogSys;
-import mgkim.core.com.scheduler.CmmApiTxLogScheduler;
-import mgkim.core.com.scheduler.ComDebugScheduler;
-import mgkim.core.com.util.KDateUtil;
+import mgkim.online.cmm.vo.debug.CmmDebugVO;
+import mgkim.online.com.dto.KInDTO;
+import mgkim.online.com.dto.KOutDTO;
+import mgkim.online.com.env.KConstant;
+import mgkim.online.com.exception.KMessage;
+import mgkim.online.com.logging.KLogSys;
+import mgkim.online.com.scheduler.CmmApiTxLogScheduler;
+import mgkim.online.com.scheduler.ComDebugScheduler;
+import mgkim.online.com.util.KDateUtil;
 
 @Api( tags = { KConstant.SWG_SYSTEM_COMMON } )
 @RestController

@@ -4,7 +4,7 @@ import org.springframework.security.oauth2.common.OAuth2AccessToken;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import mgkim.core.com.session.KToken;
+import mgkim.online.com.session.KToken;
 
 @JsonSerialize
 public class UserLoginResVO {

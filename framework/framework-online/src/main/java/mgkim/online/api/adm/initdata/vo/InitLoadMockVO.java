@@ -1,6 +1,6 @@
 package mgkim.online.api.adm.initdata.vo;
 
-import mgkim.core.com.dto.KCmmVO;
+import mgkim.online.com.dto.KCmmVO;
 
 public class InitLoadMockVO extends KCmmVO {
 

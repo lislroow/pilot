@@ -44,18 +44,18 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-import mgkim.core.com.env.KProfile;
-import mgkim.core.com.logging.KLogLayout;
-import mgkim.core.com.mgr.ComUriAuthorityMgr;
-import mgkim.core.com.mybatis.ComSqlSessionFactory;
-import mgkim.core.com.util.KObjectUtil;
-import mgkim.core.com.util.KStringUtil;
 import mgkim.online.api.adm.runtime.vo.JavaEnvVariableVO;
 import mgkim.online.api.adm.runtime.vo.JdbcDatasourceVO;
 import mgkim.online.api.adm.runtime.vo.SpringBeansVO;
 import mgkim.online.api.adm.runtime.vo.SpringSecurityUriVO;
 import mgkim.online.api.adm.runtime.vo.SpringUri2VO;
 import mgkim.online.api.adm.runtime.vo.SpringUriVO;
+import mgkim.online.com.env.KProfile;
+import mgkim.online.com.logging.KLogLayout;
+import mgkim.online.com.mgr.ComUriAuthorityMgr;
+import mgkim.online.com.mybatis.ComSqlSessionFactory;
+import mgkim.online.com.util.KObjectUtil;
+import mgkim.online.com.util.KStringUtil;
 
 @Service
 public class RuntimeService {

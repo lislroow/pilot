@@ -5,16 +5,16 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import mgkim.core.cmm.CmmReloadableConfMng;
-import mgkim.core.cmm.vo.reloadableconf.CmmReloadableConfVO;
-import mgkim.core.com.annotation.KBean;
-import mgkim.core.com.env.KConfig;
-import mgkim.core.com.env.KConstant;
-import mgkim.core.com.env.KProfile;
-import mgkim.core.com.logging.KLogSys;
-import mgkim.core.com.mgr.ComUriAuthorityMgr;
-import mgkim.core.com.util.KDateUtil;
-import mgkim.core.com.util.KStringUtil;
+import mgkim.online.cmm.CmmReloadableConfMng;
+import mgkim.online.cmm.vo.reloadableconf.CmmReloadableConfVO;
+import mgkim.online.com.annotation.KBean;
+import mgkim.online.com.env.KConfig;
+import mgkim.online.com.env.KConstant;
+import mgkim.online.com.env.KProfile;
+import mgkim.online.com.logging.KLogSys;
+import mgkim.online.com.mgr.ComUriAuthorityMgr;
+import mgkim.online.com.util.KDateUtil;
+import mgkim.online.com.util.KStringUtil;
 import mgkim.proto.www.cmm.mapper.CmmReloadableConfMngMapper;
 
 @KBean

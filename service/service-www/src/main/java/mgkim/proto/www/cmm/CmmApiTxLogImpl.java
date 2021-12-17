@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import mgkim.core.cmm.CmmApiTxLog;
-import mgkim.core.cmm.vo.apitxlog.CmmApiTxLogVO;
-import mgkim.core.com.annotation.KBean;
+import mgkim.online.cmm.CmmApiTxLog;
+import mgkim.online.cmm.vo.apitxlog.CmmApiTxLogVO;
+import mgkim.online.com.annotation.KBean;
 import mgkim.proto.www.cmm.mapper.CmmApiTxLogMapper;
 
 @KBean

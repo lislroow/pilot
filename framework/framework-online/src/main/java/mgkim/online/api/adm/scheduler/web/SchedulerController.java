@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import mgkim.core.com.dto.KInDTO;
-import mgkim.core.com.dto.KOutDTO;
-import mgkim.core.com.env.KConstant;
-import mgkim.core.com.mgr.ComScheduleMgr;
-import mgkim.core.com.stereo.KScheduler;
-import mgkim.core.com.util.KObjectUtil;
 import mgkim.online.api.adm.scheduler.vo.KSchedulerStatusVO;
+import mgkim.online.com.dto.KInDTO;
+import mgkim.online.com.dto.KOutDTO;
+import mgkim.online.com.env.KConstant;
+import mgkim.online.com.mgr.ComScheduleMgr;
+import mgkim.online.com.stereo.KScheduler;
+import mgkim.online.com.util.KObjectUtil;
 
 @Api( tags = { KConstant.SWG_SYSTEM_COMMON } )
 @RestController

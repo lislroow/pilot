@@ -6,14 +6,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import mgkim.core.cmm.CmmUserSession;
-import mgkim.core.com.exception.KException;
-import mgkim.core.com.exception.KExceptionHandler;
-import mgkim.core.com.exception.KMessage;
-import mgkim.core.com.exception.KSysException;
-import mgkim.core.com.session.KSession;
-import mgkim.core.com.session.KToken;
-import mgkim.core.com.util.KObjectUtil;
+import mgkim.online.cmm.CmmUserSession;
+import mgkim.online.com.exception.KException;
+import mgkim.online.com.exception.KExceptionHandler;
+import mgkim.online.com.exception.KMessage;
+import mgkim.online.com.exception.KSysException;
+import mgkim.online.com.session.KSession;
+import mgkim.online.com.session.KToken;
+import mgkim.online.com.util.KObjectUtil;
 import mgkim.proto.www.cmm.mapper.CmmUserSessionMapper;
 
 @Service
