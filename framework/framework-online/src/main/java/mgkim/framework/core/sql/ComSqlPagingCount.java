@@ -28,11 +28,11 @@ import org.apache.ibatis.type.TypeHandlerRegistry;
 import mgkim.framework.core.env.KConfig;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
+import mgkim.framework.core.env.KSqlContext;
 import mgkim.framework.core.logging.KLogSql;
 import mgkim.framework.core.type.TSqlType;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KSqlUtil;
-import mgkim.framework.online.com.scheduler.ComSqlmapReloadScheduler;
 
 public class ComSqlPagingCount {
 
@@ -241,7 +241,7 @@ public class ComSqlPagingCount {
 		// count-sql 존재여부 확인
 		MappedStatement countMappedStatement = null;
 		{
-			Set<MappedStatement> mappedStatementList = ComSqlmapReloadScheduler.getMappedStatements();
+			Set<MappedStatement> mappedStatementList = KSqlContext.MAPPED_STATEMENT_LIST;
 			Iterator<MappedStatement> iter = mappedStatementList.iterator();
 			while(iter.hasNext()) {
 				Object obj = iter.next();

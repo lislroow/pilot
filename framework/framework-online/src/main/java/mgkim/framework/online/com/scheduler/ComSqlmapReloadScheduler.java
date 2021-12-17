@@ -6,15 +6,12 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
-import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +19,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
 
 import mgkim.framework.core.annotation.KTaskSchedule;
-import mgkim.framework.core.env.KConstant;
+import mgkim.framework.core.env.KSqlContext;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.core.logging.KLogSys;
@@ -43,12 +40,6 @@ public class ComSqlmapReloadScheduler extends KScheduler {
 	@Autowired
 	@Qualifier("mapperLocations")
 	Resource[] mapperLocations;
-
-	private static Set<MappedStatement> MAPPED_STATEMENT_LIST = null;
-
-	public static Set<MappedStatement> getMappedStatements() {
-		return MAPPED_STATEMENT_LIST;
-	}
 
 	@Override
 	protected void init() throws Exception {
@@ -153,30 +144,7 @@ public class ComSqlmapReloadScheduler extends KScheduler {
 						return method.invoke(sqlSessionFactory, args);
 					}
 			});
-		MAPPED_STATEMENT_LIST = factory.getConfiguration().getMappedStatements().stream().collect(Collectors.toSet());
-	}
-
-	public static String getSqlFile(String sqlId) {
-		MappedStatement mappedStatement = null;
-		Iterator<MappedStatement> iter = MAPPED_STATEMENT_LIST.iterator();
-		while(iter.hasNext()) {
-			Object obj = iter.next();
-			if(obj instanceof MappedStatement) {
-				MappedStatement ms = (MappedStatement)obj;
-				if(ms.getId().equals(sqlId)) {
-					mappedStatement = ms;
-					break;
-				}
-			}
-		}
-
-		if(mappedStatement == null) {
-			return null;
-		}
-
-		return new java.io.File(mappedStatement.getResource().replaceAll("file \\[(.*)\\]", "$1")).getAbsolutePath()
-			.replace(new java.io.File(KConstant.PATH_WEBINF_CLASSES).getAbsolutePath(), "")
-			.replaceAll("\\\\", "/").substring(1);
+		KSqlContext.MAPPED_STATEMENT_LIST = factory.getConfiguration().getMappedStatements().stream().collect(Collectors.toSet());
 	}
 
 }

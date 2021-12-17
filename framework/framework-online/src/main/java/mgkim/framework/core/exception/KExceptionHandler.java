@@ -18,11 +18,11 @@ import mgkim.framework.core.dto.KOutDTO;
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
+import mgkim.framework.core.env.KSqlContext;
 import mgkim.framework.core.logging.KLogLayout;
 import mgkim.framework.core.logging.KLogSys;
 import mgkim.framework.core.type.TEncodingType;
 import mgkim.framework.core.util.KExceptionUtil;
-import mgkim.framework.online.com.scheduler.ComSqlmapReloadScheduler;
 
 @KBean
 public class KExceptionHandler {
@@ -127,7 +127,7 @@ public class KExceptionHandler {
 				String causeClazzName = ex.getCause().getClass().getName();
 				if("org.apache.ibatis.reflection.ReflectionException".equals(causeClazzName)) {
 					String sqlId = KContext.getT(AttrKey.SQL_ID);
-					String sqlFile = ComSqlmapReloadScheduler.getSqlFile(sqlId);
+					String sqlFile = KSqlContext.getSqlFile(sqlId);
 					exception = new KSqlException(KMessage.E8006, ex, KContext.getT(AttrKey.SQL_ID), ex.getCause().getMessage(), sqlFile);
 				}
 			}
