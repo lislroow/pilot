@@ -1,10 +1,10 @@
-package mgkim.framework.online.com.type;
+package mgkim.framework.core.type;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum TAumthType {
+public enum TSsStcdType {
 
-	IDLOGIN("01"), EASYLOGIN("02"), NOLOGIN("10"), DEVLOGIN("90");
+	LOGIN("00"), DUP_LOGIN("10"), EXPIRED("20"), LOGOUT("30");
 
 	private final String code;
 
@@ -19,14 +19,14 @@ public enum TAumthType {
 		return label;
 	}
 
-	private TAumthType(String code) {
+	private TSsStcdType(String code) {
 		this.code = code;
 		this.label = this.name().toLowerCase();
 	}
 
-	public static TAumthType get(String val) {
-		TAumthType[] list = TAumthType.values();
-		for(TAumthType item : list) {
+	public static TSsStcdType get(String val) {
+		TSsStcdType[] list = TSsStcdType.values();
+		for(TSsStcdType item : list) {
 			if(item.code.equals(val) || item.label.equals(val)) {
 				return item;
 			}

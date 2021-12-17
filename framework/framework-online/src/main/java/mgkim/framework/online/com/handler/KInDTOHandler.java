@@ -15,6 +15,7 @@ import mgkim.framework.core.exception.KException;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
+import mgkim.framework.core.type.TApiType;
 import mgkim.framework.online.cmm.CmmDtoLog;
 import mgkim.framework.online.cmm.dtohandler.CmmDtoHandler;
 import mgkim.framework.online.com.dto.KInDTO;
@@ -25,7 +26,6 @@ import mgkim.framework.online.com.env.KProfile;
 import mgkim.framework.online.com.env.KContext.AttrKey;
 import mgkim.framework.online.com.logging.KLogSys;
 import mgkim.framework.online.com.mgr.ComFieldCryptorMgr;
-import mgkim.framework.online.com.type.TApiType;
 import mgkim.framework.online.com.util.KObjectUtil;
 
 @RestControllerAdvice(basePackages=KProfile.GROUP)

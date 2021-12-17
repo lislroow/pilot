@@ -1,4 +1,4 @@
-package mgkim.framework.online.com.type;
+package mgkim.framework.core.type;
 
 public enum TApiType {
 

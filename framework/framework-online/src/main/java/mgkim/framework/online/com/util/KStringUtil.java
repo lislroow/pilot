@@ -14,7 +14,7 @@ import org.springframework.security.crypto.codec.Base64;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import mgkim.framework.online.com.type.TUuidType;
+import mgkim.framework.core.type.TUuidType;
 
 public class KStringUtil {
 

@@ -9,10 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
 import ch.qos.logback.classic.Level;
+import mgkim.framework.core.type.TExecType;
 import mgkim.framework.online.com.env.KConfig;
 import mgkim.framework.online.com.env.KContext;
 import mgkim.framework.online.com.env.KContext.AttrKey;
-import mgkim.framework.online.com.type.TExecType;
 
 public class KLogSql {
 

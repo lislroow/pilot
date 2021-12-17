@@ -12,10 +12,10 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import mgkim.framework.core.type.TApiType;
 import mgkim.framework.online.com.env.KConfig;
 import mgkim.framework.online.com.env.KConstant;
 import mgkim.framework.online.com.logging.KLog;
-import mgkim.framework.online.com.type.TApiType;
 
 public class KHttpUtil {
 

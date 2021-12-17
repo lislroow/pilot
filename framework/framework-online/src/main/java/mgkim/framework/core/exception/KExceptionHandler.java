@@ -14,6 +14,7 @@ import org.springframework.http.server.ServletServerHttpResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import mgkim.framework.core.annotation.KBean;
+import mgkim.framework.core.type.TEncodingType;
 import mgkim.framework.online.com.dto.KOutDTO;
 import mgkim.framework.online.com.env.KConstant;
 import mgkim.framework.online.com.env.KContext;
@@ -21,7 +22,6 @@ import mgkim.framework.online.com.env.KContext.AttrKey;
 import mgkim.framework.online.com.logging.KLogLayout;
 import mgkim.framework.online.com.logging.KLogSys;
 import mgkim.framework.online.com.scheduler.ComSqlmapReloadScheduler;
-import mgkim.framework.online.com.type.TEncodingType;
 import mgkim.framework.online.com.util.KExceptionUtil;
 
 @KBean

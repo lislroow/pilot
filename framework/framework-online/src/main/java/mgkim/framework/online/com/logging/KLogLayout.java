@@ -17,15 +17,15 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.IThrowableProxy;
 import ch.qos.logback.classic.spi.ThrowableProxyUtil;
 import ch.qos.logback.core.LayoutBase;
+import mgkim.framework.core.type.TApiType;
+import mgkim.framework.core.type.TAuthType;
+import mgkim.framework.core.type.TExecType;
+import mgkim.framework.core.type.TSysType;
 import mgkim.framework.online.com.env.KConfig;
 import mgkim.framework.online.com.env.KConstant;
 import mgkim.framework.online.com.env.KContext;
 import mgkim.framework.online.com.env.KProfile;
 import mgkim.framework.online.com.env.KContext.AttrKey;
-import mgkim.framework.online.com.type.TApiType;
-import mgkim.framework.online.com.type.TAuthType;
-import mgkim.framework.online.com.type.TExecType;
-import mgkim.framework.online.com.type.TSysType;
 import mgkim.framework.online.com.util.KStringUtil;
 
 public class KLogLayout extends LayoutBase<ILoggingEvent> {

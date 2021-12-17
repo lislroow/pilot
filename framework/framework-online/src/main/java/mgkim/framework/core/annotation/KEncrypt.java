@@ -5,7 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import mgkim.framework.online.com.type.TCryptoType;
+import mgkim.framework.core.type.TCryptoType;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)

@@ -1,4 +1,4 @@
-package mgkim.framework.online.com.type;
+package mgkim.framework.core.type;
 
 public enum TEncodingType {
 	EUCKR("euc-kr"), UTF8("utf-8"), ISO88591("iso-8859-1");

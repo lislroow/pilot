@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import mgkim.framework.core.exception.KMessage;
-import mgkim.framework.online.com.type.TEncodingType;
+import mgkim.framework.core.type.TEncodingType;
 
 public class KConfig {
 

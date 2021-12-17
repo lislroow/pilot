@@ -30,6 +30,8 @@ import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
+import mgkim.framework.core.type.TRequestType;
+import mgkim.framework.core.type.TResponseType;
 import mgkim.framework.online.com.env.KConfig;
 import mgkim.framework.online.com.env.KConstant;
 import mgkim.framework.online.com.env.KContext;
@@ -38,8 +40,6 @@ import mgkim.framework.online.com.logging.KLogLayout;
 import mgkim.framework.online.com.logging.KLogSys;
 import mgkim.framework.online.com.scheduler.CmmApiTxLogScheduler;
 import mgkim.framework.online.com.stereo.KFilter;
-import mgkim.framework.online.com.type.TRequestType;
-import mgkim.framework.online.com.type.TResponseType;
 import mgkim.framework.online.com.util.KObjectUtil;
 import mgkim.framework.online.com.util.KStringUtil;
 

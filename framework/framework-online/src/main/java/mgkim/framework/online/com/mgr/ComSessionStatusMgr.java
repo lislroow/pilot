@@ -5,10 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
+import mgkim.framework.core.type.TSsStcdType;
 import mgkim.framework.online.cmm.CmmSessionStatusMng;
 import mgkim.framework.online.cmm.vo.sessionexpmng.CmmSessionStatusVO;
 import mgkim.framework.online.com.session.KToken;
-import mgkim.framework.online.com.type.TSsStcdType;
 
 @KBean(name = "session 상태 관리")
 public class ComSessionStatusMgr {

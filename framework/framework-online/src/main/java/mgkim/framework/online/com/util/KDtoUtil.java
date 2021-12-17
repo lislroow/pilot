@@ -3,13 +3,13 @@ package mgkim.framework.online.com.util;
 import java.util.Iterator;
 import java.util.List;
 
+import mgkim.framework.core.type.TApiType;
 import mgkim.framework.online.com.dto.KCmmVO;
 import mgkim.framework.online.com.env.KContext;
 import mgkim.framework.online.com.env.KProfile;
 import mgkim.framework.online.com.env.KContext.AttrKey;
 import mgkim.framework.online.com.session.KSession;
 import mgkim.framework.online.com.session.KToken;
-import mgkim.framework.online.com.type.TApiType;
 
 public class KDtoUtil {
 
