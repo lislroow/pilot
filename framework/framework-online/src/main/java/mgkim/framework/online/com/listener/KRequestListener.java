@@ -9,11 +9,11 @@ import org.slf4j.MDC;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.context.request.RequestContextListener;
 
+import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.online.com.env.KConfig;
 import mgkim.framework.online.com.env.KConstant;
 import mgkim.framework.online.com.env.KContext;
 import mgkim.framework.online.com.env.KContext.AttrKey;
-import mgkim.framework.online.com.exception.KSysException;
 import mgkim.framework.online.com.logging.KLogApm;
 import mgkim.framework.online.com.logging.KLogLayout;
 import mgkim.framework.online.com.logging.KLogSys;

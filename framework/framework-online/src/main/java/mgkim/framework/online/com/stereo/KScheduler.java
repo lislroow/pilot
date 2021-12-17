@@ -6,9 +6,9 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
+import mgkim.framework.core.exception.KExceptionHandler;
+import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.online.com.env.KConstant;
-import mgkim.framework.online.com.exception.KExceptionHandler;
-import mgkim.framework.online.com.exception.KMessage;
 import mgkim.framework.online.com.logging.KLogSys;
 import mgkim.framework.online.com.util.KDateUtil;
 import mgkim.framework.online.com.util.KObjectUtil;

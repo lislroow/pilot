@@ -11,13 +11,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
 
 import mgkim.framework.core.annotation.KBean;
+import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.online.cmm.aop.CmmMapperAspect;
 import mgkim.framework.online.cmm.aop.CmmServiceAspect;
 import mgkim.framework.online.com.env.KConfig;
 import mgkim.framework.online.com.env.KConstant;
 import mgkim.framework.online.com.env.KContext;
 import mgkim.framework.online.com.env.KContext.AttrKey;
-import mgkim.framework.online.com.exception.KMessage;
 import mgkim.framework.online.com.logging.KLogSys;
 import mgkim.framework.online.com.type.TExecType;
 import mgkim.framework.online.com.util.KObjectUtil;

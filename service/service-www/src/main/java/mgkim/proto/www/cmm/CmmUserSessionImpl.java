@@ -6,11 +6,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import mgkim.framework.core.exception.KException;
+import mgkim.framework.core.exception.KExceptionHandler;
+import mgkim.framework.core.exception.KMessage;
+import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.online.cmm.CmmUserSession;
-import mgkim.framework.online.com.exception.KException;
-import mgkim.framework.online.com.exception.KExceptionHandler;
-import mgkim.framework.online.com.exception.KMessage;
-import mgkim.framework.online.com.exception.KSysException;
 import mgkim.framework.online.com.session.KSession;
 import mgkim.framework.online.com.session.KToken;
 import mgkim.framework.online.com.util.KObjectUtil;

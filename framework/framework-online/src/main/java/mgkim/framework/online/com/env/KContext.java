@@ -17,8 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.MDC;
 import org.springframework.http.HttpHeaders;
 
-import mgkim.framework.online.com.exception.KMessage;
-import mgkim.framework.online.com.exception.KSysException;
+import mgkim.framework.core.exception.KMessage;
+import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.online.com.logging.KLogLayout;
 import mgkim.framework.online.com.logging.KLogSys;
 import mgkim.framework.online.com.session.KToken;

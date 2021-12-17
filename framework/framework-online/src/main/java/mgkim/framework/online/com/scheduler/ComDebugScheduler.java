@@ -12,14 +12,14 @@ import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import mgkim.framework.core.annotation.KTaskSchedule;
+import mgkim.framework.core.exception.KMessage;
+import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.online.cmm.CmmDebug;
 import mgkim.framework.online.cmm.vo.debug.CmmDebugVO;
 import mgkim.framework.online.com.env.KConstant;
 import mgkim.framework.online.com.env.KContext;
 import mgkim.framework.online.com.env.KProfile;
 import mgkim.framework.online.com.env.KContext.AttrKey;
-import mgkim.framework.online.com.exception.KMessage;
-import mgkim.framework.online.com.exception.KSysException;
 import mgkim.framework.online.com.logging.KLogSys;
 import mgkim.framework.online.com.stereo.KScheduler;
 import mgkim.framework.online.com.stereo.KTask;

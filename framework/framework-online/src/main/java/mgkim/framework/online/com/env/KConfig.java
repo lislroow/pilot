@@ -13,7 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import mgkim.framework.online.com.exception.KMessage;
+import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.online.com.type.TEncodingType;
 
 public class KConfig {

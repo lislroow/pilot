@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
+import mgkim.framework.core.exception.KMessage;
+import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.online.com.dto.KInDTO;
 import mgkim.framework.online.com.dto.KOutDTO;
 import mgkim.framework.online.com.env.KProfile;
-import mgkim.framework.online.com.exception.KMessage;
-import mgkim.framework.online.com.exception.KSysException;
 import mgkim.framework.online.com.mgr.ComFieldCryptorMgr;
 import mgkim.framework.online.com.mgr.ComSessionStatusMgr;
 import mgkim.framework.online.com.mgr.ComUserTokenMgr;

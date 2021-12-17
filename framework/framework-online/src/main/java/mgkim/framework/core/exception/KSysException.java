@@ -1,4 +1,4 @@
-package mgkim.framework.online.com.exception;
+package mgkim.framework.core.exception;
 
 public class KSysException extends KException {
 

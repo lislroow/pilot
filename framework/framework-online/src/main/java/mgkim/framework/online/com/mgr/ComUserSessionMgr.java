@@ -14,9 +14,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import mgkim.framework.core.annotation.KBean;
+import mgkim.framework.core.exception.KMessage;
+import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.online.cmm.CmmUserSession;
-import mgkim.framework.online.com.exception.KMessage;
-import mgkim.framework.online.com.exception.KSysException;
 import mgkim.framework.online.com.logging.KLogSys;
 import mgkim.framework.online.com.session.KSession;
 import mgkim.framework.online.com.session.KToken;

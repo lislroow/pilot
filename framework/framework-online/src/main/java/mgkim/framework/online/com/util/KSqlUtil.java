@@ -13,12 +13,12 @@ import org.apache.ibatis.mapping.ParameterMode;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.session.Configuration;
 
+import mgkim.framework.core.exception.KMessage;
+import mgkim.framework.core.exception.KSqlException;
 import mgkim.framework.online.com.dto.KCmmVO;
 import mgkim.framework.online.com.env.KConstant;
 import mgkim.framework.online.com.env.KContext;
 import mgkim.framework.online.com.env.KContext.AttrKey;
-import mgkim.framework.online.com.exception.KMessage;
-import mgkim.framework.online.com.exception.KSqlException;
 import mgkim.framework.online.com.logging.KLogCommon;
 import mgkim.framework.online.com.logging.KLogLayout;
 import mgkim.framework.online.com.logging.KLogSql;

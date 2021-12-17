@@ -1,4 +1,4 @@
-package mgkim.framework.online.com.exception;
+package mgkim.framework.core.exception;
 
 import mgkim.framework.online.com.env.KConstant;
 import mgkim.framework.online.com.util.KExceptionUtil;

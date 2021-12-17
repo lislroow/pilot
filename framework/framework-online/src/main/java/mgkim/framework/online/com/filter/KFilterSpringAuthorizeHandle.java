@@ -12,10 +12,10 @@ import org.springframework.security.authentication.AuthenticationCredentialsNotF
 import org.springframework.web.multipart.MultipartException;
 
 import mgkim.framework.core.annotation.KBean;
-import mgkim.framework.online.com.exception.KException;
-import mgkim.framework.online.com.exception.KExceptionHandler;
-import mgkim.framework.online.com.exception.KMessage;
-import mgkim.framework.online.com.exception.KSysException;
+import mgkim.framework.core.exception.KException;
+import mgkim.framework.core.exception.KExceptionHandler;
+import mgkim.framework.core.exception.KMessage;
+import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.online.com.stereo.KFilter;
 import mgkim.framework.online.com.util.KObjectUtil;
 

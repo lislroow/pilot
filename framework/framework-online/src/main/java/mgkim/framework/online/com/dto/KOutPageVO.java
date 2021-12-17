@@ -1,7 +1,7 @@
 package mgkim.framework.online.com.dto;
 
-import mgkim.framework.online.com.exception.KMessage;
-import mgkim.framework.online.com.exception.KSysException;
+import mgkim.framework.core.exception.KMessage;
+import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.online.com.util.KSqlUtil;
 
 public class KOutPageVO {
