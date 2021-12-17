@@ -13,28 +13,10 @@
   <name>${project.groupId}:${project.artifactId}</name>
   <url>https://github.com/lislroow/pilot.git</url>
   
-  <profiles>
-    <profile>
-      <id>snapshot</id>
-      <properties>
-        <repository.url>http://nexus/repository/maven-group-snapshot/</repository.url>
-      </properties>
-    </profile>
-    <profile>
-      <id>release</id>
-      <properties>
-        <repository.url>http://nexus/repository/maven-group-release/</repository.url>
-      </properties>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-    </profile>
-  </profiles>
-  
   <repositories>
     <repository>
       <id>maven-group</id>
-      <url>${repository.url}</url>
+      <url>http://nexus/repository/maven-group-snapshot/</url>
     </repository>
   </repositories>
   
