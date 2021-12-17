@@ -17,7 +17,6 @@
   
   <scm>
     <connection>scm:git:git@github.com:lislroow/pilot.git</connection>
-    <tag>framework-bom-0.1</tag>
   </scm>
   
   <!-- only from bom project -->

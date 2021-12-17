@@ -17,7 +17,6 @@
   
   <scm>
     <connection>scm:git:git@github.com:lislroow/pilot.git</connection>
-    <tag>HEAD</tag>
   </scm>
   
   <!-- only from bom project -->
