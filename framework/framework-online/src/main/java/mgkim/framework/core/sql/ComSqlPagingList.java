@@ -1,4 +1,4 @@
-package mgkim.framework.online.com.sql;
+package mgkim.framework.core.sql;
 
 import java.lang.reflect.Field;
 import java.sql.Connection;
