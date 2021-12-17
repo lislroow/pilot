@@ -2,16 +2,16 @@ package mgkim.proto.www.cmm.aop;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import mgkim.online.cmm.aop.CmmMapperAspect;
-import mgkim.online.cmm.vo.privacy.CmmPrivacyLogVO;
-import mgkim.online.com.annotation.KBean;
-import mgkim.online.com.env.KContext;
-import mgkim.online.com.env.KProfile;
-import mgkim.online.com.env.KContext.AttrKey;
-import mgkim.online.com.logging.KLogSys;
-import mgkim.online.com.mgr.ComPrivacyMgr;
-import mgkim.online.com.type.TPrivacyType;
-import mgkim.online.com.util.KDtoUtil;
+import mgkim.framework.online.cmm.aop.CmmMapperAspect;
+import mgkim.framework.online.cmm.vo.privacy.CmmPrivacyLogVO;
+import mgkim.framework.online.com.annotation.KBean;
+import mgkim.framework.online.com.env.KContext;
+import mgkim.framework.online.com.env.KProfile;
+import mgkim.framework.online.com.env.KContext.AttrKey;
+import mgkim.framework.online.com.logging.KLogSys;
+import mgkim.framework.online.com.mgr.ComPrivacyMgr;
+import mgkim.framework.online.com.type.TPrivacyType;
+import mgkim.framework.online.com.util.KDtoUtil;
 
 @KBean
 public class CmmMapperAspectImpl implements CmmMapperAspect {

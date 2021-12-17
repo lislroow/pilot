@@ -1,6 +1,6 @@
 package mgkim.proto.www.com.token;
 
-import mgkim.online.com.session.KToken;
+import mgkim.framework.online.com.session.KToken;
 
 public class CmmTokenApi extends KToken {
 

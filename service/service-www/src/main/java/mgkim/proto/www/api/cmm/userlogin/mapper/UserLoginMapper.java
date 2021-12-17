@@ -2,7 +2,7 @@ package mgkim.proto.www.api.cmm.userlogin.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import mgkim.online.com.session.KToken;
+import mgkim.framework.online.com.session.KToken;
 import mgkim.proto.www.cmm.vo.CmmUserLoginPolicyVO;
 
 @Mapper

@@ -2,10 +2,10 @@ package mgkim.proto.www.cmm;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import mgkim.online.cmm.CmmFieldCryptor;
-import mgkim.online.cmm.vo.fieldcryptor.CmmFieldCryptoVO;
-import mgkim.online.com.annotation.KBean;
-import mgkim.online.com.session.KToken;
+import mgkim.framework.online.cmm.CmmFieldCryptor;
+import mgkim.framework.online.cmm.vo.fieldcryptor.CmmFieldCryptoVO;
+import mgkim.framework.online.com.annotation.KBean;
+import mgkim.framework.online.com.session.KToken;
 import mgkim.proto.www.cmm.mapper.CmmFieldCryptorMapper;
 
 @KBean

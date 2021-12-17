@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import mgkim.online.cmm.vo.debug.CmmDebugVO;
+import mgkim.framework.online.cmm.vo.debug.CmmDebugVO;
 
 @Mapper
 public interface CmmDebugMapper {

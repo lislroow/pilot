@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import mgkim.online.cmm.vo.privacy.CmmPrivacyLogVO;
-import mgkim.online.cmm.vo.privacy.CmmPrivacyMngVO;
+import mgkim.framework.online.cmm.vo.privacy.CmmPrivacyLogVO;
+import mgkim.framework.online.cmm.vo.privacy.CmmPrivacyMngVO;
 
 @Mapper
 public interface CmmPrivacyMapper {

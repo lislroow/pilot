@@ -3,12 +3,12 @@ package mgkim.proto.www.cmm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import mgkim.online.cmm.CmmUserToken;
-import mgkim.online.cmm.vo.token.CmmOpenapiTokenVO;
-import mgkim.online.com.exception.KMessage;
-import mgkim.online.com.exception.KSysException;
-import mgkim.online.com.session.KToken;
-import mgkim.online.com.util.KTokenParser;
+import mgkim.framework.online.cmm.CmmUserToken;
+import mgkim.framework.online.cmm.vo.token.CmmOpenapiTokenVO;
+import mgkim.framework.online.com.exception.KMessage;
+import mgkim.framework.online.com.exception.KSysException;
+import mgkim.framework.online.com.session.KToken;
+import mgkim.framework.online.com.util.KTokenParser;
 import mgkim.proto.www.cmm.mapper.CmmUserTokenMapper;
 import mgkim.proto.www.com.token.CmmTokenApi;
 

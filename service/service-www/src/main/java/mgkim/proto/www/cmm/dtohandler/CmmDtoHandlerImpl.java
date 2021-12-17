@@ -2,12 +2,12 @@ package mgkim.proto.www.cmm.dtohandler;
 
 import org.springframework.stereotype.Component;
 
-import mgkim.online.cmm.dtohandler.CmmDtoHandler;
-import mgkim.online.com.dto.KInDTO;
-import mgkim.online.com.dto.KOutDTO;
-import mgkim.online.com.env.KContext;
-import mgkim.online.com.env.KContext.AttrKey;
-import mgkim.online.com.type.TApiType;
+import mgkim.framework.online.cmm.dtohandler.CmmDtoHandler;
+import mgkim.framework.online.com.dto.KInDTO;
+import mgkim.framework.online.com.dto.KOutDTO;
+import mgkim.framework.online.com.env.KContext;
+import mgkim.framework.online.com.env.KContext.AttrKey;
+import mgkim.framework.online.com.type.TApiType;
 
 @Component
 public class CmmDtoHandlerImpl implements CmmDtoHandler {
