@@ -35,15 +35,15 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import mgkim.framework.core.property.KProperty;
 import mgkim.framework.core.type.TUuidType;
+import mgkim.framework.core.util.KFileUtil;
+import mgkim.framework.core.util.KHttpUtil;
+import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.com.dto.KInDTO;
 import mgkim.framework.online.com.dto.KOutDTO;
 import mgkim.framework.online.com.env.KConfig;
 import mgkim.framework.online.com.env.KConstant;
 import mgkim.framework.online.com.env.KContext;
 import mgkim.framework.online.com.env.KContext.AttrKey;
-import mgkim.framework.online.com.util.KFileUtil;
-import mgkim.framework.online.com.util.KHttpUtil;
-import mgkim.framework.online.com.util.KStringUtil;
 import mgkim.proto.www.api.cmm.file.service.FileService;
 import mgkim.proto.www.api.cmm.file.vo.FileVO;
 

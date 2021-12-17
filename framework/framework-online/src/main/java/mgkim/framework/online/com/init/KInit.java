@@ -57,11 +57,11 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
+import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.com.env.KContext;
 import mgkim.framework.online.com.env.KProfile;
 import mgkim.framework.online.com.logging.KLogSys;
 import mgkim.framework.online.com.mybatis.ComSqlSessionFactory;
-import mgkim.framework.online.com.util.KStringUtil;
 
 @Configuration
 @EnableAsync

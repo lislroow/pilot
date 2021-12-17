@@ -11,10 +11,10 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.com.env.KConstant;
 import mgkim.framework.online.com.env.KProfile;
 import mgkim.framework.online.com.logging.KLogSys;
-import mgkim.framework.online.com.util.KStringUtil;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;

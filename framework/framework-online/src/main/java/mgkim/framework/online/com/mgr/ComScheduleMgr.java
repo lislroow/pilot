@@ -16,10 +16,10 @@ import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.stereo.KScheduler;
 import mgkim.framework.core.stereo.KTask;
+import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.online.com.env.KConfig;
 import mgkim.framework.online.com.logging.KAnsi;
 import mgkim.framework.online.com.logging.KLogSys;
-import mgkim.framework.online.com.util.KObjectUtil;
 
 @KBean(name = "스케줄러 관리")
 public class ComScheduleMgr implements InitializingBean, DisposableBean {

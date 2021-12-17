@@ -5,10 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
+import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.com.env.KContext;
 import mgkim.framework.online.com.env.KProfile;
 import mgkim.framework.online.com.logging.KLogSys;
-import mgkim.framework.online.com.util.KStringUtil;
 
 @SpringBootApplication
 public class Main extends SpringBootServletInitializer {

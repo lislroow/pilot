@@ -2,9 +2,9 @@ package mgkim.proto.www.cmm.aop;
 
 import mgkim.framework.core.annotation.KAspect;
 import mgkim.framework.core.annotation.KBean;
+import mgkim.framework.core.util.KDtoUtil;
 import mgkim.framework.online.cmm.aop.CmmServiceAspect;
 import mgkim.framework.online.com.logging.KLogSys;
-import mgkim.framework.online.com.util.KDtoUtil;
 
 @KBean
 public class CmmServiceAspectImpl implements CmmServiceAspect {

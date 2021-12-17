@@ -8,9 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
+import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.com.env.KConfig;
 import mgkim.framework.online.com.env.KConstant;
-import mgkim.framework.online.com.util.KStringUtil;
 
 public class KLogSys {
 

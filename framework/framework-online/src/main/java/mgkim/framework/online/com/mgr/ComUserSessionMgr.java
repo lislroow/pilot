@@ -16,12 +16,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
+import mgkim.framework.core.util.KObjectUtil;
+import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.cmm.CmmUserSession;
 import mgkim.framework.online.com.logging.KLogSys;
 import mgkim.framework.online.com.session.KSession;
 import mgkim.framework.online.com.session.KToken;
-import mgkim.framework.online.com.util.KObjectUtil;
-import mgkim.framework.online.com.util.KStringUtil;
 
 @KBean(name = "사용자 session 관리")
 public class ComUserSessionMgr implements InitializingBean {

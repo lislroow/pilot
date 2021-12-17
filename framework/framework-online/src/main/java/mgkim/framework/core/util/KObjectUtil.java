@@ -1,4 +1,4 @@
-package mgkim.framework.online.com.util;
+package mgkim.framework.core.util;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;

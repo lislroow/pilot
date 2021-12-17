@@ -18,15 +18,15 @@ import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.core.type.TJwtType;
 import mgkim.framework.core.type.TSiteType;
 import mgkim.framework.core.type.TUuidType;
+import mgkim.framework.core.util.KHttpUtil;
+import mgkim.framework.core.util.KStringUtil;
+import mgkim.framework.core.util.KTokenParser;
 import mgkim.framework.online.cmm.CmmUserToken;
 import mgkim.framework.online.com.env.KConstant;
 import mgkim.framework.online.com.env.KContext;
 import mgkim.framework.online.com.env.KProfile;
 import mgkim.framework.online.com.env.KContext.AttrKey;
 import mgkim.framework.online.com.session.KToken;
-import mgkim.framework.online.com.util.KHttpUtil;
-import mgkim.framework.online.com.util.KStringUtil;
-import mgkim.framework.online.com.util.KTokenParser;
 
 @KBean(name = "사용자 토큰 관리")
 public class ComUserTokenMgr {

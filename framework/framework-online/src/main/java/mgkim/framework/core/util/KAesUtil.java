@@ -1,4 +1,4 @@
-package mgkim.framework.online.com.util;
+package mgkim.framework.core.util;
 
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;

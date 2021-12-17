@@ -5,10 +5,10 @@ import org.springframework.stereotype.Service;
 
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
+import mgkim.framework.core.util.KTokenParser;
 import mgkim.framework.online.cmm.CmmUserToken;
 import mgkim.framework.online.cmm.vo.token.CmmOpenapiTokenVO;
 import mgkim.framework.online.com.session.KToken;
-import mgkim.framework.online.com.util.KTokenParser;
 import mgkim.proto.www.cmm.mapper.CmmUserTokenMapper;
 import mgkim.proto.www.com.token.CmmTokenApi;
 

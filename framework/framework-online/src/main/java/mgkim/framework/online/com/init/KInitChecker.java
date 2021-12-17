@@ -13,9 +13,9 @@ import org.springframework.context.event.ContextStartedEvent;
 import org.springframework.context.event.EventListener;
 
 import mgkim.framework.core.annotation.KBean;
+import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.com.logging.KLogLayout;
 import mgkim.framework.online.com.logging.KLogSys;
-import mgkim.framework.online.com.util.KStringUtil;
 
 @KBean
 public class KInitChecker {

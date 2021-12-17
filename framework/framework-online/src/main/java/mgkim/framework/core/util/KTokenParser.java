@@ -1,4 +1,4 @@
-package mgkim.framework.online.com.util;
+package mgkim.framework.core.util;
 
 import org.springframework.security.oauth2.common.util.Jackson2JsonParser;
 //import org.springframework.security.oauth2.common.util.JacksonJsonParser;

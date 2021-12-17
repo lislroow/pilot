@@ -12,7 +12,7 @@ import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.core.stereo.KFilter;
-import mgkim.framework.online.com.util.KObjectUtil;
+import mgkim.framework.core.util.KObjectUtil;
 
 @KBean(name = "api 접근 거부 필터")
 public class KFilterAccessDeny extends KFilter {

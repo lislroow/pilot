@@ -15,9 +15,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import mgkim.framework.core.type.TEncodingType;
+import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.com.env.KConfig;
 import mgkim.framework.online.com.env.KConstant;
-import mgkim.framework.online.com.util.KStringUtil;
 
 public class KProperty {
 

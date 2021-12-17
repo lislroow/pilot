@@ -12,11 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.type.TPrivacyType;
+import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.online.cmm.CmmPrivacy;
 import mgkim.framework.online.cmm.vo.privacy.CmmPrivacyLogVO;
 import mgkim.framework.online.cmm.vo.privacy.CmmPrivacyMngVO;
 import mgkim.framework.online.com.logging.KLogSys;
-import mgkim.framework.online.com.util.KObjectUtil;
 
 @KBean(name = "개인정보관리")
 public class ComPrivacyMgr implements InitializingBean {
