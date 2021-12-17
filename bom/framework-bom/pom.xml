@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>mgkim.bom</groupId>
 	<artifactId>framework-bom</artifactId>
-	<version>0.2-SNAPSHOT</version>
+	<version>0.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<url>https://github.com/lislroow/pilot.git</url>
@@ -396,7 +396,7 @@
 					<artifactId>maven-release-plugin</artifactId>
 					<version>3.0.0-M1</version>
 					<configuration>
-						<tagNameFormat>v@{project.version}</tagNameFormat>
+						<tagNameFormat>v@{project.artifactId}-@{project.version}</tagNameFormat>
 						<autoVersionSubmodules>true</autoVersionSubmodules>
 						<goals>deploy</goals>
 						<scmCommentPrefix>[jenkins]</scmCommentPrefix>
