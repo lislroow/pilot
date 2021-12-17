@@ -1,6 +1,6 @@
 package mgkim.framework.online.cmm.aop;
 
-import mgkim.framework.online.com.annotation.KModule;
+import mgkim.framework.core.annotation.KModule;
 
 @KModule(name = "서비스 AOP", required = true)
 public interface CmmServiceAspect {

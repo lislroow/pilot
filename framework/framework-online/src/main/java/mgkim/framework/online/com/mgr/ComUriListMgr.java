@@ -21,8 +21,8 @@ import org.springframework.web.servlet.HandlerExecutionChain;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
+import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.online.cmm.vo.uri.CmmUriVO;
-import mgkim.framework.online.com.annotation.KBean;
 import mgkim.framework.online.com.dto.KOutDTO;
 import mgkim.framework.online.com.logging.KLogLayout;
 import mgkim.framework.online.com.logging.KLogSys;

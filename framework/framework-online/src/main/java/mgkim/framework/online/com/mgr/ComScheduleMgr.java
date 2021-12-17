@@ -11,7 +11,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
-import mgkim.framework.online.com.annotation.KBean;
+import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.online.com.env.KConfig;
 import mgkim.framework.online.com.exception.KExceptionHandler;
 import mgkim.framework.online.com.exception.KMessage;

@@ -10,9 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
 
+import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.online.cmm.aop.CmmMapperAspect;
 import mgkim.framework.online.cmm.aop.CmmServiceAspect;
-import mgkim.framework.online.com.annotation.KBean;
 import mgkim.framework.online.com.env.KConfig;
 import mgkim.framework.online.com.env.KConstant;
 import mgkim.framework.online.com.env.KContext;

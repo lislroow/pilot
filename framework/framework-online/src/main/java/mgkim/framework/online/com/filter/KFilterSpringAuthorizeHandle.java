@@ -11,7 +11,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.web.multipart.MultipartException;
 
-import mgkim.framework.online.com.annotation.KBean;
+import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.online.com.exception.KException;
 import mgkim.framework.online.com.exception.KExceptionHandler;
 import mgkim.framework.online.com.exception.KMessage;

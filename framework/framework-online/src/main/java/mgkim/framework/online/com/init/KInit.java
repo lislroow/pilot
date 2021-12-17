@@ -71,8 +71,8 @@ import mgkim.framework.online.com.util.KStringUtil;
 	includeFilters = {
 		@ComponentScan.Filter(type = FilterType.ANNOTATION, value = org.springframework.stereotype.Service.class),
 		@ComponentScan.Filter(type = FilterType.ANNOTATION, value = org.springframework.stereotype.Component.class),
-		@ComponentScan.Filter(type = FilterType.ANNOTATION, value = mgkim.framework.online.com.annotation.KBean.class),
-		@ComponentScan.Filter(type = FilterType.ANNOTATION, value = mgkim.framework.online.com.annotation.KTaskSchedule.class)
+		@ComponentScan.Filter(type = FilterType.ANNOTATION, value = mgkim.framework.core.annotation.KBean.class),
+		@ComponentScan.Filter(type = FilterType.ANNOTATION, value = mgkim.framework.core.annotation.KTaskSchedule.class)
 	},
 	excludeFilters = {
 		@ComponentScan.Filter(type = FilterType.ANNOTATION, value = EnableWebMvc.class)

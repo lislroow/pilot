@@ -2,7 +2,7 @@ package mgkim.framework.online.cmm;
 
 import java.util.List;
 
-import mgkim.framework.online.com.annotation.KModule;
+import mgkim.framework.core.annotation.KModule;
 import mgkim.framework.online.com.session.KSession;
 import mgkim.framework.online.com.session.KToken;
 

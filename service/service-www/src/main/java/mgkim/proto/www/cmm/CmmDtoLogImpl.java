@@ -2,8 +2,8 @@ package mgkim.proto.www.cmm;
 
 import java.text.MessageFormat;
 
+import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.online.cmm.CmmDtoLog;
-import mgkim.framework.online.com.annotation.KBean;
 import mgkim.framework.online.com.dto.KInDTO;
 import mgkim.framework.online.com.env.KContext;
 import mgkim.framework.online.com.env.KContext.AttrKey;

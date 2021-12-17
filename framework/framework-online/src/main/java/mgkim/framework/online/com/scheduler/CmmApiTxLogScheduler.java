@@ -7,9 +7,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import mgkim.framework.core.annotation.KTaskSchedule;
 import mgkim.framework.online.cmm.CmmApiTxLog;
 import mgkim.framework.online.cmm.vo.apitxlog.CmmApiTxLogVO;
-import mgkim.framework.online.com.annotation.KTaskSchedule;
 import mgkim.framework.online.com.env.KConstant;
 import mgkim.framework.online.com.env.KContext;
 import mgkim.framework.online.com.env.KProfile;

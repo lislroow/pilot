@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import mgkim.framework.online.com.annotation.KBean;
+import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.online.com.env.KContext;
 import mgkim.framework.online.com.env.KContext.AttrKey;
 import mgkim.framework.online.com.exception.KException;

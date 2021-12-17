@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.online.cmm.CmmReloadableConfMng;
 import mgkim.framework.online.cmm.vo.reloadableconf.CmmReloadableConfVO;
-import mgkim.framework.online.com.annotation.KBean;
 import mgkim.framework.online.com.env.KConfig;
 import mgkim.framework.online.com.env.KConstant;
 import mgkim.framework.online.com.env.KProfile;

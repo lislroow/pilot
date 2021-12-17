@@ -1,12 +1,16 @@
-package mgkim.framework.online.com.annotation;
+package mgkim.framework.core.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface KAspect {
+public @interface KModule {
+
+	String name() default "";
+
+	boolean required() default true;
 
 }

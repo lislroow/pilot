@@ -21,7 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
 
-import mgkim.framework.online.com.annotation.KTaskSchedule;
+import mgkim.framework.core.annotation.KTaskSchedule;
 import mgkim.framework.online.com.env.KConstant;
 import mgkim.framework.online.com.exception.KMessage;
 import mgkim.framework.online.com.exception.KSysException;

@@ -5,9 +5,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import mgkim.framework.online.com.annotation.KBean;
-import mgkim.framework.online.com.annotation.KModule;
-import mgkim.framework.online.com.annotation.KTaskSchedule;
+import mgkim.framework.core.annotation.KBean;
+import mgkim.framework.core.annotation.KModule;
+import mgkim.framework.core.annotation.KTaskSchedule;
 
 public class KObjectUtil {
 

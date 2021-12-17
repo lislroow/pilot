@@ -13,7 +13,7 @@ import org.springframework.http.server.ServletServerHttpResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import mgkim.framework.online.com.annotation.KBean;
+import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.online.com.dto.KOutDTO;
 import mgkim.framework.online.com.env.KConstant;
 import mgkim.framework.online.com.env.KContext;

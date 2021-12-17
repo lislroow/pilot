@@ -1,7 +1,7 @@
 package mgkim.framework.online.cmm;
 
+import mgkim.framework.core.annotation.KModule;
 import mgkim.framework.online.cmm.vo.fieldcryptor.CmmFieldCryptoVO;
-import mgkim.framework.online.com.annotation.KModule;
 import mgkim.framework.online.com.session.KToken;
 
 @KModule(name = "field 암호화키 관리", required = false)

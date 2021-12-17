@@ -2,8 +2,8 @@ package mgkim.framework.online.com.scheduler;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import mgkim.framework.core.annotation.KTaskSchedule;
 import mgkim.framework.online.cmm.CmmReloadableConfMng;
-import mgkim.framework.online.com.annotation.KTaskSchedule;
 import mgkim.framework.online.com.exception.KExceptionHandler;
 import mgkim.framework.online.com.exception.KMessage;
 import mgkim.framework.online.com.exception.KSysException;

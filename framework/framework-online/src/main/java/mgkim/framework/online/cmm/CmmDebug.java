@@ -2,8 +2,8 @@ package mgkim.framework.online.cmm;
 
 import java.util.List;
 
+import mgkim.framework.core.annotation.KModule;
 import mgkim.framework.online.cmm.vo.debug.CmmDebugVO;
-import mgkim.framework.online.com.annotation.KModule;
 
 @KModule(name = "사용자 디버깅 관리", required = false)
 public interface CmmDebug {

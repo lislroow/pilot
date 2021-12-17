@@ -1,6 +1,6 @@
 package mgkim.framework.online.cmm;
 
-import mgkim.framework.online.com.annotation.KModule;
+import mgkim.framework.core.annotation.KModule;
 
 @KModule(name = "reloadable-config 관리", required = false)
 public interface CmmReloadableConfMng {

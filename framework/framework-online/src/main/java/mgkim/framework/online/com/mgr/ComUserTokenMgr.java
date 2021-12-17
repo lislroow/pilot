@@ -12,8 +12,8 @@ import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.DefaultOAuth2RefreshToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 
+import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.online.cmm.CmmUserToken;
-import mgkim.framework.online.com.annotation.KBean;
 import mgkim.framework.online.com.env.KConstant;
 import mgkim.framework.online.com.env.KContext;
 import mgkim.framework.online.com.env.KProfile;

@@ -2,9 +2,9 @@ package mgkim.framework.online.com.mgr;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.online.cmm.CmmSessionStatusMng;
 import mgkim.framework.online.cmm.vo.sessionexpmng.CmmSessionStatusVO;
-import mgkim.framework.online.com.annotation.KBean;
 import mgkim.framework.online.com.exception.KMessage;
 import mgkim.framework.online.com.exception.KSysException;
 import mgkim.framework.online.com.session.KToken;

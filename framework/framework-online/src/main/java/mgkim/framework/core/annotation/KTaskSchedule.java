@@ -1,4 +1,4 @@
-package mgkim.framework.online.com.annotation;
+package mgkim.framework.core.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,10 +7,10 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface KModule {
+public @interface KTaskSchedule {
 
 	String name() default "";
-
-	boolean required() default true;
+	int interval() default 1000;
+	boolean manage() default false;
 
 }

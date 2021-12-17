@@ -10,10 +10,10 @@ import java.util.List;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import mgkim.framework.core.annotation.KBean;
+import mgkim.framework.core.annotation.KEncrypt;
 import mgkim.framework.online.cmm.CmmFieldCryptor;
 import mgkim.framework.online.cmm.vo.fieldcryptor.CmmFieldCryptoVO;
-import mgkim.framework.online.com.annotation.KBean;
-import mgkim.framework.online.com.annotation.KEncrypt;
 import mgkim.framework.online.com.dto.KCmmVO;
 import mgkim.framework.online.com.dto.KInDTO;
 import mgkim.framework.online.com.dto.KOutDTO;

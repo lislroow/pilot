@@ -1,6 +1,6 @@
 package mgkim.framework.online.cmm.dtohandler;
 
-import mgkim.framework.online.com.annotation.KModule;
+import mgkim.framework.core.annotation.KModule;
 import mgkim.framework.online.com.dto.KInDTO;
 import mgkim.framework.online.com.dto.KOutDTO;
 

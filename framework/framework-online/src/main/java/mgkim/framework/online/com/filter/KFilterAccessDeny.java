@@ -7,7 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import mgkim.framework.online.com.annotation.KBean;
+import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.online.com.exception.KExceptionHandler;
 import mgkim.framework.online.com.exception.KMessage;
 import mgkim.framework.online.com.exception.KSysException;
