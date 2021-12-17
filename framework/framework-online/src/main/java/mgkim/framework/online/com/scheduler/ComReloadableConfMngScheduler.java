@@ -6,10 +6,10 @@ import mgkim.framework.core.annotation.KTaskSchedule;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
+import mgkim.framework.core.stereo.KScheduler;
+import mgkim.framework.core.stereo.KTask;
 import mgkim.framework.online.cmm.CmmReloadableConfMng;
 import mgkim.framework.online.com.logging.KLogSys;
-import mgkim.framework.online.com.stereo.KScheduler;
-import mgkim.framework.online.com.stereo.KTask;
 import mgkim.framework.online.com.util.KObjectUtil;
 
 @KTaskSchedule(name = "reloadable-config 관리 스케줄러", interval = 1000, manage = true)

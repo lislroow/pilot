@@ -14,11 +14,11 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
+import mgkim.framework.core.stereo.KScheduler;
+import mgkim.framework.core.stereo.KTask;
 import mgkim.framework.online.com.env.KConfig;
 import mgkim.framework.online.com.logging.KAnsi;
 import mgkim.framework.online.com.logging.KLogSys;
-import mgkim.framework.online.com.stereo.KScheduler;
-import mgkim.framework.online.com.stereo.KTask;
 import mgkim.framework.online.com.util.KObjectUtil;
 
 @KBean(name = "스케줄러 관리")

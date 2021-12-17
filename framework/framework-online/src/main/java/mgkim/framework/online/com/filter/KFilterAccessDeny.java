@@ -11,7 +11,7 @@ import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
-import mgkim.framework.online.com.stereo.KFilter;
+import mgkim.framework.core.stereo.KFilter;
 import mgkim.framework.online.com.util.KObjectUtil;
 
 @KBean(name = "api 접근 거부 필터")

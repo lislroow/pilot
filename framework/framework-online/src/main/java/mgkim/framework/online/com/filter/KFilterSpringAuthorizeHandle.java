@@ -16,7 +16,7 @@ import mgkim.framework.core.exception.KException;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
-import mgkim.framework.online.com.stereo.KFilter;
+import mgkim.framework.core.stereo.KFilter;
 import mgkim.framework.online.com.util.KObjectUtil;
 
 @KBean(name = "spring-authorize 처리 결과 필터")

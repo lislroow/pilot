@@ -1,4 +1,4 @@
-package mgkim.framework.online.com.stereo;
+package mgkim.framework.core.stereo;
 
 import java.util.concurrent.ScheduledFuture;
 

@@ -24,10 +24,10 @@ import org.springframework.core.io.Resource;
 import mgkim.framework.core.annotation.KTaskSchedule;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
+import mgkim.framework.core.stereo.KScheduler;
+import mgkim.framework.core.stereo.KTask;
 import mgkim.framework.online.com.env.KConstant;
 import mgkim.framework.online.com.logging.KLogSys;
-import mgkim.framework.online.com.stereo.KScheduler;
-import mgkim.framework.online.com.stereo.KTask;
 import mgkim.framework.online.com.util.KSqlUtil;
 
 @KTaskSchedule(name = "sqlmap-file-reload 스케줄러", interval = 500, manage = false)

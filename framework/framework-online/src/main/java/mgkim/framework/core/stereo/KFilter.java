@@ -1,4 +1,4 @@
-package mgkim.framework.online.com.stereo;
+package mgkim.framework.core.stereo;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.OncePerRequestFilter;

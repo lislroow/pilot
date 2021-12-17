@@ -1,4 +1,4 @@
-package mgkim.framework.online.com.stereo;
+package mgkim.framework.core.stereo;
 
 import mgkim.framework.core.exception.KException;
 import mgkim.framework.core.exception.KExceptionHandler;

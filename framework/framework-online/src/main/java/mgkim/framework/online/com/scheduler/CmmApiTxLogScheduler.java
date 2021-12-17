@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import mgkim.framework.core.annotation.KTaskSchedule;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
+import mgkim.framework.core.stereo.KScheduler;
+import mgkim.framework.core.stereo.KTask;
 import mgkim.framework.online.cmm.CmmApiTxLog;
 import mgkim.framework.online.cmm.vo.apitxlog.CmmApiTxLogVO;
 import mgkim.framework.online.com.env.KConstant;
@@ -17,8 +19,6 @@ import mgkim.framework.online.com.env.KContext;
 import mgkim.framework.online.com.env.KProfile;
 import mgkim.framework.online.com.env.KContext.AttrKey;
 import mgkim.framework.online.com.logging.KLogSys;
-import mgkim.framework.online.com.stereo.KScheduler;
-import mgkim.framework.online.com.stereo.KTask;
 import mgkim.framework.online.com.util.KDateUtil;
 import mgkim.framework.online.com.util.KObjectUtil;
 

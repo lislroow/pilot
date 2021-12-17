@@ -301,7 +301,7 @@ public class KInit implements ServletContextInitializer, BeanFactoryPostProcesso
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory bf) throws BeansException {
 		DefaultListableBeanFactory beanFactory = (DefaultListableBeanFactory) bf;
-		Arrays.stream(beanFactory.getBeanNamesForType(mgkim.framework.online.com.stereo.KFilter.class)).forEach(name -> {
+		Arrays.stream(beanFactory.getBeanNamesForType(mgkim.framework.core.stereo.KFilter.class)).forEach(name -> {
 			BeanDefinition definition = BeanDefinitionBuilder
 					.genericBeanDefinition(FilterRegistrationBean.class)
 					.setScope(BeanDefinition.SCOPE_SINGLETON)
