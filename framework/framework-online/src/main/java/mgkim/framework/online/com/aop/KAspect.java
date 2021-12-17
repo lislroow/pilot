@@ -44,7 +44,7 @@ public class KAspect implements InitializingBean {
 	}
 
 	@Around(value="execution(public * mgkim..*Service*.*(..))"
-			+ " && !@annotation(mgkim.framework.online.com.annotation.KAspect)")
+			+ " && !@annotation(mgkim.framework.core.annotation.KAspect)")
 	public Object aroundService(ProceedingJoinPoint joinPoint) throws Throwable {
 		Object[] args = joinPoint.getArgs();
 
@@ -67,7 +67,7 @@ public class KAspect implements InitializingBean {
 	}
 
 	@Around(value="execution(public * mgkim..*Mapper.*(..))"
-			+ " && !@annotation(mgkim.framework.online.com.annotation.KAspect)")
+			+ " && !@annotation(mgkim.framework.core.annotation.KAspect)")
 	public Object aroundMapper(ProceedingJoinPoint joinPoint) throws Throwable {
 		Object[] args = joinPoint.getArgs();
 
@@ -107,7 +107,7 @@ public class KAspect implements InitializingBean {
 	@SuppressWarnings("unchecked")
 	@Around(value="execution(public * mgkim..*.*(..))"
 			+ " && !execution(public * mgkim.framework.online..*.*(..))"
-			+ " && !@annotation(mgkim.framework.online.com.annotation.KAspect)")
+			+ " && !@annotation(mgkim.framework.core.annotation.KAspect)")
 	public Object aroundForLogging(ProceedingJoinPoint joinPoint) throws Throwable {
 		boolean isVerboss = KConfig.VERBOSS_ALL;
 		if(!isVerboss) {
