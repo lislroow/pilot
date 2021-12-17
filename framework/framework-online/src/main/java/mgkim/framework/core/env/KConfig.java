@@ -1,4 +1,4 @@
-package mgkim.framework.online.com.env;
+package mgkim.framework.core.env;
 
 import java.io.BufferedInputStream;
 import java.io.File;

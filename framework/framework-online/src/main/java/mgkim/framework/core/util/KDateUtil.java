@@ -7,9 +7,9 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
+import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
-import mgkim.framework.online.com.env.KConstant;
 
 public class KDateUtil {
 

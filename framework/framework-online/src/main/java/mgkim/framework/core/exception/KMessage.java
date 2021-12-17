@@ -2,7 +2,7 @@ package mgkim.framework.core.exception;
 
 import java.text.MessageFormat;
 
-import mgkim.framework.online.com.logging.KLogSys;
+import mgkim.framework.core.logging.KLogSys;
 
 public enum KMessage {
 

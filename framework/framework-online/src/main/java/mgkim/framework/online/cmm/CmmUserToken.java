@@ -1,8 +1,8 @@
 package mgkim.framework.online.cmm;
 
 import mgkim.framework.core.annotation.KModule;
+import mgkim.framework.core.session.KToken;
 import mgkim.framework.online.cmm.vo.token.CmmOpenapiTokenVO;
-import mgkim.framework.online.com.session.KToken;
 
 @KModule(name = "사용자 토큰", required = true)
 public interface CmmUserToken {

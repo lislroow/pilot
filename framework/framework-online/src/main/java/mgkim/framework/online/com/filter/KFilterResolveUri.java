@@ -13,6 +13,8 @@ import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.method.HandlerMethod;
 
 import mgkim.framework.core.annotation.KBean;
+import mgkim.framework.core.env.KContext;
+import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.exception.KException;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
@@ -21,8 +23,6 @@ import mgkim.framework.core.stereo.KFilter;
 import mgkim.framework.core.type.TRequestType;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KStringUtil;
-import mgkim.framework.online.com.env.KContext;
-import mgkim.framework.online.com.env.KContext.AttrKey;
 import mgkim.framework.online.com.mgr.ComUriListMgr;
 
 @KBean(name = "api 접근 허용 체크 필터")

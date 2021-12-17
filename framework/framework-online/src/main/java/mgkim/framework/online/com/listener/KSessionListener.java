@@ -3,7 +3,7 @@ package mgkim.framework.online.com.listener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
-import mgkim.framework.online.com.logging.KLogSys;
+import mgkim.framework.core.logging.KLogSys;
 
 public class KSessionListener implements HttpSessionListener {
 

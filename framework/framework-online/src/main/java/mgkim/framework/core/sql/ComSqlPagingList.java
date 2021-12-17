@@ -24,18 +24,18 @@ import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.TypeHandlerRegistry;
 import org.springframework.util.StopWatch;
 
+import mgkim.framework.core.dto.KInPageVO;
+import mgkim.framework.core.dto.KOutPageVO;
+import mgkim.framework.core.env.KConfig;
+import mgkim.framework.core.env.KConstant;
+import mgkim.framework.core.env.KContext;
+import mgkim.framework.core.env.KContext.AttrKey;
+import mgkim.framework.core.logging.KLogApm;
+import mgkim.framework.core.logging.KLogLayout;
+import mgkim.framework.core.logging.KLogSql;
 import mgkim.framework.core.util.KExceptionUtil;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KSqlUtil;
-import mgkim.framework.online.com.dto.KInPageVO;
-import mgkim.framework.online.com.dto.KOutPageVO;
-import mgkim.framework.online.com.env.KConfig;
-import mgkim.framework.online.com.env.KConstant;
-import mgkim.framework.online.com.env.KContext;
-import mgkim.framework.online.com.env.KContext.AttrKey;
-import mgkim.framework.online.com.logging.KLogApm;
-import mgkim.framework.online.com.logging.KLogLayout;
-import mgkim.framework.online.com.logging.KLogSql;
 
 public class ComSqlPagingList {
 

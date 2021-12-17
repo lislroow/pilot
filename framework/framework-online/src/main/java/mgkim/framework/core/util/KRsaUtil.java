@@ -24,7 +24,7 @@ import javax.crypto.NoSuchPaddingException;
 
 import org.springframework.util.StopWatch;
 
-import mgkim.framework.online.com.logging.KLogSys;
+import mgkim.framework.core.logging.KLogSys;
 
 public class KRsaUtil {
 

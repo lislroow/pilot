@@ -3,14 +3,14 @@ package mgkim.proto.www.cmm.aop;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import mgkim.framework.core.annotation.KBean;
+import mgkim.framework.core.env.KContext;
+import mgkim.framework.core.env.KProfile;
+import mgkim.framework.core.env.KContext.AttrKey;
+import mgkim.framework.core.logging.KLogSys;
 import mgkim.framework.core.type.TPrivacyType;
 import mgkim.framework.core.util.KDtoUtil;
 import mgkim.framework.online.cmm.aop.CmmMapperAspect;
 import mgkim.framework.online.cmm.vo.privacy.CmmPrivacyLogVO;
-import mgkim.framework.online.com.env.KContext;
-import mgkim.framework.online.com.env.KProfile;
-import mgkim.framework.online.com.env.KContext.AttrKey;
-import mgkim.framework.online.com.logging.KLogSys;
 import mgkim.framework.online.com.mgr.ComPrivacyMgr;
 
 @KBean

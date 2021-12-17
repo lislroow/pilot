@@ -6,13 +6,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import mgkim.framework.core.logging.KLogSys;
+import mgkim.framework.core.session.KToken;
 import mgkim.framework.core.type.TSsStcdType;
 import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.cmm.CmmSessionStatusMng;
 import mgkim.framework.online.cmm.vo.sessionexpmng.CmmSessionMngListVO;
 import mgkim.framework.online.cmm.vo.sessionexpmng.CmmSessionStatusVO;
-import mgkim.framework.online.com.logging.KLogSys;
-import mgkim.framework.online.com.session.KToken;
 import mgkim.proto.www.cmm.mapper.CmmSessionStatusMngMapper;
 
 @Service

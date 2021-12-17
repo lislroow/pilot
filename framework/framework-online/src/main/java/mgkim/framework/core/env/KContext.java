@@ -1,13 +1,13 @@
-package mgkim.framework.online.com.env;
+package mgkim.framework.core.env;
 
-import static mgkim.framework.online.com.env.KConstant.GUID;
-import static mgkim.framework.online.com.env.KConstant.IP;
-import static mgkim.framework.online.com.env.KConstant.MDC_DEBUG_MODE_YN;
-import static mgkim.framework.online.com.env.KConstant.REFERER;
-import static mgkim.framework.online.com.env.KConstant.SSID;
-import static mgkim.framework.online.com.env.KConstant.TXID;
-import static mgkim.framework.online.com.env.KConstant.URI;
-import static mgkim.framework.online.com.env.KConstant.USER_ID;
+import static mgkim.framework.core.env.KConstant.GUID;
+import static mgkim.framework.core.env.KConstant.IP;
+import static mgkim.framework.core.env.KConstant.MDC_DEBUG_MODE_YN;
+import static mgkim.framework.core.env.KConstant.REFERER;
+import static mgkim.framework.core.env.KConstant.SSID;
+import static mgkim.framework.core.env.KConstant.TXID;
+import static mgkim.framework.core.env.KConstant.URI;
+import static mgkim.framework.core.env.KConstant.USER_ID;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +19,9 @@ import org.springframework.http.HttpHeaders;
 
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
+import mgkim.framework.core.logging.KLogLayout;
+import mgkim.framework.core.logging.KLogSys;
+import mgkim.framework.core.session.KToken;
 import mgkim.framework.core.type.TApiType;
 import mgkim.framework.core.type.TAuthType;
 import mgkim.framework.core.type.TExecType;
@@ -26,9 +29,6 @@ import mgkim.framework.core.type.TUuidType;
 import mgkim.framework.core.util.KHttpUtil;
 import mgkim.framework.core.util.KMatcherUtil;
 import mgkim.framework.core.util.KStringUtil;
-import mgkim.framework.online.com.logging.KLogLayout;
-import mgkim.framework.online.com.logging.KLogSys;
-import mgkim.framework.online.com.session.KToken;
 
 public class KContext {
 

@@ -2,8 +2,8 @@ package mgkim.proto.www.cmm.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import mgkim.framework.core.session.KToken;
 import mgkim.framework.online.cmm.vo.fieldcryptor.CmmFieldCryptoVO;
-import mgkim.framework.online.com.session.KToken;
 
 @Mapper
 public interface CmmFieldCryptorMapper {

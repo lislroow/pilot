@@ -8,16 +8,16 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import mgkim.framework.core.annotation.KTaskSchedule;
+import mgkim.framework.core.env.KContext;
+import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
+import mgkim.framework.core.session.KToken;
 import mgkim.framework.core.stereo.KScheduler;
 import mgkim.framework.core.stereo.KTask;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.online.cmm.CmmSessionStatusMng;
 import mgkim.framework.online.cmm.vo.sessionexpmng.CmmSessionMngListVO;
-import mgkim.framework.online.com.env.KContext;
-import mgkim.framework.online.com.env.KContext.AttrKey;
-import mgkim.framework.online.com.session.KToken;
 
 @KTaskSchedule(name = "session 관리 스케줄러", interval = 10000, manage = true)
 public class ComSessionStatusMngScheduler extends KScheduler {

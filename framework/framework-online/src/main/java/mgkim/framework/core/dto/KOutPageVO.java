@@ -1,4 +1,4 @@
-package mgkim.framework.online.com.dto;
+package mgkim.framework.core.dto;
 
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;

@@ -13,8 +13,13 @@ import org.springframework.security.oauth2.common.DefaultOAuth2RefreshToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 
 import mgkim.framework.core.annotation.KBean;
+import mgkim.framework.core.env.KConstant;
+import mgkim.framework.core.env.KContext;
+import mgkim.framework.core.env.KProfile;
+import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
+import mgkim.framework.core.session.KToken;
 import mgkim.framework.core.type.TJwtType;
 import mgkim.framework.core.type.TSiteType;
 import mgkim.framework.core.type.TUuidType;
@@ -22,11 +27,6 @@ import mgkim.framework.core.util.KHttpUtil;
 import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.core.util.KTokenParser;
 import mgkim.framework.online.cmm.CmmUserToken;
-import mgkim.framework.online.com.env.KConstant;
-import mgkim.framework.online.com.env.KContext;
-import mgkim.framework.online.com.env.KProfile;
-import mgkim.framework.online.com.env.KContext.AttrKey;
-import mgkim.framework.online.com.session.KToken;
 
 @KBean(name = "사용자 토큰 관리")
 public class ComUserTokenMgr {

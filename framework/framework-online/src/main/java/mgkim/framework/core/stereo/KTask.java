@@ -1,12 +1,12 @@
 package mgkim.framework.core.stereo;
 
+import mgkim.framework.core.env.KConstant;
+import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.exception.KException;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.type.TUuidType;
 import mgkim.framework.core.util.KDateUtil;
 import mgkim.framework.core.util.KStringUtil;
-import mgkim.framework.online.com.env.KConstant;
-import mgkim.framework.online.com.env.KContext;
 
 public abstract class KTask implements Runnable {
 

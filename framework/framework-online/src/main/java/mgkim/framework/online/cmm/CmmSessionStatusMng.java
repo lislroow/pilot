@@ -1,9 +1,9 @@
 package mgkim.framework.online.cmm;
 
 import mgkim.framework.core.annotation.KModule;
+import mgkim.framework.core.session.KToken;
 import mgkim.framework.online.cmm.vo.sessionexpmng.CmmSessionMngListVO;
 import mgkim.framework.online.cmm.vo.sessionexpmng.CmmSessionStatusVO;
-import mgkim.framework.online.com.session.KToken;
 
 @KModule(name = "세션 상태 관리", required = true)
 public interface CmmSessionStatusMng {

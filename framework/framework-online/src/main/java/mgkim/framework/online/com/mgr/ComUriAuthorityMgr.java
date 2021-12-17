@@ -25,15 +25,15 @@ import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import mgkim.framework.core.annotation.KBean;
+import mgkim.framework.core.env.KContext;
+import mgkim.framework.core.env.KProfile;
+import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
+import mgkim.framework.core.logging.KLogSys;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KStringUtil;
-import mgkim.framework.online.com.env.KContext;
-import mgkim.framework.online.com.env.KProfile;
-import mgkim.framework.online.com.env.KContext.AttrKey;
-import mgkim.framework.online.com.logging.KLogSys;
 
 @KBean(name = "url-authority 매핑")
 public class ComUriAuthorityMgr implements FilterInvocationSecurityMetadataSource {
@@ -41,7 +41,7 @@ public class ComUriAuthorityMgr implements FilterInvocationSecurityMetadataSourc
 	final String BEAN_NAME = KObjectUtil.name(ComUriAuthorityMgr.class);
 
 	public static final String CONFIG_SQL = ""
-			+ "	SELECT /* `mgkim.framework.online.com.session.SysUriAuthorityMgr.CONFIG_SQL */  "
+			+ "	SELECT /* `mgkim.framework.core.session.SysUriAuthorityMgr.CONFIG_SQL */  "
 			+ "			  A.URI_VAL   AS URI                                        "
 			+ "			, C.ROLE_ID   AS AUTHORITY                                  "
 			+ "	FROM	  MGCB301TM A /* MGCB_uri기본정보 */                        "
@@ -73,7 +73,7 @@ public class ComUriAuthorityMgr implements FilterInvocationSecurityMetadataSourc
 		List<Map<String, Object>> resultList = null;
 		try {
 			KContext.resetSql();
-			KContext.set(AttrKey.SQL_FILE, "mgkim.framework.online.com.session.SysUriAuthorityMgr.CONFIG_SQL");
+			KContext.set(AttrKey.SQL_FILE, "mgkim.framework.core.session.SysUriAuthorityMgr.CONFIG_SQL");
 			KContext.set(AttrKey.SQL_TEXT, CONFIG_SQL);
 			Map<String, String> paramMap = new HashMap<String, String>();
 			paramMap.put("siteTpcd", KProfile.SITE.code());

@@ -13,16 +13,16 @@ import org.apache.ibatis.mapping.ParameterMode;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.session.Configuration;
 
+import mgkim.framework.core.dto.KCmmVO;
+import mgkim.framework.core.env.KConstant;
+import mgkim.framework.core.env.KContext;
+import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSqlException;
+import mgkim.framework.core.logging.KLogCommon;
+import mgkim.framework.core.logging.KLogLayout;
+import mgkim.framework.core.logging.KLogSql;
 import mgkim.framework.core.type.TSqlType;
-import mgkim.framework.online.com.dto.KCmmVO;
-import mgkim.framework.online.com.env.KConstant;
-import mgkim.framework.online.com.env.KContext;
-import mgkim.framework.online.com.env.KContext.AttrKey;
-import mgkim.framework.online.com.logging.KLogCommon;
-import mgkim.framework.online.com.logging.KLogLayout;
-import mgkim.framework.online.com.logging.KLogSql;
 
 public class KSqlUtil {
 

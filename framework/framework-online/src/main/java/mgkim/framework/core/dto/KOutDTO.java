@@ -1,4 +1,4 @@
-package mgkim.framework.online.com.dto;
+package mgkim.framework.core.dto;
 
 import java.util.Map;
 

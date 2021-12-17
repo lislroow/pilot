@@ -6,9 +6,9 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.context.annotation.Profile;
 
 import mgkim.framework.core.annotation.KBean;
-import mgkim.framework.online.com.env.KConfig;
-import mgkim.framework.online.com.env.KConstant;
-import mgkim.framework.online.com.logging.KLogSys;
+import mgkim.framework.core.env.KConfig;
+import mgkim.framework.core.env.KConstant;
+import mgkim.framework.core.logging.KLogSys;
 
 
 @Profile(value = "debug")

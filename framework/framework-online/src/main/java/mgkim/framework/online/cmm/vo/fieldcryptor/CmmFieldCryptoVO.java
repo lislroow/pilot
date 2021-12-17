@@ -2,7 +2,7 @@ package mgkim.framework.online.cmm.vo.fieldcryptor;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import mgkim.framework.online.com.dto.KCmmVO;
+import mgkim.framework.core.dto.KCmmVO;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CmmFieldCryptoVO extends KCmmVO {

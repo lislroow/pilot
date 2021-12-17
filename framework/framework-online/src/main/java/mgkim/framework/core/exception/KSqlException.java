@@ -1,8 +1,8 @@
 package mgkim.framework.core.exception;
 
+import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.util.KExceptionUtil;
 import mgkim.framework.core.util.KStringUtil;
-import mgkim.framework.online.com.env.KConstant;
 
 public class KSqlException extends KException {
 

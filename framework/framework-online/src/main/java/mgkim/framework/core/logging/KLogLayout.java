@@ -1,11 +1,11 @@
-package mgkim.framework.online.com.logging;
+package mgkim.framework.core.logging;
 
-import static mgkim.framework.online.com.env.KConstant.CALLER;
-import static mgkim.framework.online.com.env.KConstant.GUID;
-import static mgkim.framework.online.com.env.KConstant.IP;
-import static mgkim.framework.online.com.env.KConstant.TXID;
-import static mgkim.framework.online.com.env.KConstant.URI;
-import static mgkim.framework.online.com.env.KConstant.USER_ID;
+import static mgkim.framework.core.env.KConstant.CALLER;
+import static mgkim.framework.core.env.KConstant.GUID;
+import static mgkim.framework.core.env.KConstant.IP;
+import static mgkim.framework.core.env.KConstant.TXID;
+import static mgkim.framework.core.env.KConstant.URI;
+import static mgkim.framework.core.env.KConstant.USER_ID;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,16 +17,16 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.IThrowableProxy;
 import ch.qos.logback.classic.spi.ThrowableProxyUtil;
 import ch.qos.logback.core.LayoutBase;
+import mgkim.framework.core.env.KConfig;
+import mgkim.framework.core.env.KConstant;
+import mgkim.framework.core.env.KContext;
+import mgkim.framework.core.env.KProfile;
+import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.type.TApiType;
 import mgkim.framework.core.type.TAuthType;
 import mgkim.framework.core.type.TExecType;
 import mgkim.framework.core.type.TSysType;
 import mgkim.framework.core.util.KStringUtil;
-import mgkim.framework.online.com.env.KConfig;
-import mgkim.framework.online.com.env.KConstant;
-import mgkim.framework.online.com.env.KContext;
-import mgkim.framework.online.com.env.KProfile;
-import mgkim.framework.online.com.env.KContext.AttrKey;
 
 public class KLogLayout extends LayoutBase<ILoggingEvent> {
 

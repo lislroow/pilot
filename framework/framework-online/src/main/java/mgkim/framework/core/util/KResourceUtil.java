@@ -16,7 +16,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.util.AntPathMatcher;
 
-import mgkim.framework.online.com.logging.KLogSys;
+import mgkim.framework.core.logging.KLogSys;
 
 public class KResourceUtil {
 

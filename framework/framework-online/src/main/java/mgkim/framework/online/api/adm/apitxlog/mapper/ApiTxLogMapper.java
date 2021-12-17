@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import mgkim.framework.core.dto.KCmmVO;
 import mgkim.framework.online.cmm.vo.apitxlog.CmmApiTxLogVO;
-import mgkim.framework.online.com.dto.KCmmVO;
 
 @Mapper
 public interface ApiTxLogMapper {

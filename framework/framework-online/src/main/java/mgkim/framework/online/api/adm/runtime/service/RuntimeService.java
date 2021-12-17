@@ -44,6 +44,8 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
+import mgkim.framework.core.env.KProfile;
+import mgkim.framework.core.logging.KLogLayout;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.api.adm.runtime.vo.JavaEnvVariableVO;
@@ -52,8 +54,6 @@ import mgkim.framework.online.api.adm.runtime.vo.SpringBeansVO;
 import mgkim.framework.online.api.adm.runtime.vo.SpringSecurityUriVO;
 import mgkim.framework.online.api.adm.runtime.vo.SpringUri2VO;
 import mgkim.framework.online.api.adm.runtime.vo.SpringUriVO;
-import mgkim.framework.online.com.env.KProfile;
-import mgkim.framework.online.com.logging.KLogLayout;
 import mgkim.framework.online.com.mgr.ComUriAuthorityMgr;
 import mgkim.framework.online.com.mybatis.ComSqlSessionFactory;
 

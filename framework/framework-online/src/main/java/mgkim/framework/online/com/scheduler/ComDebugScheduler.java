@@ -1,7 +1,7 @@
 package mgkim.framework.online.com.scheduler;
 
-import static mgkim.framework.online.com.env.KConstant.MDC_DEBUG_FILENAME;
-import static mgkim.framework.online.com.env.KConstant.MDC_DEBUG_MODE_YN;
+import static mgkim.framework.core.env.KConstant.MDC_DEBUG_FILENAME;
+import static mgkim.framework.core.env.KConstant.MDC_DEBUG_MODE_YN;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,19 +12,19 @@ import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import mgkim.framework.core.annotation.KTaskSchedule;
+import mgkim.framework.core.env.KConstant;
+import mgkim.framework.core.env.KContext;
+import mgkim.framework.core.env.KProfile;
+import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
+import mgkim.framework.core.logging.KLogSys;
 import mgkim.framework.core.stereo.KScheduler;
 import mgkim.framework.core.stereo.KTask;
 import mgkim.framework.core.util.KDateUtil;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.online.cmm.CmmDebug;
 import mgkim.framework.online.cmm.vo.debug.CmmDebugVO;
-import mgkim.framework.online.com.env.KConstant;
-import mgkim.framework.online.com.env.KContext;
-import mgkim.framework.online.com.env.KProfile;
-import mgkim.framework.online.com.env.KContext.AttrKey;
-import mgkim.framework.online.com.logging.KLogSys;
 
 @KTaskSchedule(name = "debug 스케줄러", interval = 3000, manage = true)
 public class ComDebugScheduler extends KScheduler {

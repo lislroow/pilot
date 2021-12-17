@@ -25,13 +25,13 @@ import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.TypeHandlerRegistry;
 
+import mgkim.framework.core.env.KConfig;
+import mgkim.framework.core.env.KContext;
+import mgkim.framework.core.env.KContext.AttrKey;
+import mgkim.framework.core.logging.KLogSql;
 import mgkim.framework.core.type.TSqlType;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KSqlUtil;
-import mgkim.framework.online.com.env.KConfig;
-import mgkim.framework.online.com.env.KContext;
-import mgkim.framework.online.com.env.KContext.AttrKey;
-import mgkim.framework.online.com.logging.KLogSql;
 import mgkim.framework.online.com.scheduler.ComSqlmapReloadScheduler;
 
 public class ComSqlPagingCount {

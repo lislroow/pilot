@@ -1,6 +1,6 @@
-package mgkim.framework.online.com.env;
+package mgkim.framework.core.env;
 
-import mgkim.framework.online.com.logging.KAnsi;
+import mgkim.framework.core.logging.KAnsi;
 
 public class KConstant {
 

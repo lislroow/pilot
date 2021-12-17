@@ -1,6 +1,6 @@
 package mgkim.framework.online.cmm.vo.uri;
 
-import mgkim.framework.online.com.dto.KCmmVO;
+import mgkim.framework.core.dto.KCmmVO;
 
 public class CmmUriVO extends KCmmVO implements Comparable<CmmUriVO> {
 

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import mgkim.framework.core.dto.KOutDTO;
+import mgkim.framework.core.env.KConstant;
 import mgkim.framework.online.api.adm.runtime.service.RuntimeService;
 import mgkim.framework.online.api.adm.runtime.vo.JavaEnvVariableVO;
 import mgkim.framework.online.api.adm.runtime.vo.JdbcDatasourceVO;
@@ -20,8 +22,6 @@ import mgkim.framework.online.api.adm.runtime.vo.SpringBeansVO;
 import mgkim.framework.online.api.adm.runtime.vo.SpringSecurityUriVO;
 import mgkim.framework.online.api.adm.runtime.vo.SpringUri2VO;
 import mgkim.framework.online.api.adm.runtime.vo.SpringUriVO;
-import mgkim.framework.online.com.dto.KOutDTO;
-import mgkim.framework.online.com.env.KConstant;
 
 @Api( tags = { KConstant.SWG_SYSTEM_MANAGEMENT } )
 @RestController

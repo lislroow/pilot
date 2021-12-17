@@ -1,4 +1,4 @@
-package mgkim.framework.online.com.dto;
+package mgkim.framework.core.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

@@ -2,8 +2,8 @@ package mgkim.framework.online.cmm.vo.sessionexpmng;
 
 import java.util.List;
 
-import mgkim.framework.online.com.dto.KCmmVO;
-import mgkim.framework.online.com.session.KToken;
+import mgkim.framework.core.dto.KCmmVO;
+import mgkim.framework.core.session.KToken;
 
 public class CmmSessionMngListVO extends KCmmVO {
 

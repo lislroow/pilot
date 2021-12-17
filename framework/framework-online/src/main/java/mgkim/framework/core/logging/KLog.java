@@ -1,7 +1,7 @@
-package mgkim.framework.online.com.logging;
+package mgkim.framework.core.logging;
 
-import static mgkim.framework.online.com.env.KConstant.CALLER;
-import static mgkim.framework.online.com.env.KConstant.LOGSPACE;
+import static mgkim.framework.core.env.KConstant.CALLER;
+import static mgkim.framework.core.env.KConstant.LOGSPACE;
 
 import java.util.stream.Stream;
 

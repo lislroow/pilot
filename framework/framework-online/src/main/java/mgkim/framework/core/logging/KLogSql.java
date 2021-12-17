@@ -1,6 +1,6 @@
-package mgkim.framework.online.com.logging;
+package mgkim.framework.core.logging;
 
-import static mgkim.framework.online.com.env.KConstant.CALLER;
+import static mgkim.framework.core.env.KConstant.CALLER;
 
 import java.util.List;
 
@@ -8,15 +8,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
-import mgkim.framework.core.util.KStringUtil;
-import mgkim.framework.online.com.env.KConfig;
-import mgkim.framework.online.com.env.KConstant;
+import ch.qos.logback.classic.Level;
+import mgkim.framework.core.env.KConfig;
+import mgkim.framework.core.env.KContext;
+import mgkim.framework.core.env.KContext.AttrKey;
+import mgkim.framework.core.type.TExecType;
 
-public class KLogSys {
+public class KLogSql {
 
-	private static final Logger log = LoggerFactory.getLogger("KLogSys");
-
-	private static final Logger accesslog = LoggerFactory.getLogger("KLogSys-accesslog");
+	private static final Logger log = LoggerFactory.getLogger("KLogSql");
 
 	private static void pre() {
 		StackTraceElement s = Thread.currentThread().getStackTrace()[3];
@@ -27,12 +27,20 @@ public class KLogSys {
 		MDC.remove(CALLER);
 	}
 
-	public static boolean matchesExclude(String packageName) {
-		List<String> urlPatterns = KConfig.CMM_SQL;
+	public static int getLevel() {
+		Level level = ((ch.qos.logback.classic.LoggerContext) org.slf4j.LoggerFactory.getILoggerFactory()).getLogger("KLogSql").getLevel();
+		if(level == null) {
+			KLogSys.warn("logger `KLogSql`의 `level`을 얻어오는데, 실패했습니다. 기본값 `warn`으로 반환합니다.");
+			return Level.WARN_INT;
+		}
+		return level.toInt();
+	}
+
+	public static boolean isComSql(String sqlId) {
+		List<String> comSqlList = KConfig.CMM_SQL;
 		boolean matched = false;
-		packageName = KStringUtil.nvl(packageName);
-		for(String pattern : urlPatterns) {
-			matched = packageName.startsWith(pattern);
+		for(String comSql : comSqlList) {
+			matched = sqlId.startsWith(comSql);
 			if(matched) {
 				break;
 			}
@@ -40,30 +48,22 @@ public class KLogSys {
 		return matched;
 	}
 
-	public static boolean matchesExclude(String packageName, List<String> excludeList) {
-		boolean matched = false;
-		packageName = KStringUtil.nvl(packageName);
-		for(String pattern : excludeList) {
-			matched = packageName.startsWith(pattern);
-			if(matched) {
-				break;
+	public static boolean isLoggableSql(String sqlId) {
+		TExecType execType = KContext.getT(AttrKey.EXEC_TYPE);
+		boolean loggable = KContext.getT(AttrKey.LOGGABLE);
+		switch(execType) {
+		case REQUEST:
+		case SYSTEM:
+			boolean isComSql = isComSql(sqlId);
+			if(!isComSql || KConfig.DEBUG_COM) {
+				return true;
 			}
+			break;
+		case SCHEDULE:
+		default:
+			return loggable;
 		}
-		return matched;
-	}
-
-	public static String getDebugFile(String debugFilename) {
-		String result = "";
-		//LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
-		//SiftingAppender appender = (SiftingAppender) context.getLogger("KLogSys-debuglog").getAppender("API2-debug");
-		result = debugFilename+".log";
-		return result;
-	}
-
-	public static void accesslog() {
-		pre();
-		accesslog.info(KConstant.EMPTY);
-		post();
+		return false;
 	}
 
 	// trace

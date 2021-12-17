@@ -12,22 +12,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.annotation.KEncrypt;
+import mgkim.framework.core.dto.KCmmVO;
+import mgkim.framework.core.dto.KInDTO;
+import mgkim.framework.core.dto.KOutDTO;
+import mgkim.framework.core.env.KContext;
+import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
+import mgkim.framework.core.logging.KLogSys;
+import mgkim.framework.core.session.KToken;
 import mgkim.framework.core.util.KAesUtil;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KRsaUtil;
 import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.cmm.CmmFieldCryptor;
 import mgkim.framework.online.cmm.vo.fieldcryptor.CmmFieldCryptoVO;
-import mgkim.framework.online.com.dto.KCmmVO;
-import mgkim.framework.online.com.dto.KInDTO;
-import mgkim.framework.online.com.dto.KOutDTO;
-import mgkim.framework.online.com.env.KContext;
-import mgkim.framework.online.com.env.KContext.AttrKey;
-import mgkim.framework.online.com.logging.KLogSys;
-import mgkim.framework.online.com.session.KToken;
 
 @KBean(name = "필드암호화키 관리")
 public class ComFieldCryptorMgr implements InitializingBean {

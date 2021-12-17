@@ -1,6 +1,6 @@
 package mgkim.framework.online.cmm.vo.privacy;
 
-import mgkim.framework.online.com.dto.KCmmVO;
+import mgkim.framework.core.dto.KCmmVO;
 
 public class CmmPrivacyLogVO extends KCmmVO {
 

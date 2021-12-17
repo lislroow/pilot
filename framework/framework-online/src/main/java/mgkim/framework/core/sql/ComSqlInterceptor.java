@@ -20,24 +20,24 @@ import org.apache.ibatis.plugin.Signature;
 import org.apache.ibatis.session.ResultHandler;
 import org.springframework.util.StopWatch;
 
+import mgkim.framework.core.dto.KCmmVO;
+import mgkim.framework.core.dto.KOutPageVO;
+import mgkim.framework.core.env.KConfig;
+import mgkim.framework.core.env.KConstant;
+import mgkim.framework.core.env.KContext;
+import mgkim.framework.core.env.KProfile;
+import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
+import mgkim.framework.core.logging.KLogApm;
+import mgkim.framework.core.logging.KLogLayout;
+import mgkim.framework.core.logging.KLogSql;
 import mgkim.framework.core.type.TExecType;
 import mgkim.framework.core.type.TSqlType;
 import mgkim.framework.core.type.TSysType;
 import mgkim.framework.core.util.KDtoUtil;
 import mgkim.framework.core.util.KSqlUtil;
 import mgkim.framework.core.util.KStringUtil;
-import mgkim.framework.online.com.dto.KCmmVO;
-import mgkim.framework.online.com.dto.KOutPageVO;
-import mgkim.framework.online.com.env.KConfig;
-import mgkim.framework.online.com.env.KConstant;
-import mgkim.framework.online.com.env.KContext;
-import mgkim.framework.online.com.env.KProfile;
-import mgkim.framework.online.com.env.KContext.AttrKey;
-import mgkim.framework.online.com.logging.KLogApm;
-import mgkim.framework.online.com.logging.KLogLayout;
-import mgkim.framework.online.com.logging.KLogSql;
 
 @Intercepts({
 	@Signature(type = StatementHandler.class, method = "query", args = { Statement.class, ResultHandler.class })

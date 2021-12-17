@@ -2,7 +2,7 @@ package mgkim.framework.online.cmm.vo.reloadableconf;
 
 import java.util.Date;
 
-import mgkim.framework.online.com.dto.KCmmVO;
+import mgkim.framework.core.dto.KCmmVO;
 
 public class CmmReloadableConfVO extends KCmmVO {
 

@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import mgkim.framework.online.com.session.KSession;
-import mgkim.framework.online.com.session.KToken;
+import mgkim.framework.core.session.KSession;
+import mgkim.framework.core.session.KToken;
 
 @Mapper
 public interface CmmUserSessionMapper {

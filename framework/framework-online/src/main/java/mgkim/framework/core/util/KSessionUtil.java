@@ -9,7 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import mgkim.framework.online.com.session.KSession;
+import mgkim.framework.core.session.KSession;
 
 public class KSessionUtil {
 

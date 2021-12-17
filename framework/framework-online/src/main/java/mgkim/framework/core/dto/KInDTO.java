@@ -1,4 +1,4 @@
-package mgkim.framework.online.com.dto;
+package mgkim.framework.core.dto;
 
 import javax.validation.Valid;
 

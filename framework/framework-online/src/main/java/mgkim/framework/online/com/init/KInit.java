@@ -55,12 +55,12 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.multipart.support.MultipartFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import mgkim.framework.core.env.KContext;
+import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
+import mgkim.framework.core.logging.KLogSys;
 import mgkim.framework.core.util.KStringUtil;
-import mgkim.framework.online.com.env.KContext;
-import mgkim.framework.online.com.env.KProfile;
-import mgkim.framework.online.com.logging.KLogSys;
 import mgkim.framework.online.com.mybatis.ComSqlSessionFactory;
 
 @Configuration

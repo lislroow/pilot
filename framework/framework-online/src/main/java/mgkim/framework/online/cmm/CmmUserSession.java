@@ -3,8 +3,8 @@ package mgkim.framework.online.cmm;
 import java.util.List;
 
 import mgkim.framework.core.annotation.KModule;
-import mgkim.framework.online.com.session.KSession;
-import mgkim.framework.online.com.session.KToken;
+import mgkim.framework.core.session.KSession;
+import mgkim.framework.core.session.KToken;
 
 @KModule(name = "사용자 세션", required = true)
 public interface CmmUserSession {

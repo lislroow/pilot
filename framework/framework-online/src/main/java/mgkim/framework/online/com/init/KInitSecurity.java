@@ -26,7 +26,7 @@ import org.springframework.security.web.access.intercept.FilterSecurityIntercept
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import mgkim.framework.online.com.env.KConfig;
+import mgkim.framework.core.env.KConfig;
 import mgkim.framework.online.com.filter.KFilterAccessDeny;
 import mgkim.framework.online.com.filter.KFilterAccessLog;
 import mgkim.framework.online.com.filter.KFilterCreateUserSession;

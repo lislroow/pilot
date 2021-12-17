@@ -1,4 +1,4 @@
-package mgkim.framework.online.com.session;
+package mgkim.framework.core.session;
 
 public class KToken {
 

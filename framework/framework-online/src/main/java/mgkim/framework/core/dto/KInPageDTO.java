@@ -1,19 +1,19 @@
-package mgkim.framework.online.com.dto;
+package mgkim.framework.core.dto;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import io.swagger.annotations.ApiModelProperty;
 
 @JsonPropertyOrder({ "header", "page", "body"} )
-public class KOutPageDTO<BODY extends Object> extends KOutDTO<BODY> {
+public class KInPageDTO<BODY extends Object> extends KInDTO<BODY> {
 
-	private KOutPageVO page;
+	private KInPageVO page;
 
 	@ApiModelProperty(position = 2)
-	public KOutPageVO getPage() {
+	public KInPageVO getPage() {
 		return page;
 	}
-	public void setPage(KOutPageVO page) {
+	public void setPage(KInPageVO page) {
 		this.page = page;
 	}
 }

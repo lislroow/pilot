@@ -1,7 +1,7 @@
-package mgkim.framework.online.com.logging;
+package mgkim.framework.core.logging;
 
 import ch.qos.logback.classic.Level;
-import mgkim.framework.online.com.env.KConstant;
+import mgkim.framework.core.env.KConstant;
 
 public class KAnsi {
 

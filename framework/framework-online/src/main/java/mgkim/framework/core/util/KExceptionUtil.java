@@ -5,8 +5,8 @@ import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-import mgkim.framework.online.com.env.KConstant;
-import mgkim.framework.online.com.env.KProfile;
+import mgkim.framework.core.env.KConstant;
+import mgkim.framework.core.env.KProfile;
 
 public class KExceptionUtil {
 

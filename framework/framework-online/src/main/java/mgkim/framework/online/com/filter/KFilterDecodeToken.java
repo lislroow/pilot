@@ -12,10 +12,16 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import mgkim.framework.core.annotation.KBean;
+import mgkim.framework.core.env.KConstant;
+import mgkim.framework.core.env.KContext;
+import mgkim.framework.core.env.KProfile;
+import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.exception.KException;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
+import mgkim.framework.core.logging.KLogSys;
+import mgkim.framework.core.session.KToken;
 import mgkim.framework.core.stereo.KFilter;
 import mgkim.framework.core.type.TApiType;
 import mgkim.framework.core.type.TAuthType;
@@ -24,13 +30,7 @@ import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.cmm.CmmUserToken;
 import mgkim.framework.online.cmm.vo.token.CmmOpenapiTokenVO;
-import mgkim.framework.online.com.env.KConstant;
-import mgkim.framework.online.com.env.KContext;
-import mgkim.framework.online.com.env.KProfile;
-import mgkim.framework.online.com.env.KContext.AttrKey;
-import mgkim.framework.online.com.logging.KLogSys;
 import mgkim.framework.online.com.mgr.ComUserTokenMgr;
-import mgkim.framework.online.com.session.KToken;
 
 @KBean(name = "token decode 필터")
 public class KFilterDecodeToken extends KFilter implements InitializingBean {
