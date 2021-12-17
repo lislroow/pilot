@@ -1,4 +1,4 @@
-package mgkim.framework.online.com.property;
+package mgkim.framework.core.property;
 
 import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
