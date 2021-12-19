@@ -61,7 +61,7 @@ public class KFilterAccessLog  extends KFilter {
 		// `loggable` 이 아닌 경우에는 요청/응답에 대한 정보를 로깅하지 않음
 		{
 			boolean loggable = KContext.getT(AttrKey.LOGGABLE);
-			if(!loggable) {
+			if (!loggable) {
 				chain.doFilter(request, response);
 				return;
 			}
@@ -70,10 +70,10 @@ public class KFilterAccessLog  extends KFilter {
 		// 1) request 로그
 		TRequestType requestType = KContext.getT(AttrKey.REQUEST_TYPE);
 		try {
-			if(requestType == TRequestType.JSON) {
+			if (requestType == TRequestType.JSON) {
 				requestWrapper = new ReadableRequestWrapper(request);
 				String reqBody = requestWrapper.getBodyString();
-				if(KStringUtil.isJson(reqBody)) {
+				if (KStringUtil.isJson(reqBody)) {
 					KLogSys.info("{} {}{} {}{}`InDTO` = {}{}`Authorization` = {}", KConstant.LT_REQ_BODY, KLogLayout.LINE, KConstant.LT_REQ_BODY, KContext.getT(AttrKey.URI), KLogLayout.LINE, reqBody, KLogLayout.LINE, KContext.getT(AttrKey.AUTHORIZATION));
 				} else {
 					KLogSys.warn("{} `{}`에서 request-body 가 json 이 아닙니다. request-body={}", KConstant.LT_SECURITY_FILTER, BEAN_NAME, reqBody);
@@ -88,14 +88,14 @@ public class KFilterAccessLog  extends KFilter {
 				} catch(FileUploadException e) {
 					e.printStackTrace();
 				}
-				while(iterator != null && iterator.hasNext()) {
+				while (iterator != null && iterator.hasNext()) {
 					FileItemStream item = null;
 					try {
 						item = iterator.next();
 					} catch (FileUploadException e) {
 						e.printStackTrace();
 					}
-					if(KStringUtil.isEmpty(item.getContentType())) {
+					if (KStringUtil.isEmpty(item.getContentType())) {
 						InputStream in = item.openStream();
 						BufferedReader br = new BufferedReader(new InputStreamReader(in));
 						String a = br.readLine();
@@ -109,7 +109,7 @@ public class KFilterAccessLog  extends KFilter {
 			return;
 		} finally {
 			responseWrapper = new ContentCachingResponseWrapper(response);
-			if(requestType == TRequestType.JSON) {
+			if (requestType == TRequestType.JSON) {
 				chain.doFilter(requestWrapper, responseWrapper);
 			} else {
 				chain.doFilter(request, responseWrapper);
@@ -119,22 +119,22 @@ public class KFilterAccessLog  extends KFilter {
 		// 2) response 로그
 		try {
 			TResponseType responseType = KContext.getT(AttrKey.RESPONSE_TYPE);
-			if(responseType == TResponseType.JSON) {
+			if (responseType == TResponseType.JSON) {
 				String code = KContext.getT(AttrKey.RESULT_CODE);
 				String rhMessage = KContext.getT(AttrKey.RESULT_MESSAGE);
 				boolean isVerboss = KConfig.VERBOSS_ALL || KConfig.VERBOSS_REQ;
-				if(isVerboss) {
+				if (isVerboss) {
 					BufferedReader br = null;
 					try {
 						br = new BufferedReader(new InputStreamReader(responseWrapper.getContentInputStream()));
 						String readLine = null;
 						StringBuffer buf = new StringBuffer();
-						while((readLine = br.readLine()) != null) {
+						while ((readLine = br.readLine()) != null) {
 							buf.append(readLine);
 						}
 						KLogSys.info("{} [{}] {} (`{}` bytes){}{}{}`OutDTO` = {}", KConstant.LT_RES_INFO, code, rhMessage, responseWrapper.getContentSize(), KLogLayout.LINE, KConstant.LT_RES_VERBOSS, KLogLayout.LINE, buf.toString());
 					} finally {
-						if(br != null) {
+						if (br != null) {
 							br.close();
 						}
 					}
@@ -142,7 +142,7 @@ public class KFilterAccessLog  extends KFilter {
 					String contentSize = MessageFormat.format("{0}", responseWrapper.getContentSize());
 					KLogSys.info("{} [{}] {} (`{}` bytes)", KConstant.LT_RES_INFO, code, rhMessage, contentSize);
 				}
-			} else if(responseType == TResponseType.FILE) {
+			} else if (responseType == TResponseType.FILE) {
 				String filename = KContext.getT(AttrKey.DOWN_FILE);
 				String contentSize = MessageFormat.format("{0}", responseWrapper.getContentSize());
 				KLogSys.info("{} download file=`{}` (`{}` bytes)", KConstant.LT_RES_INFO, filename, contentSize);
@@ -159,7 +159,7 @@ public class KFilterAccessLog  extends KFilter {
 				cmmApiTxLogScheduler.addLog();
 			}
 			responseWrapper.copyBodyToResponse(); // copy를 하지 않으면 빈 문자열을 response 하게 됩니다.
-			//if(responseType == TResponseType.DTO) {
+			//if (responseType == TResponseType.DTO) {
 			//}
 		}
 	}
@@ -182,7 +182,7 @@ class ReadableRequestWrapper extends HttpServletRequestWrapper {
 	public ReadableRequestWrapper(HttpServletRequest request) throws IOException {
 		super(request);
 
-		if(request.getContentType() != null && request.getContentType().contains(ContentType.MULTIPART_FORM_DATA.getMimeType())) {
+		if (request.getContentType() != null && request.getContentType().contains(ContentType.MULTIPART_FORM_DATA.getMimeType())) {
 			return;
 		}
 
@@ -198,7 +198,7 @@ class ReadableRequestWrapper extends HttpServletRequestWrapper {
 		} catch(Exception e) {
 			log.error("", e);
 		} finally {
-			if(reader != null) {
+			if (reader != null) {
 				reader.close();
 			}
 		}

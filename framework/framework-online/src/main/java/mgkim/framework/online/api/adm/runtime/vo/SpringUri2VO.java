@@ -7,7 +7,7 @@ public class SpringUri2VO implements Comparable<SpringUri2VO> {
 
 	@Override
 	public int compareTo(SpringUri2VO o) {
-		if(o.getUri() == null || this.getUri() == null) {
+		if (o.getUri() == null || this.getUri() == null) {
 			return 0;
 		}
 		return this.getUri().compareToIgnoreCase(o.getUri());

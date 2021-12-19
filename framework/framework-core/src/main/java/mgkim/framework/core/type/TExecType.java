@@ -16,8 +16,8 @@ public enum TExecType {
 
 	public static TExecType get(String code) {
 		TExecType[] values = TExecType.values();
-		for(TExecType item : values) {
-			if(item.code().equals(code)) {
+		for (TExecType item : values) {
+			if (item.code().equals(code)) {
 				return item;
 			}
 		}

@@ -38,7 +38,7 @@ public class KFilterPreflight extends KFilter {
 			response.setHeader("Access-Control-Expose-Headers", ACCESS_CONTROL_EXPOSE_HEADERS);
 
 			boolean isPreFlight = CorsUtils.isPreFlightRequest(request);
-			if(isPreFlight) {
+			if (isPreFlight) {
 				return;
 			}
 		} catch(Exception e) {

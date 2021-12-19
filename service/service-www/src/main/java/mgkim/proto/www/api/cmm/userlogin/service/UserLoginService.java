@@ -15,7 +15,7 @@ public class UserLoginService {
 
 	public boolean selectUserExist(KToken token) throws Exception {
 		int cnt = userLoginMapper.selectUserExist(token);
-		if(cnt > 0) {
+		if (cnt > 0) {
 			return true;
 		} else {
 			return false;

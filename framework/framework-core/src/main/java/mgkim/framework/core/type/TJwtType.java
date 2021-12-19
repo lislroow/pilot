@@ -26,8 +26,8 @@ public enum TJwtType {
 
 	public static TJwtType get(String val) {
 		TJwtType[] list = TJwtType.values();
-		for(TJwtType item : list) {
-			if(item.code.equals(val) || item.label.equals(val)) {
+		for (TJwtType item : list) {
+			if (item.code.equals(val) || item.label.equals(val)) {
 				return item;
 			}
 		}

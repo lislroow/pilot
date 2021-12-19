@@ -79,7 +79,7 @@ public class RuntimeService {
 	@EventListener
 	public void contextInit(ContextRefreshedEvent event) {
 		ApplicationContext ctx = event.getApplicationContext();
-		/*if(ctx.getParent() != null) {
+		/*if (ctx.getParent() != null) {
 			dispatcherContext = ctx;
 			requestMapping = (RequestMappingHandlerMapping)dispatcherContext.getBean("requestMappingHandlerMapping");
 		} else {
@@ -96,7 +96,7 @@ public class RuntimeService {
 
 	public void printJndi(String path, Context context) throws Exception {
 		NamingEnumeration<NameClassPair> list = context.list(path);
-		while(list.hasMore()) {
+		while (list.hasMore()) {
 			String name = list.next().getName();
 			String child = path.equals("") ? name : path + "/" + name;
 			log.info(child);
@@ -119,17 +119,17 @@ public class RuntimeService {
 		list.forEach((item) -> {
 			SpringBeansVO vo = new SpringBeansVO();
 			Object bean = applicationContext.getBean(item);
-			if(ObjectUtils.isEmpty(bean)) {
+			if (ObjectUtils.isEmpty(bean)) {
 				return;
 			}
 			List<Annotation> annotations = Arrays.asList(bean.getClass().getAnnotations());
 			StringBuffer swaggerTags = new StringBuffer("");
 			//annotations.forEach(annotation -> {
-			//	if(annotation instanceof io.swagger.annotations.Api) {
+			//	if (annotation instanceof io.swagger.annotations.Api) {
 			//		Api api = (Api) annotation;
 			//		//swaggerTags.append(Arrays.asList(api.tags()).toString());
 			//		Arrays.asList(api.tags()).forEach(tag -> {
-			//			if(swaggerTags.toString().equals("")) {
+			//			if (swaggerTags.toString().equals("")) {
 			//				swaggerTags.append(tag);
 			//			} else {
 			//				swaggerTags.append(", "+ tag);
@@ -140,7 +140,7 @@ public class RuntimeService {
 			vo.setApplicationContextId(applicationContext.getId());
 			vo.setBeanId(item);
 			String beanClass = bean.getClass().getName();
-			if(beanClass.contains(".$")) {
+			if (beanClass.contains(".$")) {
 				beanClass = bean.getClass().getInterfaces()[0].getCanonicalName();
 			}
 			vo.setBeanClass(beanClass);
@@ -159,10 +159,10 @@ public class RuntimeService {
 			SpringUriVO vo = new SpringUriVO();
 			StringBuffer uri = new StringBuffer("");
 			RequestMapping classAnnotation = value.getBeanType().getAnnotation(org.springframework.web.bind.annotation.RequestMapping.class);
-			if(classAnnotation != null) {
-				if(classAnnotation.value().length > 0) {
+			if (classAnnotation != null) {
+				if (classAnnotation.value().length > 0) {
 					uri.append(classAnnotation.value()[0]);
-					if(classAnnotation.value().length >= 2) {
+					if (classAnnotation.value().length >= 2) {
 						log.warn("Class-Lavel의 @RequestMapping의 value 값이 2개 이상인 것이 있습니다. 해당 클래스를 확인해주세요. {}" + value.getClass().getSimpleName());
 					}
 				}
@@ -171,7 +171,7 @@ public class RuntimeService {
 			StringBuffer swaggerValue = new StringBuffer("");
 			List<Annotation> list = Arrays.asList(value.getMethod().getAnnotations());
 			list.forEach(item -> {
-				if(item instanceof org.springframework.web.bind.annotation.RequestMapping) {
+				if (item instanceof org.springframework.web.bind.annotation.RequestMapping) {
 					RequestMapping annotations = (RequestMapping)item;
 					//uri.append(Arrays.asList(annotation.value()));
 					Arrays.asList(annotations.value()).forEach(annotation -> {
@@ -179,7 +179,7 @@ public class RuntimeService {
 					});
 					log.trace(key+" = "+annotations.value());
 				}
-				//else if(item instanceof io.swagger.annotations.ApiOperation) {
+				//else if (item instanceof io.swagger.annotations.ApiOperation) {
 				//	ApiOperation annotation = (ApiOperation)item;
 				//	swaggerHttpMehtod.append(annotation.httpMethod());
 				//	swaggerValue.append(annotation.value());
@@ -207,10 +207,10 @@ public class RuntimeService {
 			SpringUri2VO vo = new SpringUri2VO();
 			StringBuffer uri = new StringBuffer("");
 			RequestMapping classAnnotation = value.getBeanType().getAnnotation(org.springframework.web.bind.annotation.RequestMapping.class);
-			if(classAnnotation != null) {
-				if(classAnnotation.value().length > 0) {
+			if (classAnnotation != null) {
+				if (classAnnotation.value().length > 0) {
 					uri.append(classAnnotation.value()[0]);
-					if(classAnnotation.value().length >= 2) {
+					if (classAnnotation.value().length >= 2) {
 						log.warn("Class-Lavel의 @RequestMapping의 value 값이 2개 이상인 것이 있습니다. 해당 클래스를 확인해주세요. {}" + value.getClass().getSimpleName());
 					}
 				}
@@ -219,14 +219,14 @@ public class RuntimeService {
 			StringBuffer swaggerValue = new StringBuffer("");
 			List<Annotation> list = Arrays.asList(value.getMethod().getAnnotations());
 			list.forEach(item -> {
-				if(item instanceof org.springframework.web.bind.annotation.RequestMapping) {
+				if (item instanceof org.springframework.web.bind.annotation.RequestMapping) {
 					RequestMapping annotations = (RequestMapping)item;
 					//uri.append(Arrays.asList(annotation.value()));
 					Arrays.asList(annotations.value()).forEach(annotation -> {
 						uri.append(annotation);
 					});
 					log.trace(key+" = "+annotations.value());
-				} else if(item instanceof io.swagger.annotations.ApiOperation) {
+				} else if (item instanceof io.swagger.annotations.ApiOperation) {
 					ApiOperation annotation = (ApiOperation)item;
 					swaggerHttpMehtod.append(annotation.httpMethod());
 					swaggerValue.append(annotation.value());
@@ -234,15 +234,15 @@ public class RuntimeService {
 			});
 			StringBuffer roles = new StringBuffer("");
 			urlAndRolelist.forEach(urlAndRole -> {
-				if(Pattern.matches(urlAndRole.get("url").toString(), uri.toString())) {
-					if(roles.toString().equals("")) {
+				if (Pattern.matches(urlAndRole.get("url").toString(), uri.toString())) {
+					if (roles.toString().equals("")) {
 						roles.append(urlAndRole.get("comUriAuthorityMgr").toString() + " ("+urlAndRole.get("url").toString()+")");
 					} else {
 						roles.append(", "+ urlAndRole.get("comUriAuthorityMgr").toString() + " ("+urlAndRole.get("url").toString()+")");
 					}
 				}
 			});
-			if(uri.toString().startsWith("/api/sys/apm/") || uri.toString().startsWith("/swagger")) {
+			if (uri.toString().startsWith("/api/sys/apm/") || uri.toString().startsWith("/swagger")) {
 				return;
 			}
 			vo.setUri(uri.toString());
@@ -274,9 +274,9 @@ public class RuntimeService {
 			e.printStackTrace();
 		}
 		Iterator<MappedStatement> iter = list.iterator();
-		while(iter.hasNext()) {
+		while (iter.hasNext()) {
 			Object obj = iter.next();
-			if(obj instanceof MappedStatement) {
+			if (obj instanceof MappedStatement) {
 				result.add((MappedStatement)obj);
 			}
 		}
@@ -291,13 +291,13 @@ public class RuntimeService {
 		String resourceFile = null;
 		Iterator<MappedStatement> iter = getSqlmapEntry().iterator();
 
-		while(iter.hasNext()) {
+		while (iter.hasNext()) {
 			Object obj = iter.next();
-			if(obj instanceof MappedStatement) {
+			if (obj instanceof MappedStatement) {
 				MappedStatement item = (MappedStatement)obj;
 				try {
 					String file = item.getResource();
-					if(!file.equals(resourceFile)) {
+					if (!file.equals(resourceFile)) {
 						resourceFile = file;
 						//System.err.println(String.format("##########"));
 						//System.err.println(String.format("### %s ###", resourceFile));
@@ -315,16 +315,16 @@ public class RuntimeService {
 					Object rootSqlNode = KObjectUtil.getValue(((SqlSource) item.getSqlSource()), "rootSqlNode");
 					ArrayList ls = (ArrayList)KObjectUtil.getValue(rootSqlNode, "contents");
 					StringBuffer sbuf = new StringBuffer();
-					for(int k=0; k<ls.size(); k++) {
-						if(ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.StaticTextSqlNode) {
+					for (int k=0; k<ls.size(); k++) {
+						if (ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.StaticTextSqlNode) {
 							StaticTextSqlNode node = (StaticTextSqlNode)ls.get(k);
 							String text = KStringUtil.nvl(KObjectUtil.getValue(node, "text"));
 							sbuf.append(text);
 							sbuf.append(KLogLayout.LINE);
-						} else if(ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.ForEachSqlNode) {
+						} else if (ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.ForEachSqlNode) {
 							//ForEachSqlNode node = (ForEachSqlNode)ls.get(k);
 							sbuf.append("  *** FOREACHE SQL ***  ");
-						} else if(ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.IfSqlNode) {
+						} else if (ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.IfSqlNode) {
 							//IfSqlNode node = (IfSqlNode)ls.get(k);
 							sbuf.append("  *** IF SQL ***  ");
 						} else {
@@ -336,16 +336,16 @@ public class RuntimeService {
 					Object rootSqlNode = KObjectUtil.getValue(((SqlSource) item.getSqlSource()), "rootSqlNode");
 					ArrayList ls = (ArrayList)KObjectUtil.getValue(rootSqlNode, "contents");
 					StringBuffer sbuf = new StringBuffer();
-					for(int k=0; k<ls.size(); k++) {
-						if(ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.StaticTextSqlNode) {
+					for (int k=0; k<ls.size(); k++) {
+						if (ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.StaticTextSqlNode) {
 							StaticTextSqlNode node = (StaticTextSqlNode)ls.get(k);
 							String text = KStringUtil.nvl(KObjectUtil.getValue(node, "text"));
 							sbuf.append(text);
 							sbuf.append(KLogLayout.LINE);
-						} else if(ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.ForEachSqlNode) {
+						} else if (ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.ForEachSqlNode) {
 							//ForEachSqlNode node = (ForEachSqlNode)ls.get(k);
 							sbuf.append("  *** FOREACH SQL ***  ");
-						} else if(ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.IfSqlNode) {
+						} else if (ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.IfSqlNode) {
 							//IfSqlNode node = (IfSqlNode)ls.get(k);
 							sbuf.append("  *** IF SQL ***  ");
 						} else {
@@ -370,11 +370,11 @@ public class RuntimeService {
 		Iterator<MappedStatement> iter = getSqlmapEntry().iterator();
 		int seq = 1;
 		String resourceFile = null;
-		while(iter.hasNext()) {
+		while (iter.hasNext()) {
 			MappedStatement item = iter.next();
 			try {
 				String file = item.getResource();
-				if(!file.equals(resourceFile)) {
+				if (!file.equals(resourceFile)) {
 					resourceFile = file;
 					result.append(String.format("##########")+KLogLayout.LINE);
 					result.append(String.format("### %s ###", resourceFile)+KLogLayout.LINE);
@@ -391,16 +391,16 @@ public class RuntimeService {
 				Object rootSqlNode = KObjectUtil.getValue(((SqlSource) item.getSqlSource()), "rootSqlNode");
 				ArrayList ls = (ArrayList)KObjectUtil.getValue(rootSqlNode, "contents");
 				StringBuffer sbuf = new StringBuffer();
-				for(int k=0; k<ls.size(); k++) {
-					if(ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.StaticTextSqlNode) {
+				for (int k=0; k<ls.size(); k++) {
+					if (ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.StaticTextSqlNode) {
 						StaticTextSqlNode node = (StaticTextSqlNode)ls.get(k);
 						String text = KStringUtil.nvl(KObjectUtil.getValue(node, "text"));
 						sbuf.append(text);
 						sbuf.append(KLogLayout.LINE);
-					} else if(ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.ForEachSqlNode) {
+					} else if (ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.ForEachSqlNode) {
 						//ForEachSqlNode node = (ForEachSqlNode)ls.get(k);
 						sbuf.append("  *** FOREACHE SQL ***  ");
-					} else if(ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.IfSqlNode) {
+					} else if (ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.IfSqlNode) {
 						//IfSqlNode node = (IfSqlNode)ls.get(k);
 						sbuf.append("  *** IF SQL ***  ");
 					} else {
@@ -412,16 +412,16 @@ public class RuntimeService {
 				Object rootSqlNode = KObjectUtil.getValue(((SqlSource) item.getSqlSource()), "rootSqlNode");
 				ArrayList ls = (ArrayList)KObjectUtil.getValue(rootSqlNode, "contents");
 				StringBuffer sbuf = new StringBuffer();
-				for(int k=0; k<ls.size(); k++) {
-					if(ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.StaticTextSqlNode) {
+				for (int k=0; k<ls.size(); k++) {
+					if (ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.StaticTextSqlNode) {
 						StaticTextSqlNode node = (StaticTextSqlNode)ls.get(k);
 						String text = KStringUtil.nvl(KObjectUtil.getValue(node, "text"));
 						sbuf.append(text);
 						sbuf.append(KLogLayout.LINE);
-					} else if(ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.ForEachSqlNode) {
+					} else if (ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.ForEachSqlNode) {
 						//ForEachSqlNode node = (ForEachSqlNode)ls.get(k);
 						sbuf.append("  *** FOREACH SQL ***  ");
-					} else if(ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.IfSqlNode) {
+					} else if (ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.IfSqlNode) {
 						//IfSqlNode node = (IfSqlNode)ls.get(k);
 						sbuf.append("  *** IF SQL ***  ");
 					} else {
@@ -457,7 +457,7 @@ public class RuntimeService {
 		List<JavaEnvVariableVO> resultList = new ArrayList<JavaEnvVariableVO>();
 		MutablePropertySources sources = ((org.springframework.core.env.AbstractEnvironment) environment).getPropertySources();
 		sources.iterator().forEachRemaining(item -> {
-			if(item instanceof SystemEnvironmentPropertySource) {
+			if (item instanceof SystemEnvironmentPropertySource) {
 				SystemEnvironmentPropertySource sysEnv = (SystemEnvironmentPropertySource) item;
 				sysEnv.getSource().forEach((key, value) -> {
 					JavaEnvVariableVO vo = new JavaEnvVariableVO();
@@ -467,7 +467,7 @@ public class RuntimeService {
 					resultList.add(vo);
 					log.trace(key + " = " + value);
 				});
-			} else if(item instanceof MapPropertySource) {
+			} else if (item instanceof MapPropertySource) {
 				MapPropertySource javaEnv = (MapPropertySource) item;
 				javaEnv.getSource().forEach((key, value) -> {
 					JavaEnvVariableVO vo = new JavaEnvVariableVO();
@@ -512,7 +512,7 @@ public class RuntimeService {
 	public List<JdbcDatasourceVO> getDataSource() {
 		List<JdbcDatasourceVO> resultList = new ArrayList<JdbcDatasourceVO>();
 		JdbcDatasourceVO vo = null;
-		/*if(!(jndiObjectFactoryBean.getObject() instanceof org.apache.tomcat.dbcp.dbcp2.BasicDataSource)) {
+		/*if (!(jndiObjectFactoryBean.getObject() instanceof org.apache.tomcat.dbcp.dbcp2.BasicDataSource)) {
 			log.warn("jndi의 dataSource 객체가 BasicDataSource 타입이 아닙니다.");
 			return resultList;
 		}*/

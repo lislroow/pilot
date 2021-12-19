@@ -16,8 +16,8 @@ public enum TResponseType {
 
 	public static TResponseType get(String code) {
 		TResponseType[] values = TResponseType.values();
-		for(TResponseType item : values) {
-			if(item.code().equals(code)) {
+		for (TResponseType item : values) {
+			if (item.code().equals(code)) {
 				return item;
 			}
 		}

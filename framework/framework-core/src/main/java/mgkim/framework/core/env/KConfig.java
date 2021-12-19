@@ -98,31 +98,31 @@ public class KConfig {
 	public static boolean refreshable() {
 		boolean isChanged = false;
 		boolean _verboss_all = KConfig.getConfigBoolean("debug.verboss.all."+KProfile.SYS.code());
-		if(VERBOSS_ALL != _verboss_all) {
+		if (VERBOSS_ALL != _verboss_all) {
 			log.warn(KMessage.get(KMessage.E5007, "debug.verboss.all."+KProfile.SYS.code(), VERBOSS_ALL, _verboss_all));
 			VERBOSS_ALL = _verboss_all;
 			isChanged = true;
 		}
 		boolean _verboss_sql = KConfig.getConfigBoolean("debug.verboss.sql."+KProfile.SYS.code());
-		if(VERBOSS_SQL != _verboss_sql) {
+		if (VERBOSS_SQL != _verboss_sql) {
 			log.warn(KMessage.get(KMessage.E5007, "debug.verboss.sql."+KProfile.SYS.code(), VERBOSS_SQL, _verboss_sql));
 			VERBOSS_SQL = _verboss_sql;
 			isChanged = true;
 		}
 		boolean _verboss_req = KConfig.getConfigBoolean("debug.verboss.req."+KProfile.SYS.code());
-		if(VERBOSS_REQ != _verboss_req) {
+		if (VERBOSS_REQ != _verboss_req) {
 			log.warn(KMessage.get(KMessage.E5007, "debug.verboss.req."+KProfile.SYS.code(), VERBOSS_REQ, _verboss_req));
 			VERBOSS_REQ = _verboss_req;
 			isChanged = true;
 		}
 		boolean _verboss_caller = KConfig.getConfigBoolean("debug.verboss.caller."+KProfile.SYS.code());
-		if(VERBOSS_CALLER != _verboss_caller) {
+		if (VERBOSS_CALLER != _verboss_caller) {
 			log.warn(KMessage.get(KMessage.E5007, "debug.verboss.caller."+KProfile.SYS.code(), VERBOSS_CALLER, _verboss_caller));
 			VERBOSS_CALLER = _verboss_caller;
 			isChanged = true;
 		}
 		boolean _debug_filter = KConfig.getConfigBoolean("debug.request.filter."+KProfile.SYS.code());
-		if(DEBUG_FILTER != _debug_filter) {
+		if (DEBUG_FILTER != _debug_filter) {
 			log.warn(KMessage.get(KMessage.E5007, "debug.filter."+KProfile.SYS.code(), DEBUG_FILTER, _debug_filter));
 			DEBUG_FILTER = _debug_filter;
 			isChanged = true;
@@ -134,13 +134,13 @@ public class KConfig {
 			isChanged = true;
 		}
 		boolean _verboss_schedule = KConfig.getConfigBoolean("debug.verboss.schedule."+KProfile.SYS.code());
-		if(VERBOSS_SCHEDULE != _verboss_schedule) {
+		if (VERBOSS_SCHEDULE != _verboss_schedule) {
 			log.warn(KMessage.get(KMessage.E5007, "debug.verboss.schedule."+KProfile.SYS.code(), VERBOSS_SCHEDULE, _verboss_schedule));
 			VERBOSS_SCHEDULE = _verboss_schedule;
 			isChanged = true;
 		}
 		boolean _schedule_enable = KConfig.getConfigBoolean("schedule.enable."+KProfile.SYS.code());
-		if(SCHEDULE_ENABLE != _schedule_enable) {
+		if (SCHEDULE_ENABLE != _schedule_enable) {
 			log.warn(KMessage.get(KMessage.E5007, "schedule.enable."+KProfile.SYS.code(), SCHEDULE_ENABLE, _schedule_enable));
 			SCHEDULE_ENABLE = _schedule_enable;
 			isChanged = true;
@@ -167,9 +167,9 @@ public class KConfig {
 		String result = null;
 		int len = str.length();
 		StringBuilder sb = new StringBuilder(str.length());
-		for(int i=0; i<len; i++) {
+		for (int i=0; i<len; i++) {
 			char c = str.charAt(i);
-			if(!Character.isWhitespace(c)) {
+			if (!Character.isWhitespace(c)) {
 				sb.append(c);
 			}
 		}
@@ -201,7 +201,7 @@ public class KConfig {
 
 		String config = KConfig.getConfigString(key);
 		String[] array = config.split(",");
-		for(int i=0; i<array.length; i++) {
+		for (int i=0; i<array.length; i++) {
 			array[i] = KConfig.trim(array[i]);
 		}
 		result = Arrays.asList(array);
@@ -213,7 +213,7 @@ public class KConfig {
 
 		String config = KConfig.getConfigString(key);
 		String[] array = StringUtils.splitByWholeSeparator(config, null, 0);  // by newline
-		for(int i=0; i<array.length; i++) {
+		for (int i=0; i<array.length; i++) {
 			array[i] = KConfig.trim(array[i]);
 		}
 		result = Arrays.asList(array);
@@ -221,16 +221,16 @@ public class KConfig {
 	}
 
 	private static String getConfigString(String key) {
-		if(key.endsWith(".")) {
+		if (key.endsWith(".")) {
 			key = key.substring(0, key.length()-1);
 		}
 		String result = "";
 		InputStream is = null;
 		BufferedInputStream bis = null;
 		Properties props = null;
-		for(String path : KConfig.CONFIG_FILE) {
+		for (String path : KConfig.CONFIG_FILE) {
 			try {
-				if(result != null && !KConstant.EMPTY.equals(result)) {
+				if (result != null && !KConstant.EMPTY.equals(result)) {
 					return result;
 				}
 				props = new Properties();
@@ -240,18 +240,18 @@ public class KConfig {
 					e.printStackTrace();
 					continue;
 				}
-				if(is == null) {
+				if (is == null) {
 					continue;
 				}
 				bis = new BufferedInputStream(is);
 				props.load(bis);
 				result = props.getProperty(key);
-				if(result == null) {
+				if (result == null) {
 					result = "";
 				} else {
 					result.trim();
 					String sysPropEncoding = System.getProperty("file.encoding");
-					if(sysPropEncoding == null || KConstant.EMPTY.equals(sysPropEncoding)) {
+					if (sysPropEncoding == null || KConstant.EMPTY.equals(sysPropEncoding)) {
 						sysPropEncoding = TEncodingType.UTF8.code();
 					}
 					result = new String(result.getBytes(TEncodingType.ISO88591.code()), sysPropEncoding);
@@ -261,13 +261,13 @@ public class KConfig {
 			} catch(IOException ioe) {
 				throw new RuntimeException("Property file IO exception", ioe);
 			} finally {
-				if(is != null) {
+				if (is != null) {
 					try {
 						is.close();
 					} catch(IOException e) {
 					}
 				}
-				if(bis != null) {
+				if (bis != null) {
 					try {
 						bis.close();
 					} catch(IOException e) {

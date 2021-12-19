@@ -39,17 +39,17 @@ public class ComSessionStatusMgr {
 		try {
 			TSsStcdType ssStcdType = null;
 			CmmSessionStatusVO statusVO = cmmSessionStatusMng.selectStatusForIsLogin(token);
-			if(statusVO == null) {
+			if (statusVO == null) {
 				return false;
 			}
 			ssStcdType = TSsStcdType.get(statusVO.getSsStcd());
-			if(ssStcdType == TSsStcdType.LOGIN) {
+			if (ssStcdType == TSsStcdType.LOGIN) {
 				return true;
 			}
 
-			if(ssStcdType == TSsStcdType.DUP_LOGIN) {
+			if (ssStcdType == TSsStcdType.DUP_LOGIN) {
 				throw new KSysException(KMessage.E6102);
-			} else if(ssStcdType == TSsStcdType.EXPIRED
+			} else if (ssStcdType == TSsStcdType.EXPIRED
 					|| ssStcdType == TSsStcdType.LOGOUT) {
 				throw new KSysException(KMessage.E6101);
 			} else {

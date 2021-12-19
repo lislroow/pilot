@@ -39,14 +39,14 @@ public class KFilterResolveUri extends KFilter {
 			throws ServletException, IOException {
 		try {
 			HandlerMethod method = comUriListMgr.getHandlerMethod(request);
-			if(method == null) {
+			if (method == null) {
 				throw new KSysException(KMessage.E7001);
 			}
 
 			// `REQUEST_TYPE` 결정
 			{
 				String contentType = KStringUtil.nvl(request.getContentType());
-				if(contentType.startsWith(MediaType.APPLICATION_JSON_VALUE)) {
+				if (contentType.startsWith(MediaType.APPLICATION_JSON_VALUE)) {
 					KContext.set(AttrKey.REQUEST_TYPE, TRequestType.JSON);
 				} else {
 					KContext.set(AttrKey.REQUEST_TYPE, TRequestType.FILE);

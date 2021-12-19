@@ -25,9 +25,9 @@ public class KAesUtil {
 	static final String AES_CBC_PKCS5_PADDING = "AES/CBC/PKCS5Padding";
 
 	public static KAesUtil getInstance() {
-		if(INST == null) {
+		if (INST == null) {
 			synchronized(KAesUtil.class) {
-				if(INST == null) {
+				if (INST == null) {
 					INST = new KAesUtil();
 				}
 			}

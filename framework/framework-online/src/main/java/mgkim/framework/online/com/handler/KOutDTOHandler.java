@@ -63,10 +63,10 @@ public class KOutDTOHandler extends AbstractMappingJacksonResponseBodyAdvice imp
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		if(comFieldCryptorMgr == null) {
+		if (comFieldCryptorMgr == null) {
 			throw new KSysException(KMessage.E5001, KObjectUtil.name(ComFieldCryptorMgr.class));
 		}
-		if(cmmDtoHandler == null) {
+		if (cmmDtoHandler == null) {
 			KLogSys.warn(KMessage.get(KMessage.E5002, KObjectUtil.name(CmmDtoHandler.class)));
 			return;
 		}
@@ -103,11 +103,11 @@ public class KOutDTOHandler extends AbstractMappingJacksonResponseBodyAdvice imp
 		Map<String, Object> headerMap = new LinkedHashMap<String, Object>();
 
 		Object body = bodyContainer.getValue();
-		if(body instanceof KOutDTO) {
+		if (body instanceof KOutDTO) {
 			KOutDTO<?> outDTO = (KOutDTO<?>) body;
 
 			// `page` 처리값 저장
-			if(body instanceof KOutPageDTO) {
+			if (body instanceof KOutPageDTO) {
 				KOutPageDTO<?> outPageDTO = (KOutPageDTO<?>)body;
 				KOutPageVO outPageVO = KContext.getT(AttrKey.OUT_PAGE);
 				outPageDTO.setPage(outPageVO);
@@ -119,7 +119,7 @@ public class KOutDTOHandler extends AbstractMappingJacksonResponseBodyAdvice imp
 
 			// bodyVO 필드 암호화: bodyVO 에 `@KEncrypt` 가 선언된 필드를 암호화함
 			{
-				if(comFieldCryptorMgr != null) {
+				if (comFieldCryptorMgr != null) {
 					try {
 						TApiType apiType = KContext.getT(AttrKey.API_TYPE);
 						switch(apiType) {
@@ -141,7 +141,7 @@ public class KOutDTOHandler extends AbstractMappingJacksonResponseBodyAdvice imp
 			}
 
 			// 업무서비스에서 정의한 컨트롤러 후처리 호출
-			if(cmmDtoHandler != null && !error) {
+			if (cmmDtoHandler != null && !error) {
 				try {
 					cmmDtoHandler.postProcess(outDTO);
 				} catch(Exception e) {
@@ -163,7 +163,7 @@ public class KOutDTOHandler extends AbstractMappingJacksonResponseBodyAdvice imp
 
 			// headerVO 필드값 준비: `KContext` 에서 처리 결과 정보 가져오기
 			{
-				if(KStringUtil.isEmpty(code) || KMessage.E0000.name().equals(code)) {
+				if (KStringUtil.isEmpty(code) || KMessage.E0000.name().equals(code)) {
 					code = KMessage.E0000.name();
 					message = KMessage.E0000.text();
 					isError = false;
@@ -171,7 +171,7 @@ public class KOutDTOHandler extends AbstractMappingJacksonResponseBodyAdvice imp
 					// 응답 headerVO에 resultMessage 를 숨길지에 대한 여부
 					//isHideOnError = HIDEONERROR_ENABLED && HIDEONERROR_LIST.contains(code);
 					isHideOnError = HIDEONERROR_ENABLED;
-					if(isHideOnError) {
+					if (isHideOnError) {
 						message = HIDEONERROR_TEXT;
 						text = null;
 					} else {
@@ -201,17 +201,17 @@ public class KOutDTOHandler extends AbstractMappingJacksonResponseBodyAdvice imp
 
 				// header.resultException: 에러 발생 시 exception-stack-trace 정보가 포함됩니다.
 				// header.validation: 발생된 에러 중 bodyVO의 필드가 validation 오류가 발생했을 경우 정보가 포함됩니다.
-				if(isError) {
-					//if(!isHideOnError && !KStringUtil.isEmpty(resultException)) {
-					if(!isHideOnError && text != null) {
+				if (isError) {
+					//if (!isHideOnError && !KStringUtil.isEmpty(resultException)) {
+					if (!isHideOnError && text != null) {
 						headerMap.put(KConstant.RESULT_TEXT, text);
 					}
-					//if(validation != null) {
+					//if (validation != null) {
 					//	headerMap.put("validation", validation);
 					//}
 				}
 
-				if(!KStringUtil.isEmpty(bcode)) {
+				if (!KStringUtil.isEmpty(bcode)) {
 					headerMap.put(KConstant.RESULT_BCODE, bcode);
 					headerMap.put(KConstant.RESULT_BMESSAGE, bmessage);
 				}

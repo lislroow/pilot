@@ -8,7 +8,7 @@ public class JdbcDatasourceVO implements Comparable<JdbcDatasourceVO> {
 	@Override
 	public int compareTo(JdbcDatasourceVO o) {
 		int result;
-		if(o.getKey() == null || this.getKey() == null) {
+		if (o.getKey() == null || this.getKey() == null) {
 			result = 0;
 			return result;
 		} else {

@@ -29,7 +29,7 @@ public class FileService {
 
 	public int insertFilegroup(List<FileVO> list) throws Exception {
 		int cnt = 0;
-		for(FileVO vo : list) {
+		for (FileVO vo : list) {
 			cnt += fileMapper.insertFilegroup(vo);
 		}
 		return cnt;

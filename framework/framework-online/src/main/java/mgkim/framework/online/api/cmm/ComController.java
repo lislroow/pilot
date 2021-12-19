@@ -34,7 +34,7 @@ public class ComController {
 	public @ResponseBody KOutDTO<String> archive(@RequestBody KInDTO<Long> inDTO) throws Exception {
 		KOutDTO<String> outDTO = new KOutDTO<String>();
 		Long inData = inDTO.getBody();
-		if(inData == null) {
+		if (inData == null) {
 			inData = 10L;
 			KLogSys.warn(KMessage.get(KMessage.E3001, "로그 데이터 보관 시점(초)", inData));
 		}

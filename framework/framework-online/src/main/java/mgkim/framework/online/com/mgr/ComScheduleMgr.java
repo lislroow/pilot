@@ -43,12 +43,12 @@ public class ComScheduleMgr implements InitializingBean, DisposableBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		try {
-			if(scheduleList == null) {
+			if (scheduleList == null) {
 				return;
 			}
-			for(int i=0; i<scheduleList.size(); i++) {
+			for (int i=0; i<scheduleList.size(); i++) {
 				KScheduler scheduler = scheduleList.get(i);
-				if(KObjectUtil.manage(scheduler.getClass())) {
+				if (KObjectUtil.manage(scheduler.getClass())) {
 					KLogSys.info(KMessage.get(KMessage.E5010, KAnsi.boldCyan(KObjectUtil.name(scheduler.getClass()))));
 				} else {
 					KLogSys.warn(KMessage.get(KMessage.E5009, KAnsi.boldRed(KObjectUtil.name(scheduler.getClass()))));
@@ -65,14 +65,14 @@ public class ComScheduleMgr implements InitializingBean, DisposableBean {
 		boolean startable = false;
 		{
 			ApplicationContext ctx = event.getApplicationContext();
-			if(ctx.getParent() != null) { // dispatcher-servlet context 초기화가 완료되었을 경우 실행되는 코드 블럭입니다.
+			if (ctx.getParent() != null) { // dispatcher-servlet context 초기화가 완료되었을 경우 실행되는 코드 블럭입니다.
 				startable = true;
 			}
 		}
 
 		// task 시작
 		{
-			if(startable) {
+			if (startable) {
 				try {
 					start();
 				} catch(Exception e) {
@@ -118,10 +118,10 @@ public class ComScheduleMgr implements InitializingBean, DisposableBean {
 				startable = KConfig.SCHEDULE_ENABLE;
 				scheduleList.forEach(item -> {
 					boolean managed = KObjectUtil.manage(item.getClass());
-					if(!managed && item.enabled) {
+					if (!managed && item.enabled) {
 						// 관리 대상이 아니고 활성화일 경우 실행
 						item.start();
-					} else if(managed && KConfig.SCHEDULE_ENABLE) {
+					} else if (managed && KConfig.SCHEDULE_ENABLE) {
 						// 관리 대상이고 스케줄 활성화일 경우 실행
 						item.start();
 					}
@@ -137,17 +137,17 @@ public class ComScheduleMgr implements InitializingBean, DisposableBean {
 			@Override
 			protected void execute(String execId) throws Exception {
 				try {
-					if(scheduleList == null) {
+					if (scheduleList == null) {
 						return;
 					}
 					KConfig.refreshable();
-					if(startable != KConfig.SCHEDULE_ENABLE) {
+					if (startable != KConfig.SCHEDULE_ENABLE) {
 						scheduleList.forEach(item -> {
-							if(!KObjectUtil.manage(item.getClass())) {
+							if (!KObjectUtil.manage(item.getClass())) {
 								// 관리 대상이 아니면 start/stop 을 하지 않음
 								return;
 							}
-							if(KConfig.SCHEDULE_ENABLE) {
+							if (KConfig.SCHEDULE_ENABLE) {
 								item.start();
 							} else {
 								item.stop();
@@ -165,7 +165,7 @@ public class ComScheduleMgr implements InitializingBean, DisposableBean {
 
 	@Override
 	public void destroy() throws Exception {
-		if(!enabled && future == null) {
+		if (!enabled && future == null) {
 			return;
 		}
 		future.cancel(true);

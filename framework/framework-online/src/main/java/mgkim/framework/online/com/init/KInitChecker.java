@@ -28,12 +28,12 @@ public class KInitChecker {
 		KLogSys.info("spring {} = {} {} spring bean {}개가 로드 되었습니다.",
 				ctx.getId(), KStringUtil.toJson(beanNameList), KLogLayout.LINE, beanNameList.size());
 		List<String> beanClassList = new ArrayList<String>();
-		if(beanNameList != null) {
+		if (beanNameList != null) {
 			beanNameList.forEach(item -> {
 				String className = ctx.getBean(item).getClass().getName();
-				if(!className.startsWith("com.sun.proxy.")) {
+				if (!className.startsWith("com.sun.proxy.")) {
 					Matcher m = Pattern.compile("(^[^\\${2}]*)\\${2}.*").matcher(className);
-					if(m.find()) {
+					if (m.find()) {
 						beanClassList.add(m.replaceFirst("$1"));
 					}
 				}
@@ -49,7 +49,7 @@ public class KInitChecker {
 	@EventListener
 	public void refreshed(ContextRefreshedEvent event) {
 		ApplicationContext ctx = event.getApplicationContext();
-		if(ctx.getParent() != null) {
+		if (ctx.getParent() != null) {
 			KLogSys.info("spring ["+event.getApplicationContext().getId() + "] refreshed ");
 		}
 	}

@@ -41,10 +41,10 @@ public class KProperty {
 		InputStream is = null;
 		BufferedInputStream bis = null;
 		Properties props = null;
-		for(String path : KConfig.CONFIG_FILE) {
+		for (String path : KConfig.CONFIG_FILE) {
 			try {
-				if(result != null && !KConstant.EMPTY.equals(result)) {
-					if(log) printKeyValue(key, result);
+				if (result != null && !KConstant.EMPTY.equals(result)) {
+					if (log) printKeyValue(key, result);
 					return result;
 				}
 				props = new Properties();
@@ -54,18 +54,18 @@ public class KProperty {
 					e.printStackTrace();
 					continue;
 				}
-				if(is == null) {
+				if (is == null) {
 					continue;
 				}
 				bis = new BufferedInputStream(is);
 				props.load(bis);
 				result = props.getProperty(key);
-				if(result == null) {
+				if (result == null) {
 					result = "";
 				} else {
 					result.trim();
 					String encoding = System.getProperty("file.encoding");
-					if(encoding == null || KConstant.EMPTY.equals(encoding)) {
+					if (encoding == null || KConstant.EMPTY.equals(encoding)) {
 						encoding = TEncodingType.UTF8.code();
 					}
 					result = new String(result.getBytes("iso-8859-1"), encoding);
@@ -75,13 +75,13 @@ public class KProperty {
 			} catch(IOException ioe) {
 				throw new RuntimeException("Property file IO exception", ioe);
 			} finally {
-				if(bis != null) {
+				if (bis != null) {
 					try {
 						bis.close();
 					} catch(IOException e) {
 					}
 				}
-				if(is != null) {
+				if (is != null) {
 					try {
 						is.close();
 					} catch(IOException e) {
@@ -89,7 +89,7 @@ public class KProperty {
 				}
 			}
 		}
-		if(log) printKeyValue(key, result);
+		if (log) printKeyValue(key, result);
 		return result;
 	}
 
@@ -105,7 +105,7 @@ public class KProperty {
 		List<String> result = null;
 		String str = getString(key, false);
 		String[] tokens = KStringUtil.splitByWholeSeparator(str);
-		for(int i=0; i<tokens.length; i++) {
+		for (int i=0; i<tokens.length; i++) {
 			tokens[i] = StringUtils.trimAllWhitespace(tokens[i]);
 		}
 		result = Arrays.asList(tokens);
@@ -134,14 +134,14 @@ public class KProperty {
 		InputStream is = null;
 		BufferedInputStream bis = null;
 		Properties props = null;
-		for(String path : KConfig.CONFIG_FILE) {
+		for (String path : KConfig.CONFIG_FILE) {
 			try {
 				props = new Properties();
 				is = KProperty.class.getResourceAsStream(path);
 				bis = new BufferedInputStream(is);
 				props.load(bis);
 				String value = props.getProperty(key);
-				if(value == null) {
+				if (value == null) {
 					result = Collections.emptyMap();
 					printKeyValue(key, result);
 					return result;
@@ -156,13 +156,13 @@ public class KProperty {
 				log.debug("Property file IO exception", ioe);
 				throw new RuntimeException("Property file IO exception", ioe);
 			} finally {
-				if(bis != null) {
+				if (bis != null) {
 					try {
 						bis.close();
 					} catch(IOException e) {
 					}
 				}
-				if(is != null) {
+				if (is != null) {
 					try {
 						is.close();
 					} catch(IOException e) {

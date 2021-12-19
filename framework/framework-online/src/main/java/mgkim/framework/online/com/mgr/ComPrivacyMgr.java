@@ -33,7 +33,7 @@ public class ComPrivacyMgr implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		if(cmmPrivacy == null) {
+		if (cmmPrivacy == null) {
 			KLogSys.warn(KMessage.get(KMessage.E5002, KObjectUtil.name(CmmPrivacy.class)));
 			return;
 		}
@@ -52,11 +52,11 @@ public class ComPrivacyMgr implements InitializingBean {
 			throw e;
 		}
 
-		if(list != null) {
+		if (list != null) {
 			w.lock();
 			try {
 				Map<String, CmmPrivacyMngVO> tmpList = new LinkedHashMap<String, CmmPrivacyMngVO>();
-				for(CmmPrivacyMngVO item : list) {
+				for (CmmPrivacyMngVO item : list) {
 					tmpList.put(item.getMngtgId(), item);
 				}
 				mngList.clear();
@@ -70,11 +70,11 @@ public class ComPrivacyMgr implements InitializingBean {
 	}
 
 	public void insertLog(CmmPrivacyLogVO vo) throws Exception {
-		if(mngList.size() == 0) {
+		if (mngList.size() == 0) {
 			return;
 		}
 
-		if(mngList.containsKey(vo.getMngtgId())) {
+		if (mngList.containsKey(vo.getMngtgId())) {
 			cmmPrivacy.insertLog(vo);
 		}
 	}

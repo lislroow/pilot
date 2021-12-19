@@ -26,8 +26,8 @@ public enum TSiteType {
 
 	public static TSiteType get(String val) {
 		TSiteType[] list = TSiteType.values();
-		for(TSiteType item : list) {
-			if(item.code.equals(val) || item.label.equals(val)) {
+		for (TSiteType item : list) {
+			if (item.code.equals(val) || item.label.equals(val)) {
 				return item;
 			}
 		}

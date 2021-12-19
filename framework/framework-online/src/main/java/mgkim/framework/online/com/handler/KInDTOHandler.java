@@ -42,13 +42,13 @@ public class KInDTOHandler extends RequestBodyAdviceAdapter implements Initializ
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		if(comFieldCryptorMgr == null) {
+		if (comFieldCryptorMgr == null) {
 			throw new KSysException(KMessage.E5001, KObjectUtil.name(ComFieldCryptorMgr.class));
 		}
-		if(cmmDtoLog == null) {
+		if (cmmDtoLog == null) {
 			KLogSys.warn(KMessage.get(KMessage.E5002, KObjectUtil.name(CmmDtoLog.class)));
 		}
-		if(cmmDtoHandler == null) {
+		if (cmmDtoHandler == null) {
 			KLogSys.warn(KMessage.get(KMessage.E5002, KObjectUtil.name(CmmDtoHandler.class)));
 		}
 	}
@@ -62,11 +62,11 @@ public class KInDTOHandler extends RequestBodyAdviceAdapter implements Initializ
 	@Override
 	public Object afterBodyRead(Object body, HttpInputMessage inputMessage, MethodParameter parameter, Type targetType,
 			Class<? extends HttpMessageConverter<?>> converterType) {
-		if(body instanceof KInDTO) {
+		if (body instanceof KInDTO) {
 			KInDTO<?> inDTO = (KInDTO<?>)body;
 
 			// `page` 입력값 저장
-			if(body instanceof KInPageDTO) {
+			if (body instanceof KInPageDTO) {
 				KInPageDTO<?> inPageDTO = (KInPageDTO<?>)body;
 				KInPageVO inPageVO = inPageDTO.getPage();
 				KContext.set(AttrKey.IN_PAGE, inPageVO);
@@ -74,7 +74,7 @@ public class KInDTOHandler extends RequestBodyAdviceAdapter implements Initializ
 
 			// dto 저장: 특정 필드가 포함된 dto일 경우 저장
 			{
-				if(cmmDtoLog != null) {
+				if (cmmDtoLog != null) {
 					try {
 						cmmDtoLog.logging(inDTO);
 					} catch(Exception e) {
@@ -85,7 +85,7 @@ public class KInDTOHandler extends RequestBodyAdviceAdapter implements Initializ
 			}
 
 			// bodyVO 필드 복호화: bodyVO 에 `@KEncrypt` 가 선언된 필드를 복호화함
-			if(comFieldCryptorMgr != null) {
+			if (comFieldCryptorMgr != null) {
 				try {
 					String uri = KContext.getT(AttrKey.URI);
 
@@ -110,7 +110,7 @@ public class KInDTOHandler extends RequestBodyAdviceAdapter implements Initializ
 			// 업무서비스에서 정의한 컨트롤러 전처리 호출
 			{
 				try {
-					if(cmmDtoHandler != null) {
+					if (cmmDtoHandler != null) {
 						cmmDtoHandler.preProcess(inDTO);
 					}
 				} catch(Exception e) {

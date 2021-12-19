@@ -72,8 +72,8 @@ public class ComSqlPagingCount {
 
 		// count-sql 로깅
 		{
-			if(isLoggableSql) {
-				if(!isVerboss) {
+			if (isLoggableSql) {
+				if (!isVerboss) {
 				} else {
 					KSqlUtil.createParamSql(paramObject, mappedStatement, TSqlType.COUNT1_SQL);
 				}
@@ -90,24 +90,24 @@ public class ComSqlPagingCount {
 				pstmt = connection.prepareStatement(countSql);
 				final BoundSql countBoundSql = new BoundSql(mappedStatement.getConfiguration(), countSql, boundSql.getParameterMappings(), paramObject);
 				List<ParameterMapping> parameterMappings = countBoundSql.getParameterMappings();
-				if(parameterMappings != null) {
+				if (parameterMappings != null) {
 					TypeHandlerRegistry typeHandlerRegistry = configuration.getTypeHandlerRegistry();
 					// 2021-08-06 MetaObject metaObject = parameterObj == null ? null : configuration.newMetaObject(parameterObj);
-					for(int i=0; i<parameterMappings.size(); i++) {
+					for (int i=0; i<parameterMappings.size(); i++) {
 						ParameterMapping parameterMapping = parameterMappings.get(i);
-						if(parameterMapping.getMode() != ParameterMode.OUT) {
+						if (parameterMapping.getMode() != ParameterMode.OUT) {
 							Object value = null;
 							String propertyName = parameterMapping.getProperty();
 							PropertyTokenizer prop = new PropertyTokenizer(propertyName);
-							if(paramObject == null) {
+							if (paramObject == null) {
 								value = null;
-							} else if(typeHandlerRegistry.hasTypeHandler(paramObject.getClass())) {
+							} else if (typeHandlerRegistry.hasTypeHandler(paramObject.getClass())) {
 								value = paramObject;
-							} else if(boundSql.hasAdditionalParameter(propertyName)) {
+							} else if (boundSql.hasAdditionalParameter(propertyName)) {
 								value = boundSql.getAdditionalParameter(propertyName);
-							} else if(propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && boundSql.hasAdditionalParameter(prop.getName())) {
+							} else if (propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && boundSql.hasAdditionalParameter(prop.getName())) {
 								value = boundSql.getAdditionalParameter(prop.getName());
-								if(value != null) {
+								if (value != null) {
 									value = configuration.newMetaObject(value).getValue(propertyName.substring(prop.getName().length()));
 								}
 							} else {
@@ -115,7 +115,7 @@ public class ComSqlPagingCount {
 							}
 							TypeHandler typeHandler = parameterMapping.getTypeHandler();
 							JdbcType jdbcType = parameterMapping.getJdbcType();
-							if(value == null && jdbcType == null) {
+							if (value == null && jdbcType == null) {
 								jdbcType = configuration.getJdbcTypeForNull();
 							}
 							typeHandler.setParameter(pstmt, i+1, value, jdbcType);
@@ -123,19 +123,19 @@ public class ComSqlPagingCount {
 					}
 				}
 				rs = pstmt.executeQuery();
-				if(rs.next()) {
+				if (rs.next()) {
 					count = rs.getInt(1);
 				}
 			} catch(Exception ex) {
 				throw ex;
 			} finally {
-				if(rs != null) {
+				if (rs != null) {
 					rs.close();
 				}
-				if(pstmt != null) {
+				if (pstmt != null) {
 					pstmt.close();
 				}
-				if(connection != null) {
+				if (connection != null) {
 					connection.close();
 				}
 			}
@@ -174,8 +174,8 @@ public class ComSqlPagingCount {
 
 		// count-sql 로깅
 		{
-			if(isLoggableSql) {
-				if(!isVerboss) {
+			if (isLoggableSql) {
+				if (!isVerboss) {
 				} else {
 					KSqlUtil.createParamSql(paramObject, mappedStatement, TSqlType.COUNT2_SQL);
 				}
@@ -195,23 +195,23 @@ public class ComSqlPagingCount {
 				ParameterHandler parameterHandler = (ParameterHandler) metaObject.getValue("delegate.parameterHandler");
 				parameterHandler.setParameters(pstmt);
 				rs = pstmt.executeQuery();
-				if(rs.next()) {
+				if (rs.next()) {
 					count = rs.getInt(1);
 				}
 			} catch(Exception ex) {
-				if(!isVerboss) {
+				if (!isVerboss) {
 					KSqlUtil.createParamSql(paramObject, mappedStatement, TSqlType.COUNT2_SQL);
 				} else {
 				}
 				throw ex;
 			} finally {
-				if(rs != null) {
+				if (rs != null) {
 					rs.close();
 				}
-				if(pstmt != null) {
+				if (pstmt != null) {
 					pstmt.close();
 				}
-				if(connection != null) {
+				if (connection != null) {
 					connection.close();
 				}
 			}
@@ -243,18 +243,18 @@ public class ComSqlPagingCount {
 		{
 			Set<MappedStatement> mappedStatementList = KSqlContext.MAPPED_STATEMENT_LIST;
 			Iterator<MappedStatement> iter = mappedStatementList.iterator();
-			while(iter.hasNext()) {
+			while (iter.hasNext()) {
 				Object obj = iter.next();
-				if(obj instanceof MappedStatement) {
+				if (obj instanceof MappedStatement) {
 					MappedStatement ms = (MappedStatement)obj;
-					if(ms.getId().equals(sqlId+"-count")) {
+					if (ms.getId().equals(sqlId+"-count")) {
 						countMappedStatement = ms;
 						break;
 					}
 				}
 			}
 
-			if(countMappedStatement == null) {
+			if (countMappedStatement == null) {
 				return count; // count-sql 이 존재하지 않을 경우 `null` 을 반환
 			}
 		}
@@ -275,8 +275,8 @@ public class ComSqlPagingCount {
 
 		// count-sql 로깅
 		{
-			if(isLoggableSql) {
-				if(!isVerboss) {
+			if (isLoggableSql) {
+				if (!isVerboss) {
 				} else {
 					KSqlUtil.createParamSql(paramObject, countMappedStatement, TSqlType.COUNT3_SQL);
 				}
@@ -296,24 +296,24 @@ public class ComSqlPagingCount {
 				connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
 				pstmt = connection.prepareStatement(countSql);
 				final BoundSql newBoundSql = new BoundSql(configuration, countSql, parameterMappings, paramObject);
-				if(parameterMappings != null) {
+				if (parameterMappings != null) {
 					TypeHandlerRegistry typeHandlerRegistry = configuration.getTypeHandlerRegistry();
 					//MetaObject metaObject = paramObject == null ? null : configuration.newMetaObject(paramObject);
-					for(int i=0; i<parameterMappings.size(); i++) {
+					for (int i=0; i<parameterMappings.size(); i++) {
 						ParameterMapping parameterMapping = parameterMappings.get(i);
-						if(parameterMapping.getMode() != ParameterMode.OUT) {
+						if (parameterMapping.getMode() != ParameterMode.OUT) {
 							Object value = null;
 							String propertyName = parameterMapping.getProperty();
 							PropertyTokenizer prop = new PropertyTokenizer(propertyName);
-							if(paramObject == null) {
+							if (paramObject == null) {
 								value = null;
-							} else if(typeHandlerRegistry.hasTypeHandler(paramObject.getClass())) {
+							} else if (typeHandlerRegistry.hasTypeHandler(paramObject.getClass())) {
 								value = paramObject;
-							} else if(newBoundSql.hasAdditionalParameter(propertyName)) {
+							} else if (newBoundSql.hasAdditionalParameter(propertyName)) {
 								value = newBoundSql.getAdditionalParameter(propertyName);
-							} else if(propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && newBoundSql.hasAdditionalParameter(prop.getName())) {
+							} else if (propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && newBoundSql.hasAdditionalParameter(prop.getName())) {
 								value = newBoundSql.getAdditionalParameter(prop.getName());
-								if(value != null) {
+								if (value != null) {
 									value = configuration.newMetaObject(value).getValue(propertyName.substring(prop.getName().length()));
 								}
 							} else {
@@ -321,7 +321,7 @@ public class ComSqlPagingCount {
 							}
 							TypeHandler typeHandler = parameterMapping.getTypeHandler();
 							JdbcType jdbcType = parameterMapping.getJdbcType();
-							if(value == null && jdbcType == null) {
+							if (value == null && jdbcType == null) {
 								jdbcType = configuration.getJdbcTypeForNull();
 							}
 							typeHandler.setParameter(pstmt, i+1, value, jdbcType);
@@ -329,23 +329,23 @@ public class ComSqlPagingCount {
 					}
 				}
 				rs = pstmt.executeQuery();
-				if(rs.next()) {
+				if (rs.next()) {
 					count = rs.getInt(1);
 				}
 			} catch(Exception ex) {
-				if(!isVerboss) {
+				if (!isVerboss) {
 					KSqlUtil.createParamSql(paramObject, countMappedStatement, TSqlType.COUNT3_SQL);
 				} else {
 				}
 				throw ex;
 			} finally {
-				if(rs != null) {
+				if (rs != null) {
 					rs.close();
 				}
-				if(pstmt != null) {
+				if (pstmt != null) {
 					pstmt.close();
 				}
-				if(connection != null) {
+				if (connection != null) {
 					connection.close();
 				}
 			}

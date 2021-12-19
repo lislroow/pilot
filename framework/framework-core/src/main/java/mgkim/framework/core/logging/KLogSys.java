@@ -31,9 +31,9 @@ public class KLogSys {
 		List<String> urlPatterns = KConfig.CMM_SQL;
 		boolean matched = false;
 		packageName = KStringUtil.nvl(packageName);
-		for(String pattern : urlPatterns) {
+		for (String pattern : urlPatterns) {
 			matched = packageName.startsWith(pattern);
-			if(matched) {
+			if (matched) {
 				break;
 			}
 		}
@@ -43,9 +43,9 @@ public class KLogSys {
 	public static boolean matchesExclude(String packageName, List<String> excludeList) {
 		boolean matched = false;
 		packageName = KStringUtil.nvl(packageName);
-		for(String pattern : excludeList) {
+		for (String pattern : excludeList) {
 			matched = packageName.startsWith(pattern);
-			if(matched) {
+			if (matched) {
 				break;
 			}
 		}

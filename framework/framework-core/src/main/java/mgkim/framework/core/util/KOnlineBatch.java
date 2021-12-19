@@ -33,7 +33,7 @@ public class KOnlineBatch {
 		headers.add(KConstant.TXID, txid);
 		HttpEntity<Map<String, Object>> request = new HttpEntity<Map<String, Object>>(inDTO, headers);
 		java.util.regex.Matcher matcher = null;
-		if(KStringUtil.isEmpty(jobId)) {
+		if (KStringUtil.isEmpty(jobId)) {
 			KLogSys.error("jobid가 null 입니다. jobid={}", jobId);
 			return false;
 		}
@@ -43,7 +43,7 @@ public class KOnlineBatch {
 			KLogSys.error("jobid 가 올바른 형식이 아닙니다. jobid={}", jobId);
 			return false;
 		}
-		if(!matcher.find()) {
+		if (!matcher.find()) {
 			KLogSys.error("jobId 가 규칙에 맞지 않습니다. jobId={}", jobId);
 			return false;
 		}
@@ -55,7 +55,7 @@ public class KOnlineBatch {
 		try {
 			outDTO = rest.postForObject(url, request, Map.class);
 		} catch(RestClientException ex) {
-			if(ex instanceof HttpClientErrorException) {
+			if (ex instanceof HttpClientErrorException) {
 				int httpStatusCode = ((HttpClientErrorException) ex).getRawStatusCode();
 				switch(httpStatusCode) {
 				case 404:
@@ -76,7 +76,7 @@ public class KOnlineBatch {
 
 
 		// job 실행 결과
-		if(outDTO != null) {
+		if (outDTO != null) {
 			return true;
 		} else {
 			return false;

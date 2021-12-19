@@ -40,7 +40,7 @@ public class KLogLayout extends LayoutBase<ILoggingEvent> {
 	public static final String PROFILES;
 
 	static {
-		if(KProfile.SYS == null) {
+		if (KProfile.SYS == null) {
 			KProfile.SYS = TSysType.LOC;
 		}
 		LINE = System.getProperty("line.separator");
@@ -67,9 +67,9 @@ public class KLogLayout extends LayoutBase<ILoggingEvent> {
 
 		// logging 여부 확인
 		{
-			if(logger.startsWith("KLog")) {
+			if (logger.startsWith("KLog")) {
 				Boolean loggable = KContext.getT(AttrKey.LOGGABLE);
-				if(loggable != true) {
+				if (loggable != true) {
 					switch(event.getLevel().toInt()) {
 					case ch.qos.logback.classic.Level.TRACE_INT:
 					case ch.qos.logback.classic.Level.DEBUG_INT:
@@ -88,7 +88,7 @@ public class KLogLayout extends LayoutBase<ILoggingEvent> {
 		StringBuffer messageBuf = null;
 		{
 			messageBuf = new StringBuffer(128);
-			if(logger.startsWith("KLogApm")) {
+			if (logger.startsWith("KLogApm")) {
 				messageBuf.append(this.getTimestamp());
 				messageBuf.append(this.getGuidTxid());
 				messageBuf.append(this.getProfile());
@@ -96,7 +96,7 @@ public class KLogLayout extends LayoutBase<ILoggingEvent> {
 				messageBuf.append(event.getFormattedMessage());
 				messageBuf.append(LINE);
 				return messageBuf.toString();
-			} else if(logger.startsWith("KLog")) {
+			} else if (logger.startsWith("KLog")) {
 				messageBuf.append(this.getTimestampSimple());
 				messageBuf.append(this.getLevel(event.getLevel()));
 				messageBuf.append(this.getProfile());
@@ -130,7 +130,7 @@ public class KLogLayout extends LayoutBase<ILoggingEvent> {
 
 	private void appendThrowable(ILoggingEvent event, StringBuffer sbuf) {
 		IThrowableProxy throwableProxy = event.getThrowableProxy();
-		if(throwableProxy != null) {
+		if (throwableProxy != null) {
 			sbuf.append(ThrowableProxyUtil.asString(throwableProxy));
 			sbuf.append(LINE);
 		}
@@ -174,7 +174,7 @@ public class KLogLayout extends LayoutBase<ILoggingEvent> {
 	}
 
 	String getProfile() {
-		if("[]".equals(PROFILES)) {
+		if ("[]".equals(PROFILES)) {
 			return KConstant.EMPTY;
 		}
 		switch(KProfile.SYS) {
@@ -187,11 +187,11 @@ public class KLogLayout extends LayoutBase<ILoggingEvent> {
 
 	String getApiType() {
 		TExecType execType = KContext.getT(AttrKey.EXEC_TYPE, TExecType.SYSTEM);
-		if(execType != TExecType.REQUEST) {
+		if (execType != TExecType.REQUEST) {
 			return KConstant.EMPTY;
 		}
 		TApiType apiType = KContext.getT(AttrKey.API_TYPE);
-		if(apiType == null) {
+		if (apiType == null) {
 			return KConstant.EMPTY;
 		}
 		return String.format("[%s]", KAnsi.red(apiType.code()));
@@ -199,11 +199,11 @@ public class KLogLayout extends LayoutBase<ILoggingEvent> {
 
 	String getAuthType() {
 		TExecType execType = KContext.getT(AttrKey.EXEC_TYPE, TExecType.SYSTEM);
-		if(execType != TExecType.REQUEST) {
+		if (execType != TExecType.REQUEST) {
 			return KConstant.EMPTY;
 		}
 		TAuthType authType = KContext.getT(AttrKey.AUTH_TYPE);
-		if(authType == null) {
+		if (authType == null) {
 			return KConstant.EMPTY;
 		}
 		return String.format("[%s]", KAnsi.red(authType.code()));
@@ -211,10 +211,10 @@ public class KLogLayout extends LayoutBase<ILoggingEvent> {
 
 	String getRequestURI() {
 		TExecType execType = KContext.getT(AttrKey.EXEC_TYPE, TExecType.SYSTEM);
-		if(execType != TExecType.REQUEST) {
+		if (execType != TExecType.REQUEST) {
 			return KConstant.EMPTY;
 		}
-		if(MDC.get(IP) == null) {
+		if (MDC.get(IP) == null) {
 			return KConstant.EMPTY;
 		} else {
 			return String.format("[%s]", MDC.get(URI));
@@ -226,19 +226,19 @@ public class KLogLayout extends LayoutBase<ILoggingEvent> {
 		boolean isVerboss = KConfig.VERBOSS_ALL || KConfig.VERBOSS_CALLER;
 		switch(execType) {
 		case REQUEST:
-			if(!isVerboss) {
+			if (!isVerboss) {
 				return KConstant.EMPTY;
 			}
 			break;
 		case SCHEDULE:
 		default:
-			if(!KConfig.VERBOSS_SCHEDULE) {
+			if (!KConfig.VERBOSS_SCHEDULE) {
 				return KConstant.EMPTY;
 			}
 			break;
 		}
 		String caller = MDC.get(CALLER);
-		if(KStringUtil.isEmpty(caller)) {
+		if (KStringUtil.isEmpty(caller)) {
 			return KConstant.EMPTY;
 		} else {
 			return String.format("[%s]", caller);
@@ -268,7 +268,7 @@ public class KLogLayout extends LayoutBase<ILoggingEvent> {
 						MDC.get(IP),
 						MDC.get(GUID), MDC.get(TXID)));
 				/* @TODO
-				if(@condition) {
+				if (@condition) {
 					result = KAnsi.green(String.format("[%s-%s|%s|%s]",
 							MDC.get(IP), KProperty.getString(MDC.get(IP)),
 							MDC.get(GUID), MDC.get(TXID)));
@@ -291,14 +291,14 @@ public class KLogLayout extends LayoutBase<ILoggingEvent> {
 
 	String getUserId() {
 		TExecType execType = KContext.getT(AttrKey.EXEC_TYPE, TExecType.SYSTEM);
-		if(execType != TExecType.REQUEST) {
+		if (execType != TExecType.REQUEST) {
 			return KConstant.EMPTY;
 		}
-		if(MDC.get(IP) == null) {
+		if (MDC.get(IP) == null) {
 			return KConstant.EMPTY;
 		}
 		String tokenUserId = KContext.getT(AttrKey.USER_ID);
-		if(KStringUtil.isEmpty(tokenUserId)) {
+		if (KStringUtil.isEmpty(tokenUserId)) {
 			return KConstant.EMPTY;
 		} else {
 			return KAnsi.red(String.format("[%s]", MDC.get(USER_ID)));
@@ -307,7 +307,7 @@ public class KLogLayout extends LayoutBase<ILoggingEvent> {
 
 	String getFullMessage(StringBuffer sbuf) {
 		return sbuf.toString();
-		/*if(condition) {
+		/*if (condition) {
 			return sbuf.toString().replaceAll("\\R", "") + LINE;
 		} else {
 			return sbuf.toString();

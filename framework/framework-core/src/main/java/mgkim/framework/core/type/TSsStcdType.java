@@ -26,8 +26,8 @@ public enum TSsStcdType {
 
 	public static TSsStcdType get(String val) {
 		TSsStcdType[] list = TSsStcdType.values();
-		for(TSsStcdType item : list) {
-			if(item.code.equals(val) || item.label.equals(val)) {
+		for (TSsStcdType item : list) {
+			if (item.code.equals(val) || item.label.equals(val)) {
 				return item;
 			}
 		}

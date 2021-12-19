@@ -45,7 +45,7 @@ public class KFilterDecodeToken extends KFilter implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws ServletException {
-		if(cmmUserToken == null) {
+		if (cmmUserToken == null) {
 			KLogSys.warn(KMessage.get(KMessage.E5002, KObjectUtil.name(CmmUserToken.class)));
 			return;
 		}
@@ -62,12 +62,12 @@ public class KFilterDecodeToken extends KFilter implements InitializingBean {
 			// api타입별 유효한 인증타입(apikey, bearer) 검증
 			{
 
-				if(apiType == TApiType.OPENAPI) {
-					if(authType != TAuthType.BEARER) {
+				if (apiType == TApiType.OPENAPI) {
+					if (authType != TAuthType.BEARER) {
 						throw new KSysException(KMessage.E6014);
 					}
-				} else if(apiType == TApiType.INTERAPI) {
-					if(authType != TAuthType.APIKEY) {
+				} else if (apiType == TApiType.INTERAPI) {
+					if (authType != TAuthType.APIKEY) {
 						throw new KSysException(KMessage.E6001);
 					}
 				}
@@ -80,22 +80,22 @@ public class KFilterDecodeToken extends KFilter implements InitializingBean {
 					bearer = KContext.getT(AttrKey.BEARER);
 					break;
 				case APIKEY:
-					if(cmmUserToken == null) {
+					if (cmmUserToken == null) {
 						throw new KSysException(KMessage.E6002);
 					}
 					String apikey = KContext.getT(AttrKey.APIKEY);
 					CmmOpenapiTokenVO tokenVO = cmmUserToken.selectOpenapiToken(apikey);
 					// token 문자열이 비어있는지 체크
-					if(tokenVO == null || KStringUtil.isEmpty(tokenVO.getTokenContent())) {
+					if (tokenVO == null || KStringUtil.isEmpty(tokenVO.getTokenContent())) {
 						throw new KSysException(KMessage.E6003);
 					}
 					// 사용자 승인여부 체크
-					if(!"Y".equals(tokenVO.getAprvYn())) {
+					if (!"Y".equals(tokenVO.getAprvYn())) {
 						throw new KSysException(KMessage.E6004);
 					}
 					// IP 체크
 					String ipAddr = KContext.getT(AttrKey.IP);
-					if(!ipAddr.startsWith(KStringUtil.nvl(tokenVO.getIpAddr()))) {
+					if (!ipAddr.startsWith(KStringUtil.nvl(tokenVO.getIpAddr()))) {
 						switch(KProfile.SYS) {
 						case LOC:
 							// 로컬 환경에서는 IP가 127.0.0.1 로 나오기 때문에 체크하지 않도록 함
@@ -107,7 +107,7 @@ public class KFilterDecodeToken extends KFilter implements InitializingBean {
 						}
 					}
 					// apikey 폐기 여부 체크
-					if("Y".equals(tokenVO.getDisuYn())) {
+					if ("Y".equals(tokenVO.getDisuYn())) {
 						throw new KSysException(KMessage.E6006);
 					}
 
@@ -126,7 +126,7 @@ public class KFilterDecodeToken extends KFilter implements InitializingBean {
 
 					// token 유효기간 체크
 					long current = System.currentTimeMillis();
-					if(!((current > beginDttm) && (current < expryDttm))) {
+					if (!((current > beginDttm) && (current < expryDttm))) {
 						throw new KSysException(KMessage.E6008
 								, KDateUtil.convert(beginDttm, KConstant.FMT_YYYY_MM_DD_HH_MM_SS)
 								, KDateUtil.convert(expryDttm, KConstant.FMT_YYYY_MM_DD_HH_MM_SS));
@@ -141,7 +141,7 @@ public class KFilterDecodeToken extends KFilter implements InitializingBean {
 
 			// accessToken 확인
 			{
-				if(KStringUtil.isEmpty(bearer)) {
+				if (KStringUtil.isEmpty(bearer)) {
 					throw new KSysException(KMessage.E6009);
 				}
 			}

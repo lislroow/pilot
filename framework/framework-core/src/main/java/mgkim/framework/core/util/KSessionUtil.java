@@ -15,10 +15,10 @@ public class KSessionUtil {
 
 	public static KSession getSession() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if(authentication == null) {
+		if (authentication == null) {
 			return null;
 		}
-		if(KSession.class.isInstance(authentication.getPrincipal())) {
+		if (KSession.class.isInstance(authentication.getPrincipal())) {
 			return (KSession) authentication.getPrincipal();
 		} else {
 			return null;
@@ -27,7 +27,7 @@ public class KSessionUtil {
 
 	public static List<String> getAuthorities() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if(authentication == null) {
+		if (authentication == null) {
 			return Collections.emptyList();
 		}
 		List<String> authorities = new ArrayList<String>();

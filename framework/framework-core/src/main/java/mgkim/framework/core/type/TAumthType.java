@@ -26,8 +26,8 @@ public enum TAumthType {
 
 	public static TAumthType get(String val) {
 		TAumthType[] list = TAumthType.values();
-		for(TAumthType item : list) {
-			if(item.code.equals(val) || item.label.equals(val)) {
+		for (TAumthType item : list) {
+			if (item.code.equals(val) || item.label.equals(val)) {
 				return item;
 			}
 		}

@@ -45,16 +45,16 @@ public class KFilterSecurity extends KFilter {
 				case TEST:
 				case PROD:
 				default:
-					if(debug) {
+					if (debug) {
 						String ip = KContext.getT(AttrKey.IP);
-						for(String allowIp : DEBUG_IP) {
-							if(ip.startsWith(allowIp)) {
+						for (String allowIp : DEBUG_IP) {
+							if (ip.startsWith(allowIp)) {
 								allow = true;
 								break;
 							}
 						}
 					}
-					if(allow) {
+					if (allow) {
 						KLogSys.warn("{} {}{} {}", KConstant.LT_SECURITY, KLogLayout.LINE, KConstant.LT_SECURITY, KMessage.get(KMessage.E6024));
 					} else {
 						throw new KSysException(KMessage.E7009);

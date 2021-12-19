@@ -31,8 +31,8 @@ public class ComUserSessionMgr implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		if(cmmUserSession == null) {
-			if(KObjectUtil.required(CmmUserSession.class)) {
+		if (cmmUserSession == null) {
+			if (KObjectUtil.required(CmmUserSession.class)) {
 				throw new KSysException(KMessage.E5001, KObjectUtil.name(CmmUserSession.class));
 			} else {
 				KLogSys.warn(KMessage.get(KMessage.E5003, KObjectUtil.name(ComUserSessionMgr.class), KObjectUtil.name(CmmUserSession.class)));
@@ -46,7 +46,7 @@ public class ComUserSessionMgr implements InitializingBean {
 		KSession session = null;
 		{
 			session = cmmUserSession.selectUserSession(token);
-			if(session == null) {
+			if (session == null) {
 				throw new KSysException(KMessage.E6108);
 			}
 		}
@@ -56,12 +56,12 @@ public class ComUserSessionMgr implements InitializingBean {
 		{
 			List<String> roleList = null;
 			roleList = cmmUserSession.selectUserAuthority(token);
-			if(roleList != null) {
+			if (roleList != null) {
 				roleList = roleList.stream().distinct().collect(Collectors.toList());
 				Iterator<String> iter = roleList.iterator();
-				while(iter.hasNext()) {
+				while (iter.hasNext()) {
 					String item = iter.next();
-					if(KStringUtil.isEmpty(item)) {
+					if (KStringUtil.isEmpty(item)) {
 						KLogSys.warn(KMessage.E6110.text());
 						continue;
 					}

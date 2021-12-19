@@ -36,9 +36,9 @@ public class CmmApiTxLogScheduler extends KScheduler {
 	protected void init() throws Exception {
 		// enabled 설정
 		{
-			if(cmmApiTxLog == null) {
+			if (cmmApiTxLog == null) {
 				enabled = false;
-				if(KObjectUtil.required(CmmApiTxLog.class)) {
+				if (KObjectUtil.required(CmmApiTxLog.class)) {
 					throw new KSysException(KMessage.E5001, KObjectUtil.name(CmmApiTxLog.class));
 				} else {
 					KLogSys.warn(KMessage.get(KMessage.E5003, KObjectUtil.name(CmmApiTxLogScheduler.class), KObjectUtil.name(CmmApiTxLog.class)));
@@ -50,18 +50,18 @@ public class CmmApiTxLogScheduler extends KScheduler {
 
 	@Override
 	protected KTask task() throws Exception {
-		if(!enabled) {
+		if (!enabled) {
 			return null;
 		}
 
 		KTask task = new KTask() {
 			@Override
 			protected void execute(String execId) throws Exception {
-				if(org.springframework.util.ObjectUtils.isEmpty(queue)) {
+				if (org.springframework.util.ObjectUtils.isEmpty(queue)) {
 					return;
 				}
 				List<CmmApiTxLogVO> list = new ArrayList<CmmApiTxLogVO>();
-				while(queue.size() > 0 && list.size() < 500) {  // 설정
+				while (queue.size() > 0 && list.size() < 500) {  // 설정
 					list.add(queue.poll());
 				}
 				cmmApiTxLog.insertLog(list);
@@ -71,11 +71,11 @@ public class CmmApiTxLogScheduler extends KScheduler {
 	}
 
 	public void addLog() {
-		if(!enabled) {
+		if (!enabled) {
 			return;
 		}
 
-		while(queue.size() >= MAX_QUEUQ_SIZE) {
+		while (queue.size() >= MAX_QUEUQ_SIZE) {
 			queue.poll();
 		}
 

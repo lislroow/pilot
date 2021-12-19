@@ -59,16 +59,16 @@ public class KOutPageVO {
 		public KOutPageVO build() throws KSysException {
 			// 입력값 검증
 			{
-				if(pageindex == null || pageindex <= 0) {
+				if (pageindex == null || pageindex <= 0) {
 					pageindex = 1;
 				}
-				if(rowunit == null || rowunit == 0) {
+				if (rowunit == null || rowunit == 0) {
 					rowunit = KSqlUtil.PAGING_RECORD_COUNT_PER_PAGE;
 				}
-				if(pageunit == null || pageunit == 0) {
+				if (pageunit == null || pageunit == 0) {
 					pageunit = KSqlUtil.PAGING_PAGE_SIZE;
 				}
-				if(rowcount == null) {
+				if (rowcount == null) {
 					throw new KSysException(KMessage.E8101);
 				}
 			}
@@ -77,7 +77,7 @@ public class KOutPageVO {
 			{
 				// `pagecount` 전체 페이지 개수
 				{
-					if((rowcount - 1) == 0) {
+					if ((rowcount - 1) == 0) {
 						pagecount = 1;
 					}
 					pagecount = ((rowcount - 1) / rowunit) + 1;
@@ -101,7 +101,7 @@ public class KOutPageVO {
 				// `endpage`
 				{
 					endpage = startpage + pageunit - 1;
-					if(endpage > pagecount) {
+					if (endpage > pagecount) {
 						endpage = pagecount;
 					}
 				}
@@ -114,7 +114,7 @@ public class KOutPageVO {
 				// `endrow`
 				{
 					endrow = pageindex * rowunit;
-					if(endrow > rowcount) {
+					if (endrow > rowcount) {
 						endrow = rowcount;
 					}
 				}

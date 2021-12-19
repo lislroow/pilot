@@ -45,7 +45,7 @@ public class KDateUtil {
 
 	public static String toString(Date date, String sFormat) {
 		String result = null;
-		if(date == null) {
+		if (date == null) {
 			return result;
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat(sFormat);
@@ -82,15 +82,15 @@ public class KDateUtil {
 		String hh24 = "";
 		String mi = "";
 		String ss = "";
-		if(sDate == null) {
+		if (sDate == null) {
 			return "";
 		} else {
 			sDate = sDate.replaceAll("\\D", "");
 		}
-		if(nResultLen > 0 && sDate.length() > nResultLen) {
+		if (nResultLen > 0 && sDate.length() > nResultLen) {
 			sDate = sDate.substring(0, nResultLen);
 		}
-		if(sDate.length() == 14) {
+		if (sDate.length() == 14) {
 			yyyy = sDate.substring(0, 4);
 			mm = sDate.substring(4, 6);
 			dd = sDate.substring(6, 8);
@@ -98,25 +98,25 @@ public class KDateUtil {
 			mi = sDate.substring(10, 12);
 			ss = sDate.substring(12, 14);
 			return yyyy + separatorDate + mm + separatorDate + dd + " " + hh24 + separatorTime + mi + separatorTime + ss;
-		} else if(sDate.length() == 12) {
+		} else if (sDate.length() == 12) {
 			yyyy = sDate.substring(0, 4);
 			mm = sDate.substring(4, 6);
 			dd = sDate.substring(6, 8);
 			hh24 = sDate.substring(8, 10);
 			mi = sDate.substring(10, 12);
 			return yyyy + separatorDate + mm + separatorDate + dd + " " + hh24 + separatorTime + mi;
-		} else if(sDate.length() == 10) {
+		} else if (sDate.length() == 10) {
 			yyyy = sDate.substring(0, 4);
 			mm = sDate.substring(4, 6);
 			dd = sDate.substring(6, 8);
 			hh24 = sDate.substring(8, 10);
 			return yyyy + separatorDate + mm + separatorDate + dd + " " + hh24;
-		} else if(sDate.length() == 8) {
+		} else if (sDate.length() == 8) {
 			yyyy = sDate.substring(0, 4);
 			mm = sDate.substring(4, 6);
 			dd = sDate.substring(6, 8);
 			return yyyy + separatorDate + mm + separatorDate + dd;
-		} else if(sDate.length() == 6) {
+		} else if (sDate.length() == 6) {
 			yyyy = sDate.substring(0, 2);
 			mm = sDate.substring(2, 4);
 			dd = sDate.substring(4, 6);
@@ -132,47 +132,47 @@ public class KDateUtil {
 		String yyyy = "";
 		String mm = "";
 		String dd = "";
-		if(str.length() == 14) {
+		if (str.length() == 14) {
 			yyyy = str.substring(0, 4);
-			if(yyyy.equals("0000")) {
+			if (yyyy.equals("0000")) {
 				return "";
 			}
 			mm = str.substring(4, 6);
-			if(mm.equals("00")) {
+			if (mm.equals("00")) {
 				return yyyy;
 			}
 			dd = str.substring(6, 8);
-			if(dd.equals("00")) {
+			if (dd.equals("00")) {
 				return yyyy + separatorDate + mm;
 			}
 			return yyyy + separatorDate + mm + separatorDate + dd;
-		} else if(str.length() == 8) {
+		} else if (str.length() == 8) {
 			yyyy = str.substring(0, 4);
-			if(yyyy.equals("0000")) {
+			if (yyyy.equals("0000")) {
 				return "";
 			}
 			mm = str.substring(4, 6);
-			if(mm.equals("00")) {
+			if (mm.equals("00")) {
 				return yyyy;
 			}
 			dd = str.substring(6, 8);
-			if(dd.equals("00")) {
+			if (dd.equals("00")) {
 				return yyyy + separatorDate + mm;
 			}
 			return yyyy + separatorDate + mm + separatorDate + dd;
-		} else if(str.length() == 6) {
+		} else if (str.length() == 6) {
 			yyyy = str.substring(0, 4);
-			if(yyyy.equals("0000")) {
+			if (yyyy.equals("0000")) {
 				return "";
 			}
 			mm = str.substring(4, 6);
-			if(mm.equals("00")) {
+			if (mm.equals("00")) {
 				return yyyy;
 			}
 			return yyyy + separatorDate + mm;
-		} else if(str.length() == 4) {
+		} else if (str.length() == 4) {
 			yyyy = str.substring(0, 4);
-			if(yyyy.equals("0000")) {
+			if (yyyy.equals("0000")) {
 				return "";
 			} else {
 				return yyyy;
@@ -183,9 +183,9 @@ public class KDateUtil {
 	}
 
 	public static String formatTime(String sTime, String separatorTime) {
-		if(sTime != null && sTime.length() == 6) {
+		if (sTime != null && sTime.length() == 6) {
 			return sTime.substring(0, 2) + separatorTime + sTime.substring(2, 4) + separatorTime + sTime.substring(4, 6);
-		} else if(sTime.length() == 14) {
+		} else if (sTime.length() == 14) {
 			return sTime.substring(8, 10) + separatorTime + sTime.substring(10, 12) + separatorTime + sTime.substring(12, 14);
 		} else {
 			return sTime;
@@ -207,20 +207,20 @@ public class KDateUtil {
 	}
 
 	public static String removeFormatDate(String sFormatDate) throws IllegalArgumentException {
-		if(sFormatDate == null || !(sFormatDate.trim().length() == 8 || sFormatDate.trim().length() == 10)) {
+		if (sFormatDate == null || !(sFormatDate.trim().length() == 8 || sFormatDate.trim().length() == 10)) {
 			throw new IllegalArgumentException("Invalid date format: " + sFormatDate);
 		}
-		if(sFormatDate.length() == 10) {
+		if (sFormatDate.length() == 10) {
 			sFormatDate = KStringUtil.removeMinusChar(sFormatDate);
 		}
 		return sFormatDate;
 	}
 
 	public static String removeFormatTime(String sFormatTime) throws IllegalArgumentException {
-		if(sFormatTime.length() == 5) {
+		if (sFormatTime.length() == 5) {
 			sFormatTime = KStringUtil.remove(sFormatTime, ':');
 		}
-		if(sFormatTime == null || !(sFormatTime.trim().length() == 4)) {
+		if (sFormatTime == null || !(sFormatTime.trim().length() == 4)) {
 			throw new IllegalArgumentException("Invalid time format: " + sFormatTime);
 		}
 		return sFormatTime;
@@ -228,7 +228,7 @@ public class KDateUtil {
 
 	public static String substrDay(String yyyyMMdd) {
 		String d = KStringUtil.lpad(yyyyMMdd, 2, "0");
-		if(yyyyMMdd.length() == 8) {
+		if (yyyyMMdd.length() == 8) {
 			d = d.substring(6, 8);
 		}
 		return d;
@@ -236,7 +236,7 @@ public class KDateUtil {
 
 	public static String substrMonth(String yyyyMMdd) {
 		String m = KStringUtil.lpad(yyyyMMdd, 2, "0");
-		if(yyyyMMdd.length() == 8) {
+		if (yyyyMMdd.length() == 8) {
 			m = m.substring(4, 6);
 		}
 		return m;
@@ -244,7 +244,7 @@ public class KDateUtil {
 
 	public static String substrYear(String yyyyMMdd) {
 		String y = KStringUtil.lpad(yyyyMMdd, 4, "0");
-		if(yyyyMMdd.length() == 8) {
+		if (yyyyMMdd.length() == 8) {
 			y = y.substring(0, 4);
 		}
 		return y;
@@ -259,13 +259,13 @@ public class KDateUtil {
 		} catch(ParseException e) {
 			throw new IllegalArgumentException("Invalid date format: " + dateStr);
 		}
-		if(nYear != 0) {
+		if (nYear != 0) {
 			cal.add(Calendar.YEAR, nYear);
 		}
-		if(nMonth != 0) {
+		if (nMonth != 0) {
 			cal.add(Calendar.MONTH, nMonth);
 		}
-		if(nDay != 0) {
+		if (nDay != 0) {
 			cal.add(Calendar.DATE, nDay);
 		}
 		return sdf.format(cal.getTime());
@@ -320,7 +320,7 @@ public class KDateUtil {
 
 		String retYMD = retYear + retMonth + retDay;
 
-		if(sDate.equals(retYMD)) {
+		if (sDate.equals(retYMD)) {
 			ret = true;
 		}
 
@@ -348,7 +348,7 @@ public class KDateUtil {
 
 		String retTime = retHH + retMM;
 
-		if(sTime.equals(retTime)) {
+		if (sTime.equals(retTime)) {
 			ret = true;
 		}
 
@@ -361,33 +361,33 @@ public class KDateUtil {
 
 		String m = KStringUtil.lpad(sNumMonth, 2, "0");
 
-		if(sNumMonth.length() == 8) {
+		if (sNumMonth.length() == 8) {
 			m = m.substring(4, 6);
 		}
 
-		if("01".equals(m)) {
+		if ("01".equals(m)) {
 			retStr = "JAN";
-		} else if("02".equals(m)) {
+		} else if ("02".equals(m)) {
 			retStr = "FEB";
-		} else if("03".equals(m)) {
+		} else if ("03".equals(m)) {
 			retStr = "MAR";
-		} else if("04".equals(m)) {
+		} else if ("04".equals(m)) {
 			retStr = "APR";
-		} else if("05".equals(m)) {
+		} else if ("05".equals(m)) {
 			retStr = "MAY";
-		} else if("06".equals(m)) {
+		} else if ("06".equals(m)) {
 			retStr = "JUN";
-		} else if("07".equals(m)) {
+		} else if ("07".equals(m)) {
 			retStr = "JUL";
-		} else if("08".equals(m)) {
+		} else if ("08".equals(m)) {
 			retStr = "AUG";
-		} else if("09".equals(m)) {
+		} else if ("09".equals(m)) {
 			retStr = "SEP";
-		} else if("10".equals(m)) {
+		} else if ("10".equals(m)) {
 			retStr = "OCT";
-		} else if("11".equals(m)) {
+		} else if ("11".equals(m)) {
 			retStr = "NOV";
-		} else if("12".equals(m)) {
+		} else if ("12".equals(m)) {
 			retStr = "DEC";
 		}
 
@@ -397,19 +397,19 @@ public class KDateUtil {
 	public static String weekToKor(String sEngWeek) {
 		String retStr = null;
 
-		if(sEngWeek.equals("SUN")) {
+		if (sEngWeek.equals("SUN")) {
 			retStr = "일요일";
-		} else if(sEngWeek.equals("MON")) {
+		} else if (sEngWeek.equals("MON")) {
 			retStr = "월요일";
-		} else if(sEngWeek.equals("TUE")) {
+		} else if (sEngWeek.equals("TUE")) {
 			retStr = "화요일";
-		} else if(sEngWeek.equals("WED")) {
+		} else if (sEngWeek.equals("WED")) {
 			retStr = "수요일";
-		} else if(sEngWeek.equals("THR")) {
+		} else if (sEngWeek.equals("THR")) {
 			retStr = "목요일";
-		} else if(sEngWeek.equals("FRI")) {
+		} else if (sEngWeek.equals("FRI")) {
 			retStr = "금요일";
-		} else if(sEngWeek.equals("SAT")) {
+		} else if (sEngWeek.equals("SAT")) {
 			retStr = "토요일";
 		}
 		return retStr;

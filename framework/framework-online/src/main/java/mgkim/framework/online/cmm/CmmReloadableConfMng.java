@@ -20,8 +20,8 @@ public interface CmmReloadableConfMng {
 		}
 		public static TReloadableConf get(String code) {
 			TReloadableConf[] values = TReloadableConf.values();
-			for(TReloadableConf item : values) {
-				if(item.code().equals(code)) {
+			for (TReloadableConf item : values) {
+				if (item.code().equals(code)) {
 					return item;
 				}
 			}
@@ -40,8 +40,8 @@ public interface CmmReloadableConfMng {
 		}
 		public static TConfStcd get(String code) {
 			TConfStcd[] values = TConfStcd.values();
-			for(TConfStcd item : values) {
-				if(item.code().equals(code)) {
+			for (TConfStcd item : values) {
+				if (item.code().equals(code)) {
 					return item;
 				}
 			}

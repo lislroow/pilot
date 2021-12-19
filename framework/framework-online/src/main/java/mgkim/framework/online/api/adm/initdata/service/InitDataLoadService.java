@@ -39,7 +39,7 @@ public class InitDataLoadService {
 			list.add(new InitLoadMockVO.Builder().roleId("R110").build());
 			list.add(new InitLoadMockVO.Builder().roleId("R200").build());
 			int cnt = list.size();
-			for(int i=0; i<cnt; i++) {
+			for (int i=0; i<cnt; i++) {
 				InitLoadMockVO item = list.get(i);
 				initDataLoadMapper.insertRole(item);
 			}
@@ -61,7 +61,7 @@ public class InitDataLoadService {
 			list.add(new InitLoadMockVO.Builder().rgrpId("RG110").build());
 			list.add(new InitLoadMockVO.Builder().rgrpId("RG200").build());
 			int cnt = list.size();
-			for(int i=0; i<cnt; i++) {
+			for (int i=0; i<cnt; i++) {
 				InitLoadMockVO item = list.get(i);
 				initDataLoadMapper.insertRgrp(item);
 			}
@@ -83,7 +83,7 @@ public class InitDataLoadService {
 			list.add(new InitLoadMockVO.Builder().roleId("R110").rgrpId("RG110").build());
 			list.add(new InitLoadMockVO.Builder().roleId("R200").rgrpId("RG200").build());
 			int cnt = list.size();
-			for(int i=0; i<cnt; i++) {
+			for (int i=0; i<cnt; i++) {
 				InitLoadMockVO item = list.get(i);
 				initDataLoadMapper.insertRoleRpgr(item);
 			}
@@ -112,7 +112,7 @@ public class InitDataLoadService {
 
 			// 적재
 			int cnt = list.size();
-			for(int i=0; i<cnt; i++) {
+			for (int i=0; i<cnt; i++) {
 				CmmUriVO item = list.get(i);
 				initDataLoadMapper.insertUriRaw(item);
 			}
@@ -165,7 +165,7 @@ public class InitDataLoadService {
 			list.add(new InitLoadMockVO.Builder().userId("1000000002").userNm("오팀장").email("vteam@daum.net").aumthTpcdList("01,90").inactvYn("Y").lockYn("N").loginFailCnt(4).pwchgDt("20210101").ssvaldSec(60).build());
 			list.add(new InitLoadMockVO.Builder().userId("2000000001").userNm("김고객").email("kims@daum.net").aumthTpcdList("01,90").inactvYn("N").lockYn("N").loginFailCnt(0).pwchgDt(KDateUtil.today()).ssvaldSec(600).build());
 			int cnt = list.size();
-			for(int i=0; i<cnt; i++) {
+			for (int i=0; i<cnt; i++) {
 				InitLoadMockVO item = list.get(i);
 				initDataLoadMapper.insertUserRaw(item);
 			}
@@ -205,7 +205,7 @@ public class InitDataLoadService {
 			list.add(new InitLoadMockVO.Builder().userId("1000000002").rgrpId("RG110").build());
 			list.add(new InitLoadMockVO.Builder().userId("2000000001").rgrpId("RG200").build());
 			int cnt = list.size();
-			for(int i=0; i<cnt; i++) {
+			for (int i=0; i<cnt; i++) {
 				InitLoadMockVO item = list.get(i);
 				initDataLoadMapper.insertUserRpgr(item);
 			}

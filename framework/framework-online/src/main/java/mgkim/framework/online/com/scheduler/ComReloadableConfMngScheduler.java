@@ -22,9 +22,9 @@ public class ComReloadableConfMngScheduler extends KScheduler {
 	protected void init() throws Exception {
 		// enabled 설정
 		{
-			if(cmmReloadableConfMng == null) {
+			if (cmmReloadableConfMng == null) {
 				enabled = false;
-				if(KObjectUtil.required(CmmReloadableConfMng.class)) {
+				if (KObjectUtil.required(CmmReloadableConfMng.class)) {
 					throw new KSysException(KMessage.E5001, KObjectUtil.name(CmmReloadableConfMng.class));
 				} else {
 					KLogSys.warn(KMessage.get(KMessage.E5003, KObjectUtil.name(ComReloadableConfMngScheduler.class), KObjectUtil.name(CmmReloadableConfMng.class)));

@@ -18,7 +18,7 @@ public class CmmApiTxLogImpl implements CmmApiTxLog {
 	@Override
 	public void insertLog(List<CmmApiTxLogVO> list) throws Exception {
 		int cnt = list.size();
-		for(int i=0; i<cnt; i++) {
+		for (int i=0; i<cnt; i++) {
 			cmmApiTxLogMapper.insertLog(list.get(i));
 		}
 	}

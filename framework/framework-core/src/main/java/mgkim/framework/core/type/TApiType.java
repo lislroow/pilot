@@ -16,8 +16,8 @@ public enum TApiType {
 
 	public static TApiType get(String code) {
 		TApiType[] values = TApiType.values();
-		for(TApiType item : values) {
-			if(item.code().equals(code)) {
+		for (TApiType item : values) {
+			if (item.code().equals(code)) {
 				return item;
 			}
 		}

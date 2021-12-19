@@ -35,10 +35,10 @@ public class KAspect implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		if(cmmServiceAspect == null) {
+		if (cmmServiceAspect == null) {
 			KLogSys.warn(KMessage.get(KMessage.E5002, KObjectUtil.name(CmmServiceAspect.class)));
 		}
-		if(cmmMapperAspect == null) {
+		if (cmmMapperAspect == null) {
 			KLogSys.warn(KMessage.get(KMessage.E5002, KObjectUtil.name(CmmMapperAspect.class)));
 		}
 	}
@@ -50,7 +50,7 @@ public class KAspect implements InitializingBean {
 
 		// 전처리
 		{
-			if(cmmServiceAspect != null) {
+			if (cmmServiceAspect != null) {
 				cmmServiceAspect.preProcess(args);
 			}
 		}
@@ -59,7 +59,7 @@ public class KAspect implements InitializingBean {
 
 		// 후처리
 		{
-			if(cmmServiceAspect != null) {
+			if (cmmServiceAspect != null) {
 				cmmServiceAspect.postProcess(result);
 			}
 		}
@@ -81,13 +81,13 @@ public class KAspect implements InitializingBean {
 						joinPoint.getSignature().getDeclaringTypeName()
 						, joinPoint.getSignature().getName());
 				KContext.set(AttrKey.SQL_ID, sqlId);
-				if(KContext.getT(AttrKey.EXEC_TYPE) == TExecType.REQUEST) {
+				if (KContext.getT(AttrKey.EXEC_TYPE) == TExecType.REQUEST) {
 					KContext.set(AttrKey.SQL_ID, sqlId);
 
 				}
 			}
 
-			if(cmmMapperAspect != null) {
+			if (cmmMapperAspect != null) {
 				cmmMapperAspect.preProcess(args);
 			}
 		}
@@ -96,7 +96,7 @@ public class KAspect implements InitializingBean {
 
 		// 후처리
 		{
-			if(cmmMapperAspect != null) {
+			if (cmmMapperAspect != null) {
 				cmmMapperAspect.postProcess(result);
 			}
 		}
@@ -110,23 +110,23 @@ public class KAspect implements InitializingBean {
 			+ " && !@annotation(mgkim.framework.core.annotation.KAspect)")
 	public Object aroundForLogging(ProceedingJoinPoint joinPoint) throws Throwable {
 		boolean isVerboss = KConfig.VERBOSS_ALL;
-		if(!isVerboss) {
+		if (!isVerboss) {
 			return joinPoint.proceed();
 		}
 		String pkg = joinPoint.getSignature().getDeclaringType().getPackage().getName();
 		String shortStr = joinPoint.getSignature().toShortString();
 		String text = null;
 
-		if(joinPoint.getSignature().getDeclaringType().getAnnotation(RestController.class) != null) {
+		if (joinPoint.getSignature().getDeclaringType().getAnnotation(RestController.class) != null) {
 			text = String.format("%s %s.%s", KConstant.LT_CLASS, pkg, shortStr);
-		} else if(joinPoint.getSignature().getDeclaringType().getAnnotation(Service.class) != null) {
+		} else if (joinPoint.getSignature().getDeclaringType().getAnnotation(Service.class) != null) {
 			text = String.format("%s %s.%s", KConstant.LT_CLASS, pkg, shortStr);
-		} else if(joinPoint.getSignature().getDeclaringType().getAnnotation(Component.class) != null) {
+		} else if (joinPoint.getSignature().getDeclaringType().getAnnotation(Component.class) != null) {
 			text = String.format("%s %s.%s", KConstant.LT_CLASS, pkg, shortStr);
-		} else if(joinPoint.getSignature().getDeclaringType().getAnnotation(org.apache.ibatis.annotations.Mapper.class) != null) {
+		} else if (joinPoint.getSignature().getDeclaringType().getAnnotation(org.apache.ibatis.annotations.Mapper.class) != null) {
 			text = String.format("%s %s.%s", KConstant.LT_CLASS, pkg, shortStr);
 		} else {
-			if(joinPoint.getSignature().getDeclaringType().getAnnotation(Controller.class) != null) {
+			if (joinPoint.getSignature().getDeclaringType().getAnnotation(Controller.class) != null) {
 				text = String.format("%s %s.%s", KConstant.LT_CLASS, pkg, shortStr);
 			} else {
 				text = String.format("%s %s.%s", KConstant.LT_CLASS, pkg, shortStr);

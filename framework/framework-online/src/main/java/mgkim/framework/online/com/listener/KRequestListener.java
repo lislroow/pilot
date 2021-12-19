@@ -36,10 +36,10 @@ public class KRequestListener extends RequestContextListener {
 			//KLogSys.accesslog();
 			ComDebugScheduler.check();
 			boolean loggable = KContext.getT(AttrKey.LOGGABLE);
-			if(loggable) {
+			if (loggable) {
 				KLogSys.warn("{} referer={}", KConstant.LT_REQUEST, KContext.getT(AttrKey.REFERER));
 				boolean isVerboss = KConfig.VERBOSS_ALL || KConfig.VERBOSS_REQ;
-				if(isVerboss) {
+				if (isVerboss) {
 					String reqHeader = KStringUtil.toJson(KHttpUtil.getHeaders());
 					KLogSys.info("{} {}{} {}{}`Header` = {}", KConstant.LT_REQ_HEADER, KLogLayout.LINE, KConstant.LT_REQ_HEADER, KContext.getT(AttrKey.URI), KLogLayout.LINE, reqHeader);
 				}
@@ -58,18 +58,18 @@ public class KRequestListener extends RequestContextListener {
 			long reqTime = KContext.getT(AttrKey.REQ_TIME);
 			double elapsedTime = (System.currentTimeMillis() - reqTime) / 1000.0;
 			boolean loggable = KContext.getT(AttrKey.LOGGABLE);
-			if(loggable) {
+			if (loggable) {
 				KLogSys.warn("{} {} sec elapsed.", KConstant.LT_RESPONSE, String.format("%.3f", elapsedTime));
 			} else {
 				KLogSys.debug("{} {} sec elapsed.", KConstant.LT_RESPONSE, String.format("%.3f", elapsedTime));
 			}
 			SecurityContextHolder.clearContext();
 			HttpSession session = request.getSession(false);
-			if(session != null) {
+			if (session != null) {
 				session.invalidate();
 			}
-			if(request != null && request.getCookies() != null) {
-				for(Cookie cookie : request.getCookies()) {
+			if (request != null && request.getCookies() != null) {
+				for (Cookie cookie : request.getCookies()) {
 					cookie.setMaxAge(0);
 				}
 			}

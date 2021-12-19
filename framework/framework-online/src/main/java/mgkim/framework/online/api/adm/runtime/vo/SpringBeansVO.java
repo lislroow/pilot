@@ -8,14 +8,14 @@ public class SpringBeansVO implements Comparable<SpringBeansVO> {
 	@Override
 	public int compareTo(SpringBeansVO o) {
 		int result;
-		if(o.getApplicationContextId() == null || this.getApplicationContextId() == null) {
-			if(o.getBeanClass() == null || this.getBeanClass() == null) {
+		if (o.getApplicationContextId() == null || this.getApplicationContextId() == null) {
+			if (o.getBeanClass() == null || this.getBeanClass() == null) {
 				result = 0;
 				return result;
 			}
 		}
-		if(this.getApplicationContextId().compareToIgnoreCase(o.getApplicationContextId()) == 0) {
-			if(o.getBeanClass() == null || this.getBeanClass() == null) {
+		if (this.getApplicationContextId().compareToIgnoreCase(o.getApplicationContextId()) == 0) {
+			if (o.getBeanClass() == null || this.getBeanClass() == null) {
 				result = 0;
 				return result;
 			} else {

@@ -32,7 +32,7 @@ public class KFilterUpdateSessionExpire extends KFilter {
 			throws IOException, ServletException {
 		try {
 			boolean debug = KContext.getT(AttrKey.DEBUG);
-			if(debug) {
+			if (debug) {
 				chain.doFilter(request, response);
 				return;
 			}

@@ -18,14 +18,14 @@ public class KFilterAspect {
 
 	@Around(value="execution(protected * mgkim.framework.online..filter.*.doFilterInternal(..))")
 	public Object aroundFilter(ProceedingJoinPoint joinPoint) throws Throwable {
-		if(!KConfig.DEBUG_FILTER) {
+		if (!KConfig.DEBUG_FILTER) {
 			return joinPoint.proceed();
 		}
 		String clazzStr = joinPoint.getSignature().getDeclaringType().getSimpleName();
 		String filterName = null;
 		@SuppressWarnings("unchecked")
 		KBean annotation = (KBean) joinPoint.getSignature().getDeclaringType().getAnnotation(KBean.class);
-		if(annotation != null) {
+		if (annotation != null) {
 			filterName = annotation.name();
 		}
 		Object result = null;

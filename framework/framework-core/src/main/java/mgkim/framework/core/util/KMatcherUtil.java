@@ -11,7 +11,7 @@ public class KMatcherUtil {
 
 	public static boolean matchByRegex(HttpServletRequest request, String urlPattern) {
 		try {
-			if(new RegexRequestMatcher(urlPattern, null).matches(request)) {
+			if (new RegexRequestMatcher(urlPattern, null).matches(request)) {
 				return true;
 			}
 		} catch(Exception e) {
@@ -21,9 +21,9 @@ public class KMatcherUtil {
 	}
 
 	public static boolean matchesByRegex(HttpServletRequest request, List<String> urlPatterns) {
-		for(String pattern : urlPatterns) {
+		for (String pattern : urlPatterns) {
 			try {
-				if(new RegexRequestMatcher(pattern, null).matches(request)) {
+				if (new RegexRequestMatcher(pattern, null).matches(request)) {
 					return true;
 				}
 			} catch(Exception e) {
@@ -34,9 +34,9 @@ public class KMatcherUtil {
 	}
 
 	public static boolean matchesByAnt(HttpServletRequest request, List<String> urlPatterns) {
-		for(String pattern : urlPatterns) {
+		for (String pattern : urlPatterns) {
 			try {
-				if(new AntPathRequestMatcher(pattern).matches(request)) {
+				if (new AntPathRequestMatcher(pattern).matches(request)) {
 					return true;
 				}
 			} catch(Exception e) {

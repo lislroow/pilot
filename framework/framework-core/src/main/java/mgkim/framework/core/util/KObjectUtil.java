@@ -16,14 +16,14 @@ public class KObjectUtil {
 		String name = null;
 		Annotation[] list = clazz.getAnnotations();
 		String aname = null;
-		for(Annotation a : list) {
-			if(a instanceof KBean) {
+		for (Annotation a : list) {
+			if (a instanceof KBean) {
 				aname = ((KBean)a).name();
 				break;
-			} else if(a instanceof KModule) {
+			} else if (a instanceof KModule) {
 				aname = ((KModule)a).name();
 				break;
-			} else if(a instanceof KTaskSchedule) {
+			} else if (a instanceof KTaskSchedule) {
 				aname = ((KTaskSchedule)a).name();
 				break;
 			}
@@ -36,8 +36,8 @@ public class KObjectUtil {
 	public static boolean required(Class clazz) {
 		Annotation[] list = clazz.getAnnotations();
 		boolean required = false;
-		for(Annotation a : list) {
-			if(a instanceof KModule) {
+		for (Annotation a : list) {
+			if (a instanceof KModule) {
 				required = ((KModule)a).required();
 				break;
 			}
@@ -49,8 +49,8 @@ public class KObjectUtil {
 	public static int interval(Class clazz) {
 		Annotation[] list = clazz.getAnnotations();
 		int manage = 1000;
-		for(Annotation a : list) {
-			if(a instanceof KTaskSchedule) {
+		for (Annotation a : list) {
+			if (a instanceof KTaskSchedule) {
 				manage = ((KTaskSchedule)a).interval();
 				break;
 			}
@@ -62,8 +62,8 @@ public class KObjectUtil {
 	public static boolean manage(Class clazz) {
 		Annotation[] list = clazz.getAnnotations();
 		boolean manage = false;
-		for(Annotation a : list) {
-			if(a instanceof KTaskSchedule) {
+		for (Annotation a : list) {
+			if (a instanceof KTaskSchedule) {
 				manage = ((KTaskSchedule)a).manage();
 				break;
 			}
@@ -77,7 +77,7 @@ public class KObjectUtil {
 	}
 
 	public static Field getField(Object obj, String fieldName) {
-		for(Class<?> superClass = obj.getClass(); superClass != Object.class; superClass = superClass.getSuperclass()) {
+		for (Class<?> superClass = obj.getClass(); superClass != Object.class; superClass = superClass.getSuperclass()) {
 			try {
 				return superClass.getDeclaredField(fieldName);
 			} catch(NoSuchFieldException e) {
@@ -90,8 +90,8 @@ public class KObjectUtil {
 		Object value = null;
 		try {
 			Field field = getField(obj, fieldName);
-			if(field != null) {
-				if(field.isAccessible()) {
+			if (field != null) {
+				if (field.isAccessible()) {
 					value = field.get(obj);
 				} else {
 					field.setAccessible(true);
@@ -114,7 +114,7 @@ public class KObjectUtil {
 				field = obj.getClass().getSuperclass().getDeclaredField(fieldName);
 			} catch(NoSuchFieldException e1) {
 				try {
-					if(obj.getClass().getSuperclass().getSuperclass() == null) {
+					if (obj.getClass().getSuperclass().getSuperclass() == null) {
 						return;
 					}
 					field = obj.getClass().getSuperclass().getSuperclass().getDeclaredField(fieldName);
@@ -126,13 +126,13 @@ public class KObjectUtil {
 			}
 		}
 		try {
-			if(field.isAccessible()) {
+			if (field.isAccessible()) {
 				field.set(obj, value);
 			} else {
 				field.setAccessible(true);
-				if("int".equals(field.getType().getSimpleName())) {
+				if ("int".equals(field.getType().getSimpleName())) {
 					field.set(obj, Integer.parseInt(KStringUtil.nvl(value, "0")));
-				} else if("long".equals(field.getType().getSimpleName())) {
+				} else if ("long".equals(field.getType().getSimpleName())) {
 					field.set(obj, Long.parseLong(KStringUtil.nvl(value, "0")));
 				} else {
 					field.set(obj, value);
@@ -148,13 +148,13 @@ public class KObjectUtil {
 			throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 		Field field = getField(obj, fieldName);
 		String value = null;
-		if(field != null) {
+		if (field != null) {
 			field.setAccessible(true);
-			if("int".equals(field.getType().getSimpleName()) || "long".equals(field.getType().getSimpleName()) || "double".equals(field.getType().getSimpleName())) {
+			if ("int".equals(field.getType().getSimpleName()) || "long".equals(field.getType().getSimpleName()) || "double".equals(field.getType().getSimpleName())) {
 				value = KStringUtil.nvl(field.get(obj));
 			} else {
 				value = KStringUtil.nvl(field.get(obj));
-				if(value != null && value.getBytes().length > 1000) {
+				if (value != null && value.getBytes().length > 1000) {
 					value = KStringUtil.cut(value, 1000, 3, true) + " (*** omitted ***)";
 				}
 				value = "'"+value+"'";
@@ -166,10 +166,10 @@ public class KObjectUtil {
 
 
 	public static <T> T clone(final T obj) throws CloneNotSupportedException {
-		if(obj == null) {
+		if (obj == null) {
 			return null;
 		}
-		if(obj instanceof Cloneable) {
+		if (obj instanceof Cloneable) {
 			final Class<?> clazz = obj.getClass();
 			final Method m;
 			try {
@@ -183,7 +183,7 @@ public class KObjectUtil {
 				return result;
 			} catch(final InvocationTargetException ex) {
 				final Throwable cause = ex.getCause();
-				if(cause instanceof CloneNotSupportedException) {
+				if (cause instanceof CloneNotSupportedException) {
 					throw ((CloneNotSupportedException) cause);
 				} else {
 					throw new Error("Unexpected exception", cause);

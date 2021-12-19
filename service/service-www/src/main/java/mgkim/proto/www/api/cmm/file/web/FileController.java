@@ -125,7 +125,7 @@ public class FileController {
 			ZipOutputStream zos = null;
 			try {
 				zos = new ZipOutputStream(new FileOutputStream(zipfpath));
-				for(FileVO fileVO : list) {
+				for (FileVO fileVO : list) {
 					zos.putNextEntry(new ZipEntry(fileVO.getOrgFilenm()));
 					byte[] buf = Files.readAllBytes(Paths.get(fileVO.getSaveFpath()));
 					zos.write(buf);
@@ -134,7 +134,7 @@ public class FileController {
 			} catch(Exception e) {
 				throw e;
 			} finally {
-				if(zos != null) {
+				if (zos != null) {
 					zos.close();
 				}
 			}
@@ -182,7 +182,7 @@ public class FileController {
 			ZipOutputStream zos = null;
 			try {
 				zos = new ZipOutputStream(new FileOutputStream(zipfpath));
-				for(FileVO fileVO : list) {
+				for (FileVO fileVO : list) {
 					zos.putNextEntry(new ZipEntry(fileVO.getOrgFilenm()));
 					byte[] buf = Files.readAllBytes(Paths.get(fileVO.getSaveFpath()));
 					zos.write(buf);
@@ -191,7 +191,7 @@ public class FileController {
 			} catch(Exception e) {
 				throw e;
 			} finally {
-				if(zos != null) {
+				if (zos != null) {
 					zos.close();
 				}
 			}
@@ -230,7 +230,7 @@ public class FileController {
 
 		// 파라미터 검증
 		{
-			if(attachList == null || attachList.size() == 0) {
+			if (attachList == null || attachList.size() == 0) {
 				//
 				return null;
 			}
@@ -239,7 +239,7 @@ public class FileController {
 		// 파일 저장
 		List<FileVO> list = new ArrayList<FileVO>();
 		int cnt = attachList.size();
-		for(int i=0; i<cnt; i++) {
+		for (int i=0; i<cnt; i++) {
 			MultipartFile attach = attachList.get(i);
 			FileVO fileVO = saveFile(attach);
 			list.add(fileVO);
@@ -276,11 +276,11 @@ public class FileController {
 
 		// 1.1) 첨부파일 정보
 		{
-			if(attach == null) {
+			if (attach == null) {
 			}
 			orgFileName = attach.getOriginalFilename();
 			int pos = orgFileName.lastIndexOf(".");
-			if(pos == -1) {
+			if (pos == -1) {
 			}
 			orgFileNm = orgFileName.substring(0, pos);
 			orgFileExt = orgFileName.substring(pos + 1);

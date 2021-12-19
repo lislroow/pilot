@@ -26,8 +26,8 @@ public enum TUserType {
 
 	public static TUserType get(String val) {
 		TUserType[] list = TUserType.values();
-		for(TUserType item : list) {
-			if(item.code.equals(val) || item.label.equals(val)) {
+		for (TUserType item : list) {
+			if (item.code.equals(val) || item.label.equals(val)) {
 				return item;
 			}
 		}

@@ -87,16 +87,16 @@ public class ComUriAuthorityMgr implements FilterInvocationSecurityMetadataSourc
 		Iterator<Map<String, Object>> itr = resultList.iterator();
 		String preUrl = null;
 		try {
-			while(itr.hasNext()) {
+			while (itr.hasNext()) {
 				Map<String, Object> row = itr.next();
 				String url = (String) row.get(RESOURCE);
 				String authority = KStringUtil.nvl(row.get(AUTH_ID));
 				RegexRequestMatcher matcher = new RegexRequestMatcher(url, null);
 
 				List<ConfigAttribute> authList = new LinkedList<ConfigAttribute>();
-				if(url.equals(preUrl)) {
+				if (url.equals(preUrl)) {
 					List<ConfigAttribute> preAuthList = result.get(matcher);
-					if(preAuthList == null) {
+					if (preAuthList == null) {
 						preAuthList = new ArrayList<ConfigAttribute>();
 					} else {
 						preAuthList.iterator().forEachRemaining(authId -> {
@@ -124,12 +124,12 @@ public class ComUriAuthorityMgr implements FilterInvocationSecurityMetadataSourc
 			return null;
 		}
 		uriAuthorityMap = loadedMap;
-		if(uriAuthorityMap == null) {
+		if (uriAuthorityMap == null) {
 			KLogSys.warn(KMessage.get(KMessage.E5202));
 			return null;
 		}
 		Set<ConfigAttribute> allAttributes = new HashSet<ConfigAttribute>();
-		for(Map.Entry<RequestMatcher, List<ConfigAttribute>> entry : uriAuthorityMap.entrySet()) {
+		for (Map.Entry<RequestMatcher, List<ConfigAttribute>> entry : uriAuthorityMap.entrySet()) {
 			allAttributes.addAll(entry.getValue());
 		}
 		return allAttributes;
@@ -138,13 +138,13 @@ public class ComUriAuthorityMgr implements FilterInvocationSecurityMetadataSourc
 	public String getRequiredAuthority(HttpServletRequest request) {
 		String result = null;
 		List<String> requiredList = new ArrayList<String>();
-		for(Map.Entry<RequestMatcher, List<ConfigAttribute>> entry : uriAuthorityMap.entrySet()) {
-			if(entry.getKey().matches(request)) {
+		for (Map.Entry<RequestMatcher, List<ConfigAttribute>> entry : uriAuthorityMap.entrySet()) {
+			if (entry.getKey().matches(request)) {
 				List<ConfigAttribute> list =  (List<ConfigAttribute>) entry.getValue();
 				int cnt = list.size();
-				for(int i=0; i<cnt; i++) {
+				for (int i=0; i<cnt; i++) {
 					ConfigAttribute a = list.get(i);
-					if(!requiredList.contains(a.getAttribute())) {
+					if (!requiredList.contains(a.getAttribute())) {
 						requiredList.add(a.getAttribute());
 					}
 				}
@@ -158,8 +158,8 @@ public class ComUriAuthorityMgr implements FilterInvocationSecurityMetadataSourc
 	public List<ConfigAttribute> getAttributes(Object object) {
 		final HttpServletRequest request = ((FilterInvocation) object).getRequest();
 		List<ConfigAttribute> attrList = new LinkedList<ConfigAttribute>();
-		for(Map.Entry<RequestMatcher, List<ConfigAttribute>> entry : uriAuthorityMap.entrySet()) {
-			if(entry.getKey().matches(request)) {
+		for (Map.Entry<RequestMatcher, List<ConfigAttribute>> entry : uriAuthorityMap.entrySet()) {
+			if (entry.getKey().matches(request)) {
 				attrList.addAll(entry.getValue());
 			}
 		}
@@ -178,7 +178,7 @@ public class ComUriAuthorityMgr implements FilterInvocationSecurityMetadataSourc
 		KLogSys.warn("`uri-authority` 정보를 다시 적재합니다. 적재 전 건수={}", uriAuthorityMap.size());
 		long start = System.currentTimeMillis();
 		uriAuthorityMap.clear();
-		while(iterator.hasNext()) {
+		while (iterator.hasNext()) {
 			Entry<RequestMatcher, List<ConfigAttribute>> entry = iterator.next();
 			uriAuthorityMap.put(entry.getKey(), entry.getValue());
 		}

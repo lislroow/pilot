@@ -57,7 +57,7 @@ public class ComUserTokenMgr {
 		case PROD:
 		case LOC:
 		}
-		if(KStringUtil.isEmpty(secretKey)) {
+		if (KStringUtil.isEmpty(secretKey)) {
 			secretKey = "1";
 			//KLogSys.warn(KMessage.get(KMessage.E5006, "토큰 암호화키", secretKey));
 		}
@@ -125,23 +125,23 @@ public class ComUserTokenMgr {
 			// `refreshToken 검증`
 			{
 				TJwtType jwtType = TJwtType.get(token.getJwtTpcd());
-				if(jwtType != TJwtType.REFRESH_TOKEN) {
+				if (jwtType != TJwtType.REFRESH_TOKEN) {
 					throw new KSysException(KMessage.E6017, TJwtType.REFRESH_TOKEN.label());
 				}
 
-				if(currTime > token.getExpireTime()) {
+				if (currTime > token.getExpireTime()) {
 					throw new KSysException(KMessage.E6018, TJwtType.REFRESH_TOKEN.label());
 				}
 
 				TSiteType siteType = TSiteType.get(token.getSiteTpcd());
-				if(KProfile.SITE != siteType) {
+				if (KProfile.SITE != siteType) {
 					throw new KSysException(KMessage.E6020, siteType.label(), TJwtType.REFRESH_TOKEN.label());
 				}
 			}
 			try {
 				String json = KTokenParser.format(token);
 				String encoded = JwtHelper.encode(json, signer).getEncoded();
-				if(!encoded.equals(encodedRefreshToken)) {
+				if (!encoded.equals(encodedRefreshToken)) {
 					throw new KSysException(KMessage.E6021);
 				}
 				refreshToken = new DefaultOAuth2RefreshToken(encoded);
@@ -197,7 +197,7 @@ public class ComUserTokenMgr {
 	}
 
 	public boolean verifyExpiration(KToken token) throws Exception {
-		if(System.currentTimeMillis() > token.getExpireTime()) {
+		if (System.currentTimeMillis() > token.getExpireTime()) {
 			TJwtType jwtType = TJwtType.get(token.getJwtTpcd());
 			throw new KSysException(KMessage.E6018, jwtType);
 

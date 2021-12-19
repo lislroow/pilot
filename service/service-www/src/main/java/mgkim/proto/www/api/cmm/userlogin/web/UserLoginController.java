@@ -67,7 +67,7 @@ public class UserLoginController {
 
 			// `사용자 데이터` 존재 여부 확인
 			boolean isExist = userLoginService.selectUserExist(token);
-			if(!isExist) {
+			if (!isExist) {
 				throw new KSysException(KMessage.E6108);
 			}
 
@@ -76,7 +76,7 @@ public class UserLoginController {
 
 			// (로그인 정책) `세션유효시간 설정`
 			int ssvaldSec;
-			if(cmmUserLoginPolicyVO == null) {
+			if (cmmUserLoginPolicyVO == null) {
 				ssvaldSec = CmmConstant.USER_SESIONVALIDATY_SEC;
 			} else {
 				ssvaldSec = cmmUserLoginPolicyVO.getSsvaldSec();
@@ -146,7 +146,7 @@ public class UserLoginController {
 		{
 			// `현재 session` 의 ssid 로 등록된 세션이 있는지 확인
 			boolean isLogin = comSessionStatusMgr.isLoginStatus(token);
-			if(isLogin == false) {
+			if (isLogin == false) {
 				throw new KSysException(KMessage.E6103);
 			}
 		}

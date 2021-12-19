@@ -34,13 +34,13 @@ public class KFilterVerifySession extends KFilter {
 			throws IOException, ServletException {
 		try {
 			boolean debug = KContext.getT(AttrKey.DEBUG);
-			if(debug) {
+			if (debug) {
 				chain.doFilter(request, response);
 				return;
 			}
 			KToken token = KContext.getT(AttrKey.TOKEN);
 			boolean isLogin = comSessionStatusMgr.isLoginStatus(token);
-			if(isLogin == false) {
+			if (isLogin == false) {
 				throw new KSysException(KMessage.E6103);
 			}
 		} catch(KException e) {

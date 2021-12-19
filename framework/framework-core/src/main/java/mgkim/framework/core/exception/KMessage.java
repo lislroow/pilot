@@ -222,7 +222,7 @@ public enum KMessage {
 
 	public static String get(KMessage object, Object ... args) {
 		String result = "";
-		if(args != null) {
+		if (args != null) {
 			try {
 				result = MessageFormat.format(object.text(), args);
 			} catch(Exception e) {

@@ -108,8 +108,8 @@ public class ComSqlInterceptor implements Interceptor {
 
 				// paramObject 로깅
 				{
-					if(isLoggableSql) {
-						if(!isVerboss) {
+					if (isLoggableSql) {
+						if (!isVerboss) {
 						} else {
 							KLogSql.info("{} `{}` {}{} `{}` `{}` {}`paramObject` = {}", KConstant.LT_SQL_PARAM, sqlId, KLogLayout.LINE, KConstant.LT_SQL_PARAM, sqlFile, sqlId, KLogLayout.LINE, KStringUtil.toJson(paramObject));
 						}
@@ -119,12 +119,12 @@ public class ComSqlInterceptor implements Interceptor {
 				// paging 처리
 				TSqlType sqlType = null;
 				{
-					if(!isComSql) { // com 패키지에 있는 sql 은 paging 처리 대상에서 제외함
+					if (!isComSql) { // com 패키지에 있는 sql 은 paging 처리 대상에서 제외함
 						connection = comSqlPagingList.preparePaging(invocation);
 					}
 
 					boolean isPaging;
-					if(connection == null) {  // `null` 이면 paging 처리 대상이 아님
+					if (connection == null) {  // `null` 이면 paging 처리 대상이 아님
 						isPaging = false;
 						sqlType = TSqlType.ORIGINAL_SQL;
 					} else {
@@ -133,9 +133,9 @@ public class ComSqlInterceptor implements Interceptor {
 					}
 
 					// 파라미터 처리 후에는 반드시 아래 설정이 필요함
-					if(isPaging) {
+					if (isPaging) {
 						KOutPageVO outPageVO = KContext.getT(AttrKey.OUT_PAGE);
-						if(KCmmVO.class.isInstance(paramObject)) {
+						if (KCmmVO.class.isInstance(paramObject)) {
 							KCmmVO vo = (KCmmVO) paramObject;
 							vo.set_rowcount(outPageVO.getRowcount());
 							vo.set_startrow(outPageVO.getStartrow());
@@ -147,7 +147,7 @@ public class ComSqlInterceptor implements Interceptor {
 				}
 				// -- paging 처리
 
-				if(!isComSql || isLoggableSql) {
+				if (!isComSql || isLoggableSql) {
 					paramSql = KSqlUtil.createParamSql(paramObject, mappedStatement, sqlType);
 				}
 
@@ -158,13 +158,13 @@ public class ComSqlInterceptor implements Interceptor {
 			default:
 				// paramObject 로깅
 				{
-					if(isLoggableSql) {
+					if (isLoggableSql) {
 						KLogSql.info("{} `{}` {}{} `{}` `{}` {}{}", KConstant.LT_SQL_PARAM, sqlId, KLogLayout.LINE, KConstant.LT_SQL_PARAM, sqlFile, sqlId, KLogLayout.LINE, KStringUtil.toJson(paramObject));
 					}
 				} // -- paramObject 로깅
 
 				// original-sql 생성 및 로깅
-				if(isLoggableSql) {
+				if (isLoggableSql) {
 					paramSql = KSqlUtil.createParamSql(paramObject, mappedStatement, TSqlType.ORIGINAL_SQL);
 				}
 				// -- original-sql 생성 및 로깅
@@ -202,22 +202,22 @@ public class ComSqlInterceptor implements Interceptor {
 				}
 				throw e;
 			} finally {
-				if(stopWatch != null) {
+				if (stopWatch != null) {
 					stopWatch.stop();
-					if(!isLoggableSql) {
+					if (!isLoggableSql) {
 						KLogApm.sql(stopWatch);
 					}
 					elapsedTime = stopWatch.getTotalTimeSeconds();
 				}
 				// paging 으로 처리되었을 경우에는 connection 이 null 이 아니며, 반드시 `connection.close()` 를 해야합니다.
 				// paging 처리 과정에는 새로운 connection 객체를 얻고 preparedStatement 가 생성됩니다.
-				if(invocation.getArgs().length > 0 && invocation.getArgs()[0] instanceof java.sql.PreparedStatement) {
+				if (invocation.getArgs().length > 0 && invocation.getArgs()[0] instanceof java.sql.PreparedStatement) {
 					java.sql.PreparedStatement stmt = (java.sql.PreparedStatement) invocation.getArgs()[0];
-					if(stmt != null) {
+					if (stmt != null) {
 						stmt.close();
 					}
 				}
-				if(connection != null) {
+				if (connection != null) {
 					connection.close();
 				}
 			}
@@ -226,16 +226,16 @@ public class ComSqlInterceptor implements Interceptor {
 
 		// sql 결과 로깅
 		{
-			if(!isComSql || isLoggableSql) {
-				if(resultObject instanceof List) {
+			if (!isComSql || isLoggableSql) {
+				if (resultObject instanceof List) {
 					resultCount = ((List)resultObject).size();
-				} else if(resultObject instanceof Integer) {
+				} else if (resultObject instanceof Integer) {
 					resultCount = (Integer)resultObject;
 				}
 
 				switch(execType) {
 				case REQUEST:
-					if(!isVerboss) {
+					if (!isVerboss) {
 						KLogSql.info("{} `{}` {}{} `{}` `{}` {}`rows` = {},  `elapsed` = {} sec",                       KConstant.LT_SQL_RESULT, sqlId, KLogLayout.LINE, KConstant.LT_SQL_RESULT, sqlFile, sqlId, KLogLayout.LINE, resultCount, String.format("%.3f", elapsedTime));
 					} else {
 						KLogSql.info("{} `{}` {}{} `{}` `{}` {}`rows` = {},  `elapsed` = {} sec,{}`resultObject` = {}", KConstant.LT_SQL_RESULT, sqlId, KLogLayout.LINE, KConstant.LT_SQL_RESULT_VERBOSS, sqlFile, sqlId, KLogLayout.LINE, resultCount, String.format("%.3f", elapsedTime), KLogLayout.LINE, KStringUtil.toJson(resultObject));
@@ -243,7 +243,7 @@ public class ComSqlInterceptor implements Interceptor {
 					break;
 				case SCHEDULE:
 				case SYSTEM:
-					if(!isVerboss) {
+					if (!isVerboss) {
 						KLogSql.info("{} `{}` {}{} `{}` `{}` {}`rows` = {}",                        KConstant.LT_SQL_RESULT, sqlId, KLogLayout.LINE, KConstant.LT_SQL_RESULT, sqlFile, sqlId, KLogLayout.LINE, resultCount);
 					} else {
 						KLogSql.info("{} `{}` {}{} `{}` `{}` {}`rows` = {}, {}`resultObject` = {}", KConstant.LT_SQL_RESULT, sqlId, KLogLayout.LINE, KConstant.LT_SQL_RESULT_VERBOSS, sqlFile, sqlId, KLogLayout.LINE, resultCount, KLogLayout.LINE, KStringUtil.toJson(resultObject));
@@ -259,7 +259,7 @@ public class ComSqlInterceptor implements Interceptor {
 		{
 			switch(execType) {
 			case REQUEST:
-				if(KProfile.SYS == TSysType.LOC && !KStringUtil.isEmpty(paramSql)) {
+				if (KProfile.SYS == TSysType.LOC && !KStringUtil.isEmpty(paramSql)) {
 					KSqlUtil.resolveTables(sqlFile, sqlId, paramSql);
 				}
 				break;
@@ -275,7 +275,7 @@ public class ComSqlInterceptor implements Interceptor {
 
 	@Override
 	public Object plugin(Object target) {
-		if(target instanceof StatementHandler || target instanceof ResultSetHandler) {
+		if (target instanceof StatementHandler || target instanceof ResultSetHandler) {
 			return Plugin.wrap(target, this);
 		} else {
 			return target;

@@ -31,7 +31,7 @@ public class ComSessionStatusMngScheduler extends KScheduler {
 	protected void init() throws Exception {
 		// enabled 설정
 		{
-			if(cmmSessionStatusMng == null) {
+			if (cmmSessionStatusMng == null) {
 				throw new KSysException(KMessage.E5001, KObjectUtil.name(CmmSessionStatusMng.class));
 			}
 		}
@@ -48,13 +48,13 @@ public class ComSessionStatusMngScheduler extends KScheduler {
 			@Override
 			protected void execute(String execId) throws Exception {
 				cmmSessionStatusMng.updateInvalidStatus();
-				if(org.springframework.util.ObjectUtils.isEmpty(queue)) {
+				if (org.springframework.util.ObjectUtils.isEmpty(queue)) {
 					return;
 				}
 				List<KToken> sessionList = new ArrayList<KToken>();
-				while(queue.size() > 0 && sessionList.size() < 500) {  // 설정
+				while (queue.size() > 0 && sessionList.size() < 500) {  // 설정
 					KToken item = queue.poll();
-					if(containsSsid(sessionList, item.getSsid())) {
+					if (containsSsid(sessionList, item.getSsid())) {
 						continue;
 					};
 					sessionList.add(item);

@@ -15,7 +15,7 @@ public class KLogCommon {
 	}
 
 	public static void malformed(String format, Object ... arguments) {
-		if(arguments != null && arguments.length > 0 && arguments[0] instanceof Throwable) {
+		if (arguments != null && arguments.length > 0 && arguments[0] instanceof Throwable) {
 			malformed.error(format, arguments);
 		} else {
 			malformed.info(format, arguments);

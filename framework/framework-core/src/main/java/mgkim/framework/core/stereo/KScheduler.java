@@ -45,14 +45,14 @@ public abstract class KScheduler implements InitializingBean, DisposableBean {
 	protected abstract KTask task() throws Exception;
 
 	public void start() {
-		if(!enabled) {
+		if (!enabled) {
 			KLogSys.warn(KMessage.get(KMessage.E5014, KObjectUtil.name(this.getClass())));
 			return;
 		}
 
 		// scheduler 실행 중인지 확인
 		{
-			if(isRunning()) {
+			if (isRunning()) {
 				KLogSys.warn(KMessage.get(KMessage.E5015, KObjectUtil.name(this.getClass())));
 				return;
 			}
@@ -89,10 +89,10 @@ public abstract class KScheduler implements InitializingBean, DisposableBean {
 	}
 
 	public void stop() {
-		if(!enabled) {
+		if (!enabled) {
 			return;
 		}
-		if(future != null) {
+		if (future != null) {
 			future.cancel(true);
 			KLogSys.warn(KMessage.get(KMessage.E5012, KObjectUtil.name(this.getClass())));
 		}
@@ -104,7 +104,7 @@ public abstract class KScheduler implements InitializingBean, DisposableBean {
 	}
 
 	public boolean isRunning() {
-		if(future == null) {
+		if (future == null) {
 			return false;
 		}
 
@@ -114,7 +114,7 @@ public abstract class KScheduler implements InitializingBean, DisposableBean {
 
 	@Override
 	public void destroy() throws Exception {
-		if(!enabled) {
+		if (!enabled) {
 			return;
 		}
 		future.cancel(true);
@@ -127,7 +127,7 @@ public abstract class KScheduler implements InitializingBean, DisposableBean {
 	}
 
 	public Long uptime() {
-		if(uptime == null) {
+		if (uptime == null) {
 			return null;
 		}
 		return (System.currentTimeMillis() - uptime) / KConstant.MSEC;
@@ -138,7 +138,7 @@ public abstract class KScheduler implements InitializingBean, DisposableBean {
 	}
 
 	public String getLastExecutedTime() {
-		if(task == null) {
+		if (task == null) {
 			return null;
 		}
 		return task.getLastExecutedTime();

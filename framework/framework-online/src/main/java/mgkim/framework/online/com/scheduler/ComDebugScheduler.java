@@ -38,9 +38,9 @@ public class ComDebugScheduler extends KScheduler {
 	protected void init() throws Exception {
 		// enabled 설정
 		{
-			if(cmmDebug == null) {
+			if (cmmDebug == null) {
 				enabled = false;
-				if(KObjectUtil.required(CmmDebug.class)) {
+				if (KObjectUtil.required(CmmDebug.class)) {
 					throw new KSysException(KMessage.E5001, KObjectUtil.name(CmmDebug.class));
 				} else {
 					KLogSys.warn(KMessage.get(KMessage.E5003, KObjectUtil.name(ComDebugScheduler.class), KObjectUtil.name(CmmDebug.class)));
@@ -51,7 +51,7 @@ public class ComDebugScheduler extends KScheduler {
 			// @TODO enabled = @condition
 			enabled = true;
 
-			if(!enabled) {
+			if (!enabled) {
 				KLogSys.warn(KMessage.get(KMessage.E5004, KObjectUtil.name(ComDebugScheduler.class)));
 			}
 		}
@@ -67,26 +67,26 @@ public class ComDebugScheduler extends KScheduler {
 				case LOC:
 					KLogSys.debug("디버그 로컬 모드에서 처리됩니다.");
 					boolean isTimeout = false;
-					for(CmmDebugVO item : debugList) {
+					for (CmmDebugVO item : debugList) {
 						long stopTime = item.stopTime.getTime();
 						long remainTime = (stopTime - currTime) / KConstant.MSEC;
-						if(remainTime < 0) {
+						if (remainTime < 0) {
 							isTimeout = true;
 						} else {
 							KLogSys.warn("***** 디버깅 ON ***** file={}, remainTime={}", item.debugFilePath, remainTime);
 						}
 					}
-					if(isTimeout) {
+					if (isTimeout) {
 						debugList.clear();
 					}
 					break;
 				case DEV:
 				case TEST:
 				case PROD:
-					for(CmmDebugVO item : debugList) {
+					for (CmmDebugVO item : debugList) {
 						long stopTime = item.stopTime.getTime();
 						long remainTime = (stopTime - currTime) / KConstant.MSEC;
-						if(remainTime < 0) {
+						if (remainTime < 0) {
 							KLogSys.warn("***** 디버깅 OFF ***** file={}", item.debugFilePath);
 							cmmDebug.stopDebug(item);
 						} else {
@@ -103,7 +103,7 @@ public class ComDebugScheduler extends KScheduler {
 	}
 
 	public CmmDebugVO add(CmmDebugVO vo) throws KSysException {
-		if(!enabled) {
+		if (!enabled) {
 			return null;
 		}
 
@@ -140,14 +140,14 @@ public class ComDebugScheduler extends KScheduler {
 	}
 
 	public static void check() {
-		if(debugList.size() == 0) {
+		if (debugList.size() == 0) {
 			return;
 		}
 
 		String ssid = KContext.getT(AttrKey.SSID);
-		for(CmmDebugVO item : debugList) {
+		for (CmmDebugVO item : debugList) {
 			KLogSys.info("ssid={}", item.ssid);
-			if(ssid.equals(item.ssid)) {
+			if (ssid.equals(item.ssid)) {
 				KLogSys.warn("***** 디버그 상태입니다. *****");
 				MDC.put(MDC_DEBUG_MODE_YN, "Y");
 				MDC.put(MDC_DEBUG_FILENAME, item.debugFilePath);

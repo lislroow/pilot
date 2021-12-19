@@ -238,7 +238,7 @@ public class KInit implements ServletContextInitializer, BeanFactoryPostProcesso
 	//	JndiObjectFactoryBean bean = new JndiObjectFactoryBean();
 	//	boolean isWeblogic = bean.getClass().getClassLoader().toString().contains("weblogic");
 	//	KLogSys.debug("jndi-name 설정을 위해 weblogic 여부를 확인합니다. ClassLoader명={}", bean.getClass().getClassLoader().toString());
-	//	if(!isWeblogic) {
+	//	if (!isWeblogic) {
 	//		bean.setJndiName("java:comp/env/"+JNDI);
 	//	} else {
 	//		bean.setJndiName(JNDI);
@@ -274,7 +274,7 @@ public class KInit implements ServletContextInitializer, BeanFactoryPostProcesso
 	@Bean("mybatisConfigLocation")
 	public Resource getMybatisConfigLocation() throws Exception {
 		Resource resource = new PathMatchingResourcePatternResolver().getResource(CONFIG_FILE_PATH);
-		if(!resource.exists()) {
+		if (!resource.exists()) {
 			KSysException ex = new KSysException(KMessage.E5101, resource);
 			throw ex;
 		}

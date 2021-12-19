@@ -37,7 +37,7 @@ public class KFileHandler extends ResourceHttpMessageConverter {
 		}
 
 		String filename = outputMessage.getHeaders().getContentDisposition().getFilename();
-		if(KStringUtil.isEmpty(filename)) {
+		if (KStringUtil.isEmpty(filename)) {
 			filename = KDateUtil.now(KConstant.FMT_YYYYMMDDHHMMSS);
 			outputMessage.getHeaders().set(KConstant.HK_CONTENT_DISPOSITION, KHttpUtil.getContentDisposition(filename));
 			KLogSys.warn(KMessage.get(KMessage.E6301, filename));

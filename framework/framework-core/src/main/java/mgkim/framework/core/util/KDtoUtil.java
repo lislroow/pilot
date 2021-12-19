@@ -14,31 +14,31 @@ import mgkim.framework.core.type.TApiType;
 public class KDtoUtil {
 
 	public static boolean setSysValues(Object obj) {
-		if(java.util.List.class.isInstance(obj)) {
+		if (java.util.List.class.isInstance(obj)) {
 			Iterator iter = ((List)obj).iterator();
-			while(iter.hasNext()) {
+			while (iter.hasNext()) {
 				Object item = iter.next();
-				if(setSysValues(item)) {
+				if (setSysValues(item)) {
 					continue;
 				} else {
 					break;
 				}
 			}
 			return false;
-		} else if(KCmmVO.class.isInstance(obj)) {
+		} else if (KCmmVO.class.isInstance(obj)) {
 			KCmmVO cmmVO = (KCmmVO) obj;
 			cmmVO.setSiteTpcd(KProfile.SITE.code());
 
-			if(TApiType.PUBLIC == KContext.getT(AttrKey.API_TYPE)) {
+			if (TApiType.PUBLIC == KContext.getT(AttrKey.API_TYPE)) {
 				return true;
 			}
 
 			KSession session = KSessionUtil.getSession();
-			if(session != null) {
+			if (session != null) {
 				cmmVO.setSsuserId(session.getUserId());
 			}
 			KToken token = KContext.getT(AttrKey.TOKEN);
-			if(token != null) {
+			if (token != null) {
 				cmmVO.setAumthTpcd(token.getAumthTpcd());
 			}
 			cmmVO.setSsid(KContext.getT(AttrKey.SSID));

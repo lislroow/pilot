@@ -56,21 +56,21 @@ public class KInitSecurity extends WebSecurityConfigurerAdapter {
 		List<SecurityFilterChain> filterChains = new ArrayList<SecurityFilterChain>();
 
 		// ** denyapi
-		for(String uriPattern : KConfig.SECURITY_FILTER_DENYAPI) {
+		for (String uriPattern : KConfig.SECURITY_FILTER_DENYAPI) {
 			filterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher(uriPattern), new Filter[] {
 					  ctx.getBean(KFilterAccessDeny.class)
 				}));
 		}
 
 		// ** hiddenapi
-		for(String uriPattern : KConfig.FILTER_HIDDENAPI) {
+		for (String uriPattern : KConfig.FILTER_HIDDENAPI) {
 			filterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher(uriPattern), new Filter[] {
 					  ctx.getBean(KFilterPreflight.class)
 				}));
 		}
 
 		// ** public
-		for(String uriPattern : KConfig.FILTER_PUBLIC) {
+		for (String uriPattern : KConfig.FILTER_PUBLIC) {
 			filterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher(uriPattern), new Filter[] {
 					  ctx.getBean(KFilterResolveUri.class)
 					, ctx.getBean(KFilterPreflight.class)
@@ -81,7 +81,7 @@ public class KInitSecurity extends WebSecurityConfigurerAdapter {
 		}
 
 		// ** interapi
-		for(String uriPattern : KConfig.FILTER_INTERAPI) {
+		for (String uriPattern : KConfig.FILTER_INTERAPI) {
 			filterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher(uriPattern), new Filter[] {
 					  ctx.getBean(KFilterResolveUri.class)
 					, ctx.getBean(KFilterPreflight.class)
@@ -95,7 +95,7 @@ public class KInitSecurity extends WebSecurityConfigurerAdapter {
 		}
 
 		// ** orgapi
-		for(String uriPattern : KConfig.FILTER_ORGAPI) {
+		for (String uriPattern : KConfig.FILTER_ORGAPI) {
 			filterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher(uriPattern), new Filter[] {
 					  ctx.getBean(KFilterResolveUri.class)
 					, ctx.getBean(KFilterPreflight.class)
@@ -109,7 +109,7 @@ public class KInitSecurity extends WebSecurityConfigurerAdapter {
 		}
 
 		// ** openapi
-		for(String uriPattern : KConfig.FILTER_OPENAPI) {
+		for (String uriPattern : KConfig.FILTER_OPENAPI) {
 			filterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher(uriPattern), new Filter[] {
 					  ctx.getBean(KFilterResolveUri.class)
 					, ctx.getBean(KFilterPreflight.class)
@@ -123,7 +123,7 @@ public class KInitSecurity extends WebSecurityConfigurerAdapter {
 		}
 
 		// ** logout
-		for(String uriPattern : KConfig.FILTER_API3) {
+		for (String uriPattern : KConfig.FILTER_API3) {
 			filterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher(uriPattern), new Filter[] {
 					  ctx.getBean(KFilterResolveUri.class)
 					, ctx.getBean(KFilterPreflight.class)
@@ -135,7 +135,7 @@ public class KInitSecurity extends WebSecurityConfigurerAdapter {
 		}
 
 		// ** file upload & download
-		for(String uriPattern : KConfig.FILTER_API2) {
+		for (String uriPattern : KConfig.FILTER_API2) {
 			filterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher(uriPattern), new Filter[] {
 					  ctx.getBean(KFilterResolveUri.class)
 					, ctx.getBean(KFilterPreflight.class)
@@ -151,7 +151,7 @@ public class KInitSecurity extends WebSecurityConfigurerAdapter {
 		}
 
 		// ** api
-		for(String uriPattern : KConfig.FILTER_API) {
+		for (String uriPattern : KConfig.FILTER_API) {
 			filterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher(uriPattern), new Filter[] {
 					  ctx.getBean(KFilterResolveUri.class)
 					, ctx.getBean(KFilterPreflight.class)

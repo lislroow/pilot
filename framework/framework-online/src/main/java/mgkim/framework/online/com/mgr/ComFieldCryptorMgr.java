@@ -39,7 +39,7 @@ public class ComFieldCryptorMgr implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		if(cmmFieldCryptor == null) {
+		if (cmmFieldCryptor == null) {
 			String clazzName = CmmFieldCryptor.class.getSimpleName();
 			throw new KSysException(KMessage.E5001, clazzName);
 		}
@@ -85,10 +85,10 @@ public class ComFieldCryptorMgr implements InitializingBean {
 	// 암호화 필드 형식: ENC('...암호문...')
 	public void decrypt(KInDTO<?> inDTO) throws Exception {
 		Object obj = inDTO.getBody();
-		if(hasSecuredField(obj)) {
+		if (hasSecuredField(obj)) {
 			KToken token = KContext.getT(AttrKey.TOKEN);
 			CmmFieldCryptoVO keyVO = cmmFieldCryptor.selectFieldCryptoKey(token);
-			if(keyVO == null || KStringUtil.isEmpty(keyVO.getPrivateKey())) {
+			if (keyVO == null || KStringUtil.isEmpty(keyVO.getPrivateKey())) {
 				throw new KSysException(KMessage.E6204);
 			}
 			decrypt(obj, keyVO.getPrivateKey());
@@ -98,10 +98,10 @@ public class ComFieldCryptorMgr implements InitializingBean {
 	// 암호화 필드 형식: ENC('...암호문...')
 	public void encrypt(KOutDTO<?> outDTO) throws Exception {
 		Object obj = outDTO.getBody();
-		if(hasSecuredField(obj)) {
+		if (hasSecuredField(obj)) {
 			KToken token = KContext.getT(AttrKey.TOKEN);
 			CmmFieldCryptoVO keyVO = cmmFieldCryptor.selectFieldCryptoKey(token);
-			if(keyVO == null || KStringUtil.isEmpty(keyVO.getSymKey())) {
+			if (keyVO == null || KStringUtil.isEmpty(keyVO.getSymKey())) {
 				throw new KSysException(KMessage.E6205);
 			}
 			encrypt(obj, keyVO.getSymKey());
@@ -110,30 +110,30 @@ public class ComFieldCryptorMgr implements InitializingBean {
 
 
 	private void decrypt(Object obj, String privateKey) throws Exception {
-		if(obj == null) {
+		if (obj == null) {
 			return;
 		}
-		if(obj instanceof java.util.List) {
+		if (obj instanceof java.util.List) {
 			List list = (List) obj;
 			Iterator iter = list.iterator();
-			while(iter.hasNext()) {
+			while (iter.hasNext()) {
 				Object item = iter.next();
-				if(item instanceof KCmmVO) {
+				if (item instanceof KCmmVO) {
 					decrypt(item, privateKey);
 				}
 			}
 		} else {
 			java.lang.reflect.Field[] fields = obj.getClass().getDeclaredFields();
-			for(int i=0; i<fields.length; i++) {
-				if(fields[i].getType() == java.util.List.class) {
+			for (int i=0; i<fields.length; i++) {
+				if (fields[i].getType() == java.util.List.class) {
 					List list = (List)KObjectUtil.getValue(obj, fields[i].getName());
-					if(list == null) {
+					if (list == null) {
 						continue;
 					}
 					Iterator iter = list.iterator();
-					while(iter.hasNext()) {
+					while (iter.hasNext()) {
 						Object item = iter.next();
-						if(item instanceof KCmmVO) {
+						if (item instanceof KCmmVO) {
 							decrypt(item, privateKey);
 						}
 					}
@@ -141,16 +141,16 @@ public class ComFieldCryptorMgr implements InitializingBean {
 				try {
 					String value = KStringUtil.nvl(KObjectUtil.getValue(obj, fields[i].getName()));
 					KEncrypt annotation =  fields[i].getDeclaredAnnotation(KEncrypt.class);
-					if(annotation != null) {
-						if(KStringUtil.isEmpty(value)) {
+					if (annotation != null) {
+						if (KStringUtil.isEmpty(value)) {
 							KLogSys.info("암호화 필드가 빈 문자열 입니다. : 필드명={}", fields[i].getName());
 							continue;
 						}
-						if(!value.startsWith("ENC('")) {
+						if (!value.startsWith("ENC('")) {
 							KLogSys.info("암호화 필드가 ENC('') 포맷이 아닙니다. : 필드명={}", fields[i].getName());
 							continue;
 						}
-						if(KStringUtil.isEmpty(privateKey)) {
+						if (KStringUtil.isEmpty(privateKey)) {
 							throw new KSysException(KMessage.E6204);
 						}
 						String encValue = value.substring("ENC(\'".length(), value.length() - "')".length());
@@ -169,43 +169,43 @@ public class ComFieldCryptorMgr implements InitializingBean {
 
 
 	private void encrypt(Object obj, String cryptoClntSyky) throws Exception {
-		if(obj == null) {
+		if (obj == null) {
 			return;
 		}
-		if(obj instanceof java.util.List) {
+		if (obj instanceof java.util.List) {
 			List list = (List) obj;
 			Iterator iter = list.iterator();
-			while(iter.hasNext()) {
+			while (iter.hasNext()) {
 				Object item = iter.next();
-				if(item instanceof KCmmVO) {
+				if (item instanceof KCmmVO) {
 					encrypt(item, cryptoClntSyky);
 				}
 			}
 		} else {
 			java.lang.reflect.Field[] fields = obj.getClass().getDeclaredFields();
-			for(int i=0; i<fields.length; i++) {
-				if(fields[i].getType() == java.util.List.class) {
+			for (int i=0; i<fields.length; i++) {
+				if (fields[i].getType() == java.util.List.class) {
 					List list = (List)KObjectUtil.getValue(obj, fields[i].getName());
-					if(list == null) {
+					if (list == null) {
 						continue;
 					}
 					Iterator iter = list.iterator();
-					while(iter.hasNext()) {
+					while (iter.hasNext()) {
 						Object item = iter.next();
-						if(item instanceof KCmmVO) {
+						if (item instanceof KCmmVO) {
 							encrypt(item, cryptoClntSyky);
 						}
 					}
 				}
-				if(fields[i].getDeclaringClass().getSimpleName().endsWith("VO")) {
+				if (fields[i].getDeclaringClass().getSimpleName().endsWith("VO")) {
 					Object voObj = KObjectUtil.getValue(obj, fields[i].getName());
-					if(voObj == null) {
+					if (voObj == null) {
 						continue;
 					}
 					java.lang.reflect.Field[] voFields = voObj.getClass().getDeclaredFields();
-					for(int j=0; j<voFields.length; j++) {
+					for (int j=0; j<voFields.length; j++) {
 						Object voVal = KObjectUtil.getValue(voObj, voFields[j].getName());
-						if(voVal == null) {
+						if (voVal == null) {
 							continue;
 						}
 						encrypt(voVal, cryptoClntSyky);
@@ -214,12 +214,12 @@ public class ComFieldCryptorMgr implements InitializingBean {
 				try {
 					String value = KStringUtil.nvl(KObjectUtil.getValue(obj, fields[i].getName()));
 					KEncrypt annotation =  fields[i].getDeclaredAnnotation(KEncrypt.class);
-					if(annotation != null) {
-						if(KStringUtil.isEmpty(value)) {
+					if (annotation != null) {
+						if (KStringUtil.isEmpty(value)) {
 							KLogSys.info("암호화 필드가 빈 문자열 입니다. : 필드명={}", fields[i].getName());
 							continue;
 						}
-						if(KStringUtil.isEmpty(cryptoClntSyky)) {
+						if (KStringUtil.isEmpty(cryptoClntSyky)) {
 							throw new KSysException(KMessage.E6205);
 						}
 
@@ -239,39 +239,39 @@ public class ComFieldCryptorMgr implements InitializingBean {
 
 
 	private boolean hasSecuredField(Object obj) throws Exception {
-		if(obj == null) {
+		if (obj == null) {
 			return false;
 		}
 
-		if(obj instanceof java.util.List) {
+		if (obj instanceof java.util.List) {
 			List list = (List) obj;
-			if(list.size() > 0) {
-				if(hasSecuredField(list.get(0))) {
+			if (list.size() > 0) {
+				if (hasSecuredField(list.get(0))) {
 					return true;
 				}
 			}
 		}
 
 		java.lang.reflect.Field[] fields = obj.getClass().getDeclaredFields();
-		if(fields == null) {
+		if (fields == null) {
 			return false;
 		}
 
-		for(int i=0; i<fields.length; i++) {
-			if(fields[i].getType() == java.util.List.class) {
+		for (int i=0; i<fields.length; i++) {
+			if (fields[i].getType() == java.util.List.class) {
 				List list = (List)KObjectUtil.getValue(obj, fields[i].getName());
-				if(list == null) {
+				if (list == null) {
 					continue;
 				}
 				Iterator iter = list.iterator();
-				while(iter.hasNext()) {
-					if(hasSecuredField(iter.next())) {
+				while (iter.hasNext()) {
+					if (hasSecuredField(iter.next())) {
 						return true;
 					}
 				}
 			}
 			try {
-				if(fields[i].getDeclaredAnnotation(KEncrypt.class) != null) {
+				if (fields[i].getDeclaredAnnotation(KEncrypt.class) != null) {
 					KLogSys.warn("암호화 필드가 있음 : 확인된 필드명={}", fields[i].getName());
 					return true;
 				}

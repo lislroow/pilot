@@ -13,10 +13,10 @@ public class CmmServiceAspectImpl implements CmmServiceAspect {
 	@KAspect
 	public void preProcess(Object[] args) throws Throwable {
 		KLogSys.debug("업무서비스 `@Service` 메소드 전처리 (파라미터 전처리)");
-		if(args == null) {
+		if (args == null) {
 			return;
 		}
-		for(Object obj : args) {
+		for (Object obj : args) {
 			KDtoUtil.setSysValues(obj);
 		}
 	}

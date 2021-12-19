@@ -73,7 +73,7 @@ public class ComSqlPagingList {
 		// paging 여부 확인
 		KInPageVO inPageVO = KContext.getT(AttrKey.IN_PAGE);
 		{
-			if(inPageVO == null) {
+			if (inPageVO == null) {
 				return connection; // paging 대상이 아닐 경우 Connection 객체를 null 로 반환
 			}
 
@@ -83,7 +83,7 @@ public class ComSqlPagingList {
 
 			boolean isPaging = isSelectSqlID && isSelectType && isPagingYN;
 
-			if(!isPaging) {
+			if (!isPaging) {
 				return connection; // paging 대상이 아닐 경우 Connection 객체를 null 로 반환
 			}
 		} // -- paging 여부 확인
@@ -112,7 +112,7 @@ public class ComSqlPagingList {
 			try {
 				// `executeFindCountSql`: sqlmap 에 `{sqlid}-count` 규칙의 sqlid가 있으면 `공통 count-sql`을 실행하지 않습니다.
 				totalRecordCount = comSqlPagingCount.executeFindCountSql(invocation);
-				if(totalRecordCount != null) {
+				if (totalRecordCount != null) {
 					countSqlId += "-count";
 				} else {
 					// `executeRemoveOrderBy`: `order by`문을 제거한 `공통 count-sql`을 실행합니다.
@@ -127,7 +127,7 @@ public class ComSqlPagingList {
 				}
 			} finally {
 				stopWatch.stop();
-				if(!isLogExclude) {
+				if (!isLogExclude) {
 					KLogApm.sql(stopWatch);
 				}
 				elapsedTime = stopWatch.getTotalTimeSeconds();
@@ -141,7 +141,7 @@ public class ComSqlPagingList {
 			KContext.set(AttrKey.OUT_PAGE, outPageVO);
 
 			// count-sql 결과 로깅
-			if(!isVerboss) {
+			if (!isVerboss) {
 			} else {
 				KLogSql.info("{} `{}` {}{} `{}` `{}` {}`rows` = {},  `elapsed` = {}(ms)", KConstant.LT_SQL_RESULT, sqlId, KLogLayout.LINE, KConstant.LT_SQL_RESULT, sqlFile, sqlId, KLogLayout.LINE, totalRecordCount, elapsedTime);
 			}
@@ -170,7 +170,7 @@ public class ComSqlPagingList {
 			pagingParameterMappings.add(_parameter);
 			_typeHandler = _parameter.getTypeHandler();
 			_jdbcType = _parameter.getJdbcType();
-			if(_jdbcType == null) {
+			if (_jdbcType == null) {
 				_jdbcType = configuration.getJdbcTypeForNull();
 			}
 			try {
@@ -185,24 +185,24 @@ public class ComSqlPagingList {
 
 		// 실제 binding 파라미터 생성
 		{
-			if(parameterMappings != null) {
-				for(int i=0; i<parameterMappings.size(); i++) {
+			if (parameterMappings != null) {
+				for (int i=0; i<parameterMappings.size(); i++) {
 					ParameterMapping parameterMapping = parameterMappings.get(i);
-					if(parameterMapping.getMode() != ParameterMode.OUT) {
+					if (parameterMapping.getMode() != ParameterMode.OUT) {
 						Object value;
 						String propertyName = parameterMapping.getProperty();
-						if(boundSql.hasAdditionalParameter(propertyName)) {
+						if (boundSql.hasAdditionalParameter(propertyName)) {
 							value = boundSql.getAdditionalParameter(propertyName);
-						} else if(parameterObject == null) {
+						} else if (parameterObject == null) {
 							value = null;
-						} else if(typeHandlerRegistry.hasTypeHandler(parameterObject.getClass())) {
+						} else if (typeHandlerRegistry.hasTypeHandler(parameterObject.getClass())) {
 							value = parameterObject;
 						} else {
 							value = KObjectUtil.getValue(paramObject, propertyName);
 						}
 						TypeHandler typeHandler = parameterMapping.getTypeHandler();
 						JdbcType jdbcType = parameterMapping.getJdbcType();
-						if(value == null && jdbcType == null) {
+						if (value == null && jdbcType == null) {
 							jdbcType = configuration.getJdbcTypeForNull();
 						}
 						try {
@@ -214,7 +214,7 @@ public class ComSqlPagingList {
 							throw e;
 						}
 						pagingParameterMappings.add(parameterMapping);
-					} else if(parameterMapping.getMode() == ParameterMode.OUT) {
+					} else if (parameterMapping.getMode() == ParameterMode.OUT) {
 						KLogSql.warn("페이징 sql의 statement 파라미터를 생성하는 중 parameterMapping의 mode 가 OUT 인 형태가 발견되었습니다.", parameterMapping.toString());
 					}
 				}
@@ -229,7 +229,7 @@ public class ComSqlPagingList {
 			pagingParameterMappings.add(_parameter);
 			_typeHandler = _parameter.getTypeHandler();
 			_jdbcType = _parameter.getJdbcType();
-			if(_jdbcType == null) {
+			if (_jdbcType == null) {
 				_jdbcType = configuration.getJdbcTypeForNull();
 			}
 			try {
@@ -247,7 +247,7 @@ public class ComSqlPagingList {
 			pagingParameterMappings.add(_parameter);
 			_typeHandler = _parameter.getTypeHandler();
 			_jdbcType = _parameter.getJdbcType();
-			if(_jdbcType == null) {
+			if (_jdbcType == null) {
 				_jdbcType = configuration.getJdbcTypeForNull();
 			}
 			try {
@@ -264,9 +264,9 @@ public class ComSqlPagingList {
 		{
 			BoundSql newBoundSql = new BoundSql(mappedStatement.getConfiguration(), pagingSql, pagingParameterMappings, boundSql.getParameterObject());
 			MetaObject metaObject = SystemMetaObject.forObject(sHandler);
-			for(ParameterMapping mapping : pagingParameterMappings) {
+			for (ParameterMapping mapping : pagingParameterMappings) {
 				String prop = mapping.getProperty();
-				if(boundSql.hasAdditionalParameter(prop)) {
+				if (boundSql.hasAdditionalParameter(prop)) {
 					newBoundSql.setAdditionalParameter(prop, boundSql.getAdditionalParameter(prop));
 				}
 			}

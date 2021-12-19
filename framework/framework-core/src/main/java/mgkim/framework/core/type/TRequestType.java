@@ -16,8 +16,8 @@ public enum TRequestType {
 
 	public static TRequestType get(String code) {
 		TRequestType[] values = TRequestType.values();
-		for(TRequestType item : values) {
-			if(item.code().equals(code)) {
+		for (TRequestType item : values) {
+			if (item.code().equals(code)) {
 				return item;
 			}
 		}

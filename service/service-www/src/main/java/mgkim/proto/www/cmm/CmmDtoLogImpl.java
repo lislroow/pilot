@@ -21,7 +21,7 @@ public class CmmDtoLogImpl implements CmmDtoLog {
 		try {
 			Object bodyVO = KObjectUtil.getValue(inDTO, "body");
 			boolean logging = false;//KStringUtil.toBoolean(KStringUtil.nvl(KObjectUtil.getValueByFieldName(bodyVO, "field"), "false"));
-			if(logging) {
+			if (logging) {
 				// 시스템필드
 				String guid = KContext.getT(AttrKey.SSID);
 				String referer = KContext.getT(AttrKey.REFERER);
@@ -38,15 +38,15 @@ public class CmmDtoLogImpl implements CmmDtoLog {
 						, guid, referer, ip, opcode
 						, signData, rvalue, userId);
 
-				if("NORMAL_CRL_OCSP".equals(opcode) || "NORMAL_OCSP_ONLY".equals(opcode)) {
+				if ("NORMAL_CRL_OCSP".equals(opcode) || "NORMAL_OCSP_ONLY".equals(opcode)) {
 					// 전자서명
 					String filePath = KLogSign.sign("NORMAL", text);
 					KLog.info("cmm/sign", "전자서명 로그 저장 완료. 저장경로={}, 내용={}", filePath, text);
-				} else if("AUTHORIZE_CRL_OCSP".equals(opcode) || "AUTHORIZE_OCSP_ONLY".equals(opcode)) {
+				} else if ("AUTHORIZE_CRL_OCSP".equals(opcode) || "AUTHORIZE_OCSP_ONLY".equals(opcode)) {
 					// 본인확인
 					String filePath = KLogSign.sign("AUTHORIZE", text);
 					KLog.info("cmm/sign", "본인확인 로그 저장 완료. 저장경로={}, 내용={}", filePath, text);
-				} else if("CONTRACTION_NABR".equals(opcode) || "CONTRACTION_MYPASS".equals(opcode)) {
+				} else if ("CONTRACTION_NABR".equals(opcode) || "CONTRACTION_MYPASS".equals(opcode)) {
 					// 축약서명
 					String filePath = KLogSign.sign("CONTRACTION", text);
 					KLog.info("cmm/sign", "축약서명 로그 저장 완료. 저장경로={}, 내용={}", filePath, text);

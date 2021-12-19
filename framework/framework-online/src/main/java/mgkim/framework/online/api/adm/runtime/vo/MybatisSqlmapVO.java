@@ -7,7 +7,7 @@ public class MybatisSqlmapVO implements Comparable<MybatisSqlmapVO> {
 
 	@Override
 	public int compareTo(MybatisSqlmapVO o) {
-		if(o.getFile() == null || this.getFile() == null) {
+		if (o.getFile() == null || this.getFile() == null) {
 			return 0;
 		}
 		return this.getFile().compareToIgnoreCase(o.getFile());

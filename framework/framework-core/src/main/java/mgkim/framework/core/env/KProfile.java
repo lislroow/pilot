@@ -34,7 +34,7 @@ public class KProfile {
 			} catch (UnknownHostException e) {
 				e.printStackTrace();
 			} finally {
-				if(hostname == null || "".equals(hostname)) {
+				if (hostname == null || "".equals(hostname)) {
 					hostname = "localhost";
 				}
 			}
@@ -43,7 +43,7 @@ public class KProfile {
 		}
 
 		String val = null;
-		if(System.getProperty(KConstant.VM_SPRING_PROFILES_ACTIVE) == null) {
+		if (System.getProperty(KConstant.VM_SPRING_PROFILES_ACTIVE) == null) {
 			val = "";
 		} else {
 			val = System.getProperty(KConstant.VM_SPRING_PROFILES_ACTIVE);
@@ -54,23 +54,23 @@ public class KProfile {
 		// 사이트 구분 설정 (www, adm, bat)
 		{
 			TSiteType[] type = TSiteType.values();
-			for(int i=0; i<type.length; i++) {
-				for(int j=0; j<arr.length; j++) {
-					if(arr[j].contains(type[i].toString())) { // 업무구분은 like 로 비교합니다.
+			for (int i=0; i<type.length; i++) {
+				for (int j=0; j<arr.length; j++) {
+					if (arr[j].contains(type[i].toString())) { // 업무구분은 like 로 비교합니다.
 						KProfile.SITE = type[i];
 						KProfile.profiles.add(arr[j]);
 						break;
 					}
 				}
 			}
-			if(KProfile.SITE == null) {
+			if (KProfile.SITE == null) {
 				KProfile.SITE = TSiteType.WWW;
 				KProfile.profiles.add(KProfile.SITE.label());
 			}
 			log.warn("{} KProfile.SITE={}", KConstant.LT_PROFILE, KProfile.SITE.label());
 
 			String str = System.getProperty(KConstant.VM_SPRING_PROFILES_ACTIVE);
-			if(str == null || "".equals(str)) {
+			if (str == null || "".equals(str)) {
 				System.setProperty(KConstant.VM_SPRING_PROFILES_ACTIVE, KProfile.SITE.label());
 			} else {
 				System.setProperty(KConstant.VM_SPRING_PROFILES_ACTIVE, str + "," + KProfile.SITE.label());
@@ -81,16 +81,16 @@ public class KProfile {
 		// 시스템구분 설정 (loc, dev, test, prod)
 		{
 			TSysType[] sysType = TSysType.values();
-			for(int i=0; i<sysType.length; i++) {
-				for(int j=0; j<arr.length; j++) {
-					if(arr[j].equals(sysType[i].toString())) { // 시스템구분은 equal 로 비교합니다.
+			for (int i=0; i<sysType.length; i++) {
+				for (int j=0; j<arr.length; j++) {
+					if (arr[j].equals(sysType[i].toString())) { // 시스템구분은 equal 로 비교합니다.
 						KProfile.SYS = sysType[i];
 						KProfile.profiles.add(KProfile.SYS.toString());
 						break;
 					}
 				}
 			}
-			if(KProfile.SYS == null) {
+			if (KProfile.SYS == null) {
 				KProfile.SYS = TSysType.LOC;
 				KProfile.profiles.add(KProfile.SYS.toString());
 			}
@@ -98,7 +98,7 @@ public class KProfile {
 
 			//
 			String str = System.getProperty(KConstant.VM_SPRING_PROFILES_ACTIVE);
-			if(str == null || "".equals(str)) {
+			if (str == null || "".equals(str)) {
 				System.setProperty(KConstant.VM_SPRING_PROFILES_ACTIVE, KProfile.SYS.toString());
 			} else {
 				System.setProperty(KConstant.VM_SPRING_PROFILES_ACTIVE, str + "," + KProfile.SYS.toString());
@@ -107,7 +107,7 @@ public class KProfile {
 
 		// PROFILES_STR (시스템로깅에서 사용할 문자열 생성)
 		{
-			if(profiles.size() > 0) {
+			if (profiles.size() > 0) {
 				PROFILES_STR = profiles.toString().substring(1, profiles.toString().length() -1);
 			} else {
 				PROFILES_STR = "";

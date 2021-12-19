@@ -8,14 +8,14 @@ public class JavaEnvVariableVO implements Comparable<JavaEnvVariableVO> {
 	@Override
 	public int compareTo(JavaEnvVariableVO o) {
 		int result;
-		if(o.getSourceType() == null || this.getSourceType() == null) {
-			if(o.getKey() == null || this.getKey() == null) {
+		if (o.getSourceType() == null || this.getSourceType() == null) {
+			if (o.getKey() == null || this.getKey() == null) {
 				result = 0;
 				return result;
 			}
 		}
-		if(this.getSourceType().compareToIgnoreCase(o.getSourceType()) == 0) {
-			if(o.getKey() == null || this.getKey() == null) {
+		if (this.getSourceType().compareToIgnoreCase(o.getSourceType()) == 0) {
+			if (o.getKey() == null || this.getKey() == null) {
 				result = 0;
 				return result;
 			} else {

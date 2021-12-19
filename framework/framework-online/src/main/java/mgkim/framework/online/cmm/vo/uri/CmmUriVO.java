@@ -101,14 +101,14 @@ public class CmmUriVO extends KCmmVO implements Comparable<CmmUriVO> {
 	@Override
 	public int compareTo(CmmUriVO o) {
 		int result;
-		if(o.getUriVal() == null || this.getUriVal() == null) {
-			if(o.getUriNm() == null || this.getUriNm() == null) {
+		if (o.getUriVal() == null || this.getUriVal() == null) {
+			if (o.getUriNm() == null || this.getUriNm() == null) {
 				result = -1;
 				return result;
 			}
 		}
-		if(this.getUriVal().compareToIgnoreCase(o.getUriVal()) == 0) {
-			if(o.getUriNm() == null || this.getUriNm() == null) {
+		if (this.getUriVal().compareToIgnoreCase(o.getUriVal()) == 0) {
+			if (o.getUriNm() == null || this.getUriNm() == null) {
 				result = -1;
 				return result;
 			} else {

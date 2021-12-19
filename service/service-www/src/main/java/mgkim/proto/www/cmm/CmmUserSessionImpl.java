@@ -32,14 +32,14 @@ public class CmmUserSessionImpl implements CmmUserSession {
 			throw ex;
 		}
 
-		if(session == null) {
+		if (session == null) {
 			throw new KSysException(KMessage.E6108);
 		}
 
 		// token 객체의 전체 필드를 session 객체로 복사
 		{
 			Field[] list = KObjectUtil.getFieldList(token);
-			for(int i=0; i<list.length; i++) {
+			for (int i=0; i<list.length; i++) {
 				KObjectUtil.setValue(session, list[0].getName(), list);
 			}
 		}

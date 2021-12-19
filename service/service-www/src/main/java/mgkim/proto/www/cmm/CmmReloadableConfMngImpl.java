@@ -35,9 +35,9 @@ public class CmmReloadableConfMngImpl implements CmmReloadableConfMng {
 
 		list = cmmReloadableConfMngMapper.selectReloadStateList(vo);
 
-		for(CmmReloadableConfVO item : list) {
+		for (CmmReloadableConfVO item : list) {
 			TConfStcd confStcdType = TConfStcd.get(item.getConfStcd());
-			if(confStcdType == null) {
+			if (confStcdType == null) {
 				KLogSys.warn("환경설정(CONF_ID=`{}`)의 상태코드를 확인해주세요. (CONFIG_STCD=`{}`)"
 						, item.getConfId()
 						, item.getConfStcd());
@@ -48,13 +48,13 @@ public class CmmReloadableConfMngImpl implements CmmReloadableConfMng {
 				reload(item); // ★`환경설정` 갱신
 				break;
 			case RESERVED:
-				if(KStringUtil.isEmpty(item.getApliRdttm())) {
+				if (KStringUtil.isEmpty(item.getApliRdttm())) {
 					KLogSys.warn("환경설정(CONF_ID=`{}`) 갱신이 예약상태일 경우 예약시각은 null 이 될 수 없습니다.", item.getConfId());
 					continue;
 				}
 				Date apliRdttm = KDateUtil.toDate(item.getApliRdttm(), KConstant.FMT_YYYYMMDDHHMMSS);
 				long currDttm = System.currentTimeMillis();
-				if(currDttm > apliRdttm.getTime()) {
+				if (currDttm > apliRdttm.getTime()) {
 					reload(item); // ★`환경설정` 갱신
 				} else {
 					long remainTime = (apliRdttm.getTime() / 1000) - (currDttm / 1000);
@@ -91,7 +91,7 @@ public class CmmReloadableConfMngImpl implements CmmReloadableConfMng {
 			break;
 		}
 
-		if(isSuccess) {
+		if (isSuccess) {
 			KLogSys.warn("환경설정(CONF_ID=`{}`) 갱신을 완료 했습니다.", confIdType.code());
 			item.setConfStcd(TConfStcd.DONE.code());
 		} else {
@@ -108,7 +108,7 @@ public class CmmReloadableConfMngImpl implements CmmReloadableConfMng {
 		item.setWasId(KProfile.getWasId());
 		KLogSys.warn("`모든환경설정`의 상태코드를 reset 합니다.");
 		cmmReloadableConfMngMapper.deleteReloadStateForReset(item);
-		for(TReloadableConf confId : TReloadableConf.values()) {
+		for (TReloadableConf confId : TReloadableConf.values()) {
 			item.setConfId(confId.code());
 			cmmReloadableConfMngMapper.updateReloadStateForReset(item);
 		}

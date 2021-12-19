@@ -43,7 +43,7 @@ public class KSqlUtil {
 				.replace(new java.io.File(KConstant.PATH_WEBINF_CLASSES).getAbsolutePath(), "")
 				.replaceAll("\\\\", "/").substring(1);
 		final String injar = ".jar!/";
-		if(path.indexOf(injar) > 0) {
+		if (path.indexOf(injar) > 0) {
 			path = path.substring(path.indexOf(injar)+injar.length());
 			path = "(jar) " + path;
 		}
@@ -63,22 +63,22 @@ public class KSqlUtil {
 		{
 			try {
 				paramSql = paramSql.replaceAll(PARAM_CHAR, PARAM_TEMP_CHAR);
-				if(paramObject == null) {
+				if (paramObject == null) {
 					// null 타입
 					paramSql = paramSql.replaceAll(PARAM_TEMP_CHAR, "''");
-				} else if(paramObject instanceof Map) {
+				} else if (paramObject instanceof Map) {
 					// Map 타입
 					List<Object> entryParamsValueList = getParameters(configuration, boundSql, paramObject);
 					List<ParameterMapping> entryParamKeyList = boundSql.getParameterMappings();
-					if(entryParamsValueList.size() != entryParamKeyList.size()) {
+					if (entryParamsValueList.size() != entryParamKeyList.size()) {
 						throw new KSqlException(KMessage.E8007, sqlId);
 					}
-					for(int i=0; i<entryParamKeyList.size(); i++) {
+					for (int i=0; i<entryParamKeyList.size(); i++) {
 						Object value = entryParamsValueList.get(i);
-						if(value == null) {
+						if (value == null) {
 							continue;
 						}
-						if(String.class.isInstance(value)) {
+						if (String.class.isInstance(value)) {
 							// `value` 에 `정규식에서 사용되는 특수문자`를 제거 합니다.
 							String quoteStr = Matcher.quoteReplacement(KStringUtil.nvl(value));
 							quoteStr = String.format("'%s'", quoteStr);
@@ -87,7 +87,7 @@ public class KSqlUtil {
 							paramSql = paramSql.replaceFirst(PARAM_TEMP_CHAR, KStringUtil.nvl(value));
 						}
 					}
-				} else if(paramObject instanceof String) {
+				} else if (paramObject instanceof String) {
 					// String 타입
 					String val = String.format("'%s'", paramObject);
 
@@ -98,7 +98,7 @@ public class KSqlUtil {
 				} else {
 					// VO 타입
 					List<ParameterMapping> entryParamKeyList = boundSql.getParameterMappings();
-					for(ParameterMapping mapping : entryParamKeyList) {
+					for (ParameterMapping mapping : entryParamKeyList) {
 						String propKey = mapping.getProperty();
 						String val = KObjectUtil.getSqlParamByFieldName(paramObject, propKey);
 
@@ -164,13 +164,13 @@ public class KSqlUtil {
 	public static List<Object> getParameters(Configuration configuration, BoundSql boundSql, Object mehtodParam) {
 		List<Object> paramList = new ArrayList<Object>();
 		List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
-		if(parameterMappings != null) {
-			for(int i=0; i<parameterMappings.size(); i++) {
+		if (parameterMappings != null) {
+			for (int i=0; i<parameterMappings.size(); i++) {
 				ParameterMapping parameterMapping = parameterMappings.get(i);
-				if(parameterMapping.getMode() != ParameterMode.OUT) {
+				if (parameterMapping.getMode() != ParameterMode.OUT) {
 					Object value = null;
 					String propertyName = parameterMapping.getProperty();
-					if(boundSql.hasAdditionalParameter(propertyName)) {
+					if (boundSql.hasAdditionalParameter(propertyName)) {
 						value = boundSql.getAdditionalParameter(propertyName);
 					} else {
 						MetaObject metaObject = configuration.newMetaObject(mehtodParam);
@@ -191,7 +191,7 @@ public class KSqlUtil {
 		StringBuffer sb = new StringBuffer();
 		while (m.find()) {
 			String str = m.group(0);
-			if(Pattern.compile("partition\\s*by", Pattern.CASE_INSENSITIVE).matcher(str).find()
+			if (Pattern.compile("partition\\s*by", Pattern.CASE_INSENSITIVE).matcher(str).find()
 					|| Pattern.compile("row_number\\s*\\({1}\\s*\\){1}+", Pattern.CASE_INSENSITIVE).matcher(str).find()
 					|| Pattern.compile("(group|over|keep)\\s*\\({1}", Pattern.CASE_INSENSITIVE).matcher(str).find()) {
 				m.appendReplacement(sb, "$1");
@@ -206,19 +206,19 @@ public class KSqlUtil {
 	public static void resolveTables(String sqlFile, String sqlId, String sqlText) {
 		String referer = KContext.getT(AttrKey.REFERER);
 		String uri = KContext.getT(AttrKey.URI);
-		if(!KStringUtil.isEmpty(referer)) {
+		if (!KStringUtil.isEmpty(referer)) {
 			referer = referer.substring(referer.lastIndexOf("/")+1, referer.length());
 			referer = referer.substring(0, referer.indexOf("?") == -1 ? referer.length() : referer.indexOf("?")); // GET 방식의 referer도 존재함
 		}
-		if(KStringUtil.isEmpty(referer)) {
+		if (KStringUtil.isEmpty(referer)) {
 			return;
 		}
 		String sqlTables = null;
 		Matcher m = Pattern.compile("("+TABLE_PATTERN+")", Pattern.CASE_INSENSITIVE).matcher(sqlText);
 		List<String> tableNames = new ArrayList<String>();
-		while(m.find()) {
+		while (m.find()) {
 			String str = m.group(0);
-			if(!tableNames.contains(str)) {
+			if (!tableNames.contains(str)) {
 				tableNames.add(str);
 			}
 		}

@@ -41,13 +41,13 @@ public class KFilterVerifyToken extends KFilter {
 			KToken token = KContext.getT(AttrKey.TOKEN);
 			String tguid = KStringUtil.nvl(token.getGuid());
 			String hguid = KStringUtil.nvl(KContext.getT(AttrKey.GUID));
-			if(!debug && !tguid.equals(hguid)) {
+			if (!debug && !tguid.equals(hguid)) {
 				KExceptionHandler.response(response, new KSysException(KMessage.E6019, tguid, hguid));
 				return;
 			}
 		}
 
-		if(debug) {
+		if (debug) {
 			chain.doFilter(request, response);
 			return;
 		}

@@ -54,7 +54,7 @@ public class KContext {
 
 	public static void initSystem() {
 		Map<AttrKey, Object> map = attr.get();
-		if(map == null) {
+		if (map == null) {
 			KContext.reset();
 			map = attr.get();
 		}
@@ -67,7 +67,7 @@ public class KContext {
 
 	public static void initSchedule() {
 		Map<AttrKey, Object> map = attr.get();
-		if(map == null) {
+		if (map == null) {
 			KContext.reset();
 			map = attr.get();
 		}
@@ -85,7 +85,7 @@ public class KContext {
 
 	public static void initRequest(HttpServletRequest request) throws KSysException {
 		Map<AttrKey, Object> map = attr.get();
-		if(map == null) {
+		if (map == null) {
 			KContext.reset();
 			map = attr.get();
 		}
@@ -113,12 +113,12 @@ public class KContext {
 		KContext.set(AttrKey.AUTHORIZATION, authorization);
 
 		TAuthType authType = null;
-		if(KStringUtil.isEmpty(authorization)) {
+		if (KStringUtil.isEmpty(authorization)) {
 			authType = TAuthType.NOAUTH;
 		} else {
-			if(authorization.toUpperCase().startsWith(TAuthType.BEARER.name())) {
+			if (authorization.toUpperCase().startsWith(TAuthType.BEARER.name())) {
 				authType = TAuthType.BEARER;
-			} else if(authorization.toUpperCase().startsWith(TAuthType.APIKEY.name())) {
+			} else if (authorization.toUpperCase().startsWith(TAuthType.APIKEY.name())) {
 				authType = TAuthType.APIKEY;
 			} else {
 				authType = TAuthType.NOAUTH;
@@ -139,12 +139,12 @@ public class KContext {
 		case NOAUTH:
 			// guid
 			guid = request.getHeader(KConstant.GUID);
-			if(guid == null) {
+			if (guid == null) {
 				guid = KStringUtil.createUuid(true, TUuidType.GUID);
 			}
 			// txid
 			txid = request.getHeader(KConstant.TXID);
-			if(txid == null) {
+			if (txid == null) {
 				txid = KStringUtil.createUuid(true, TUuidType.TXID);
 			}
 			break;
@@ -157,9 +157,9 @@ public class KContext {
 			guid = apikey;
 			// txid
 			txid = request.getHeader(KConstant.TXID);
-			if(txid == null) {
+			if (txid == null) {
 				txid = KStringUtil.createUuid(true);
-				if(!referer.endsWith(KConstant.REFERER_SWAGGER)) {
+				if (!referer.endsWith(KConstant.REFERER_SWAGGER)) {
 				}
 			}
 			break;
@@ -183,13 +183,13 @@ public class KContext {
 
 	public static void initToken(KToken token) throws KSysException {
 		Map<AttrKey, Object> map = attr.get();
-		if(map == null) {
+		if (map == null) {
 			KContext.reset();
 			map = attr.get();
 		}
 
 		boolean debug = KContext.getT(AttrKey.DEBUG);
-		if(debug) {
+		if (debug) {
 			KLogSys.debug("{} {}{} {}", KConstant.LT_SECURITY, KLogLayout.LINE, KConstant.LT_SECURITY, KMessage.get(KMessage.E6023, KContext.get(AttrKey.GUID), token.getGuid()));
 			KContext.set(AttrKey.GUID, token.getGuid());
 			MDC.put(GUID, token.getGuid());
@@ -220,7 +220,7 @@ public class KContext {
 
 	public static void set(AttrKey key, Object val) {
 		Map<AttrKey, Object> map = attr.get();
-		if(map == null) {
+		if (map == null) {
 			KContext.reset();
 			map = attr.get();
 		}
@@ -236,7 +236,7 @@ public class KContext {
 	public static <T> T getT(AttrKey key, T def) {
 		@SuppressWarnings("unchecked")
 		T result = (T) KContext.get(key);
-		if(result == null) {
+		if (result == null) {
 			return def;
 		}
 		return result;
@@ -244,7 +244,7 @@ public class KContext {
 
 	private static Object get(AttrKey key) {
 		Map<AttrKey, Object> map = attr.get();
-		if(map == null) {
+		if (map == null) {
 			KContext.reset();
 			map = attr.get();
 		}

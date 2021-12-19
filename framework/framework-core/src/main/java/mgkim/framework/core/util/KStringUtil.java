@@ -24,7 +24,7 @@ public class KStringUtil {
 	public static String createUuid(boolean isShorten) {
 		String result = null;
 		String uuid = UUID.randomUUID().toString();
-		if(isShorten) {
+		if (isShorten) {
 			String str = Long.toString(ByteBuffer.wrap(uuid.getBytes()).getLong(), Character.MAX_RADIX);
 			result = KStringUtil.lpad(str, 13, "0"); // 생성된 uuid를 13자로 맞추기 위해 좌측에 0을 채우도록 함
 		}
@@ -38,7 +38,7 @@ public class KStringUtil {
 	public static String createUuid(boolean isShorten, TUuidType type) {
 		String result = null;
 		String uuid = UUID.randomUUID().toString();
-		if(isShorten) {
+		if (isShorten) {
 			String str = Long.toString(ByteBuffer.wrap(uuid.getBytes()).getLong(), Character.MAX_RADIX);
 			result = type.prefix() + KStringUtil.lpad(str, type.length(), "0"); // 생성된 uuid를 13자로 맞추기 위해 좌측에 0을 채우도록 함
 		}
@@ -50,13 +50,13 @@ public class KStringUtil {
 	}
 
 	public static String remove(String str, char remove) {
-		if(isEmpty(str) || str.indexOf(remove) == -1) {
+		if (isEmpty(str) || str.indexOf(remove) == -1) {
 			return str;
 		}
 		char[] chars = str.toCharArray();
 		int pos = 0;
-		for(int i=0; i<chars.length; i++) {
-			if(chars[i] != remove) {
+		for (int i=0; i<chars.length; i++) {
+			if (chars[i] != remove) {
 				chars[pos++] = chars[i];
 			}
 		}
@@ -68,13 +68,13 @@ public class KStringUtil {
 	}
 
 	public static String decode(String sourceStr, String compareStr, String returnStr, String defaultStr) {
-		if(sourceStr == null && compareStr == null) {
+		if (sourceStr == null && compareStr == null) {
 			return returnStr;
 		}
-		if(sourceStr == null && compareStr != null) {
+		if (sourceStr == null && compareStr != null) {
 			return defaultStr;
 		}
-		if(sourceStr.trim().equals(compareStr)) {
+		if (sourceStr.trim().equals(compareStr)) {
 			return returnStr;
 		}
 		return defaultStr;
@@ -84,7 +84,7 @@ public class KStringUtil {
 		String json = null;
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			if(isPretty) {
+			if (isPretty) {
 				json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
 			} else {
 				json = mapper.writer().writeValueAsString(obj);
@@ -130,13 +130,13 @@ public class KStringUtil {
 	}
 
 	public static boolean isJson(String text) {
-		if(!KStringUtil.isEmpty(text) && text.length() >= 2) {
+		if (!KStringUtil.isEmpty(text) && text.length() >= 2) {
 			String firstChar = text.substring(0, 1);
 			String lastChar = text.substring(text.length()-1);
-			if(firstChar.equals("{") && lastChar.equals("}")) {
+			if (firstChar.equals("{") && lastChar.equals("}")) {
 				return true;
 			}
-			if(firstChar.equals("[") && lastChar.equals("]")) {
+			if (firstChar.equals("[") && lastChar.equals("]")) {
 				return true;
 			}
 		}
@@ -145,10 +145,10 @@ public class KStringUtil {
 
 
 	public static Boolean toBoolean(String value) {
-		if(value == null) {
+		if (value == null) {
 			return false;
 		}
-		if(value.equalsIgnoreCase("true") || value.equalsIgnoreCase("y")) {
+		if (value.equalsIgnoreCase("true") || value.equalsIgnoreCase("y")) {
 			return true;
 		} else {
 			return false;
@@ -165,10 +165,10 @@ public class KStringUtil {
 
 	public static String nvl(Object object, String def) {
 		String string = EMPTY;
-		if(object != null) {
+		if (object != null) {
 			string = object.toString().trim();
 		}
-		if(EMPTY.equals(string)) {
+		if (EMPTY.equals(string)) {
 			string = def;
 		}
 		return string;
@@ -181,7 +181,7 @@ public class KStringUtil {
 
 	public static String nvl2(Object object, String def) {
 		String result = nvl(object, EMPTY);
-		if("null".equalsIgnoreCase(result)) {
+		if ("null".equalsIgnoreCase(result)) {
 			result = def;
 		}
 		return result;
@@ -199,7 +199,7 @@ public class KStringUtil {
 
 
 	public static String unscript(String str) {
-		if(str == null || str.trim().equals(EMPTY)) {
+		if (str == null || str.trim().equals(EMPTY)) {
 			return EMPTY;
 		}
 		String ret = str;
@@ -217,7 +217,7 @@ public class KStringUtil {
 	}
 
 	public static String replaceWhiteSpace(String str) {
-		if(str == null || str.trim().equals(EMPTY)) {
+		if (str == null || str.trim().equals(EMPTY)) {
 			return EMPTY;
 		}
 		String ret = str;
@@ -226,7 +226,7 @@ public class KStringUtil {
 	}
 
 	public static String toCommaNum(String str) {
-		if(str == null || EMPTY.equals(str))
+		if (str == null || EMPTY.equals(str))
 			return str;
 		else {
 			str = str.replaceAll(",", EMPTY);
@@ -240,7 +240,7 @@ public class KStringUtil {
 		String str = EMPTY;
 		str = EMPTY + val;
 
-		if(str == null || EMPTY.equals(str))
+		if (str == null || EMPTY.equals(str))
 			return str;
 		else {
 			DecimalFormat df = new DecimalFormat("#,##0");
@@ -250,7 +250,7 @@ public class KStringUtil {
 	}
 
 	public static String toCommaNum2(String str) {
-		if(str == null || EMPTY.equals(str))
+		if (str == null || EMPTY.equals(str))
 			return str;
 		else {
 			DecimalFormat df = new DecimalFormat("#,##0.00");
@@ -265,7 +265,7 @@ public class KStringUtil {
 		String str = EMPTY;
 		str = EMPTY + val;
 
-		if(str == null || EMPTY.equals(str))
+		if (str == null || EMPTY.equals(str))
 			return str;
 		else {
 			DecimalFormat df = new DecimalFormat("#,##0.00");
@@ -277,24 +277,24 @@ public class KStringUtil {
 	}
 
 	public static String lpad(String str, int len, String sPad) {
-		if(str == null) {
+		if (str == null) {
 			return EMPTY;
 		}
-		if(str.length() >= len) {
+		if (str.length() >= len) {
 			return str;
 		}
-		for(int i = str.length(); i < len; i++) {
+		for (int i = str.length(); i < len; i++) {
 			str = sPad + str;
 		}
 		return str;
 	}
 
 	public static String rpad(String str, int len, String sPad) {
-		if(str == null)
+		if (str == null)
 			return EMPTY;
-		if(str.length() >= len)
+		if (str.length() >= len)
 			return str;
-		for(int i = str.length(); i < len; i++) {
+		for (int i = str.length(); i < len; i++) {
 			str = str + sPad;
 		}
 		return str;
@@ -304,7 +304,7 @@ public class KStringUtil {
 		return toInt(src, 0);
 	}
 	public static int toInt(Object src, int defVal) {
-		if(src == null || isEmpty(src.toString())) {
+		if (src == null || isEmpty(src.toString())) {
 			return defVal;
 		} else {
 			return Integer.parseInt(src.toString().trim());
@@ -313,7 +313,7 @@ public class KStringUtil {
 
 	public static String toHex(String str) {
 		String result = EMPTY;
-		for(int i = 0; i < str.length(); i++) {
+		for (int i = 0; i < str.length(); i++) {
 			result += String.format("%02X", (int) str.charAt(i));
 		}
 		return result;
@@ -322,7 +322,7 @@ public class KStringUtil {
 	public static String toHex0x(String str) {
 		String result = EMPTY;
 
-		for(int i = 0; i < str.length(); i++) {
+		for (int i = 0; i < str.length(); i++) {
 			result += String.format("0x%02X", (int) str.charAt(i));
 		}
 
@@ -340,15 +340,15 @@ public class KStringUtil {
 		int count = 0;
 		int endIdx = 0;
 		str = nvl(str);
-		if(isAddDot) {
+		if (isAddDot) {
 			limit -= 4;
 		}
 		boolean isOver = false;
-		for(int i=0; i<strLen; i++) {
+		for (int i=0; i<strLen; i++) {
 			String ch = str.substring(i, i+1);
 			count += ch.getBytes().length >= 2 ? koUnit : 1;
 
-			if(count > limit) {
+			if (count > limit) {
 				isOver = true;
 				break;
 			} else {

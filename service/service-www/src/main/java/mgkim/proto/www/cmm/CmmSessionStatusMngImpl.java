@@ -68,20 +68,20 @@ public class CmmSessionStatusMngImpl implements CmmSessionStatusMng {
 
 		List<CmmSessionStatusVO> list = cmmSessionStatusMngMapper.selectStatusListForDupl(token);
 		List<KToken> duplList = new ArrayList<KToken>();
-		for(int i=0; i<list.size(); i++) {
+		for (int i=0; i<list.size(); i++) {
 			// `신규 session` 과 `기존 session` 의 ip 비교
 			String ip = KStringUtil.nvl(list.get(i).getIp());
-			if(ip.equals(token.getIp())) { // 같을 경우에는 `다중 session 상태` 허용
+			if (ip.equals(token.getIp())) { // 같을 경우에는 `다중 session 상태` 허용
 				continue;
 			}
 
 			// `기존 session` 의 `세션 상태` 확인
 			TSsStcdType ssStcdType = TSsStcdType.get(list.get(i).getSsStcd());
 
-			if(ssStcdType == TSsStcdType.LOGIN) { // LOGIN 인 경우에는 DUPL_LOGIN 으로 변경
+			if (ssStcdType == TSsStcdType.LOGIN) { // LOGIN 인 경우에는 DUPL_LOGIN 으로 변경
 				String aumthTpcd = KStringUtil.nvl(list.get(i).getAumthTpcd());
 				// `기존 session` 의 `인증 방식` 확인
-				if(!aumthTpcd.equals(token.getAumthTpcd())) {
+				if (!aumthTpcd.equals(token.getAumthTpcd())) {
 					continue; // 다를 경우 `다중 session 상태` 허용 않음
 				}
 

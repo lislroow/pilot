@@ -22,10 +22,10 @@ public class CmmMapperAspectImpl implements CmmMapperAspect {
 	@Override
 	public void preProcess(Object[] args) throws Throwable {
 		KLogSys.debug("업무서비스 `@Mapper` 메소드 전처리 (파라미터 전처리)");
-		if(args == null) {
+		if (args == null) {
 			return;
 		}
-		for(Object obj : args) {
+		for (Object obj : args) {
 			KDtoUtil.setSysValues(obj);
 		}
 	}
@@ -34,7 +34,7 @@ public class CmmMapperAspectImpl implements CmmMapperAspect {
 	public void postProcess(Object ret) throws Throwable {
 		KLogSys.debug("업무서비스 `@Mapper` 메소드 후처리 (리턴 후처리)");
 
-		if(comPrivacyMgr == null) {
+		if (comPrivacyMgr == null) {
 			return;
 		}
 

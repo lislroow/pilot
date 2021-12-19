@@ -29,7 +29,7 @@ public class KLogSql {
 
 	public static int getLevel() {
 		Level level = ((ch.qos.logback.classic.LoggerContext) org.slf4j.LoggerFactory.getILoggerFactory()).getLogger("KLogSql").getLevel();
-		if(level == null) {
+		if (level == null) {
 			KLogSys.warn("logger `KLogSql`의 `level`을 얻어오는데, 실패했습니다. 기본값 `warn`으로 반환합니다.");
 			return Level.WARN_INT;
 		}
@@ -39,9 +39,9 @@ public class KLogSql {
 	public static boolean isComSql(String sqlId) {
 		List<String> comSqlList = KConfig.CMM_SQL;
 		boolean matched = false;
-		for(String comSql : comSqlList) {
+		for (String comSql : comSqlList) {
 			matched = sqlId.startsWith(comSql);
-			if(matched) {
+			if (matched) {
 				break;
 			}
 		}
@@ -55,7 +55,7 @@ public class KLogSql {
 		case REQUEST:
 		case SYSTEM:
 			boolean isComSql = isComSql(sqlId);
-			if(!isComSql || KConfig.DEBUG_COM) {
+			if (!isComSql || KConfig.DEBUG_COM) {
 				return true;
 			}
 			break;

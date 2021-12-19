@@ -66,7 +66,7 @@ public class ComSqlmapReloadScheduler extends KScheduler {
 			Map<Resource, Long> map = new HashMap<Resource, Long>();
 			@Override
 			protected void execute(String execId) throws Exception {
-				if(isModified()) {
+				if (isModified()) {
 					w.lock();
 					try {
 						try {
@@ -87,7 +87,7 @@ public class ComSqlmapReloadScheduler extends KScheduler {
 
 			private boolean isModified() {
 				boolean retVal = false;
-				if(mapperLocations != null) {
+				if (mapperLocations != null) {
 					for (int i = 0; i < mapperLocations.length; i++) {
 						Resource mappingLocation = mapperLocations[i];
 						retVal |= findModifiedResource(mappingLocation);
@@ -99,16 +99,16 @@ public class ComSqlmapReloadScheduler extends KScheduler {
 			private boolean findModifiedResource(Resource resource) {
 				boolean retVal = false;
 				List<String> modifiedResources = new ArrayList<String>();
-				if(!resource.exists()) {
+				if (!resource.exists()) {
 					return false;
 				}
 				try {
 					long modified = resource.lastModified();
 
-					if(map.containsKey(resource)) {
+					if (map.containsKey(resource)) {
 						long lastModified = ((Long) map.get(resource)).longValue();
 
-						if(lastModified != modified) {
+						if (lastModified != modified) {
 							map.put(resource, new Long(modified));
 							modifiedResources.add(KSqlUtil.getRelativePath(resource.getDescription()));
 							retVal = true;
@@ -119,7 +119,7 @@ public class ComSqlmapReloadScheduler extends KScheduler {
 				} catch (IOException e) {
 					KLogSys.error("caught exception", e);
 				}
-				if(retVal) {
+				if (retVal) {
 					KLogSys.warn("modified files " + modifiedResources);
 				}
 				return retVal;

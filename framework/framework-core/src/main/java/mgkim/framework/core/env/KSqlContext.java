@@ -12,18 +12,18 @@ public class KSqlContext {
 	public static String getSqlFile(String sqlId) {
 		MappedStatement mappedStatement = null;
 		Iterator<MappedStatement> iter = MAPPED_STATEMENT_LIST.iterator();
-		while(iter.hasNext()) {
+		while (iter.hasNext()) {
 			Object obj = iter.next();
-			if(obj instanceof MappedStatement) {
+			if (obj instanceof MappedStatement) {
 				MappedStatement ms = (MappedStatement)obj;
-				if(ms.getId().equals(sqlId)) {
+				if (ms.getId().equals(sqlId)) {
 					mappedStatement = ms;
 					break;
 				}
 			}
 		}
 		
-		if(mappedStatement == null) {
+		if (mappedStatement == null) {
 			return null;
 		}
 		

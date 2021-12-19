@@ -11,7 +11,7 @@ public class KInPageVO {
 
 	@ApiModelProperty(position = 1, example = "true", dataType = "java.lang.Boolean")
 	public Boolean getPaging() {
-		if(paging == null) {
+		if (paging == null) {
 			paging = true;
 		}
 		return paging;
