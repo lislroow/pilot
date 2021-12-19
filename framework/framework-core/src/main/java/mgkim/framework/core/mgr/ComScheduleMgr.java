@@ -1,4 +1,4 @@
-package mgkim.framework.online.com.mgr;
+package mgkim.framework.core.mgr;
 
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
