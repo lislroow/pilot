@@ -1,29 +1,29 @@
 package mgkim.proto.www.api.cmm.userlogin.vo;
 
-import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import java.util.Map;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import mgkim.framework.core.session.KToken;
+import mgkim.framework.core.dto.OauthToken;
 
 @JsonSerialize
 public class UserLoginResVO {
 
-	private OAuth2AccessToken jwt;
-	private KToken token;
+	private OauthToken jwt;
+	private Map<String, Object> claims;
 	private String publicKey;
 
-	public OAuth2AccessToken getJwt() {
+	public OauthToken getJwt() {
 		return jwt;
 	}
-	public void setJwt(OAuth2AccessToken jwt) {
+	public void setJwt(OauthToken jwt) {
 		this.jwt = jwt;
 	}
-	public KToken getToken() {
-		return token;
+	public Map<String, Object> getClaims() {
+		return claims;
 	}
-	public void setToken(KToken token) {
-		this.token = token;
+	public void setClaims(Map<String, Object> claims) {
+		this.claims = claims;
 	}
 	public String getPublicKey() {
 		return publicKey;

@@ -1,9 +1,10 @@
 package mgkim.proto.www.cmm;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import mgkim.framework.core.annotation.KBean;
-import mgkim.framework.core.session.KToken;
 import mgkim.framework.online.cmm.CmmFieldCryptor;
 import mgkim.framework.online.cmm.vo.fieldcryptor.CmmFieldCryptoVO;
 import mgkim.proto.www.cmm.mapper.CmmFieldCryptorMapper;
@@ -25,9 +26,9 @@ public class CmmFieldCryptorImpl implements CmmFieldCryptor {
 	}
 
 	@Override
-	public CmmFieldCryptoVO selectFieldCryptoKey(KToken token) throws Exception {
+	public CmmFieldCryptoVO selectFieldCryptoKey(Map<String, Object> claims) throws Exception {
 		CmmFieldCryptoVO result = null;
-		result = cmmFieldCryptorMapper.selectFieldCryptoKey(token);
+		result = cmmFieldCryptorMapper.selectFieldCryptoKey(claims);
 		return result;
 	}
 

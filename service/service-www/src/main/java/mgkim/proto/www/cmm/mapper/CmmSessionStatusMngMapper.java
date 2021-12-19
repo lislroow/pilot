@@ -1,21 +1,21 @@
 package mgkim.proto.www.cmm.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import mgkim.framework.core.session.KToken;
 import mgkim.framework.online.cmm.vo.sessionexpmng.CmmSessionMngListVO;
 import mgkim.framework.online.cmm.vo.sessionexpmng.CmmSessionStatusVO;
 
 @Mapper
 public interface CmmSessionStatusMngMapper {
 
-	public int insertNewStatus(KToken token) throws Exception;
+	public int insertNewStatus(Map<String, Object> claims) throws Exception;
 
-	public CmmSessionStatusVO selectStatusForIsLogin(KToken token) throws Exception;
+	public CmmSessionStatusVO selectStatusForIsLogin(Map<String, Object> claims) throws Exception;
 
-	public List<CmmSessionStatusVO> selectStatusListForDupl(KToken token) throws Exception;
+	public List<CmmSessionStatusVO> selectStatusListForDupl(Map<String, Object> claims) throws Exception;
 
 	public int updateDupl(CmmSessionMngListVO vo) throws Exception;
 

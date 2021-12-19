@@ -42,7 +42,7 @@ public class KConstant {
 	public static final String RESULT_BCODE = "bcode";
 	public static final String RESULT_BMESSAGE = "bmessage";
 
-	public static final String TOKEN_JTI = "jti";
+	public static final String TOKEN_JTI = "ssid";
 	public static final String TOKEN_ATI = "ati";
 	public static final String TOKEN_VALIDITY = "validaty";
 	public static final String TOKEN_EXPIRES = "exp";

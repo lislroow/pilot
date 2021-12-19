@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mgkim.proto.www.api.cmm.userlogin.mapper.UserLoginMapper">
 
-	<select id="selectUserExist" parameterType="KToken" resultType="java.lang.Integer">
+	<select id="selectUserExist" parameterType="java.util.Map" resultType="java.lang.Integer">
 	<![CDATA[
 		SELECT /* mgkim.proto.www.api.cmm.userlogin.mapper.UserLoginMapper.selectUserExist */
 				  COUNT(*)
@@ -12,7 +12,7 @@
 	]]>
 	</select>
 
-	<select id="selectUserLoginPolicy" parameterType="KToken" resultType="CmmUserLoginPolicyVO">
+	<select id="selectUserLoginPolicy" parameterType="java.util.Map" resultType="CmmUserLoginPolicyVO">
 	<![CDATA[
 		SELECT /* mgkim.proto.www.api.cmm.userlogin.mapper.UserLoginMapper.selectUserLoginPolicy */
 				  SITE_TPCD

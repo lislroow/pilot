@@ -1,8 +1,10 @@
 package mgkim.proto.www.api.cmm.userlogin.web;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import mgkim.framework.core.dto.KInDTO;
 import mgkim.framework.core.dto.KOutDTO;
+import mgkim.framework.core.dto.OauthToken;
 import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
@@ -25,7 +28,6 @@ import mgkim.proto.www.api.cmm.userlogin.vo.UserLoginReqVO;
 import mgkim.proto.www.api.cmm.userlogin.vo.UserLoginResVO;
 import mgkim.proto.www.cmm.vo.CmmUserLoginPolicyVO;
 import mgkim.proto.www.com.env.CmmConstant;
-import mgkim.proto.www.com.token.CmmTokenApi;
 
 //@Api( tags = { KConstant.SWG_SERVICE_COMMON } )
 @RestController
@@ -53,26 +55,25 @@ public class UserLoginController {
 		UserLoginReqVO inVO = inDTO.getBody();
 
 		// `token 생성`
-		CmmTokenApi token;
+		Map<String, Object> claims = new HashMap<String, Object>();
 		{
-			token = new CmmTokenApi();
 			// `필수 정의`
-			token.setSiteTpcd(KProfile.SITE.code());
-			token.setUserTpcd(TUserType.API.code());
-			token.setAumthTpcd(TAumthType.IDLOGIN.code());
-			token.setUserId(inVO.getUserId());
+			claims.put("siteTpcd", KProfile.SITE.code());
+			claims.put("userTpcd", TUserType.API.code());
+			claims.put("aumthTpcd", TAumthType.IDLOGIN.code());
+			claims.put("userId", inVO.getUserId());
 
 			// `사용자 정의`
 			//token.setEmail(inVO.getEmail());
 
 			// `사용자 데이터` 존재 여부 확인
-			boolean isExist = userLoginService.selectUserExist(token);
+			boolean isExist = userLoginService.selectUserExist(claims);
 			if (!isExist) {
 				throw new KSysException(KMessage.E6108);
 			}
 
 			// `로그인 정책 조회`
-			CmmUserLoginPolicyVO cmmUserLoginPolicyVO = userLoginService.selectUserLoginPolicy(token);
+			CmmUserLoginPolicyVO cmmUserLoginPolicyVO = userLoginService.selectUserLoginPolicy(claims);
 
 			// (로그인 정책) `세션유효시간 설정`
 			int ssvaldSec;
@@ -81,14 +82,14 @@ public class UserLoginController {
 			} else {
 				ssvaldSec = cmmUserLoginPolicyVO.getSsvaldSec();
 			}
-			token.setSsvaldSec(ssvaldSec);
+			claims.put("ssvaldSec", ssvaldSec);
 		}
 
 		// `jwt 생성`
-		OAuth2AccessToken jwt;
+		OauthToken jwt;
 		{
 			try {
-				jwt = comUserTokenMgr.newJwt(token);
+				jwt = comUserTokenMgr.createOauthToken(claims);
 			} catch(Exception e) {
 				throw e;
 			}
@@ -97,7 +98,7 @@ public class UserLoginController {
 		// `session 생성`
 		{
 			try {
-				comSessionStatusMgr.insertNewStatus(token);
+				comSessionStatusMgr.insertNewStatus(claims);
 			} catch(Exception e) {
 				throw e;
 			}
@@ -107,7 +108,7 @@ public class UserLoginController {
 		String publicKey;
 		{
 			try {
-				publicKey = comFieldCryptorMgr.createRsaKey(token);
+				publicKey = comFieldCryptorMgr.createRsaKey(claims);
 			} catch(Exception e) {
 				throw e;
 			}
@@ -118,11 +119,11 @@ public class UserLoginController {
 		{
 			outVO = new UserLoginResVO();
 			outVO.setJwt(jwt);
-			outVO.setToken(token);
+			outVO.setClaims(claims);
 			outVO.setPublicKey(publicKey);
 			outDTO.setBody(outVO);
 		}
-
+		
 		return outDTO;
 	}
 
@@ -133,32 +134,33 @@ public class UserLoginController {
 		String encodedRefreshToken = inDTO.getBody();
 
 		// `token 변환`
-		CmmTokenApi token;
+		Map<String, Object> claims = null;
+		String accessToken;
 		{
 			try {
-				token = comUserTokenMgr.convertToken(encodedRefreshToken);
+				accessToken = comUserTokenMgr.refreshtoken(encodedRefreshToken);
 			} catch(Exception e) {
 				throw e;
 			}
+			
+			io.jsonwebtoken.Jwt jwt = comUserTokenMgr.parsetoken(accessToken);
+			claims = (Map<String, Object>) jwt.getBody();
 		}
-
+		
 		// `session 상태 검증`
 		{
 			// `현재 session` 의 ssid 로 등록된 세션이 있는지 확인
-			boolean isLogin = comSessionStatusMgr.isLoginStatus(token);
+			boolean isLogin = comSessionStatusMgr.isLoginStatus(claims);
 			if (isLogin == false) {
 				throw new KSysException(KMessage.E6103);
 			}
 		}
-
+		
 		// `jwt 생성`
-		OAuth2AccessToken jwt;
+		OauthToken jwt = new OauthToken();
 		{
-			try {
-				jwt = comUserTokenMgr.refreshAccessToken(token, encodedRefreshToken);
-			} catch(Exception e) {
-				throw e;
-			}
+			jwt.setAccessToken(accessToken);
+			jwt.setRefreshToken(encodedRefreshToken);
 		}
 
 		// `결과 처리`
@@ -166,7 +168,7 @@ public class UserLoginController {
 		{
 			outVO = new UserLoginResVO();
 			outVO.setJwt(jwt);
-			outVO.setToken(token);
+			outVO.setClaims(claims);
 			outDTO.setBody(outVO);
 		}
 		return outDTO;

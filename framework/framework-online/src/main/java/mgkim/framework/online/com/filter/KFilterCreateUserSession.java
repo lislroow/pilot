@@ -1,6 +1,7 @@
 package mgkim.framework.online.com.filter;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -16,7 +17,6 @@ import mgkim.framework.core.exception.KException;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
-import mgkim.framework.core.session.KToken;
 import mgkim.framework.core.stereo.KFilter;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.online.com.mgr.ComUserSessionMgr;
@@ -33,8 +33,9 @@ public class KFilterCreateUserSession extends KFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		try {
-			KToken token = KContext.getT(AttrKey.TOKEN);
-			comUserSessionMgr.createUserSession(token);
+			io.jsonwebtoken.Jwt token = KContext.getT(AttrKey.TOKEN);
+			Map<String, Object> claims = (Map<String, Object>)token.getBody();
+			comUserSessionMgr.createUserSession(claims);
 		} catch(KException e) {
 			KExceptionHandler.response(response, e);
 			return;

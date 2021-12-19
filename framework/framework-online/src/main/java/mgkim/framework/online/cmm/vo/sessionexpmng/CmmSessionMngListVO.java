@@ -3,17 +3,16 @@ package mgkim.framework.online.cmm.vo.sessionexpmng;
 import java.util.List;
 
 import mgkim.framework.core.dto.KCmmVO;
-import mgkim.framework.core.session.KToken;
 
 public class CmmSessionMngListVO extends KCmmVO {
 
-	private List<KToken> sessionList = null;
+	private List<String> sessionList = null;
 
-	public List<KToken> getSessionList() {
+	public List<String> getSessionList() {
 		return sessionList;
 	}
 
-	public void setSessionList(List<KToken> sessionList) {
+	public void setSessionList(List<String> sessionList) {
 		this.sessionList = sessionList;
 	}
 }

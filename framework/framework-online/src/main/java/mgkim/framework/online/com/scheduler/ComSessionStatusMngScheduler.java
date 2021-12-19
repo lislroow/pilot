@@ -2,6 +2,7 @@ package mgkim.framework.online.com.scheduler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -12,17 +13,17 @@ import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
-import mgkim.framework.core.session.KToken;
 import mgkim.framework.core.stereo.KScheduler;
 import mgkim.framework.core.stereo.KTask;
 import mgkim.framework.core.util.KObjectUtil;
+import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.cmm.CmmSessionStatusMng;
 import mgkim.framework.online.cmm.vo.sessionexpmng.CmmSessionMngListVO;
 
 @KTaskSchedule(name = "session 관리 스케줄러", interval = 10000, manage = true)
 public class ComSessionStatusMngScheduler extends KScheduler {
 
-	private Queue<KToken> queue = new ConcurrentLinkedQueue<KToken>();
+	private Queue<String> queue = new ConcurrentLinkedQueue<String>();
 
 	@Autowired(required = false)
 	private CmmSessionStatusMng cmmSessionStatusMng;
@@ -37,8 +38,8 @@ public class ComSessionStatusMngScheduler extends KScheduler {
 		}
 	}
 
-	public boolean containsSsid(final List<KToken> list, String ssid) {
-		boolean result = list.stream().filter(item -> ssid.equals(item.getSsid())).findFirst().isPresent();
+	public boolean containsUserId(final List<String> list, String userId) {
+		boolean result = list.stream().filter(item -> userId.equals(item)).findFirst().isPresent();
 		return result;
 	}
 
@@ -51,10 +52,10 @@ public class ComSessionStatusMngScheduler extends KScheduler {
 				if (org.springframework.util.ObjectUtils.isEmpty(queue)) {
 					return;
 				}
-				List<KToken> sessionList = new ArrayList<KToken>();
+				List<String> sessionList = new ArrayList<String>();
 				while (queue.size() > 0 && sessionList.size() < 500) {  // 설정
-					KToken item = queue.poll();
-					if (containsSsid(sessionList, item.getSsid())) {
+					String item = queue.poll();
+					if (containsUserId(sessionList, KStringUtil.nvl(item))) {
 						continue;
 					};
 					sessionList.add(item);
@@ -68,7 +69,8 @@ public class ComSessionStatusMngScheduler extends KScheduler {
 	}
 
 	public void addSession() {
-		KToken token = KContext.getT(AttrKey.TOKEN);
-		queue.add(token);
+		io.jsonwebtoken.Jwt token = KContext.getT(AttrKey.TOKEN);
+		Map<String, Object> claims = (Map<String, Object>)token.getBody();
+		queue.add(KStringUtil.nvl(claims.get("userId")));
 	}
 }

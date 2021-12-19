@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mgkim.proto.www.cmm.mapper.CmmSessionStatusMngMapper">
 
-	<insert id="insertNewStatus" parameterType="KToken">
+	<insert id="insertNewStatus" parameterType="java.util.Map">
 		MERGE /* mgkim.proto.www.cmm.mapper.ComSessionMapper.insertNewSession */
 			INTO MGCB151TS /* MGCB_사용자세션상태 */
 			USING DUAL
@@ -44,7 +44,7 @@
 			)
 	</insert>
 
-	<select id="selectStatusForIsLogin" parameterType="KToken" resultType="CmmSessionStatusVO">
+	<select id="selectStatusForIsLogin" parameterType="java.util.Map" resultType="CmmSessionStatusVO">
 		SELECT /* mgkim.proto.www.cmm.mapper.CmmSessionStatusMngMapper.selectStatusForIsLogin */
 				  USER_ID
 				, AUMTH_TPCD
@@ -60,7 +60,7 @@
 			AND  SSID = #{ssid}
 	</select>
 
-	<select id="selectStatusListForDupl" parameterType="KToken" resultType="CmmSessionStatusVO">
+	<select id="selectStatusListForDupl" parameterType="java.util.Map" resultType="CmmSessionStatusVO">
 		SELECT /* mgkim.proto.www.cmm.mapper.CmmSessionStatusMngMapper.selectStatusListForDupl */
 				  USER_ID
 				, AUMTH_TPCD
@@ -88,8 +88,8 @@
 			</when>
 			<otherwise>
 				SSID IN
-				<foreach collection="sessionList" item="item" separator="," open="(" close=")">
-					#{item.ssid}
+				<foreach collection="sessionList" item="ssid" separator="," open="(" close=")">
+					#{ssid}
 				</foreach>
 			</otherwise>
 		</choose>
@@ -103,8 +103,8 @@
 		<choose>
 			<when test='sessionList != null and sessionList.size() > 0'>
 				AND SSID IN
-				<foreach collection="sessionList" item="item" separator="," open="(" close=")">
-					#{item.ssid}
+				<foreach collection="sessionList" item="ssid" separator="," open="(" close=")">
+					#{ssid}
 				</foreach>
 			</when>
 			<otherwise>

@@ -6,6 +6,7 @@ import java.security.PublicKey;
 import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +16,13 @@ import mgkim.framework.core.annotation.KEncrypt;
 import mgkim.framework.core.dto.KCmmVO;
 import mgkim.framework.core.dto.KInDTO;
 import mgkim.framework.core.dto.KOutDTO;
+import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.core.logging.KLogSys;
-import mgkim.framework.core.session.KToken;
 import mgkim.framework.core.util.KAesUtil;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KRsaUtil;
@@ -45,7 +46,7 @@ public class ComFieldCryptorMgr implements InitializingBean {
 		}
 	}
 
-	public String createRsaKey(KToken token) throws Exception {
+	public String createRsaKey(Map<String, Object> claims) throws Exception {
 		String privateKey = null;
 		String publicKey = null;
 		try {
@@ -60,9 +61,9 @@ public class ComFieldCryptorMgr implements InitializingBean {
 
 		try {
 			CmmFieldCryptoVO vo = new CmmFieldCryptoVO();
-			vo.setSsid(token.getSsid());
-			vo.setSsuserId(token.getUserId());
-			vo.setAumthTpcd(token.getAumthTpcd());
+			vo.setSsid(KStringUtil.nvl(claims.get(KConstant.TOKEN_JTI)));
+			vo.setSsuserId(KStringUtil.nvl(claims.get("userId")));
+			vo.setAumthTpcd(KStringUtil.nvl(claims.get("aumthTpcd")));
 			vo.setPrivateKey(privateKey);
 			vo.setPublicKey(publicKey);
 			cmmFieldCryptor.saveRsaKey(vo);
@@ -86,8 +87,9 @@ public class ComFieldCryptorMgr implements InitializingBean {
 	public void decrypt(KInDTO<?> inDTO) throws Exception {
 		Object obj = inDTO.getBody();
 		if (hasSecuredField(obj)) {
-			KToken token = KContext.getT(AttrKey.TOKEN);
-			CmmFieldCryptoVO keyVO = cmmFieldCryptor.selectFieldCryptoKey(token);
+			io.jsonwebtoken.Jwt token = KContext.getT(AttrKey.TOKEN);
+			Map<String, Object> claims = (Map<String, Object>)token.getBody();
+			CmmFieldCryptoVO keyVO = cmmFieldCryptor.selectFieldCryptoKey(claims);
 			if (keyVO == null || KStringUtil.isEmpty(keyVO.getPrivateKey())) {
 				throw new KSysException(KMessage.E6204);
 			}
@@ -99,8 +101,9 @@ public class ComFieldCryptorMgr implements InitializingBean {
 	public void encrypt(KOutDTO<?> outDTO) throws Exception {
 		Object obj = outDTO.getBody();
 		if (hasSecuredField(obj)) {
-			KToken token = KContext.getT(AttrKey.TOKEN);
-			CmmFieldCryptoVO keyVO = cmmFieldCryptor.selectFieldCryptoKey(token);
+			io.jsonwebtoken.Jwt token = KContext.getT(AttrKey.TOKEN);
+			Map<String, Object> claims = (Map<String, Object>)token.getBody();
+			CmmFieldCryptoVO keyVO = cmmFieldCryptor.selectFieldCryptoKey(claims);
 			if (keyVO == null || KStringUtil.isEmpty(keyVO.getSymKey())) {
 				throw new KSysException(KMessage.E6205);
 			}

@@ -7,7 +7,6 @@ import static mgkim.framework.core.env.KConstant.REFERER;
 import static mgkim.framework.core.env.KConstant.SSID;
 import static mgkim.framework.core.env.KConstant.TXID;
 import static mgkim.framework.core.env.KConstant.URI;
-import static mgkim.framework.core.env.KConstant.USER_ID;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +20,6 @@ import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.core.logging.KLogLayout;
 import mgkim.framework.core.logging.KLogSys;
-import mgkim.framework.core.session.KToken;
 import mgkim.framework.core.type.TApiType;
 import mgkim.framework.core.type.TAuthType;
 import mgkim.framework.core.type.TExecType;
@@ -180,27 +178,29 @@ public class KContext {
 		MDC.put(TXID, txid);
 		MDC.put(REFERER, referer);
 	}
-
-	public static void initToken(KToken token) throws KSysException {
+	
+	public static void initToken(io.jsonwebtoken.Jwt token) throws KSysException {
 		Map<AttrKey, Object> map = attr.get();
 		if (map == null) {
 			KContext.reset();
 			map = attr.get();
 		}
-
+		
+		String jti = KStringUtil.nvl(token.getHeader().get(KConstant.TOKEN_JTI), "");
 		boolean debug = KContext.getT(AttrKey.DEBUG);
 		if (debug) {
-			KLogSys.debug("{} {}{} {}", KConstant.LT_SECURITY, KLogLayout.LINE, KConstant.LT_SECURITY, KMessage.get(KMessage.E6023, KContext.get(AttrKey.GUID), token.getGuid()));
-			KContext.set(AttrKey.GUID, token.getGuid());
-			MDC.put(GUID, token.getGuid());
+			KLogSys.debug("{} {}{} {}", KConstant.LT_SECURITY, KLogLayout.LINE, KConstant.LT_SECURITY, KMessage.get(KMessage.E6023, KContext.get(AttrKey.GUID), jti));
+			KContext.set(AttrKey.GUID, jti);
+			MDC.put(GUID, jti);
 		}
-
+		
 		KContext.set(AttrKey.TOKEN, token);
-		KContext.set(AttrKey.SSID, token.getSsid());
-		MDC.put(SSID, token.getSsid());
-
-		KContext.set(AttrKey.USER_ID, token.getUserId());
-		MDC.put(USER_ID, token.getUserId());
+		KContext.set(AttrKey.SSID, jti);
+		MDC.put(SSID, jti);
+		
+//		String userId = KStringUtil.nvl(token.getBody().get("userId"), "");
+//		KContext.set(AttrKey.USER_ID, userId);
+//		MDC.put(USER_ID, userId);
 	}
 
 

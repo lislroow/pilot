@@ -2,12 +2,12 @@ package mgkim.proto.www.cmm;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import mgkim.framework.core.logging.KLogSys;
-import mgkim.framework.core.session.KToken;
 import mgkim.framework.core.type.TSsStcdType;
 import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.cmm.CmmSessionStatusMng;
@@ -23,7 +23,7 @@ public class CmmSessionStatusMngImpl implements CmmSessionStatusMng {
 
 
 	@Override
-	public int insertNewStatus(KToken token) throws Exception {
+	public int insertNewStatus(Map<String, Object> claims) throws Exception {
 		/*
 		세션 상태 등록에 대한 정책
 
@@ -38,23 +38,23 @@ public class CmmSessionStatusMngImpl implements CmmSessionStatusMng {
 		  : 암호화키 필드는 모두 null 로 초기화
 		  : 브라우저 정보는 갱신함
 		*/
-		int result = cmmSessionStatusMngMapper.insertNewStatus(token);
+		int result = cmmSessionStatusMngMapper.insertNewStatus(claims);
 		return result;
 	}
 
 	@Override
-	public CmmSessionStatusVO selectStatusForIsLogin(KToken token) throws Exception {
+	public CmmSessionStatusVO selectStatusForIsLogin(Map<String, Object> claims) throws Exception {
 		/*
 		userId, 인증방식, ssid 가 같은 세션 상태 조회
 
 		- 세션 상태의 유효성 체크는 해당 개별코드에서 처리
 		*/
-		CmmSessionStatusVO result = cmmSessionStatusMngMapper.selectStatusForIsLogin(token);
+		CmmSessionStatusVO result = cmmSessionStatusMngMapper.selectStatusForIsLogin(claims);
 		return result;
 	}
 
 	@Override
-	public void updateDupl(KToken token) throws Exception {
+	public void updateDupl(Map<String, Object> claims) throws Exception {
 		/*
 		- userId 가 같은 세션이 있을 경우 다중 세션에 대한 처리 정책
 
@@ -66,12 +66,12 @@ public class CmmSessionStatusMngImpl implements CmmSessionStatusMng {
 		*/
 
 
-		List<CmmSessionStatusVO> list = cmmSessionStatusMngMapper.selectStatusListForDupl(token);
-		List<KToken> duplList = new ArrayList<KToken>();
+		List<CmmSessionStatusVO> list = cmmSessionStatusMngMapper.selectStatusListForDupl(claims);
+		List<String> duplList = new ArrayList<String>();
 		for (int i=0; i<list.size(); i++) {
 			// `신규 session` 과 `기존 session` 의 ip 비교
 			String ip = KStringUtil.nvl(list.get(i).getIp());
-			if (ip.equals(token.getIp())) { // 같을 경우에는 `다중 session 상태` 허용
+			if (ip.equals(claims.get("ip"))) { // 같을 경우에는 `다중 session 상태` 허용
 				continue;
 			}
 
@@ -81,11 +81,11 @@ public class CmmSessionStatusMngImpl implements CmmSessionStatusMng {
 			if (ssStcdType == TSsStcdType.LOGIN) { // LOGIN 인 경우에는 DUPL_LOGIN 으로 변경
 				String aumthTpcd = KStringUtil.nvl(list.get(i).getAumthTpcd());
 				// `기존 session` 의 `인증 방식` 확인
-				if (!aumthTpcd.equals(token.getAumthTpcd())) {
+				if (!aumthTpcd.equals(claims.get("aumthTpcd"))) {
 					continue; // 다를 경우 `다중 session 상태` 허용 않음
 				}
 
-				duplList.add(token);
+				duplList.add(list.get(i).getSsid());
 			}
 		}
 		CmmSessionMngListVO vo = new CmmSessionMngListVO();
@@ -103,12 +103,12 @@ public class CmmSessionStatusMngImpl implements CmmSessionStatusMng {
 	public void updateInvalidStatus() throws Exception {
 		int cnt;
 		cnt = cmmSessionStatusMngMapper.updateLoginToExpire();
-		KLogSys.info("`{}` sessions expired", cnt);
+		if (cnt > 0) KLogSys.info("`{}` sessions expired", cnt);
 		cnt = cmmSessionStatusMngMapper.updateExpireToLogout();
-		KLogSys.info("`{}` sessions logouted", cnt);
+		if (cnt > 0) KLogSys.info("`{}` sessions logouted", cnt);
 		cnt = cmmSessionStatusMngMapper.insertMoveToHistory();
-		KLogSys.info("`{}` sessions saved history table", cnt);
+		if (cnt > 0) KLogSys.info("`{}` sessions saved history table", cnt);
 		cnt = cmmSessionStatusMngMapper.deleteLogout();
-		KLogSys.info("`{}` sessions delete from status table", cnt);
+		if (cnt > 0) KLogSys.info("`{}` sessions delete from status table", cnt);
 	}
 }

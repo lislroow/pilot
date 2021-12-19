@@ -1,7 +1,7 @@
 package mgkim.proto.www.cmm;
 
-import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,8 +11,6 @@ import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.core.session.KSession;
-import mgkim.framework.core.session.KToken;
-import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.online.cmm.CmmUserSession;
 import mgkim.proto.www.cmm.mapper.CmmUserSessionMapper;
 
@@ -23,10 +21,10 @@ public class CmmUserSessionImpl implements CmmUserSession {
 	private CmmUserSessionMapper cmmUserSessionMapper;
 
 	@Override
-	public KSession selectUserSession(KToken token) throws Exception {
+	public KSession selectUserSession(Map<String, Object> claims) throws Exception {
 		KSession session = null;
 		try {
-			session = cmmUserSessionMapper.selectUserSession(token);
+			session = cmmUserSessionMapper.selectUserSession(claims);
 		} catch(Exception e) {
 			KException ex = KExceptionHandler.resolve(e);
 			throw ex;
@@ -38,16 +36,16 @@ public class CmmUserSessionImpl implements CmmUserSession {
 
 		// token 객체의 전체 필드를 session 객체로 복사
 		{
-			Field[] list = KObjectUtil.getFieldList(token);
-			for (int i=0; i<list.length; i++) {
-				KObjectUtil.setValue(session, list[0].getName(), list);
-			}
+			//Field[] list = KObjectUtil.getFieldList(token);
+			//for (int i=0; i<list.length; i++) {
+			//	KObjectUtil.setValue(session, list[0].getName(), list);
+			//}
 		}
 		return session;
 	}
 
-	public List<String> selectUserAuthority(KToken token) throws Exception {
-		List<String> result = cmmUserSessionMapper.selectUserAuthority(token);
+	public List<String> selectUserAuthority(Map<String, Object> claims) throws Exception {
+		List<String> result = cmmUserSessionMapper.selectUserAuthority(claims);
 		return result;
 	}
 }

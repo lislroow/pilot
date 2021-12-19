@@ -2,13 +2,13 @@ package mgkim.framework.core.util;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import mgkim.framework.core.dto.KCmmVO;
 import mgkim.framework.core.env.KContext;
-import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.env.KContext.AttrKey;
+import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.session.KSession;
-import mgkim.framework.core.session.KToken;
 import mgkim.framework.core.type.TApiType;
 
 public class KDtoUtil {
@@ -37,9 +37,10 @@ public class KDtoUtil {
 			if (session != null) {
 				cmmVO.setSsuserId(session.getUserId());
 			}
-			KToken token = KContext.getT(AttrKey.TOKEN);
+			io.jsonwebtoken.Jwt token = KContext.getT(AttrKey.TOKEN);
+			Map<String, Object> claims = (Map<String, Object>)token.getBody();
 			if (token != null) {
-				cmmVO.setAumthTpcd(token.getAumthTpcd());
+				cmmVO.setAumthTpcd(KStringUtil.nvl(claims.get("aumthTpcd")));
 			}
 			cmmVO.setSsid(KContext.getT(AttrKey.SSID));
 			cmmVO.setTxid(KContext.getT(AttrKey.TXID));

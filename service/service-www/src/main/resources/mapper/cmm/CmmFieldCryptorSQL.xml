@@ -23,7 +23,7 @@
 			AND  SSID = #{ssid}
 	</insert>
 
-	<select id="selectFieldCryptoKey" parameterType="KToken" resultType="CmmFieldCryptoVO">
+	<select id="selectFieldCryptoKey" parameterType="java.util.Map" resultType="CmmFieldCryptoVO">
 		SELECT /* mgkim.proto.www.cmm.mapper.CmmFieldCryptorMapper.selectFieldCryptoKey */
 				  PRIVATE_KEY
 				, SYM_KEY

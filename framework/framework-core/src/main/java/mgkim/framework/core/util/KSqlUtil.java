@@ -101,6 +101,15 @@ public class KSqlUtil {
 					for (ParameterMapping mapping : entryParamKeyList) {
 						String propKey = mapping.getProperty();
 						String val = KObjectUtil.getSqlParamByFieldName(paramObject, propKey);
+						if (val == null) {
+							if (boundSql.hasAdditionalParameter(propKey)) {
+								val = (String) boundSql.getAdditionalParameter(propKey);
+							}
+							
+							if (val == null) {
+								val = "";
+							}
+						}
 
 						// `value` 에 `정규식에서 사용되는 특수문자`를 제거 합니다.
 						String quoteStr = Matcher.quoteReplacement(val);

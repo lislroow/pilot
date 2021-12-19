@@ -25,8 +25,8 @@ import mgkim.framework.core.dto.KOutPageVO;
 import mgkim.framework.core.env.KConfig;
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KContext;
-import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.env.KContext.AttrKey;
+import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.core.logging.KLogApm;
@@ -226,7 +226,7 @@ public class ComSqlInterceptor implements Interceptor {
 
 		// sql 결과 로깅
 		{
-			if (!isComSql || isLoggableSql) {
+			if (isLoggableSql) {
 				if (resultObject instanceof List) {
 					resultCount = ((List)resultObject).size();
 				} else if (resultObject instanceof Integer) {

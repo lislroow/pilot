@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>mgkim.bom</groupId>
   <artifactId>framework-bom</artifactId>
-  <version>0.2-SNAPSHOT</version>
+  <version>0.1</version>
   <packaging>pom</packaging>
   <name>${project.groupId}:${project.artifactId}</name>
   <url>https://github.com/lislroow/pilot.git</url>
@@ -57,17 +57,39 @@
   
   <dependencies>
     <dependency>
+      <groupId>io.jsonwebtoken</groupId>
+      <artifactId>jjwt</artifactId>
+      <version>0.9.1</version>
+      <exclusions>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-databind</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <!-- <dependency>
+      <groupId>jakarta.xml.bind</groupId>
+      <artifactId>jakarta.xml.bind-api</artifactId>
+      <version>3.0.1</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.xml.bind</groupId>
+      <artifactId>jaxb-api</artifactId>
+      <version>2.3.1</version>
+    </dependency> -->
+    
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-rest</artifactId>
     </dependency>
-    <dependency>
+    <!-- <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-oauth2-client</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
-    </dependency>
+    </dependency> -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-quartz</artifactId>
@@ -118,12 +140,12 @@
     
     
     <!-- spring-oauth2 -->
-    <dependency><!-- spring-security-jwt(2017,2019): spring security jwt is a small utility library for encoding and decoding JSON Web Tokens. It belongs to the family of spring security crypto libraries that handle encoding and decoding text as a general, useful thing to be able to do. -->
+    <!-- <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-jwt</artifactId>
       <version>1.0.9.RELEASE</version>
     </dependency>
-    <dependency><!-- spring-security-oauth2(2019): module for providing oauth2 support to spring security -->
+    <dependency>
       <groupId>org.springframework.security.oauth</groupId>
       <artifactId>spring-security-oauth2</artifactId>
       <version>2.5.1.RELEASE</version>
@@ -157,7 +179,7 @@
           <artifactId>jackson-mapper-asl</artifactId>
         </exclusion>
       </exclusions>
-    </dependency>
+    </dependency> -->
     <!-- //spring-oauth2 -->
     
     
@@ -397,7 +419,7 @@
           <version>3.0.0-M1</version>
           <configuration>
             <tagNameFormat>@{project.artifactId}-@{project.version}</tagNameFormat>
-            <autoVersionSubmodules>true</autoVersionSubmodules>
+            <autoVersionSubmodules>false</autoVersionSubmodules>
             <goals>deploy</goals>
             <scmCommentPrefix>[jenkins]</scmCommentPrefix>
           </configuration>

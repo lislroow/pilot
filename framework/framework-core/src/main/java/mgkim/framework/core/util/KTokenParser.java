@@ -1,10 +1,5 @@
 package mgkim.framework.core.util;
 
-import org.springframework.security.oauth2.common.util.Jackson2JsonParser;
-//import org.springframework.security.oauth2.common.util.JacksonJsonParser;
-import org.springframework.security.oauth2.common.util.JsonParser;
-import org.springframework.util.ClassUtils;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -31,18 +26,4 @@ public class KTokenParser {
 		}
 		return tokenClaim;
 	}
-}
-
-class JsonParserFactory {
-
-	public static JsonParser create() {
-		if (ClassUtils.isPresent("com.fasterxml.jackson.databind.ObjectMapper", null)) {
-			return new Jackson2JsonParser();
-		}
-		/*if (ClassUtils.isPresent("org.codehaus.jackson.map.ObjectMapper", null)) {
-			return new JacksonJsonParser();
-		}*/
-		throw new IllegalStateException("No Jackson parser found. Please add Jackson to your classpath.");
-	}
-
 }

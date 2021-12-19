@@ -1,11 +1,12 @@
 package mgkim.framework.online.com.mgr;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
-import mgkim.framework.core.session.KToken;
 import mgkim.framework.core.type.TSsStcdType;
 import mgkim.framework.online.cmm.CmmSessionStatusMng;
 import mgkim.framework.online.cmm.vo.sessionexpmng.CmmSessionStatusVO;
@@ -16,19 +17,19 @@ public class ComSessionStatusMgr {
 	@Autowired(required = true)
 	private CmmSessionStatusMng cmmSessionStatusMng;
 
-	public void insertNewStatus(KToken token) throws Exception {
+	public void insertNewStatus(Map<String, Object> claims) throws Exception {
 		// `다중 session` 상태 확인
 		{
-			this.verifyDuplLogin(token);
+			this.verifyDuplLogin(claims);
 		}
 
 		// `신규 session` 상태 저장
 		{
-			cmmSessionStatusMng.insertNewStatus(token);
+			cmmSessionStatusMng.insertNewStatus(claims);
 		}
 	}
 
-	public boolean isLoginStatus(KToken token) throws Exception {
+	public boolean isLoginStatus(Map<String, Object> claims) throws Exception {
 		/*
 		세션 상태 체크
 
@@ -38,7 +39,7 @@ public class ComSessionStatusMgr {
 
 		try {
 			TSsStcdType ssStcdType = null;
-			CmmSessionStatusVO statusVO = cmmSessionStatusMng.selectStatusForIsLogin(token);
+			CmmSessionStatusVO statusVO = cmmSessionStatusMng.selectStatusForIsLogin(claims);
 			if (statusVO == null) {
 				return false;
 			}
@@ -60,7 +61,7 @@ public class ComSessionStatusMgr {
 		}
 	}
 
-	public void verifyDuplLogin(KToken token) throws Exception {
-		cmmSessionStatusMng.updateDupl(token);
+	public void verifyDuplLogin(Map<String, Object> claims) throws Exception {
+		cmmSessionStatusMng.updateDupl(claims);
 	}
 }

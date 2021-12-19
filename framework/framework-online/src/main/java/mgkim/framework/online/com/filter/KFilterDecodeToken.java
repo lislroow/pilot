@@ -1,7 +1,6 @@
 package mgkim.framework.online.com.filter;
 
 import java.io.IOException;
-import java.text.ParseException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -12,24 +11,19 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import mgkim.framework.core.annotation.KBean;
-import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KContext;
-import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.exception.KException;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.core.logging.KLogSys;
-import mgkim.framework.core.session.KToken;
 import mgkim.framework.core.stereo.KFilter;
 import mgkim.framework.core.type.TApiType;
 import mgkim.framework.core.type.TAuthType;
-import mgkim.framework.core.util.KDateUtil;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.cmm.CmmUserToken;
-import mgkim.framework.online.cmm.vo.token.CmmOpenapiTokenVO;
 import mgkim.framework.online.com.mgr.ComUserTokenMgr;
 
 @KBean(name = "token decode 필터")
@@ -84,55 +78,55 @@ public class KFilterDecodeToken extends KFilter implements InitializingBean {
 						throw new KSysException(KMessage.E6002);
 					}
 					String apikey = KContext.getT(AttrKey.APIKEY);
-					CmmOpenapiTokenVO tokenVO = cmmUserToken.selectOpenapiToken(apikey);
-					// token 문자열이 비어있는지 체크
-					if (tokenVO == null || KStringUtil.isEmpty(tokenVO.getTokenContent())) {
-						throw new KSysException(KMessage.E6003);
-					}
-					// 사용자 승인여부 체크
-					if (!"Y".equals(tokenVO.getAprvYn())) {
-						throw new KSysException(KMessage.E6004);
-					}
-					// IP 체크
-					String ipAddr = KContext.getT(AttrKey.IP);
-					if (!ipAddr.startsWith(KStringUtil.nvl(tokenVO.getIpAddr()))) {
-						switch(KProfile.SYS) {
-						case LOC:
-							// 로컬 환경에서는 IP가 127.0.0.1 로 나오기 때문에 체크하지 않도록 함
-							break;
-						case DEV:
-						case TEST:
-						case PROD:
-							throw new KSysException(KMessage.E6005);
-						}
-					}
-					// apikey 폐기 여부 체크
-					if ("Y".equals(tokenVO.getDisuYn())) {
-						throw new KSysException(KMessage.E6006);
-					}
-
-					Long beginDttm = null;
-					Long expryDttm = null;
-					try {
-						beginDttm = KDateUtil.toDate(tokenVO.getBeginDttm(), KConstant.FMT_YYYYMMDDHHMMSS).getTime();
-					} catch(ParseException e) {
-						throw new KSysException(KMessage.E6007, "시작일시", e);
-					}
-					try {
-						expryDttm = KDateUtil.toDate(tokenVO.getExpryDttm(), KConstant.FMT_YYYYMMDDHHMMSS).getTime();
-					} catch(ParseException e) {
-						throw new KSysException(KMessage.E6007, "종료일시", e);
-					}
-
-					// token 유효기간 체크
-					long current = System.currentTimeMillis();
-					if (!((current > beginDttm) && (current < expryDttm))) {
-						throw new KSysException(KMessage.E6008
-								, KDateUtil.convert(beginDttm, KConstant.FMT_YYYY_MM_DD_HH_MM_SS)
-								, KDateUtil.convert(expryDttm, KConstant.FMT_YYYY_MM_DD_HH_MM_SS));
-					}
-					bearer = tokenVO.getTokenContent();
-					KContext.set(AttrKey.BEARER, bearer);
+					//CmmOpenapiTokenVO tokenVO = cmmUserToken.selectOpenapiToken(apikey);
+					//// token 문자열이 비어있는지 체크
+					//if (tokenVO == null || KStringUtil.isEmpty(tokenVO.getTokenContent())) {
+					//	throw new KSysException(KMessage.E6003);
+					//}
+					//// 사용자 승인여부 체크
+					//if (!"Y".equals(tokenVO.getAprvYn())) {
+					//	throw new KSysException(KMessage.E6004);
+					//}
+					//// IP 체크
+					//String ipAddr = KContext.getT(AttrKey.IP);
+					//if (!ipAddr.startsWith(KStringUtil.nvl(tokenVO.getIpAddr()))) {
+					//	switch(KProfile.SYS) {
+					//	case LOC:
+					//		// 로컬 환경에서는 IP가 127.0.0.1 로 나오기 때문에 체크하지 않도록 함
+					//		break;
+					//	case DEV:
+					//	case TEST:
+					//	case PROD:
+					//		throw new KSysException(KMessage.E6005);
+					//	}
+					//}
+					//// apikey 폐기 여부 체크
+					//if ("Y".equals(tokenVO.getDisuYn())) {
+					//	throw new KSysException(KMessage.E6006);
+					//}
+					//
+					//Long beginDttm = null;
+					//Long expryDttm = null;
+					//try {
+					//	beginDttm = KDateUtil.toDate(tokenVO.getBeginDttm(), KConstant.FMT_YYYYMMDDHHMMSS).getTime();
+					//} catch(ParseException e) {
+					//	throw new KSysException(KMessage.E6007, "시작일시", e);
+					//}
+					//try {
+					//	expryDttm = KDateUtil.toDate(tokenVO.getExpryDttm(), KConstant.FMT_YYYYMMDDHHMMSS).getTime();
+					//} catch(ParseException e) {
+					//	throw new KSysException(KMessage.E6007, "종료일시", e);
+					//}
+					//
+					//// token 유효기간 체크
+					//long current = System.currentTimeMillis();
+					//if (!((current > beginDttm) && (current < expryDttm))) {
+					//	throw new KSysException(KMessage.E6008
+					//			, KDateUtil.convert(beginDttm, KConstant.FMT_YYYY_MM_DD_HH_MM_SS)
+					//			, KDateUtil.convert(expryDttm, KConstant.FMT_YYYY_MM_DD_HH_MM_SS));
+					//}
+					//bearer = tokenVO.getTokenContent();
+					//KContext.set(AttrKey.BEARER, bearer);
 					break;
 				case NOAUTH:
 					break;
@@ -150,7 +144,7 @@ public class KFilterDecodeToken extends KFilter implements InitializingBean {
 
 			// token 정보 저장 (KContext)
 			{
-				KToken token = comUserTokenMgr.convertToken(bearer);
+				io.jsonwebtoken.Jwt token = comUserTokenMgr.parsetoken(bearer);
 				KContext.initToken(token);
 			}
 		} catch(KException e) {

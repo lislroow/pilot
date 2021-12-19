@@ -1,6 +1,7 @@
 package mgkim.framework.online.com.filter;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -16,7 +17,6 @@ import mgkim.framework.core.exception.KException;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
-import mgkim.framework.core.session.KToken;
 import mgkim.framework.core.stereo.KFilter;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KStringUtil;
@@ -38,8 +38,9 @@ public class KFilterVerifyToken extends KFilter {
 
 		// token `guid` 확인
 		{
-			KToken token = KContext.getT(AttrKey.TOKEN);
-			String tguid = KStringUtil.nvl(token.getGuid());
+			io.jsonwebtoken.Jwt token = KContext.getT(AttrKey.TOKEN);
+			Map<String, Object> claims = (Map<String, Object>)token.getBody();
+			String tguid = KStringUtil.nvl(claims.get("guid"));
 			String hguid = KStringUtil.nvl(KContext.getT(AttrKey.GUID));
 			if (!debug && !tguid.equals(hguid)) {
 				KExceptionHandler.response(response, new KSysException(KMessage.E6019, tguid, hguid));
@@ -55,8 +56,8 @@ public class KFilterVerifyToken extends KFilter {
 		// token 만료여부 확인
 		{
 			try {
-				KToken token = KContext.getT(AttrKey.TOKEN);
-				comUserTokenMgr.verifyExpiration(token);
+				io.jsonwebtoken.Jwt token = KContext.getT(AttrKey.TOKEN);
+				comUserTokenMgr.checkExpired(token.getHeader());
 			} catch(KException e) {
 				KExceptionHandler.response(response, e);
 				return;
@@ -68,7 +69,7 @@ public class KFilterVerifyToken extends KFilter {
 
 		// token 변조여부 여부 확인
 		try {
-			comUserTokenMgr.verifySignature(bearer);
+			comUserTokenMgr.parsetoken(bearer);
 		} catch(KException e) {
 			KExceptionHandler.response(response, e);
 			return;

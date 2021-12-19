@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.InitializingBean;
@@ -18,7 +19,6 @@ import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.core.logging.KLogSys;
 import mgkim.framework.core.session.KSession;
-import mgkim.framework.core.session.KToken;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.cmm.CmmUserSession;
@@ -41,11 +41,11 @@ public class ComUserSessionMgr implements InitializingBean {
 	}
 
 
-	public KSession createUserSession(KToken token) throws Exception {
+	public KSession createUserSession(Map<String, Object> claims) throws Exception {
 		// `principal` 생성
 		KSession session = null;
 		{
-			session = cmmUserSession.selectUserSession(token);
+			session = cmmUserSession.selectUserSession(claims);
 			if (session == null) {
 				throw new KSysException(KMessage.E6108);
 			}
@@ -55,7 +55,7 @@ public class ComUserSessionMgr implements InitializingBean {
 		final Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		{
 			List<String> roleList = null;
-			roleList = cmmUserSession.selectUserAuthority(token);
+			roleList = cmmUserSession.selectUserAuthority(claims);
 			if (roleList != null) {
 				roleList = roleList.stream().distinct().collect(Collectors.toList());
 				Iterator<String> iter = roleList.iterator();
