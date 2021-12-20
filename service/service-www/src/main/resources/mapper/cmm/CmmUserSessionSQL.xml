@@ -4,7 +4,8 @@
 
   <select id="selectUserSession" parameterType="java.util.Map" resultType="KSession">
   <![CDATA[
-    SELECT SITE_TPCD
+    SELECT 
+           SITE_TPCD
          , USER_ID
          , USER_NM
          , EMAIL
@@ -16,7 +17,8 @@
 
   <select id="selectUserAuthority" parameterType="java.util.Map" resultType="java.lang.String">
   <![CDATA[
-    SELECT D.ROLE_ID
+    SELECT 
+           D.ROLE_ID
       FROM MGCB101TM A /* MGCB_사용자정보 */
          , MGCB231TR B /* MGCB_사용자권한그룹매핑 */
          , MGCB221TR C /* MGCB_권한그룹설정 */

@@ -130,6 +130,7 @@ public class KSqlUtil {
 		// param-sql 로깅
 		{
 			paramSql = paramSql.replaceAll("\n\t\t", "\n");
+			paramSql = insertSqlId(paramSql, sqlId);
 			switch(paramSqlType) {
 			case ORIGINAL_SQL:
 				KLogSql.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL, sqlId, KLogLayout.LINE, KConstant.LT_SQL, sqlFile, sqlId, KLogLayout.LINE, paramSql);
@@ -192,6 +193,11 @@ public class KSqlUtil {
 		return paramList;
 	}
 
+	public static String insertSqlId(String sql, String sqlId) {
+		sqlId = String.format("$1 /* %s */", sqlId);
+		sql = sql.replaceFirst("^\\s*([0-9a-zA-Zㄱ-힣_]*)", sqlId);
+		return sql;
+	}
 
 	public static String removeOrderBy(String sql) {
 		String ORDER_BY_REGEX = "(.*order\\s*by[\\w|\\s|,|\\.|\\/|\\*|가-힣]*)";

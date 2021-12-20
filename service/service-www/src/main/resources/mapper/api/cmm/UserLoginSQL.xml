@@ -4,7 +4,8 @@
 
   <select id="selectUserExist" parameterType="java.util.Map" resultType="java.lang.Integer">
   <![CDATA[
-    SELECT COUNT(*)
+    SELECT 
+           COUNT(*)
       FROM MGCB101TM /* MGCB_사용자정보 */
      WHERE SITE_TPCD = #{siteTpcd}
        AND USER_ID = #{userId}
@@ -13,7 +14,8 @@
 
   <select id="selectUserLoginPolicy" parameterType="java.util.Map" resultType="CmmUserLoginPolicyVO">
   <![CDATA[
-    SELECT SITE_TPCD
+    SELECT 
+           SITE_TPCD
          , USER_ID
          , AUMTH_TPCD_LIST
          , INACTV_YN

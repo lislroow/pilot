@@ -3,7 +3,8 @@
 <mapper namespace="mgkim.service.www.cmm.mapper.CmmReloadableConfMngMapper">
 
   <select id="selectReloadStateList" parameterType="CmmReloadableConfVO" resultType="CmmReloadableConfVO">
-    SELECT SITE_TPCD
+    SELECT 
+           SITE_TPCD
          , HOSTNAME
          , WAS_ID
          , CONF_ID

@@ -42,7 +42,8 @@
   </insert>
 
   <select id="selectFile" parameterType="FileVO" resultType="FileVO">
-    SELECT A.*
+    SELECT 
+           A.*
       FROM MGCB404TM A /* MGCB_파일정보 */
      WHERE A.SITE_TPCD = #{siteTpcd}
        AND A.USE_YN = 'Y'
@@ -50,7 +51,8 @@
   </select>
 
   <select id="selectFilegroup" parameterType="FileVO" resultType="FileVO">
-    SELECT A.*
+    SELECT 
+           A.*
       FROM MGCB404TM A /* MGCB_파일정보 */
          , MGCB405TR B /* MGCB_파일그룹정보 */
      WHERE A.SITE_TPCD = #{siteTpcd}

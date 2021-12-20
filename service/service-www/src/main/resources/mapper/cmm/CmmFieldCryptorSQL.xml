@@ -22,7 +22,8 @@
   </insert>
 
   <select id="selectFieldCryptoKey" parameterType="java.util.Map" resultType="CmmFieldCryptoVO">
-    SELECT PRIVATE_KEY
+    SELECT 
+           PRIVATE_KEY
          , SYM_KEY
       FROM MGCB151TS /* MGCB_사용자세션상태 */
      WHERE USER_ID = #{ssuserId}

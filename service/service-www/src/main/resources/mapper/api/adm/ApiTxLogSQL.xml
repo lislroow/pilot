@@ -3,13 +3,15 @@
 <mapper namespace="mgkim.framework.online.api.adm.apitxlog.mapper.ApiTxLogMapper">
 
   <select id="selectLogList" parameterType="KCmmVO" resultType="CmmApiTxLogVO">
-    SELECT A.*
+    SELECT 
+           A.*
       FROM MGCB407TA A /* MGCB_api처리로그arch */
      ORDER BY FIRST_REGI_DTTM DESC
   </select>
 
   <select id="selectLogList-count" parameterType="KCmmVO" resultType="CmmApiTxLogVO">
-    SELECT COUNT(*)
+    SELECT 
+           COUNT(*)
       FROM (SELECT BB.*
               FROM MGCB407TA BB /* MGCB_api처리로그arch */)
   </select>

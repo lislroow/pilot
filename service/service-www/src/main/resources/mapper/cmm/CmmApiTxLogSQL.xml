@@ -3,7 +3,8 @@
 <mapper namespace="mgkim.service.www.cmm.mapper.CmmApiTxLogMapper">
 
   <insert id="insertLog" parameterType="CmmApiTxLogVO">
-    INSERT /*+ APPEND */
+    INSERT 
+           /*+ APPEND */
       INTO MGCB406TH /* MGCB_api처리로그 */ (
           SITE_TPCD
         , TXDTTM

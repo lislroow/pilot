@@ -47,7 +47,8 @@
   </insert>
 
   <select id="selectStatusForIsLogin" parameterType="java.util.Map" resultType="CmmSessionStatusVO">
-    SELECT USER_ID
+    SELECT 
+           USER_ID
          , AUMTH_TPCD
          , SSID
          , LOGIN_DTTM
@@ -62,7 +63,8 @@
   </select>
 
   <select id="selectStatusListForDupl" parameterType="java.util.Map" resultType="CmmSessionStatusVO">
-    SELECT USER_ID
+    SELECT 
+           USER_ID
          , AUMTH_TPCD
          , SSID
          , LOGIN_DTTM
