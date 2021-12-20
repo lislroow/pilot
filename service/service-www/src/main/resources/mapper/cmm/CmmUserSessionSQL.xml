@@ -2,33 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mgkim.service.www.cmm.mapper.CmmUserSessionMapper">
 
-	<select id="selectUserSession" parameterType="java.util.Map" resultType="KSession">
-	<![CDATA[
-		SELECT /* mgkim.service.www.cmm.mapper.CmmUserSessionMapper.selectUserSession */
-				  SITE_TPCD
-				, USER_ID
-				, USER_NM
-				, EMAIL
-		FROM	  MGCB101TM /* MGCB_사용자정보 */
-		WHERE	  SITE_TPCD = #{siteTpcd}
-			AND  USER_ID = #{userId}
-	]]>
-	</select>
+  <select id="selectUserSession" parameterType="java.util.Map" resultType="KSession">
+  <![CDATA[
+    SELECT SITE_TPCD
+         , USER_ID
+         , USER_NM
+         , EMAIL
+      FROM MGCB101TM /* MGCB_사용자정보 */
+     WHERE SITE_TPCD = #{siteTpcd}
+       AND USER_ID = #{userId}
+  ]]>
+  </select>
 
-	<select id="selectUserAuthority" parameterType="java.util.Map" resultType="java.lang.String">
-	<![CDATA[
-		SELECT /* mgkim.service.www.cmm.mapper.CmmUserSessionMapper.selectUserAuthority */
-				  D.ROLE_ID
-		FROM	  MGCB101TM A /* MGCB_사용자정보 */
-				, MGCB231TR B /* MGCB_사용자권한그룹매핑 */
-				, MGCB221TR C /* MGCB_권한그룹설정 */
-				, MGCB202TM D /* MGCB_권한정보 */
-		WHERE	  A.SITE_TPCD = #{siteTpcd}
-			AND  A.USER_ID = #{userId}
-			AND  A.USER_ID = B.USER_ID
-			AND  B.RGRP_ID = C.RGRP_ID
-			AND  C.ROLE_ID = D.ROLE_ID
-	]]>
-	</select>
+  <select id="selectUserAuthority" parameterType="java.util.Map" resultType="java.lang.String">
+  <![CDATA[
+    SELECT D.ROLE_ID
+      FROM MGCB101TM A /* MGCB_사용자정보 */
+         , MGCB231TR B /* MGCB_사용자권한그룹매핑 */
+         , MGCB221TR C /* MGCB_권한그룹설정 */
+         , MGCB202TM D /* MGCB_권한정보 */
+     WHERE A.SITE_TPCD = #{siteTpcd}
+       AND A.USER_ID = #{userId}
+       AND A.USER_ID = B.USER_ID
+       AND B.RGRP_ID = C.RGRP_ID
+       AND C.ROLE_ID = D.ROLE_ID
+  ]]>
+  </select>
 
 </mapper>

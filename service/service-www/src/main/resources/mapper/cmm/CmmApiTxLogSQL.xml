@@ -2,97 +2,97 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mgkim.service.www.cmm.mapper.CmmApiTxLogMapper">
 
-	<insert id="insertLog" parameterType="CmmApiTxLogVO">
-		INSERT /*+ APPEND */ /* mgkim.service.www.cmm.mapper.CmmApiTxLogMapper.insertLog */
-			INTO MGCB406TH /* MGCB_api처리로그 */ (
-			  SITE_TPCD
-			, TXDTTM
-			, URI_VAL
-			, TXID
-			, IP
-			, USER_ID
-			, SSID
-			, HOSTNAME
-			, WAS_ID
-			, RSLTCD
-			, RSLTMSG
-			, ERRTXT
-			, TOKEN
-			, FIRST_REGIR_NO
-			, FIRST_REGI_DTTM
-			, LAST_MODFR_NO
-			, LAST_MODF_DTTM
-		) VALUES (
-			  #{siteTpcd}
-			, TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS')
-			, #{uriVal}
-			, #{txid}
-			, #{ip}
-			, #{userId}
-			, #{ssid}
-			, #{hostname}
-			, #{wasId}
-			, #{rsltcd}
-			, #{rsltmsg}
-			, #{errtxt}
-			, #{token}
-			, 'SYSTEM'
-			, SYSDATE
-			, 'SYSTEM'
-			, SYSDATE
-		)
-	</insert>
+  <insert id="insertLog" parameterType="CmmApiTxLogVO">
+    INSERT /*+ APPEND */
+      INTO MGCB406TH /* MGCB_api처리로그 */ (
+          SITE_TPCD
+        , TXDTTM
+        , URI_VAL
+        , TXID
+        , IP
+        , USER_ID
+        , SSID
+        , HOSTNAME
+        , WAS_ID
+        , RSLTCD
+        , RSLTMSG
+        , ERRTXT
+        , TOKEN
+        , FIRST_REGIR_NO
+        , FIRST_REGI_DTTM
+        , LAST_MODFR_NO
+        , LAST_MODF_DTTM
+      ) VALUES (
+          #{siteTpcd}
+        , TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS')
+        , #{uriVal}
+        , #{txid}
+        , #{ip}
+        , #{userId}
+        , #{ssid}
+        , #{hostname}
+        , #{wasId}
+        , #{rsltcd}
+        , #{rsltmsg}
+        , #{errtxt}
+        , #{token}
+        , 'SYSTEM'
+        , SYSDATE
+        , 'SYSTEM'
+        , SYSDATE
+      )
+  </insert>
 
-	<insert id="insertLogForArchive" parameterType="java.lang.String">
-	<![CDATA[
-		INSERT /* mgkim.service.www.cmm.mapper.CmmApiTxLogMapper.insertLogForArchive */
-			INTO MGCB407TA /* MGCB_api처리로그arch */ (
-				  SITE_TPCD
-				, TXDTTM
-				, TXDT
-				, TXTM
-				, URI_VAL
-				, TXID
-				, IP
-				, USER_ID
-				, SSID
-				, HOSTNAME
-				, WAS_ID
-				, RSLTCD
-				, RSLTMSG
-				, FIRST_REGIR_NO
-				, FIRST_REGI_DTTM
-				, LAST_MODFR_NO
-				, LAST_MODF_DTTM
-			)
-		SELECT  SITE_TPCD
-				, TXDTTM
-				, TO_CHAR(FIRST_REGI_DTTM, 'YYYYMMDD')
-				, TO_CHAR(FIRST_REGI_DTTM, 'HH24')
-				, URI_VAL
-				, TXID
-				, IP
-				, USER_ID
-				, SSID
-				, HOSTNAME
-				, WAS_ID
-				, RSLTCD
-				, RSLTMSG
-				, FIRST_REGIR_NO
-				, FIRST_REGI_DTTM
-				, LAST_MODFR_NO
-				, LAST_MODF_DTTM
-		FROM	  MGCB406TH /* MGCB_api처리로그 */
-		WHERE	  FIRST_REGI_DTTM < TO_DATE(#{archiveDttm}, 'YYYY-MM-DD HH24:MI:SS')
-	]]>
-	</insert>
+  <insert id="insertLogForArchive" parameterType="java.lang.String">
+  <![CDATA[
+    INSERT
+      INTO MGCB407TA /* MGCB_api처리로그arch */ (
+          SITE_TPCD
+        , TXDTTM
+        , TXDT
+        , TXTM
+        , URI_VAL
+        , TXID
+        , IP
+        , USER_ID
+        , SSID
+        , HOSTNAME
+        , WAS_ID
+        , RSLTCD
+        , RSLTMSG
+        , FIRST_REGIR_NO
+        , FIRST_REGI_DTTM
+        , LAST_MODFR_NO
+        , LAST_MODF_DTTM
+      )
+      SELECT SITE_TPCD
+           , TXDTTM
+           , TO_CHAR(FIRST_REGI_DTTM, 'YYYYMMDD')
+           , TO_CHAR(FIRST_REGI_DTTM, 'HH24')
+           , URI_VAL
+           , TXID
+           , IP
+           , USER_ID
+           , SSID
+           , HOSTNAME
+           , WAS_ID
+           , RSLTCD
+           , RSLTMSG
+           , FIRST_REGIR_NO
+           , FIRST_REGI_DTTM
+           , LAST_MODFR_NO
+           , LAST_MODF_DTTM
+        FROM MGCB406TH /* MGCB_api처리로그 */
+       WHERE FIRST_REGI_DTTM < TO_DATE(#{archiveDttm}, 'YYYY-MM-DD HH24:MI:SS')
+  ]]>
+  </insert>
 
-	<delete id="deleteLogForArchive" parameterType="java.lang.String">
-	<![CDATA[
-		DELETE  /* mgkim.service.www.cmm.mapper.CmmApiTxLogMapper.deleteLogForArchive */
-		FROM	  MGCB406TH
-		WHERE	  FIRST_REGI_DTTM < TO_DATE(#{archiveDttm}, 'YYYY-MM-DD HH24:MI:SS')
-	]]>
-	</delete>
+  <delete id="deleteLogForArchive" parameterType="java.lang.String">
+  <![CDATA[
+    DELETE
+      FROM MGCB406TH
+     WHERE FIRST_REGI_DTTM < TO_DATE(#{archiveDttm}, 'YYYY-MM-DD HH24:MI:SS')
+  ]]>
+  </delete>
 
 </mapper>

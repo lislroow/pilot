@@ -2,27 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mgkim.service.www.cmm.mapper.CmmPrivacyMapper">
 
-	<select id="selectMngAll" parameterType="CmmPrivacyMngVO" resultType="CmmPrivacyMngVO">
-		SELECT /* mgkim.service.www.cmm.mapper.CmmPrivacyMapper.selectMngAll */
-				  MNGTG_ID
-				, MNGTG_TPCD
-		FROM	  MGCB402TM /* MGCB_개인정보접근관리정보 */
-		WHERE	  SITE_TPCD = #{siteTpcd}
-	</select>
+  <select id="selectMngAll" parameterType="CmmPrivacyMngVO" resultType="CmmPrivacyMngVO">
+    SELECT MNGTG_ID
+         , MNGTG_TPCD
+      FROM MGCB402TM /* MGCB_개인정보접근관리정보 */
+     WHERE SITE_TPCD = #{siteTpcd}
+  </select>
 
 
-	<insert id="insertLog" parameterType="CmmPrivacyLogVO">
-		<selectKey keyProperty="accsLogSeq" resultType="long" order="BEFORE">
-			SELECT /* mgkim.service.www.cmm.mapper.CmmPrivacyMapper.insertLog!selectKey */
-					  EVCB717NT_SQ01.NEXTVAL AS ACCS_LOG_SEQ
-			FROM	 DUAL
-		</selectKey>
-		INSERT /* mgkim.service.www.cmm.mapper.CmmPrivacyMapper.insertLog */
-			INTO MGCB403TH /* MGCB_개인정보접근로그 */ (
-
-			) VALUES (
-
-			)
-	</insert>
+  <insert id="insertLog" parameterType="CmmPrivacyLogVO">
+    <selectKey keyProperty="accsLogSeq" resultType="long" order="BEFORE">
+      SELECT EVCB717NT_SQ01.NEXTVAL AS ACCS_LOG_SEQ
+        FROM DUAL
+    </selectKey>
+    INSERT
+      INTO MGCB403TH /* MGCB_개인정보접근로그 */ (
+        
+      ) VALUES (
+        
+      )
+  </insert>
 
 </mapper>

@@ -2,87 +2,86 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mgkim.service.www.cmm.mapper.CmmReloadableConfMngMapper">
 
-	<select id="selectReloadStateList" parameterType="CmmReloadableConfVO" resultType="CmmReloadableConfVO">
-		SELECT  /* mgkim.service.www.cmm.mapper.CmmReloadableConfMngMapper.selectReloadStateList */
-				  SITE_TPCD
-				, HOSTNAME
-				, WAS_ID
-				, CONF_ID
-				, CONF_STCD
-				, APLI_DTTM
-				, APLI_RDTTM
-				, FIRST_REGIR_NO
-				, FIRST_REGI_DTTM
-				, LAST_MODFR_NO
-				, LAST_MODF_DTTM
-		FROM	  MGCB401TS /* MGCB_reloadable-config상태 */
-		WHERE   SITE_TPCD = #{siteTpcd}
-			AND  HOSTNAME = #{hostname}
-			AND  WAS_ID = #{wasId}
-	</select>
+  <select id="selectReloadStateList" parameterType="CmmReloadableConfVO" resultType="CmmReloadableConfVO">
+    SELECT SITE_TPCD
+         , HOSTNAME
+         , WAS_ID
+         , CONF_ID
+         , CONF_STCD
+         , APLI_DTTM
+         , APLI_RDTTM
+         , FIRST_REGIR_NO
+         , FIRST_REGI_DTTM
+         , LAST_MODFR_NO
+         , LAST_MODF_DTTM
+      FROM MGCB401TS /* MGCB_reloadable-config상태 */
+     WHERE SITE_TPCD = #{siteTpcd}
+       AND HOSTNAME = #{hostname}
+       AND WAS_ID = #{wasId}
+  </select>
 
-	<update id="updateReloadState" parameterType="CmmReloadableConfVO">
-		UPDATE /* mgkim.service.www.cmm.mapper.CmmReloadableConfMngMapper.updateReloadState */
-			MGCB401TS /* MGCB_reloadable-config상태 */ SET
-				  CONF_STCD = #{confStcd}
-				, APLI_DTTM = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
-				, APLI_RDTTM = null
-				, LAST_MODF_DTTM = SYSDATE
-		WHERE   SITE_TPCD = #{siteTpcd}
-			AND  HOSTNAME = #{hostname}
-			AND  WAS_ID = #{wasId}
-			AND  CONF_ID = #{confId}
-	</update>
+  <update id="updateReloadState" parameterType="CmmReloadableConfVO">
+    UPDATE
+      MGCB401TS /* MGCB_reloadable-config상태 */ SET
+           CONF_STCD = #{confStcd}
+         , APLI_DTTM = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
+         , APLI_RDTTM = null
+         , LAST_MODF_DTTM = SYSDATE
+     WHERE SITE_TPCD = #{siteTpcd}
+       AND HOSTNAME = #{hostname}
+       AND WAS_ID = #{wasId}
+       AND CONF_ID = #{confId}
+  </update>
 
-	<delete id="deleteReloadStateForReset" parameterType="CmmReloadableConfVO">
-		DELETE /* mgkim.service.www.cmm.mapper.CmmReloadableConfMngMapper.deleteReloadStateForReset */
-		FROM	 MGCB401TS /* MGCB_reloadable-config상태 */
-		WHERE  SITE_TPCD = #{siteTpcd}
-				AND HOSTNAME = #{hostname}
-				AND WAS_ID = #{wasId}
-	</delete>
+  <delete id="deleteReloadStateForReset" parameterType="CmmReloadableConfVO">
+    DELETE
+      FROM MGCB401TS /* MGCB_reloadable-config상태 */
+     WHERE SITE_TPCD = #{siteTpcd}
+       AND HOSTNAME = #{hostname}
+       AND WAS_ID = #{wasId}
+  </delete>
 
-	<update id="updateReloadStateForReset" parameterType="CmmReloadableConfVO">
-		MERGE /* mgkim.service.www.cmm.mapper.CmmReloadableConfMngMapper.updateReloadStateForReset */
-			INTO MGCB401TS /* MGCB_reloadable-config상태 */
-			USING DUAL
-				ON (SITE_TPCD = #{siteTpcd}
-				AND HOSTNAME = #{hostname}
-				AND WAS_ID = #{wasId}
-				AND CONF_ID = #{confId})
-		WHEN MATCHED THEN
-			UPDATE SET
-				  CONF_STCD = '00'
-				, APLI_DTTM = null
-				, APLI_RDTTM = null
-				, LAST_MODFR_NO = 'SYSTEM'
-				, LAST_MODF_DTTM = SYSDATE
-		WHEN NOT MATCHED THEN
-			INSERT (
-				  SITE_TPCD
-				, HOSTNAME
-				, WAS_ID
-				, CONF_ID
-				, CONF_STCD
-				, APLI_DTTM
-				, APLI_RDTTM
-				, FIRST_REGIR_NO
-				, FIRST_REGI_DTTM
-				, LAST_MODFR_NO
-				, LAST_MODF_DTTM
-			) VALUES (
-				  #{siteTpcd}
-				, #{hostname}
-				, #{wasId}
-				, #{confId}
-				, '00'
-				, null
-				, null
-				, 'SYSTEM'
-				, SYSDATE
-				, 'SYSTEM'
-				, SYSDATE
-			)
-	</update>
+  <update id="updateReloadStateForReset" parameterType="CmmReloadableConfVO">
+    MERGE
+     INTO MGCB401TS /* MGCB_reloadable-config상태 */
+    USING DUAL
+       ON (SITE_TPCD = #{siteTpcd}
+          AND HOSTNAME = #{hostname}
+          AND WAS_ID = #{wasId}
+          AND CONF_ID = #{confId})
+     WHEN MATCHED THEN
+       UPDATE SET
+           CONF_STCD = '00'
+         , APLI_DTTM = null
+         , APLI_RDTTM = null
+         , LAST_MODFR_NO = 'SYSTEM'
+         , LAST_MODF_DTTM = SYSDATE
+     WHEN NOT MATCHED THEN
+       INSERT (
+           SITE_TPCD
+         , HOSTNAME
+         , WAS_ID
+         , CONF_ID
+         , CONF_STCD
+         , APLI_DTTM
+         , APLI_RDTTM
+         , FIRST_REGIR_NO
+         , FIRST_REGI_DTTM
+         , LAST_MODFR_NO
+         , LAST_MODF_DTTM
+       ) VALUES (
+           #{siteTpcd}
+         , #{hostname}
+         , #{wasId}
+         , #{confId}
+         , '00'
+         , null
+         , null
+         , 'SYSTEM'
+         , SYSDATE
+         , 'SYSTEM'
+         , SYSDATE
+       )
+  </update>
 
 </mapper>
