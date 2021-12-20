@@ -13,13 +13,13 @@
 		WHEN MATCHED THEN
 			UPDATE SET
 				  SS_STCD = '00'
+				, LOGIN_DTTM = TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS')
 				, EXPIRE_DTTM = SYSDATE + #{ssvaldSec} / (24*60*60)
 				, SSVALD_SEC = #{ssvaldSec}
-				, LOGIN_DTTM = TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS')
+				, BROWS_INF = #{browsInf}
 				, PRIVATE_KEY = null
 				, PUBLIC_KEY = null
 				, SYM_KEY = null
-				, BROWS_INF = #{browsInf}
 		WHEN NOT MATCHED THEN
 			INSERT (
 				  USER_ID
@@ -31,6 +31,7 @@
 				, LOGIN_DTTM
 				, BROWS_INF
 				, IP
+				, LAST_MODF_DTTM
 			) VALUES (
 				  #{userId}
 				, #{aumthTpcd}
@@ -41,6 +42,7 @@
 				, TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS')
 				, #{browsInf}
 				, #{ip}
+				, SYSDATE
 			)
 	</insert>
 
@@ -79,6 +81,7 @@
 		UPDATE /* mgkim.proto.www.cmm.mapper.CmmSessionStatusMngMapper.updateDupl */
 			MGCB151TS /* MGCB_사용자세션상태 */ SET
 				  SS_STCD = '10' /* 10: 중복로그인 */
+				, LAST_MODF_DTTM = SYSDATE
 		WHERE	  /* 주의: WHERE에 조건은 반드시 있어야함  */
 		<choose>
 			<when test='sessionList == null or sessionList.size() == 0'>
@@ -99,6 +102,7 @@
 		UPDATE /* mgkim.proto.www.cmm.mapper.CmmSessionStatusMngMapper.updateRefreshList */
 			MGCB151TS /* MGCB_사용자세션상태 */ SET
 				  EXPIRE_DTTM = SYSDATE + SSVALD_SEC / (24*60*60)
+        , LAST_MODF_DTTM = SYSDATE
 		WHERE	  SS_STCD = '00'
 		<choose>
 			<when test='sessionList != null and sessionList.size() > 0'>
@@ -118,6 +122,7 @@
 		UPDATE /* mgkim.proto.www.cmm.mapper.CmmSessionStatusMngMapper.updateExpire */
 			MGCB151TS /* MGCB_사용자세션상태 */ SET
 				  SS_STCD = '20' /* 20: 세션만료 */
+        , LAST_MODF_DTTM = SYSDATE
 		WHERE	  EXPIRE_DTTM <= SYSDATE
 			AND  SS_STCD = '00' /* 00: 로그인 */
 	]]>
@@ -128,6 +133,7 @@
 		UPDATE /* mgkim.proto.www.cmm.mapper.CmmSessionStatusMngMapper.updateLogout */
 			MGCB151TS /* MGCB_사용자세션상태 */ SET
 				 SS_STCD = '30' /* 30: 로그아웃 */
+        , LAST_MODF_DTTM = SYSDATE
 		WHERE  EXPIRE_DTTM + 10/(24*60*60) <= SYSDATE
 			AND SS_STCD IN ('10', '20') /* 10: 중복로그인, 20: 세션만료 */
 	]]>
@@ -174,6 +180,7 @@
 		FROM	  MGCB151TS A /* MGCB_사용자세션이력 */
 		WHERE	  A.EXPIRE_DTTM <= SYSDATE
 			AND A.SS_STCD = '30' /* 30: 로그아웃 */
+			AND LAST_MODF_DTTM + 20/(24*60*60) <= SYSDATE
 			AND EXISTS (
 				SELECT 1
 				FROM	  MGCB152TH B /* MGCB_사용자세션이력 */
