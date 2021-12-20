@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mgkim.proto.www.cmm.mapper.CmmSessionStatusMngMapper">
+<mapper namespace="mgkim.service.www.cmm.mapper.CmmSessionStatusMngMapper">
 
 	<insert id="insertNewStatus" parameterType="java.util.Map">
-		MERGE /* mgkim.proto.www.cmm.mapper.ComSessionMapper.insertNewSession */
+		MERGE /* mgkim.service.www.cmm.mapper.ComSessionMapper.insertNewSession */
 			INTO MGCB151TS /* MGCB_사용자세션상태 */
 			USING DUAL
 				ON (SSID = #{ssid}
@@ -47,7 +47,7 @@
 	</insert>
 
 	<select id="selectStatusForIsLogin" parameterType="java.util.Map" resultType="CmmSessionStatusVO">
-		SELECT /* mgkim.proto.www.cmm.mapper.CmmSessionStatusMngMapper.selectStatusForIsLogin */
+		SELECT /* mgkim.service.www.cmm.mapper.CmmSessionStatusMngMapper.selectStatusForIsLogin */
 				  USER_ID
 				, AUMTH_TPCD
 				, SSID
@@ -63,7 +63,7 @@
 	</select>
 
 	<select id="selectStatusListForDupl" parameterType="java.util.Map" resultType="CmmSessionStatusVO">
-		SELECT /* mgkim.proto.www.cmm.mapper.CmmSessionStatusMngMapper.selectStatusListForDupl */
+		SELECT /* mgkim.service.www.cmm.mapper.CmmSessionStatusMngMapper.selectStatusListForDupl */
 				  USER_ID
 				, AUMTH_TPCD
 				, SSID
@@ -78,7 +78,7 @@
 
 
 	<update id="updateDupl" parameterType="CmmSessionMngListVO">
-		UPDATE /* mgkim.proto.www.cmm.mapper.CmmSessionStatusMngMapper.updateDupl */
+		UPDATE /* mgkim.service.www.cmm.mapper.CmmSessionStatusMngMapper.updateDupl */
 			MGCB151TS /* MGCB_사용자세션상태 */ SET
 				  SS_STCD = '10' /* 10: 중복로그인 */
 				, LAST_MODF_DTTM = SYSDATE
@@ -99,7 +99,7 @@
 	</update>
 
 	<update id="updateRefresh" parameterType="CmmSessionMngListVO">
-		UPDATE /* mgkim.proto.www.cmm.mapper.CmmSessionStatusMngMapper.updateRefreshList */
+		UPDATE /* mgkim.service.www.cmm.mapper.CmmSessionStatusMngMapper.updateRefreshList */
 			MGCB151TS /* MGCB_사용자세션상태 */ SET
 				  EXPIRE_DTTM = SYSDATE + SSVALD_SEC / (24*60*60)
         , LAST_MODF_DTTM = SYSDATE
@@ -119,7 +119,7 @@
 
 	<update id="updateLoginToExpire">
 	<![CDATA[
-		UPDATE /* mgkim.proto.www.cmm.mapper.CmmSessionStatusMngMapper.updateExpire */
+		UPDATE /* mgkim.service.www.cmm.mapper.CmmSessionStatusMngMapper.updateExpire */
 			MGCB151TS /* MGCB_사용자세션상태 */ SET
 				  SS_STCD = '20' /* 20: 세션만료 */
         , LAST_MODF_DTTM = SYSDATE
@@ -130,7 +130,7 @@
 
 	<update id="updateExpireToLogout">
 	<![CDATA[
-		UPDATE /* mgkim.proto.www.cmm.mapper.CmmSessionStatusMngMapper.updateLogout */
+		UPDATE /* mgkim.service.www.cmm.mapper.CmmSessionStatusMngMapper.updateLogout */
 			MGCB151TS /* MGCB_사용자세션상태 */ SET
 				 SS_STCD = '30' /* 30: 로그아웃 */
         , LAST_MODF_DTTM = SYSDATE
@@ -141,7 +141,7 @@
 
 	<delete id="insertMoveToHistory">
 	<![CDATA[
-		INSERT /* mgkim.proto.www.cmm.mapper.CmmSessionStatusMngMapper.insertLogoutHistory */
+		INSERT /* mgkim.service.www.cmm.mapper.CmmSessionStatusMngMapper.insertLogoutHistory */
 			INTO MGCB152TH /* MGCB_사용자세션이력 */ (
 				  USER_ID
 				, AUMTH_TPCD
@@ -176,7 +176,7 @@
 
 	<delete id="deleteLogout">
 	<![CDATA[
-		DELETE /* mgkim.proto.www.cmm.mapper.CmmSessionStatusMngMapper.deleteLogout */
+		DELETE /* mgkim.service.www.cmm.mapper.CmmSessionStatusMngMapper.deleteLogout */
 		FROM	  MGCB151TS A /* MGCB_사용자세션이력 */
 		WHERE	  A.EXPIRE_DTTM <= SYSDATE
 			AND A.SS_STCD = '30' /* 30: 로그아웃 */

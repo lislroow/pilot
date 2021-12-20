@@ -11,7 +11,7 @@
 	</settings>
 
 	<plugins>
-		<!-- <plugin interceptor="mgkim.proto.www.com.mybatis.ComSqlInterceptorImpl" /> -->
+		<!-- <plugin interceptor="mgkim.service.www.com.mybatis.ComSqlInterceptorImpl" /> -->
 		<plugin interceptor="mgkim.framework.core.sql.ComSqlInterceptor" />
 	</plugins>
 

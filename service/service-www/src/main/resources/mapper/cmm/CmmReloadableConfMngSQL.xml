@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mgkim.proto.www.cmm.mapper.CmmReloadableConfMngMapper">
+<mapper namespace="mgkim.service.www.cmm.mapper.CmmReloadableConfMngMapper">
 
 	<select id="selectReloadStateList" parameterType="CmmReloadableConfVO" resultType="CmmReloadableConfVO">
-		SELECT  /* mgkim.proto.www.cmm.mapper.CmmReloadableConfMngMapper.selectReloadStateList */
+		SELECT  /* mgkim.service.www.cmm.mapper.CmmReloadableConfMngMapper.selectReloadStateList */
 				  SITE_TPCD
 				, HOSTNAME
 				, WAS_ID
@@ -22,7 +22,7 @@
 	</select>
 
 	<update id="updateReloadState" parameterType="CmmReloadableConfVO">
-		UPDATE /* mgkim.proto.www.cmm.mapper.CmmReloadableConfMngMapper.updateReloadState */
+		UPDATE /* mgkim.service.www.cmm.mapper.CmmReloadableConfMngMapper.updateReloadState */
 			MGCB401TS /* MGCB_reloadable-config상태 */ SET
 				  CONF_STCD = #{confStcd}
 				, APLI_DTTM = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
@@ -35,7 +35,7 @@
 	</update>
 
 	<delete id="deleteReloadStateForReset" parameterType="CmmReloadableConfVO">
-		DELETE /* mgkim.proto.www.cmm.mapper.CmmReloadableConfMngMapper.deleteReloadStateForReset */
+		DELETE /* mgkim.service.www.cmm.mapper.CmmReloadableConfMngMapper.deleteReloadStateForReset */
 		FROM	 MGCB401TS /* MGCB_reloadable-config상태 */
 		WHERE  SITE_TPCD = #{siteTpcd}
 				AND HOSTNAME = #{hostname}
@@ -43,7 +43,7 @@
 	</delete>
 
 	<update id="updateReloadStateForReset" parameterType="CmmReloadableConfVO">
-		MERGE /* mgkim.proto.www.cmm.mapper.CmmReloadableConfMngMapper.updateReloadStateForReset */
+		MERGE /* mgkim.service.www.cmm.mapper.CmmReloadableConfMngMapper.updateReloadStateForReset */
 			INTO MGCB401TS /* MGCB_reloadable-config상태 */
 			USING DUAL
 				ON (SITE_TPCD = #{siteTpcd}

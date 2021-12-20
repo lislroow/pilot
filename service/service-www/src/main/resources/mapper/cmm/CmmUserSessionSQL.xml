@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mgkim.proto.www.cmm.mapper.CmmUserSessionMapper">
+<mapper namespace="mgkim.service.www.cmm.mapper.CmmUserSessionMapper">
 
 	<select id="selectUserSession" parameterType="java.util.Map" resultType="KSession">
 	<![CDATA[
-		SELECT /* mgkim.proto.www.cmm.mapper.CmmUserSessionMapper.selectUserSession */
+		SELECT /* mgkim.service.www.cmm.mapper.CmmUserSessionMapper.selectUserSession */
 				  SITE_TPCD
 				, USER_ID
 				, USER_NM
@@ -17,7 +17,7 @@
 
 	<select id="selectUserAuthority" parameterType="java.util.Map" resultType="java.lang.String">
 	<![CDATA[
-		SELECT /* mgkim.proto.www.cmm.mapper.CmmUserSessionMapper.selectUserAuthority */
+		SELECT /* mgkim.service.www.cmm.mapper.CmmUserSessionMapper.selectUserAuthority */
 				  D.ROLE_ID
 		FROM	  MGCB101TM A /* MGCB_사용자정보 */
 				, MGCB231TR B /* MGCB_사용자권한그룹매핑 */

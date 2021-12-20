@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mgkim.proto.www.api.cmm.userlogin.mapper.UserLoginMapper">
+<mapper namespace="mgkim.service.www.api.cmm.userlogin.mapper.UserLoginMapper">
 
 	<select id="selectUserExist" parameterType="java.util.Map" resultType="java.lang.Integer">
 	<![CDATA[
-		SELECT /* mgkim.proto.www.api.cmm.userlogin.mapper.UserLoginMapper.selectUserExist */
+		SELECT /* mgkim.service.www.api.cmm.userlogin.mapper.UserLoginMapper.selectUserExist */
 				  COUNT(*)
 		FROM	  MGCB101TM /* MGCB_사용자정보 */
 		WHERE	  SITE_TPCD = #{siteTpcd}
@@ -14,7 +14,7 @@
 
 	<select id="selectUserLoginPolicy" parameterType="java.util.Map" resultType="CmmUserLoginPolicyVO">
 	<![CDATA[
-		SELECT /* mgkim.proto.www.api.cmm.userlogin.mapper.UserLoginMapper.selectUserLoginPolicy */
+		SELECT /* mgkim.service.www.api.cmm.userlogin.mapper.UserLoginMapper.selectUserLoginPolicy */
 				  SITE_TPCD
 				, USER_ID
 				, AUMTH_TPCD_LIST

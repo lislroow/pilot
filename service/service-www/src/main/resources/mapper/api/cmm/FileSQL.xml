@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mgkim.proto.www.api.cmm.file.mapper.FileMapper">
+<mapper namespace="mgkim.service.www.api.cmm.file.mapper.FileMapper">
 
 	<insert id="insertFile" parameterType="FileVO">
-		INSERT /* mgkim.proto.www.api.cmm.file.mapper.FileMapper.insertFile */
+		INSERT /* mgkim.service.www.api.cmm.file.mapper.FileMapper.insertFile */
 		INTO MGCB404TM /* MGCB_파일정보 */ (
 			  SITE_TPCD
 			, FILE_ID
@@ -42,7 +42,7 @@
 	</insert>
 
 	<select id="selectFile" parameterType="FileVO" resultType="FileVO">
-		SELECT  /* mgkim.proto.www.api.cmm.file.mapper.FileMapper.selectFile */
+		SELECT  /* mgkim.service.www.api.cmm.file.mapper.FileMapper.selectFile */
 				  A.*
 		FROM	  MGCB404TM A /* MGCB_파일정보 */
 		WHERE	  A.SITE_TPCD = #{siteTpcd}
@@ -51,7 +51,7 @@
 	</select>
 
 	<select id="selectFilegroup" parameterType="FileVO" resultType="FileVO">
-		SELECT  /* mgkim.proto.www.api.cmm.file.mapper.FileMapper.selectFilegroup */
+		SELECT  /* mgkim.service.www.api.cmm.file.mapper.FileMapper.selectFilegroup */
 				  A.*
 		FROM	  MGCB404TM A /* MGCB_파일정보 */
 				, MGCB405TR B /* MGCB_파일그룹정보 */
@@ -63,7 +63,7 @@
 	</select>
 
 	<insert id="insertFilegroup" parameterType="FileVO">
-		INSERT /* mgkim.proto.www.api.cmm.file.mapper.FileMapper.insertFilegroup */
+		INSERT /* mgkim.service.www.api.cmm.file.mapper.FileMapper.insertFilegroup */
 		INTO MGCB405TR /* MGCB_파일그룹정보 */ (
 			  SITE_TPCD
 			, FGRP_ID

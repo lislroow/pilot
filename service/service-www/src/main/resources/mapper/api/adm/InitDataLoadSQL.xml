@@ -325,7 +325,7 @@
 
 	<insert id="insertUser" parameterType="InitLoadMockVO">
 	<![CDATA[
-		INSERT /* mgkim.proto.www.sys.com.mapper.ComSessionStatusMngMapper.insertLogoutHistory */
+		INSERT /* mgkim.service.www.sys.com.mapper.ComSessionStatusMngMapper.insertLogoutHistory */
 			INTO MGCB101TM /* MGCB_사용자정보 */ (
 				  SITE_TPCD
 				, USER_ID
@@ -359,7 +359,7 @@
 
 	<insert id="insertLoginPolicy" parameterType="InitLoadMockVO">
 	<![CDATA[
-		INSERT /* mgkim.proto.www.sys.com.mapper.ComSessionStatusMngMapper.insertLogoutHistory */
+		INSERT /* mgkim.service.www.sys.com.mapper.ComSessionStatusMngMapper.insertLogoutHistory */
 			INTO MGCB121TM /* MGCB_사용자로그인정책정보 */ (
 				  SITE_TPCD
 				, USER_ID
