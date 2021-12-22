@@ -42,7 +42,7 @@ public class KFilterVerifySession extends KFilter {
 			Map<String, Object> claims = (Map<String, Object>)token.getBody();
 			boolean isLogin = comSessionStatusMgr.isLoginStatus(claims);
 			if (isLogin == false) {
-				throw new KSysException(KMessage.E6103);
+				throw new KSysException(KMessage.E6101);
 			}
 		} catch(KException e) {
 			KExceptionHandler.response(response, e);
