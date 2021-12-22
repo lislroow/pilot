@@ -37,9 +37,9 @@ public class ComUserTokenMgr {
 	}
 	
 	public static int ACCESS_TOKEN_EXPIRE_SEC_DEFAULT = 7200;
-	public static int ACCESS_TOKEN_EXPIRE_SEC;
+	public static int ACCESS_TOKEN_EXPIRE_SEC = 7200;
 	public static int REFRESH_TOKEN_EXPIRE_SEC_DEFAULT = 86400;
-	public static int REFRESH_TOKEN_EXPIRE_SEC;
+	public static int REFRESH_TOKEN_EXPIRE_SEC = 86400;
 	
 	public static final String API_TOKEN_CLAIMS = "{\"ssid\": \"\", \"ip\": \"\", \"userId\": \"\", \"userType\": \"\", \"elvtBizSysTpcd\": \"10\", \"loginCertTpcd\": \"I\", \"elvtConnTpcd\": \"01\", \"elvtShrNo\": \"\", \"agentCustno\": -1, \"autoCertYn\": \"N\", \"linkSeccoCd\": \"000\"}";
 	public static final String OPENAPI_TOKEN_CLAIMS = "{\"ssid\": \"\", \"ip\": \"\", \"userId\": \"\", \"userType\": \"\", \"aesKey\": \"\", \"orgCd\": \"\", \"orgNm\": \"\"}";
