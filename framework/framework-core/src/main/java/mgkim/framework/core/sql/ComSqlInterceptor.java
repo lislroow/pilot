@@ -2,8 +2,11 @@ package mgkim.framework.core.sql;
 
 import java.lang.reflect.Field;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.ibatis.executor.resultset.ResultSetHandler;
@@ -11,13 +14,25 @@ import org.apache.ibatis.executor.statement.BaseStatementHandler;
 import org.apache.ibatis.executor.statement.PreparedStatementHandler;
 import org.apache.ibatis.executor.statement.RoutingStatementHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
+import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
+import org.apache.ibatis.mapping.ParameterMapping;
+import org.apache.ibatis.mapping.ParameterMode;
+import org.apache.ibatis.mapping.ResultMap;
+import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.plugin.Intercepts;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Plugin;
 import org.apache.ibatis.plugin.Signature;
+import org.apache.ibatis.reflection.property.PropertyTokenizer;
+import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
+import org.apache.ibatis.scripting.xmltags.ForEachSqlNode;
+import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.ResultHandler;
+import org.apache.ibatis.type.JdbcType;
+import org.apache.ibatis.type.TypeHandler;
+import org.apache.ibatis.type.TypeHandlerRegistry;
 import org.springframework.util.StopWatch;
 
 import mgkim.framework.core.dto.KCmmVO;
@@ -36,6 +51,8 @@ import mgkim.framework.core.type.TExecType;
 import mgkim.framework.core.type.TSqlType;
 import mgkim.framework.core.type.TSysType;
 import mgkim.framework.core.util.KDtoUtil;
+import mgkim.framework.core.util.KExceptionUtil;
+import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KSqlUtil;
 import mgkim.framework.core.util.KStringUtil;
 
@@ -71,10 +88,10 @@ public class ComSqlInterceptor implements Interceptor {
 		StatementHandler sHandler = (StatementHandler) invocation.getTarget();
 		PreparedStatementHandler pstmtHandler = (PreparedStatementHandler) proxyDelegate.get(sHandler);
 		MappedStatement mappedStatement = (MappedStatement) proxyMappedStatement.get(pstmtHandler);
-		//BoundSql boundSql = statementHandler.getBoundSql();
+		BoundSql boundSql = sHandler.getBoundSql();
 		//Configuration configuration = mappedStatement.getConfiguration();
 		String sqlId = mappedStatement.getId();
-		//String orignalSql = boundSql.getSql();
+		String orignalSql = boundSql.getSql();
 		String sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
 		Object paramObject = sHandler.getParameterHandler().getParameterObject();
 		// -- sql 실행 준비
@@ -98,6 +115,7 @@ public class ComSqlInterceptor implements Interceptor {
 		// paging 처리 및 sql 로깅
 		Connection connection = null;
 		String paramSql = null;
+		boolean isPaging = false;
 		{
 			switch(execType) {
 			case REQUEST:
@@ -119,19 +137,20 @@ public class ComSqlInterceptor implements Interceptor {
 				// paging 처리
 				TSqlType sqlType = null;
 				{
+					Connection pagingConnection = null; 
 					if (!isComSql) { // com 패키지에 있는 sql 은 paging 처리 대상에서 제외함
-						connection = comSqlPagingList.preparePaging(invocation);
+						pagingConnection = comSqlPagingList.preparePaging(invocation);
 					}
-
-					boolean isPaging;
-					if (connection == null) {  // `null` 이면 paging 처리 대상이 아님
+					
+					if (pagingConnection == null) {  // `null` 이면 paging 처리 대상이 아님
 						isPaging = false;
 						sqlType = TSqlType.ORIGINAL_SQL;
 					} else {
 						isPaging = true;
 						sqlType = TSqlType.PAGING_SQL;
+						connection = pagingConnection;
 					}
-
+					
 					// 파라미터 처리 후에는 반드시 아래 설정이 필요함
 					if (isPaging) {
 						KOutPageVO outPageVO = KContext.getT(AttrKey.OUT_PAGE);
@@ -172,6 +191,65 @@ public class ComSqlInterceptor implements Interceptor {
 			}
 		}
 		// -- paging 처리 및 sql 로깅
+		
+		
+		// (페이징이 아닐 경우) 새로운 orignal-sql로 `boundSql` 교체
+		{
+			if (!isPaging) {
+				orignalSql = KSqlUtil.insertSqlId(orignalSql, sqlId);
+				Configuration configuration = mappedStatement.getConfiguration();
+				connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
+				PreparedStatement pstmt = connection.prepareStatement(orignalSql);
+				DefaultParameterHandler parameterHandler = (DefaultParameterHandler)sHandler.getParameterHandler();
+				TypeHandlerRegistry typeHandlerRegistry = mappedStatement.getConfiguration().getTypeHandlerRegistry();
+				Object parameterObject = parameterHandler.getParameterObject();
+				List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
+
+				// 실제 binding 파라미터 생성
+				{
+					if (parameterMappings != null) {
+						for (int i=0; i<parameterMappings.size(); i++) {
+							ParameterMapping parameterMapping = parameterMappings.get(i);
+							if (parameterMapping.getMode() == ParameterMode.IN) {
+								Object value;
+								String propertyName = parameterMapping.getProperty();
+								PropertyTokenizer prop = new PropertyTokenizer(propertyName);
+								if (boundSql.hasAdditionalParameter(propertyName)) {
+									value = boundSql.getAdditionalParameter(propertyName);
+								} else if (parameterObject == null) {
+									value = null;
+								} else if (typeHandlerRegistry.hasTypeHandler(parameterObject.getClass())) {
+									value = parameterObject;
+								} else if (propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && boundSql.hasAdditionalParameter(prop.getName())) {
+									value = boundSql.getAdditionalParameter(prop.getName());
+									if (value != null) {
+										value = configuration.newMetaObject(value).getValue(propertyName.substring(prop.getName().length()));
+									}
+								} else if (paramObject instanceof java.util.Map) {
+									value = ((Map)paramObject).get(propertyName);
+								} else {
+									value = KObjectUtil.getValue(paramObject, propertyName);
+								}
+								TypeHandler typeHandler = parameterMapping.getTypeHandler();
+								JdbcType jdbcType = parameterMapping.getJdbcType();
+								if (value == null && jdbcType == null) {
+									jdbcType = configuration.getJdbcTypeForNull();
+								}
+								try {
+									typeHandler.setParameter(pstmt, i+1, value, jdbcType);
+								} catch(Exception e) {
+									KLogSql.error(String.format(
+													"{} `{}` error-message={}{}{}", KConstant.LT_SQL_PAING, "(paging)"+sqlId, KExceptionUtil.getCauseMessage(e), KLogLayout.LINE, paramSql)
+												, e);
+									throw e;
+								}
+							}
+						}
+					}
+				}
+				invocation.getArgs()[0] = pstmt;
+			}
+		}
 
 		// sql 실행
 		int resultCount = -1;
@@ -271,6 +349,49 @@ public class ComSqlInterceptor implements Interceptor {
 		} // -- sql 실행 테이블 분석
 		return resultObject;
 	}
+	public static class BoundSqlSqlSource implements SqlSource {
+        BoundSql boundSql;
+
+        public BoundSqlSqlSource(BoundSql boundSql) {
+            this.boundSql = boundSql;
+        }
+
+        public BoundSql getBoundSql(Object parameterObject) {
+            return boundSql;
+        }
+    }
+
+
+    private MappedStatement copyFromMappedStatement(MappedStatement ms, SqlSource newSqlSource)
+    {
+    	org.apache.ibatis.mapping.MappedStatement.Builder builder = new MappedStatement.Builder(ms.getConfiguration(), ms
+                .getId(), newSqlSource, ms.getSqlCommandType());
+        builder.resource(ms.getResource());
+        builder.fetchSize(ms.getFetchSize());
+        builder.statementType(ms.getStatementType());
+        builder.keyGenerator(ms.getKeyGenerator());
+        // setStatementTimeout()
+        builder.timeout(ms.getTimeout());
+        // setParameterMap()
+        builder.parameterMap(ms.getParameterMap());
+        // setStatementResultMap()
+        List<ResultMap> resultMaps = new ArrayList<ResultMap>();
+        String id = "-inline";
+        if (ms.getResultMaps() != null)
+        {
+            id = ms.getResultMaps().get(0).getId() + "-inline";
+        }
+        ResultMap resultMap = new ResultMap.Builder(null, id, Long.class,
+                new ArrayList()).build();
+        resultMaps.add(resultMap);
+        builder.resultMaps(resultMaps);
+        builder.resultSetType(ms.getResultSetType());
+        // setStatementCache()
+        builder.cache(ms.getCache());
+        builder.flushCacheRequired(ms.isFlushCacheRequired());
+        builder.useCache(ms.isUseCache());
+        return builder.build();
+    }
 
 
 	@Override

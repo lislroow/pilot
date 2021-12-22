@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.executor.statement.PreparedStatementHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
@@ -14,9 +15,9 @@ import org.apache.ibatis.mapping.ParameterMapping;
 import org.apache.ibatis.mapping.ParameterMode;
 import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.plugin.Invocation;
-import org.apache.ibatis.reflection.MetaObject;
-import org.apache.ibatis.reflection.SystemMetaObject;
+import org.apache.ibatis.reflection.property.PropertyTokenizer;
 import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
+import org.apache.ibatis.scripting.xmltags.ForEachSqlNode;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.type.IntegerTypeHandler;
 import org.apache.ibatis.type.JdbcType;
@@ -150,6 +151,7 @@ public class ComSqlPagingList {
 
 		// 페이징 파라미터 설정
 		String pagingSql = String.format(KSqlUtil.PAGING_SQL, boundSql.getSql());
+		pagingSql = KSqlUtil.insertSqlId(pagingSql, "(paging-sql) "+sqlId);
 		connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
 		PreparedStatement pstmt = connection.prepareStatement(pagingSql);
 		DefaultParameterHandler parameterHandler = (DefaultParameterHandler)sHandler.getParameterHandler();
@@ -191,12 +193,20 @@ public class ComSqlPagingList {
 					if (parameterMapping.getMode() != ParameterMode.OUT) {
 						Object value;
 						String propertyName = parameterMapping.getProperty();
+						PropertyTokenizer prop = new PropertyTokenizer(propertyName);
 						if (boundSql.hasAdditionalParameter(propertyName)) {
 							value = boundSql.getAdditionalParameter(propertyName);
 						} else if (parameterObject == null) {
 							value = null;
 						} else if (typeHandlerRegistry.hasTypeHandler(parameterObject.getClass())) {
 							value = parameterObject;
+						} else if (propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && boundSql.hasAdditionalParameter(prop.getName())) {
+							value = boundSql.getAdditionalParameter(prop.getName());
+							if (value != null) {
+								value = configuration.newMetaObject(value).getValue(propertyName.substring(prop.getName().length()));
+							}
+						} else if (paramObject instanceof java.util.Map) {
+							value = ((Map)paramObject).get(propertyName);
 						} else {
 							value = KObjectUtil.getValue(paramObject, propertyName);
 						}
@@ -261,17 +271,17 @@ public class ComSqlPagingList {
 		}
 
 		// 새로운 paing-sql로 `boundSql` 교체
-		{
-			BoundSql newBoundSql = new BoundSql(mappedStatement.getConfiguration(), pagingSql, pagingParameterMappings, boundSql.getParameterObject());
-			MetaObject metaObject = SystemMetaObject.forObject(sHandler);
-			for (ParameterMapping mapping : pagingParameterMappings) {
-				String prop = mapping.getProperty();
-				if (boundSql.hasAdditionalParameter(prop)) {
-					newBoundSql.setAdditionalParameter(prop, boundSql.getAdditionalParameter(prop));
-				}
-			}
-			metaObject.setValue("delegate.boundSql", newBoundSql);
-		}
+		//{
+		//	BoundSql newBoundSql = new BoundSql(mappedStatement.getConfiguration(), pagingSql, pagingParameterMappings, boundSql.getParameterObject());
+		//	MetaObject metaObject = SystemMetaObject.forObject(sHandler);
+		//	for (ParameterMapping mapping : pagingParameterMappings) {
+		//		String prop = mapping.getProperty();
+		//		if (boundSql.hasAdditionalParameter(prop)) {
+		//			newBoundSql.setAdditionalParameter(prop, boundSql.getAdditionalParameter(prop));
+		//		}
+		//	}
+		//	metaObject.setValue("delegate.boundSql", newBoundSql);
+		//}
 
 		// invocation 의 args에 새로운 `StatementHandler` 교체
 		invocation.getArgs()[0] = pstmt;

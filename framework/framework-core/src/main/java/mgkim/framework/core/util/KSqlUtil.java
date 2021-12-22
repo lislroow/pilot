@@ -26,8 +26,8 @@ import mgkim.framework.core.type.TSqlType;
 
 public class KSqlUtil {
 
-	public static final String COUNT_SQL = "SELECT COUNT(*) FROM (\n\t%s\n) TB";
-	public static final String PAGING_SQL = "SELECT * FROM ( SELECT rownum rn, (?+1)-rownum rnum, TB.* FROM (\n\t%s\n) TB ) WHERE rn BETWEEN ? AND ?";
+	public static final String COUNT_SQL = "SELECT COUNT(*) FROM (\n  %s\n) TB";
+	public static final String PAGING_SQL = "SELECT * FROM ( SELECT rownum rn, (?+1)-rownum rnum, TB.* FROM (\n  %s\n) TB ) WHERE rn BETWEEN ? AND ?";
 
 	public static final int PAGING_RECORD_COUNT_PER_PAGE = 10;
 	public static final int PAGING_PAGE_SIZE = 10;

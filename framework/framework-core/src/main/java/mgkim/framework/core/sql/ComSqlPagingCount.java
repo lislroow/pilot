@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.ibatis.executor.parameter.ParameterHandler;
@@ -60,7 +61,8 @@ public class ComSqlPagingCount {
 		Integer count = null;
 
 		String countSql = String.format(KSqlUtil.COUNT_SQL, KSqlUtil.removeOrderBy(orignalSql));
-
+		countSql = KSqlUtil.insertSqlId(countSql, "(count-sql1) "+sqlId);
+		
 		// 로깅 준비
 		//boolean isDebugMode = KContext.isDebugMode();
 		boolean isLoggableSql = KLogSql.isLoggableSql(sqlId);
@@ -95,7 +97,7 @@ public class ComSqlPagingCount {
 					// 2021-08-06 MetaObject metaObject = parameterObj == null ? null : configuration.newMetaObject(parameterObj);
 					for (int i=0; i<parameterMappings.size(); i++) {
 						ParameterMapping parameterMapping = parameterMappings.get(i);
-						if (parameterMapping.getMode() != ParameterMode.OUT) {
+						if (parameterMapping.getMode() == ParameterMode.IN) {
 							Object value = null;
 							String propertyName = parameterMapping.getProperty();
 							PropertyTokenizer prop = new PropertyTokenizer(propertyName);
@@ -103,13 +105,13 @@ public class ComSqlPagingCount {
 								value = null;
 							} else if (typeHandlerRegistry.hasTypeHandler(paramObject.getClass())) {
 								value = paramObject;
-							} else if (boundSql.hasAdditionalParameter(propertyName)) {
-								value = boundSql.getAdditionalParameter(propertyName);
 							} else if (propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && boundSql.hasAdditionalParameter(prop.getName())) {
 								value = boundSql.getAdditionalParameter(prop.getName());
 								if (value != null) {
 									value = configuration.newMetaObject(value).getValue(propertyName.substring(prop.getName().length()));
 								}
+							} else if (paramObject instanceof java.util.Map) {
+								value = ((Map)paramObject).get(propertyName);
 							} else {
 								value = KObjectUtil.getValue(paramObject, propertyName);
 							}
@@ -190,6 +192,7 @@ public class ComSqlPagingCount {
 			try {
 				connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
 				String countSql = String.format(KSqlUtil.COUNT_SQL, orignalSql);
+				countSql = KSqlUtil.insertSqlId(countSql, "(count-sql2) "+sqlId);
 				pstmt = connection.prepareStatement(countSql);
 				MetaObject metaObject = SystemMetaObject.forObject(sHandler);
 				ParameterHandler parameterHandler = (ParameterHandler) metaObject.getValue("delegate.parameterHandler");
@@ -292,6 +295,7 @@ public class ComSqlPagingCount {
 			try {
 				BoundSql countBoundSql = countMappedStatement.getBoundSql(paramObject);
 				String countSql = countBoundSql.getSql();
+				countSql = KSqlUtil.insertSqlId(countSql, "(count-sql3) "+sqlId);
 				List<ParameterMapping> parameterMappings = countMappedStatement.getBoundSql(paramObject).getParameterMappings();
 				connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
 				pstmt = connection.prepareStatement(countSql);
@@ -301,7 +305,7 @@ public class ComSqlPagingCount {
 					//MetaObject metaObject = paramObject == null ? null : configuration.newMetaObject(paramObject);
 					for (int i=0; i<parameterMappings.size(); i++) {
 						ParameterMapping parameterMapping = parameterMappings.get(i);
-						if (parameterMapping.getMode() != ParameterMode.OUT) {
+						if (parameterMapping.getMode() == ParameterMode.IN) {
 							Object value = null;
 							String propertyName = parameterMapping.getProperty();
 							PropertyTokenizer prop = new PropertyTokenizer(propertyName);
@@ -309,13 +313,13 @@ public class ComSqlPagingCount {
 								value = null;
 							} else if (typeHandlerRegistry.hasTypeHandler(paramObject.getClass())) {
 								value = paramObject;
-							} else if (newBoundSql.hasAdditionalParameter(propertyName)) {
-								value = newBoundSql.getAdditionalParameter(propertyName);
 							} else if (propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && newBoundSql.hasAdditionalParameter(prop.getName())) {
 								value = newBoundSql.getAdditionalParameter(prop.getName());
 								if (value != null) {
 									value = configuration.newMetaObject(value).getValue(propertyName.substring(prop.getName().length()));
 								}
+							} else if (paramObject instanceof java.util.Map) {
+								value = ((Map)paramObject).get(propertyName);
 							} else {
 								value = KObjectUtil.getValue(paramObject, propertyName);
 							}
