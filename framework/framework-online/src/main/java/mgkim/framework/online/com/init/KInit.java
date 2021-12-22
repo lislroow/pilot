@@ -146,6 +146,8 @@ public class KInit implements ServletContextInitializer, BeanFactoryPostProcesso
 				resource.setName(JNDI); //resource.setName("java:comp/env/"+JNDI); [not working]
 				resource.setType("javax.sql.DataSource");
 				resource.setAuth("Container");
+				resource.setProperty("maxTotal", "30"); // maxIdle: Maximum number of idle database connections to retain in pool. Set to -1 for no limit.  See also the DBCP 2 documentation on this and the minEvictableIdleTimeMillis configuration parameter.
+				resource.setProperty("maxWaitMillis", "1"); // Maximum time to wait for a database connection to become available in ms, in this example 10 seconds. An Exception is thrown if this timeout is exceeded.  Set to -1 to wait indefinitely.
 				resource.setProperty("factory", "org.apache.commons.dbcp2.BasicDataSourceFactory");
 				resource.setProperty("driverClassName", "oracle.jdbc.driver.OracleDriver");
 				resource.setProperty("url", "jdbc:oracle:thin:@develop:1521/SPADBP");
