@@ -31,7 +31,7 @@ public class CmmUserSessionImpl implements CmmUserSession {
 		}
 
 		if (session == null) {
-			throw new KSysException(KMessage.E6108);
+			throw new KSysException(KMessage.E6101); // TODO 세션이 만료되었습니다.
 		}
 
 		// token 객체의 전체 필드를 session 객체로 복사
