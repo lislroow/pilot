@@ -104,7 +104,7 @@ public class ComSqlInterceptor implements Interceptor {
 		TExecType execType = KContext.getT(AttrKey.EXEC_TYPE);
 		//boolean isDebugMode = KContext.isDebugMode();
 		boolean isLoggableSql = KLogSql.isLoggableSql(sqlId);
-		boolean isComSql = KLogSql.isComSql(sqlId);
+		boolean isComSql = KLogSql.isCmmSql(sqlId);
 		boolean isVerboss = KConfig.VERBOSS_ALL || KConfig.VERBOSS_SQL;
 		{
 			KContext.set(AttrKey.SQL_ID, sqlId);
@@ -234,9 +234,9 @@ public class ComSqlInterceptor implements Interceptor {
 								value = parameterObject;
 							} else if (propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && boundSql.hasAdditionalParameter(prop.getName())) {
 								value = boundSql.getAdditionalParameter(prop.getName());
-								if (value != null) {
-									value = configuration.newMetaObject(value).getValue(propertyName.substring(prop.getName().length()));
-								}
+								//if (value == null) {
+								//	value = configuration.newMetaObject(value).getValue(propertyName.substring(prop.getName().length()));
+								//}
 							} else if (paramObject instanceof java.util.Map) {
 								value = ((Map)paramObject).get(propertyName);
 							} else {

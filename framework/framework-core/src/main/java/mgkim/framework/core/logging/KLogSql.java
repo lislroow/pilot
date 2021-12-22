@@ -36,7 +36,7 @@ public class KLogSql {
 		return level.toInt();
 	}
 
-	public static boolean isComSql(String sqlId) {
+	public static boolean isCmmSql(String sqlId) {
 		List<String> cmmSqlList = KConfig.CMM_SQL;
 		boolean matched = false;
 		for (String cmmSql : cmmSqlList) {
@@ -54,7 +54,7 @@ public class KLogSql {
 		switch(execType) {
 		case REQUEST:
 		case SYSTEM:
-			boolean isComSql = isComSql(sqlId);
+			boolean isComSql = isCmmSql(sqlId);
 			if (!isComSql || KConfig.DEBUG_COM) {
 				return true;
 			}

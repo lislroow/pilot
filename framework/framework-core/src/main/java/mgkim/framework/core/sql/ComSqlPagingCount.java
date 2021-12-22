@@ -109,9 +109,9 @@ public class ComSqlPagingCount {
 								value = parameterObject;
 							} else if (propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && boundSql.hasAdditionalParameter(prop.getName())) {
 								value = boundSql.getAdditionalParameter(prop.getName());
-								if (value != null) {
-									value = configuration.newMetaObject(value).getValue(propertyName.substring(prop.getName().length()));
-								}
+								//if (value == null) {
+								//	value = configuration.newMetaObject(value).getValue(propertyName.substring(prop.getName().length()));
+								//}
 							} else if (parameterObject instanceof java.util.Map) {
 								value = ((Map)parameterObject).get(propertyName);
 							} else {
@@ -324,9 +324,9 @@ public class ComSqlPagingCount {
 								value = parameterObject;
 							} else if (propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && boundSql.hasAdditionalParameter(prop.getName())) {
 								value = boundSql.getAdditionalParameter(prop.getName());
-								if (value != null) {
-									value = configuration.newMetaObject(value).getValue(propertyName.substring(prop.getName().length()));
-								}
+								//if (value == null) {
+								//	value = configuration.newMetaObject(value).getValue(propertyName.substring(prop.getName().length()));
+								//}
 							} else if (parameterObject instanceof java.util.Map) {
 								value = ((Map)parameterObject).get(propertyName);
 							} else {

@@ -163,9 +163,9 @@ public class ComSqlPagingList {
 							value = parameterObject;
 						} else if (propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && boundSql.hasAdditionalParameter(prop.getName())) {
 							value = boundSql.getAdditionalParameter(prop.getName());
-							if (value != null) {
-								value = configuration.newMetaObject(value).getValue(propertyName.substring(prop.getName().length()));
-							}
+							//if (value == null) {
+							//	value = configuration.newMetaObject(value).getValue(propertyName.substring(prop.getName().length()));
+							//}
 						} else if (paramObject instanceof java.util.Map) {
 							value = ((Map)paramObject).get(propertyName);
 						} else {
