@@ -256,6 +256,7 @@
         FROM MGCB301TM A /* MGCB_uri기본정보 */
        WHERE A.SITE_TPCD = #{siteTpcd}
          AND A.URI_PTRN_YN = 'N'
+         AND A.URI_VAL NOT LIKE '/public/%' 
   </insert>
   <!-- // 2.3) uri권한 -->
 
