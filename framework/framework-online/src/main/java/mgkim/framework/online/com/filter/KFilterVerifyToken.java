@@ -41,11 +41,11 @@ public class KFilterVerifyToken extends KFilter {
 			io.jsonwebtoken.Jwt token = KContext.getT(AttrKey.TOKEN);
 			Map<String, Object> claims = (Map<String, Object>)token.getBody();
 			String tguid = KStringUtil.nvl(claims.get("guid"));
-			String hguid = KStringUtil.nvl(KContext.getT(AttrKey.GUID));
-			if (!debug && !tguid.equals(hguid)) {
-				KExceptionHandler.response(response, new KSysException(KMessage.E6019, tguid, hguid));
-				return;
-			}
+			//String hguid = KStringUtil.nvl(KContext.getT(AttrKey.GUID));
+			//if (!debug && !tguid.equals(hguid)) {
+			//	KExceptionHandler.response(response, new KSysException(KMessage.E6019, tguid, hguid));
+			//	return;
+			//}
 		}
 
 		if (debug) {
