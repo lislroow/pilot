@@ -71,6 +71,6 @@ public class ComSessionStatusMngScheduler extends KScheduler {
 	public void addSession() {
 		io.jsonwebtoken.Jwt token = KContext.getT(AttrKey.TOKEN);
 		Map<String, Object> claims = (Map<String, Object>)token.getBody();
-		queue.add(KStringUtil.nvl(claims.get("userId")));
+		queue.add(KStringUtil.nvl(claims.get("ssid")));
 	}
 }
