@@ -29,9 +29,9 @@ public class SchedulerController {
 
 	@ApiOperation(value = "(scheduler) 스케줄러 현황")
 	@RequestMapping(value = "/api/adm/scheduler/status", method = RequestMethod.POST)
-	public @ResponseBody KOutDTO<List<KSchedulerStatusVO>> stopAllScheduler(@RequestBody KInDTO<?> inDTO) throws Exception {
+	public @ResponseBody KOutDTO<List<KSchedulerStatusVO>> status(@RequestBody KInDTO<?> inDTO) throws Exception {
 		KOutDTO<List<KSchedulerStatusVO>> outDTO = new KOutDTO<List<KSchedulerStatusVO>>();
-		List<KScheduler> list = comScheduleMgr.scheduleList;
+		List<KScheduler> list = comScheduleMgr.getScheduleList();
 
 		List<KSchedulerStatusVO> outData = new ArrayList<KSchedulerStatusVO>();
 		list.forEach(item -> {

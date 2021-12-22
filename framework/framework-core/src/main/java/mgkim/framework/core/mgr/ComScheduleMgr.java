@@ -28,9 +28,13 @@ public class ComScheduleMgr implements InitializingBean, DisposableBean {
 	protected int interval = 2000;
 
 	@Autowired(required = false)
-	public List<KScheduler> scheduleList;
+	protected List<KScheduler> scheduleList;
+	
+	public List<KScheduler> getScheduleList() {
+		return this.scheduleList;
+	}
 
-	public boolean startable;
+	protected boolean startable;
 
 	// org.springframework.scheduling.concurrent
 	protected ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
