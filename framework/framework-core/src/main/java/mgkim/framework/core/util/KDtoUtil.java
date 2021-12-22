@@ -10,6 +10,7 @@ import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.session.KSession;
 import mgkim.framework.core.type.TApiType;
+import mgkim.framework.core.type.TExecType;
 
 public class KDtoUtil {
 
@@ -30,6 +31,9 @@ public class KDtoUtil {
 			cmmVO.setSiteTpcd(KProfile.SITE.code());
 
 			if (TApiType.PUBLIC == KContext.getT(AttrKey.API_TYPE)) {
+				return true;
+			}
+			if (TExecType.REQUEST != KContext.getT(AttrKey.EXEC_TYPE)) {
 				return true;
 			}
 
