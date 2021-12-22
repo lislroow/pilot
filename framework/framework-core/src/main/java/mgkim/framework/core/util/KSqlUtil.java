@@ -26,8 +26,8 @@ import mgkim.framework.core.type.TSqlType;
 
 public class KSqlUtil {
 
-	public static final String COUNT_SQL = "SELECT COUNT(*) FROM (\n  %s\n) TB";
-	public static final String PAGING_SQL = "SELECT * FROM ( SELECT rownum rn, (?+1)-rownum rnum, TB.* FROM (\n  %s\n) TB ) WHERE rn BETWEEN ? AND ?";
+	public static final String COUNT_SQL = "SELECT COUNT(*) \nFROM (\n  %s\n) TB";
+	public static final String PAGING_SQL = "SELECT * \nFROM ( SELECT rownum rn, (?+1)-rownum rnum, TB.* FROM (\n  %s\n) TB ) WHERE rn BETWEEN ? AND ?";
 
 	public static final int PAGING_RECORD_COUNT_PER_PAGE = 10;
 	public static final int PAGING_PAGE_SIZE = 10;
@@ -130,15 +130,16 @@ public class KSqlUtil {
 		// param-sql 로깅
 		{
 			paramSql = paramSql.replaceAll("\n\t\t", "\n");
-			paramSql = insertSqlId(paramSql, sqlId);
 			switch(paramSqlType) {
-			case ORIGINAL_SQL:
+			case ORIGIN_SQL:
+				paramSql = KSqlUtil.insertSqlId(paramSql, "(origin-sql) "+sqlId);
 				KLogSql.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL, sqlId, KLogLayout.LINE, KConstant.LT_SQL, sqlFile, sqlId, KLogLayout.LINE, paramSql);
 				break;
 			case PAGING_SQL:
 				KCmmVO vo = (KCmmVO) paramObject;
 				paramSql = paramSql.replaceAll("\n", "\n\t");
 				paramSql = String.format(KSqlUtil.PAGING_SQL, paramSql);
+				paramSql = KSqlUtil.insertSqlId(paramSql, "(paging-sql) "+sqlId);
 				paramSql = paramSql.replaceFirst("\\?", vo.get_rowcount()+"")
 						.replaceFirst("\\?", vo.get_startrow()+"")
 						.replaceFirst("\\?", vo.get_endrow()+"");
@@ -147,14 +148,17 @@ public class KSqlUtil {
 			case COUNT1_SQL:
 				paramSql = paramSql.replaceAll("\n", "\n\t");
 				paramSql = String.format(KSqlUtil.COUNT_SQL, paramSql);
+				paramSql = KSqlUtil.insertSqlId(paramSql, "(count-sql1) "+sqlId);
 				KLogSql.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL_COUNT1, sqlId, KLogLayout.LINE, KConstant.LT_SQL_COUNT1, sqlFile, sqlId, KLogLayout.LINE, paramSql);
 				break;
 			case COUNT2_SQL:
 				paramSql = paramSql.replaceAll("\n", "\n\t");
 				paramSql = String.format(KSqlUtil.COUNT_SQL, paramSql);
+				paramSql = KSqlUtil.insertSqlId(paramSql, "(count-sql2) "+sqlId);
 				KLogSql.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL_COUNT2, sqlId, KLogLayout.LINE, KConstant.LT_SQL_COUNT2, sqlFile, sqlId, KLogLayout.LINE, paramSql);
 				break;
 			case COUNT3_SQL:
+				paramSql = KSqlUtil.insertSqlId(paramSql, "(count-sql3) "+sqlId);
 				KLogSql.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL_COUNT3, sqlId, KLogLayout.LINE, KConstant.LT_SQL_COUNT3, sqlFile, sqlId, KLogLayout.LINE, paramSql);
 				break;
 			}

@@ -2,7 +2,7 @@ package mgkim.framework.core.type;
 
 public enum TSqlType {
 
-	ORIGINAL_SQL("origin-sql"),
+	ORIGIN_SQL("origin-sql"),
 	PAGING_SQL("paging-sql"),
 	COUNT1_SQL("count1-sql"),
 	COUNT2_SQL("count2-sql"),

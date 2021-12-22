@@ -151,7 +151,7 @@ public class ComSqlInterceptor implements Interceptor {
 					if (isPaging) {
 						sqlType = TSqlType.PAGING_SQL;
 					} else {
-						sqlType = TSqlType.ORIGINAL_SQL;
+						sqlType = TSqlType.ORIGIN_SQL;
 					}
 				} // -- paging 여부 확인
 				
@@ -183,7 +183,7 @@ public class ComSqlInterceptor implements Interceptor {
 					paramSql = KSqlUtil.createParamSql(paramObject, mappedStatement, sqlType);
 				}
 
-				// -- original-sql 생성 및 로깅
+				// -- origin-sql 생성 및 로깅
 				break;
 			case SCHEDULE:
 			case SYSTEM:
@@ -195,11 +195,11 @@ public class ComSqlInterceptor implements Interceptor {
 					}
 				} // -- paramObject 로깅
 
-				// original-sql 생성 및 로깅
+				// origin-sql 생성 및 로깅
 				if (isLoggableSql) {
-					paramSql = KSqlUtil.createParamSql(paramObject, mappedStatement, TSqlType.ORIGINAL_SQL);
+					paramSql = KSqlUtil.createParamSql(paramObject, mappedStatement, TSqlType.ORIGIN_SQL);
 				}
-				// -- original-sql 생성 및 로깅
+				// -- origin-sql 생성 및 로깅
 				break;
 			}
 		}
@@ -288,7 +288,7 @@ public class ComSqlInterceptor implements Interceptor {
 				case SCHEDULE:
 				case SYSTEM:
 				default:
-					paramSql = KSqlUtil.createParamSql(paramObject, mappedStatement, TSqlType.ORIGINAL_SQL);
+					paramSql = KSqlUtil.createParamSql(paramObject, mappedStatement, TSqlType.ORIGIN_SQL);
 					break;
 				}
 				throw e;

@@ -61,7 +61,6 @@ public class ComSqlPagingCount {
 		Integer count = null;
 
 		String countSql = String.format(KSqlUtil.COUNT_SQL, KSqlUtil.removeOrderBy(orignalSql));
-		countSql = KSqlUtil.insertSqlId(countSql, "(count-sql1) "+sqlId);
 		
 		// 로깅 준비
 		//boolean isDebugMode = KContext.isDebugMode();
@@ -89,6 +88,7 @@ public class ComSqlPagingCount {
 			ResultSet rs = null;
 			try {
 				connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
+				countSql = KSqlUtil.insertSqlId(countSql, "(count-sql1) "+sqlId);
 				pstmt = connection.prepareStatement(countSql);
 				final BoundSql countBoundSql = new BoundSql(mappedStatement.getConfiguration(), countSql, boundSql.getParameterMappings(), paramObject);
 				List<ParameterMapping> parameterMappings = countBoundSql.getParameterMappings();

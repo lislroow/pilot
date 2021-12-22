@@ -73,8 +73,8 @@ public class ComSqlPagingList {
 			KContext.set(AttrKey.SQL_FILE, sqlFile);
 		}
 		// -- 로깅 준비
-
-
+		
+		
 		// count-sql 실행
 		KOutPageVO outPageVO = null;
 		{
@@ -112,15 +112,15 @@ public class ComSqlPagingList {
 					.rowcount(totalRecordCount)
 					.build();
 			KContext.set(AttrKey.OUT_PAGE, outPageVO);
-
+			
 			// count-sql 결과 로깅
 			if (!isVerboss) {
 			} else {
 				KLogSql.info("{} `{}` {}{} `{}` `{}` {}`rows` = {},  `elapsed` = {}(ms)", KConstant.LT_SQL_RESULT, sqlId, KLogLayout.LINE, KConstant.LT_SQL_RESULT, sqlFile, sqlId, KLogLayout.LINE, totalRecordCount, elapsedTime);
 			}
 		} // -- count-sql 실행
-
-
+		
+		
 		// 페이징 파라미터 설정
 		String pagingSql = String.format(KSqlUtil.PAGING_SQL, boundSql.getSql());
 		pagingSql = KSqlUtil.insertSqlId(pagingSql, "(paging-sql) "+sqlId);
@@ -135,8 +135,8 @@ public class ComSqlPagingList {
 		TypeHandler _typeHandler = null;
 		JdbcType _jdbcType = null;
 		org.apache.ibatis.session.Configuration configuration = mappedStatement.getConfiguration();
-
-
+		
+		
 		// 첫번째 파라미터 생성 (`_rowcount`)
 		{
 			_parameter = new ParameterMapping.Builder(configuration, "_rowcount", new IntegerTypeHandler())
