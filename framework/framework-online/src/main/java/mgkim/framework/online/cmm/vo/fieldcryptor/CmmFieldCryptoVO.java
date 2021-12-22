@@ -7,10 +7,17 @@ import mgkim.framework.core.dto.KCmmVO;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CmmFieldCryptoVO extends KCmmVO {
 
+	private String siteTpcd;
 	private String privateKey;
 	private String publicKey;
 	private String symKey;
 
+	public String getSiteTpcd() {
+		return siteTpcd;
+	}
+	public void setSiteTpcd(String siteTpcd) {
+		this.siteTpcd = siteTpcd;
+	}
 	public String getPrivateKey() {
 		return privateKey;
 	}

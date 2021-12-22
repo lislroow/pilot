@@ -5,17 +5,18 @@ import mgkim.framework.core.dto.KCmmVO;
 public class CmmSessionStatusVO extends KCmmVO {
 
 	private String siteTpcd = null;
-	private String 	userId = null;
-	private String 	aumthTpcd = null;
-	private String 	ssid = null;
-	private String 	loginDttm = null;
-	private String 	ssStcd = null;
-	private String 	expireDttm = null;
-	private String 	browsInf = null;
-	private String 	ip = null;
-	private String 	privateKey = null;
-	private String 	publicKey = null;
-	private String 	symKey = null;
+	private String userId = null;
+	private String aumthTpcd = null;
+	private String ssid = null;
+	private String loginDttm = null;
+	private String ssStcd = null;
+	private String expireDttm = null;
+	private String browsInf = null;
+	private String ip = null;
+	private String privateKey = null;
+	private String publicKey = null;
+	private String symKey = null;
+	private String dloginAlowYn;
 
 	public String getSiteTpcd() {
 		return siteTpcd;
@@ -88,5 +89,11 @@ public class CmmSessionStatusVO extends KCmmVO {
 	}
 	public void setSymKey(String symKey) {
 		this.symKey = symKey;
+	}
+	public String getDloginAlowYn() {
+		return dloginAlowYn;
+	}
+	public void setDloginAlowYn(String dloginAlowYn) {
+		this.dloginAlowYn = dloginAlowYn;
 	}
 }

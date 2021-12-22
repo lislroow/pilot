@@ -5,12 +5,13 @@ public class CmmUserLoginPolicyVO {
 	private String siteTpcd;
 	private String userId;
 	private String aumthTpcdList;
+	private String dloginAlowYn;
 	private String inactvYn;
 	private String lockYn;
 	private int loginFailCnt;
 	private String pwchgDt;
 	private int ssvaldSec;
-
+	
 	public String getSiteTpcd() {
 		return siteTpcd;
 	}
@@ -28,6 +29,12 @@ public class CmmUserLoginPolicyVO {
 	}
 	public void setAumthTpcdList(String aumthTpcdList) {
 		this.aumthTpcdList = aumthTpcdList;
+	}
+	public String getDloginAlowYn() {
+		return dloginAlowYn;
+	}
+	public void setDloginAlowYn(String dloginAlowYn) {
+		this.dloginAlowYn = dloginAlowYn;
 	}
 	public String getInactvYn() {
 		return inactvYn;

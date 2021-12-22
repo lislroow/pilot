@@ -12,6 +12,7 @@ public class InitLoadMockVO extends KCmmVO {
 	private String userNm;
 	private String email;
 	private String aumthTpcdList;
+	private String dloginAlowYn;
 	private String inactvYn;
 	private String lockYn;
 	private int loginFailCnt;
@@ -29,6 +30,7 @@ public class InitLoadMockVO extends KCmmVO {
 		private String userNm;
 		private String email;
 		private String aumthTpcdList;
+		private String dloginAlowYn;
 		private String inactvYn;
 		private String lockYn;
 		private int loginFailCnt;
@@ -70,6 +72,10 @@ public class InitLoadMockVO extends KCmmVO {
 			this.aumthTpcdList = aumthTpcdList;
 			return this;
 		}
+		public Builder dloginAlowYn(String dloginAlowYn) {
+			this.dloginAlowYn = dloginAlowYn;
+			return this;
+		}
 		public Builder inactvYn(String inactvYn) {
 			this.inactvYn = inactvYn;
 			return this;
@@ -97,13 +103,13 @@ public class InitLoadMockVO extends KCmmVO {
 
 		public InitLoadMockVO build() {
 			return new InitLoadMockVO(roleId, roleNm, rgrpId, rgrpNm, userId, userNm, email,
-					aumthTpcdList, inactvYn, lockYn, loginFailCnt, pwchgDt, ssvaldSec,
+					aumthTpcdList, dloginAlowYn, inactvYn, lockYn, loginFailCnt, pwchgDt, ssvaldSec,
 					uriId);
 		}
 	}
 
 	public InitLoadMockVO(String roleId, String roleNm, String rgrpId, String rgrpNm, String userId, String userNm,
-			String email, String aumthTpcdList, String inactvYn, String lockYn, int loginFailCnt, String pwchgDt,
+			String email, String aumthTpcdList, String dloginAlowYn, String inactvYn, String lockYn, int loginFailCnt, String pwchgDt,
 			int ssvaldSec, String uriId) {
 		super();
 		this.roleId = roleId;
@@ -114,6 +120,7 @@ public class InitLoadMockVO extends KCmmVO {
 		this.userNm = userNm;
 		this.email = email;
 		this.aumthTpcdList = aumthTpcdList;
+		this.dloginAlowYn = dloginAlowYn;
 		this.inactvYn = inactvYn;
 		this.lockYn = lockYn;
 		this.loginFailCnt = loginFailCnt;
@@ -184,6 +191,10 @@ public class InitLoadMockVO extends KCmmVO {
 
 	public void setAumthTpcdList(String aumthTpcdList) {
 		this.aumthTpcdList = aumthTpcdList;
+	}
+
+	public String getDloginAlowYn() {
+		return dloginAlowYn;
 	}
 
 	public String getInactvYn() {

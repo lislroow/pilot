@@ -285,6 +285,7 @@
         , USER_NM
         , EMAIL
         , AUMTH_TPCD_LIST
+        , DLOGIN_ALOW_YN
         , INACTV_YN
         , LOCK_YN
         , LOGIN_FAIL_CNT
@@ -300,6 +301,7 @@
         , #{userNm}
         , #{email}
         , #{aumthTpcdList}
+        , #{dloginAlowYn}
         , #{inactvYn}
         , #{lockYn}
         , #{loginFailCnt}
@@ -359,6 +361,7 @@
           SITE_TPCD
         , USER_ID
         , AUMTH_TPCD_LIST
+        , DLOGIN_ALOW_YN
         , INACTV_YN
         , LOCK_YN
         , LOGIN_FAIL_CNT
@@ -372,6 +375,7 @@
       SELECT A.SITE_TPCD
            , A.USER_ID
            , A.AUMTH_TPCD_LIST
+           , A.DLOGIN_ALOW_YN
            , A.INACTV_YN
            , A.LOCK_YN
            , A.LOGIN_FAIL_CNT

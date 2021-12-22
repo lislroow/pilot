@@ -6,7 +6,8 @@
     MERGE
      INTO MGCB151TS /* MGCB_사용자세션상태 */
     USING DUAL
-       ON (SSID = #{ssid}
+       ON (SITE_TPCD = #{siteTpcd}
+          AND SSID = #{ssid}
           AND USER_ID = #{userId}
           AND AUMTH_TPCD = #{aumthTpcd}
           AND SS_STCD IN ('00', '20')) /* 00: 로그인, 20: 세션만료 */
@@ -22,7 +23,8 @@
          , SYM_KEY = null
      WHEN NOT MATCHED THEN
        INSERT (
-           USER_ID
+           SITE_TPCD
+         , USER_ID
          , AUMTH_TPCD
          , SSID
          , SS_STCD
@@ -33,7 +35,8 @@
          , IP
          , LAST_MODF_DTTM
        ) VALUES (
-           #{userId}
+           #{siteTpcd}
+         , #{userId}
          , #{aumthTpcd}
          , #{ssid}
          , '00'
@@ -48,18 +51,23 @@
 
   <select id="selectStatusForIsLogin" parameterType="java.util.Map" resultType="CmmSessionStatusVO">
     SELECT 
-           USER_ID
-         , AUMTH_TPCD
-         , SSID
-         , LOGIN_DTTM
-         , SS_STCD
-         , EXPIRE_DTTM
-         , BROWS_INF
-         , IP
-      FROM MGCB151TS /* MGCB_사용자세션상태 */
-     WHERE USER_ID = #{userId}
-       AND AUMTH_TPCD = #{aumthTpcd}
-       AND SSID = #{ssid}
+           A.USER_ID
+         , A.AUMTH_TPCD
+         , A.SSID
+         , A.LOGIN_DTTM
+         , A.SS_STCD
+         , A.EXPIRE_DTTM
+         , A.BROWS_INF
+         , A.IP
+         , B.DLOGIN_ALOW_YN
+      FROM MGCB151TS A /* MGCB_사용자세션상태 */
+         , MGCB121TM B /* MGCB_사용자로그인정책정보 */
+     WHERE A.SITE_TPCD = #{siteTpcd}
+       AND A.USER_ID = #{userId}
+       AND A.AUMTH_TPCD = #{aumthTpcd}
+       AND A.SSID = #{ssid}
+       AND A.SITE_TPCD = B.SITE_TPCD(+)
+       AND A.USER_ID = B.USER_ID(+) 
   </select>
 
   <select id="selectStatusListForDupl" parameterType="java.util.Map" resultType="CmmSessionStatusVO">
@@ -73,7 +81,8 @@
          , BROWS_INF
          , IP
       FROM MGCB151TS /* MGCB_사용자세션상태 */
-     WHERE USER_ID = #{userId}
+     WHERE SITE_TPCD = #{siteTpcd}
+       AND USER_ID = #{userId}
   </select>
 
 
@@ -143,7 +152,8 @@
   <![CDATA[
     INSERT
       INTO MGCB152TH /* MGCB_사용자세션이력 */ (
-          USER_ID
+          SITE_TPCD
+        , USER_ID
         , AUMTH_TPCD
         , SSID
         , LOGIN_DTTM
@@ -152,7 +162,9 @@
         , BROWS_INF
         , IP
       )
-      SELECT A.USER_ID
+      SELECT 
+             A.SITE_TPCD
+           , A.USER_ID
            , A.AUMTH_TPCD
            , A.SSID
            , A.LOGIN_DTTM

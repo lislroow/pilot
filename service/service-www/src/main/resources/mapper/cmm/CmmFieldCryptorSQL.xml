@@ -7,7 +7,8 @@
       MGCB151TS /* MGCB_사용자세션상태 */ SET
            PRIVATE_KEY = #{privateKey}
          , PUBLIC_KEY = #{publicKey}
-     WHERE USER_ID = #{ssuserId}
+     WHERE SITE_TPCD = #{siteTpcd}
+       AND USER_ID = #{ssuserId}
        AND AUMTH_TPCD = #{aumthTpcd}
        AND SSID = #{ssid}
   </insert>
@@ -16,7 +17,8 @@
     UPDATE
       MGCB151TS /* MGCB_사용자세션상태 */ SET
            SYM_KEY = #{symKey}
-     WHERE USER_ID = #{ssuserId}
+     WHERE SITE_TPCD = #{siteTpcd}
+       AND USER_ID = #{ssuserId}
        AND AUMTH_TPCD = #{aumthTpcd}
        AND SSID = #{ssid}
   </insert>
@@ -26,7 +28,8 @@
            PRIVATE_KEY
          , SYM_KEY
       FROM MGCB151TS /* MGCB_사용자세션상태 */
-     WHERE USER_ID = #{ssuserId}
+     WHERE SITE_TPCD = #{siteTpcd}
+       AND USER_ID = #{ssuserId}
        AND AUMTH_TPCD = #{aumthTpcd}
        AND SSID = #{ssid}
   </select>

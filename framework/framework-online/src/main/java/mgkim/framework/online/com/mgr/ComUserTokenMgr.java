@@ -80,6 +80,8 @@ public class ComUserTokenMgr {
 			//
 		} catch (SignatureException e) {
 			//
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		Map headerAccessToken = (Map) jwtAccessToken.getHeader();
 		

@@ -161,9 +161,9 @@ public class InitDataLoadService {
 
 			// 적재
 			List<InitLoadMockVO> list = new ArrayList<InitLoadMockVO>();
-			list.add(new InitLoadMockVO.Builder().userId("1000000001").userNm("나사원").email("nasa@daum.net").aumthTpcdList("01,90").inactvYn("N").lockYn("N").loginFailCnt(0).pwchgDt(KDateUtil.today()).ssvaldSec(10).build());
-			list.add(new InitLoadMockVO.Builder().userId("1000000002").userNm("오팀장").email("vteam@daum.net").aumthTpcdList("01,90").inactvYn("Y").lockYn("N").loginFailCnt(4).pwchgDt("20210101").ssvaldSec(60).build());
-			list.add(new InitLoadMockVO.Builder().userId("2000000001").userNm("김고객").email("kims@daum.net").aumthTpcdList("01,90").inactvYn("N").lockYn("N").loginFailCnt(0).pwchgDt(KDateUtil.today()).ssvaldSec(600).build());
+			list.add(new InitLoadMockVO.Builder().userId("1000000001").userNm("나사원").email("nasa@daum.net").aumthTpcdList("01,90").dloginAlowYn("Y").inactvYn("N").lockYn("N").loginFailCnt(0).pwchgDt(KDateUtil.today()).ssvaldSec(10000000).build());
+			list.add(new InitLoadMockVO.Builder().userId("1000000002").userNm("오팀장").email("vteam@daum.net").aumthTpcdList("01,90").dloginAlowYn("N").inactvYn("Y").lockYn("N").loginFailCnt(4).pwchgDt("20210101").ssvaldSec(60).build());
+			list.add(new InitLoadMockVO.Builder().userId("2000000001").userNm("김고객").email("kims@daum.net").aumthTpcdList("01,90").dloginAlowYn("N").inactvYn("N").lockYn("N").loginFailCnt(0).pwchgDt(KDateUtil.today()).ssvaldSec(600).build());
 			int cnt = list.size();
 			for (int i=0; i<cnt; i++) {
 				InitLoadMockVO item = list.get(i);

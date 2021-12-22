@@ -18,6 +18,7 @@
            SITE_TPCD
          , USER_ID
          , AUMTH_TPCD_LIST
+         , DLOGIN_ALOW_YN
          , INACTV_YN
          , LOCK_YN
          , LOGIN_FAIL_CNT

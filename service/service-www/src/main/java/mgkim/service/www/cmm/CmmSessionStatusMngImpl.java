@@ -69,11 +69,18 @@ public class CmmSessionStatusMngImpl implements CmmSessionStatusMng {
 		List<CmmSessionStatusVO> list = cmmSessionStatusMngMapper.selectStatusListForDupl(claims);
 		List<String> duplList = new ArrayList<String>();
 		for (int i=0; i<list.size(); i++) {
+			CmmSessionStatusVO vo = list.get(i);
 			// `신규 session` 과 `기존 session` 의 ip 비교
-			String ip = KStringUtil.nvl(list.get(i).getIp());
+			String ip = KStringUtil.nvl(vo.getIp());
 			if (ip.equals(claims.get("ip"))) { // 같을 경우에는 `다중 session 상태` 허용
 				continue;
 			}
+			// `중복로그인허용여부` 확인
+			String dloginAlowYn = KStringUtil.nvl(vo.getDloginAlowYn());
+			if ("Y".equals(dloginAlowYn)) { // "Y"일 경우 허용
+				continue;
+			}
+			
 
 			// `기존 session` 의 `세션 상태` 확인
 			TSsStcdType ssStcdType = TSsStcdType.get(list.get(i).getSsStcd());

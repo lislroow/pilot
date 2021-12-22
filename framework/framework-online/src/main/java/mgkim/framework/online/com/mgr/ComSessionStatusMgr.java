@@ -48,7 +48,7 @@ public class ComSessionStatusMgr {
 				return true;
 			}
 
-			if (ssStcdType == TSsStcdType.DUP_LOGIN) {
+			if (ssStcdType == TSsStcdType.DUP_LOGIN && "N".equals(statusVO.getDloginAlowYn())) {
 				throw new KSysException(KMessage.E6102);
 			} else if (ssStcdType == TSsStcdType.EXPIRED
 					|| ssStcdType == TSsStcdType.LOGOUT) {
