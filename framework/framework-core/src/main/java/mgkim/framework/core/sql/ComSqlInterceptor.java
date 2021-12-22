@@ -52,7 +52,6 @@ import mgkim.framework.core.type.TExecType;
 import mgkim.framework.core.type.TSqlType;
 import mgkim.framework.core.type.TSysType;
 import mgkim.framework.core.util.KDtoUtil;
-import mgkim.framework.core.util.KExceptionUtil;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KSqlUtil;
 import mgkim.framework.core.util.KStringUtil;
@@ -209,6 +208,7 @@ public class ComSqlInterceptor implements Interceptor {
 		// (페이징이 아닐 경우) 새로운 orignal-sql로 `boundSql` 교체
 		{
 			if (!isPaging) {
+				org.apache.ibatis.session.Configuration configuration = mappedStatement.getConfiguration();
 				orignalSql = KSqlUtil.insertSqlId(orignalSql, sqlId);
 				connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
 				PreparedStatement pstmt = connection.prepareStatement(orignalSql);
@@ -216,50 +216,52 @@ public class ComSqlInterceptor implements Interceptor {
 				TypeHandlerRegistry typeHandlerRegistry = mappedStatement.getConfiguration().getTypeHandlerRegistry();
 				Object parameterObject = parameterHandler.getParameterObject();
 				List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
-				org.apache.ibatis.session.Configuration configuration = mappedStatement.getConfiguration();
+				ParameterMapping _parameter = null;
+				TypeHandler _typeHandler = null;
+				int parameterIndex = 1;
 				
 				// 실제 binding 파라미터 생성
-				{
-					if (parameterMappings != null) {
-						for (int i=0; i<parameterMappings.size(); i++) {
-							ParameterMapping parameterMapping = parameterMappings.get(i);
-							if (parameterMapping.getMode() == ParameterMode.IN) {
-								Object value;
-								String propertyName = parameterMapping.getProperty();
-								PropertyTokenizer prop = new PropertyTokenizer(propertyName);
-								if (boundSql.hasAdditionalParameter(propertyName)) {
-									value = boundSql.getAdditionalParameter(propertyName);
-								} else if (parameterObject == null) {
-									value = null;
-								} else if (typeHandlerRegistry.hasTypeHandler(parameterObject.getClass())) {
-									value = parameterObject;
-								} else if (propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && boundSql.hasAdditionalParameter(prop.getName())) {
-									value = boundSql.getAdditionalParameter(prop.getName());
-									if (value != null) {
-										value = configuration.newMetaObject(value).getValue(propertyName.substring(prop.getName().length()));
-									}
-								} else if (paramObject instanceof java.util.Map) {
-									value = ((Map)paramObject).get(propertyName);
-								} else {
-									value = KObjectUtil.getValue(paramObject, propertyName);
+				if (parameterMappings != null) {
+					for (int i=0; i<parameterMappings.size(); i++) {
+						_parameter = parameterMappings.get(i);
+						if (_parameter.getMode() == ParameterMode.IN) {
+							Object value;
+							String propertyName = _parameter.getProperty();
+							PropertyTokenizer prop = new PropertyTokenizer(propertyName);
+							if (boundSql.hasAdditionalParameter(propertyName)) {
+								value = boundSql.getAdditionalParameter(propertyName);
+							} else if (parameterObject == null) {
+								value = null;
+							} else if (typeHandlerRegistry.hasTypeHandler(parameterObject.getClass())) {
+								value = parameterObject;
+							} else if (propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && boundSql.hasAdditionalParameter(prop.getName())) {
+								value = boundSql.getAdditionalParameter(prop.getName());
+								if (value != null) {
+									value = configuration.newMetaObject(value).getValue(propertyName.substring(prop.getName().length()));
 								}
-								TypeHandler typeHandler = parameterMapping.getTypeHandler();
-								JdbcType jdbcType = parameterMapping.getJdbcType();
-								if (value == null && jdbcType == null) {
-									jdbcType = configuration.getJdbcTypeForNull();
-								}
-								try {
-									typeHandler.setParameter(pstmt, i+1, value, jdbcType);
-								} catch(Exception e) {
-									KLogSql.error(String.format(
-													"{} `{}` error-message={}{}{}", KConstant.LT_SQL_PAING, "(paging)"+sqlId, KExceptionUtil.getCauseMessage(e), KLogLayout.LINE, paramSql)
-												, e);
-									throw e;
-								}
+							} else if (paramObject instanceof java.util.Map) {
+								value = ((Map)paramObject).get(propertyName);
+							} else {
+								value = KObjectUtil.getValue(paramObject, propertyName);
 							}
+							_typeHandler = _parameter.getTypeHandler();
+							JdbcType jdbcType = _parameter.getJdbcType();
+							if (value == null && jdbcType == null) {
+								jdbcType = configuration.getJdbcTypeForNull();
+							}
+							try {
+								_typeHandler.setParameter(pstmt, parameterIndex, value, jdbcType);
+								parameterIndex++;
+							} catch(Exception e) {
+								throw e;
+							}
+						} else if (_parameter.getMode() == ParameterMode.OUT) {
+							KLogSql.warn("statement 파라미터를 생성하는 중 ParameterMode.OUT 가 발견되었습니다.", _parameter.toString());
 						}
 					}
 				}
+				// -- 실제 binding 파라미터 생성
+				
 				invocation.getArgs()[0] = pstmt;
 			}
 		}

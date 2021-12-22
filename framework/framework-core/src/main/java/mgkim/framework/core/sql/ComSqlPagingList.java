@@ -30,7 +30,6 @@ import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.logging.KLogApm;
 import mgkim.framework.core.logging.KLogLayout;
 import mgkim.framework.core.logging.KLogSql;
-import mgkim.framework.core.util.KExceptionUtil;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KSqlUtil;
 
@@ -133,8 +132,8 @@ public class ComSqlPagingList {
 		TypeHandler _typeHandler = null;
 		JdbcType _jdbcType = null;
 		org.apache.ibatis.session.Configuration configuration = mappedStatement.getConfiguration();
-		
 		int parameterIndex = 1;
+		
 		// 첫번째 파라미터 생성 (`_rowcount`)
 		{
 			_parameter = new ParameterMapping.Builder(configuration, "_rowcount", new IntegerTypeHandler())
@@ -145,9 +144,6 @@ public class ComSqlPagingList {
 				_typeHandler.setParameter(pstmt, parameterIndex, outPageVO.getRowcount(), _parameter.getJdbcType());
 				parameterIndex++;
 			} catch(Exception e) {
-				KLogSql.error(String.format(
-								"%s `%s` error-message=%s%s%s", KConstant.LT_SQL_PAING, "(paging)"+sqlId, KExceptionUtil.getCauseMessage(e), KLogLayout.LINE, paramSql)
-							, e);
 				throw e;
 			}
 		}
@@ -178,21 +174,23 @@ public class ComSqlPagingList {
 							value = KObjectUtil.getValue(paramObject, propertyName);
 						}
 						_typeHandler = _parameter.getTypeHandler();
+						JdbcType jdbcType = _parameter.getJdbcType();
+						if (value == null && jdbcType == null) {
+							jdbcType = configuration.getJdbcTypeForNull();
+						}
 						try {
-							_typeHandler.setParameter(pstmt, parameterIndex, value, _parameter.getJdbcType());
+							_typeHandler.setParameter(pstmt, parameterIndex, value, jdbcType);
 							parameterIndex++;
 						} catch(Exception e) {
-							KLogSql.error(String.format(
-											"{} `{}` error-message={}{}{}", KConstant.LT_SQL_PAING, "(paging)"+sqlId, KExceptionUtil.getCauseMessage(e), KLogLayout.LINE, paramSql)
-										, e);
 							throw e;
 						}
 					} else if (_parameter.getMode() == ParameterMode.OUT) {
-						KLogSql.warn("페이징 sql의 statement 파라미터를 생성하는 중 parameterMapping의 mode 가 OUT 인 형태가 발견되었습니다.", _parameter.toString());
+						KLogSql.warn("statement 파라미터를 생성하는 중 ParameterMode.OUT 가 발견되었습니다.", _parameter.toString());
 					}
 				}
 			}
 		}
+		// -- 실제 binding 파라미터 생성
 		
 		// 두번째, 세번째 파라미터 생성 (BETWEEN `_startrow` AND `_endrow`)
 		{
@@ -204,9 +202,6 @@ public class ComSqlPagingList {
 				_typeHandler.setParameter(pstmt, parameterIndex, outPageVO.getStartrow(), _parameter.getJdbcType());
 				parameterIndex++;
 			} catch(Exception e) {
-				KLogSql.error(String.format(
-								"{} `{}` error-message={}{}{}", KConstant.LT_SQL_PAING, "(paging)"+sqlId, KExceptionUtil.getCauseMessage(e), KLogLayout.LINE, paramSql)
-							, e);
 				throw e;
 			}
 			
@@ -218,9 +213,6 @@ public class ComSqlPagingList {
 				_typeHandler.setParameter(pstmt, parameterIndex, outPageVO.getEndrow(), _parameter.getJdbcType());
 				parameterIndex++;
 			} catch(Exception e) {
-				KLogSql.error(String.format(
-								"{} `{}` error-message={}{}{}", KConstant.LT_SQL_PAING, "(paging)"+sqlId, KExceptionUtil.getCauseMessage(e), KLogLayout.LINE, paramSql)
-							, e);
 				throw e;
 			}
 		}

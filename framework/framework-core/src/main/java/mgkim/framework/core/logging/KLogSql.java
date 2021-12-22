@@ -37,10 +37,10 @@ public class KLogSql {
 	}
 
 	public static boolean isComSql(String sqlId) {
-		List<String> comSqlList = KConfig.CMM_SQL;
+		List<String> cmmSqlList = KConfig.CMM_SQL;
 		boolean matched = false;
-		for (String comSql : comSqlList) {
-			matched = sqlId.startsWith(comSql);
+		for (String cmmSql : cmmSqlList) {
+			matched = sqlId.startsWith(cmmSql);
 			if (matched) {
 				break;
 			}

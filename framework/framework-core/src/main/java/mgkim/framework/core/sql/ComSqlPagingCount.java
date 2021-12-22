@@ -22,7 +22,6 @@ import org.apache.ibatis.reflection.SystemMetaObject;
 import org.apache.ibatis.reflection.property.PropertyTokenizer;
 import org.apache.ibatis.scripting.xmltags.ForEachSqlNode;
 import org.apache.ibatis.session.Configuration;
-import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.TypeHandlerRegistry;
 
@@ -56,7 +55,8 @@ public class ComSqlPagingCount {
 		String sqlId = mappedStatement.getId();
 		String orignalSql = boundSql.getSql();
 		//String sqlFile = KSqlUtil.getRelativePath(mappedStatement);
-		Object paramObject = statementHandler.getParameterHandler().getParameterObject();
+		TypeHandlerRegistry typeHandlerRegistry = mappedStatement.getConfiguration().getTypeHandlerRegistry();
+		Object parameterObject = statementHandler.getParameterHandler().getParameterObject();
 
 		Integer count = null;
 
@@ -76,7 +76,7 @@ public class ComSqlPagingCount {
 			if (isLoggableSql) {
 				if (!isVerboss) {
 				} else {
-					KSqlUtil.createParamSql(paramObject, mappedStatement, TSqlType.COUNT1_SQL);
+					KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.COUNT1_SQL);
 				}
 			}
 		} // -- count-sql 로깅
@@ -90,40 +90,49 @@ public class ComSqlPagingCount {
 				connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
 				countSql = KSqlUtil.insertSqlId(countSql, "(count-sql1) "+sqlId);
 				pstmt = connection.prepareStatement(countSql);
-				final BoundSql countBoundSql = new BoundSql(mappedStatement.getConfiguration(), countSql, boundSql.getParameterMappings(), paramObject);
-				List<ParameterMapping> parameterMappings = countBoundSql.getParameterMappings();
+				List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
+				ParameterMapping _parameter = null;
+				TypeHandler _typeHandler = null;
+				int parameterIndex = 1;
+				
+				// 실제 binding 파라미터 생성
 				if (parameterMappings != null) {
-					TypeHandlerRegistry typeHandlerRegistry = configuration.getTypeHandlerRegistry();
-					// 2021-08-06 MetaObject metaObject = parameterObj == null ? null : configuration.newMetaObject(parameterObj);
 					for (int i=0; i<parameterMappings.size(); i++) {
-						ParameterMapping parameterMapping = parameterMappings.get(i);
-						if (parameterMapping.getMode() == ParameterMode.IN) {
-							Object value = null;
-							String propertyName = parameterMapping.getProperty();
+						_parameter = parameterMappings.get(i);
+						if (_parameter.getMode() == ParameterMode.IN) {
+							Object value;
+							String propertyName = _parameter.getProperty();
 							PropertyTokenizer prop = new PropertyTokenizer(propertyName);
-							if (paramObject == null) {
+							if (boundSql.hasAdditionalParameter(propertyName)) {
+								value = boundSql.getAdditionalParameter(propertyName);
+							} else if (parameterObject == null) {
 								value = null;
-							} else if (typeHandlerRegistry.hasTypeHandler(paramObject.getClass())) {
-								value = paramObject;
+							} else if (typeHandlerRegistry.hasTypeHandler(parameterObject.getClass())) {
+								value = parameterObject;
 							} else if (propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && boundSql.hasAdditionalParameter(prop.getName())) {
 								value = boundSql.getAdditionalParameter(prop.getName());
 								if (value != null) {
 									value = configuration.newMetaObject(value).getValue(propertyName.substring(prop.getName().length()));
 								}
-							} else if (paramObject instanceof java.util.Map) {
-								value = ((Map)paramObject).get(propertyName);
+							} else if (parameterObject instanceof java.util.Map) {
+								value = ((Map)parameterObject).get(propertyName);
 							} else {
-								value = KObjectUtil.getValue(paramObject, propertyName);
+								value = KObjectUtil.getValue(parameterObject, propertyName);
 							}
-							TypeHandler typeHandler = parameterMapping.getTypeHandler();
-							JdbcType jdbcType = parameterMapping.getJdbcType();
-							if (value == null && jdbcType == null) {
-								jdbcType = configuration.getJdbcTypeForNull();
+							_typeHandler = _parameter.getTypeHandler();
+							try {
+								_typeHandler.setParameter(pstmt, parameterIndex, value, _parameter.getJdbcType());
+								parameterIndex++;
+							} catch(Exception e) {
+								throw e;
 							}
-							typeHandler.setParameter(pstmt, i+1, value, jdbcType);
+						} else if (_parameter.getMode() == ParameterMode.OUT) {
+							KLogSql.warn("statement 파라미터를 생성하는 중 ParameterMode.OUT 가 발견되었습니다.", _parameter.toString());
 						}
 					}
 				}
+				// -- 실제 binding 파라미터 생성
+				
 				rs = pstmt.executeQuery();
 				if (rs.next()) {
 					count = rs.getInt(1);
@@ -229,12 +238,11 @@ public class ComSqlPagingCount {
 		StatementHandler statementHandler = (StatementHandler) invocation.getTarget();
 		PreparedStatementHandler preparedStatementHandler = (PreparedStatementHandler) proxyDelegate.get(statementHandler);
 		MappedStatement mappedStatement = (MappedStatement) proxyMappedStatement.get(preparedStatementHandler);
-		//BoundSql boundSql = statementHandler.getBoundSql();
 		Configuration configuration = mappedStatement.getConfiguration();
 		String sqlId = mappedStatement.getId();
-		//String orignalSql = boundSql.getSql();
 		String sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
-		Object paramObject = statementHandler.getParameterHandler().getParameterObject();
+		TypeHandlerRegistry typeHandlerRegistry = mappedStatement.getConfiguration().getTypeHandlerRegistry();
+		Object parameterObject = statementHandler.getParameterHandler().getParameterObject();
 		// -- count-sql 실행 준비
 
 		// 반환값 준비
@@ -242,22 +250,23 @@ public class ComSqlPagingCount {
 		// -- 반환값 준비
 
 		// count-sql 존재여부 확인
-		MappedStatement countMappedStatement = null;
 		{
 			Set<MappedStatement> mappedStatementList = KSqlContext.MAPPED_STATEMENT_LIST;
 			Iterator<MappedStatement> iter = mappedStatementList.iterator();
+			boolean isFound = false;
 			while (iter.hasNext()) {
 				Object obj = iter.next();
 				if (obj instanceof MappedStatement) {
 					MappedStatement ms = (MappedStatement)obj;
 					if (ms.getId().equals(sqlId+"-count")) {
-						countMappedStatement = ms;
+						isFound = true;
+						mappedStatement = ms;
 						break;
 					}
 				}
 			}
-
-			if (countMappedStatement == null) {
+			
+			if (!isFound) {
 				return count; // count-sql 이 존재하지 않을 경우 `null` 을 반환
 			}
 		}
@@ -268,8 +277,8 @@ public class ComSqlPagingCount {
 		boolean isLoggableSql = KLogSql.isLoggableSql(sqlId);
 		boolean isVerboss = KConfig.VERBOSS_ALL || KConfig.VERBOSS_SQL;
 		{
-			sqlId = countMappedStatement.getId();
-			sqlFile = KSqlUtil.getRelativePath(countMappedStatement.getResource());
+			sqlId = mappedStatement.getId();
+			sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
 
 			KContext.set(AttrKey.SQL_ID, sqlId);
 			KContext.set(AttrKey.SQL_FILE, sqlFile);
@@ -281,7 +290,7 @@ public class ComSqlPagingCount {
 			if (isLoggableSql) {
 				if (!isVerboss) {
 				} else {
-					KSqlUtil.createParamSql(paramObject, countMappedStatement, TSqlType.COUNT3_SQL);
+					KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.COUNT3_SQL);
 				}
 			}
 		} // -- count-sql 로깅
@@ -293,52 +302,61 @@ public class ComSqlPagingCount {
 			PreparedStatement pstmt = null;
 			ResultSet rs = null;
 			try {
-				BoundSql countBoundSql = countMappedStatement.getBoundSql(paramObject);
-				String countSql = countBoundSql.getSql();
+				String countSql = mappedStatement.getBoundSql(parameterObject).getSql();
 				countSql = KSqlUtil.insertSqlId(countSql, "(count-sql3) "+sqlId);
-				List<ParameterMapping> parameterMappings = countMappedStatement.getBoundSql(paramObject).getParameterMappings();
+				List<ParameterMapping> parameterMappings = mappedStatement.getBoundSql(parameterObject).getParameterMappings();
 				connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
 				pstmt = connection.prepareStatement(countSql);
-				final BoundSql newBoundSql = new BoundSql(configuration, countSql, parameterMappings, paramObject);
+				final BoundSql boundSql = new BoundSql(configuration, countSql, parameterMappings, parameterObject);
+				ParameterMapping _parameter = null;
+				TypeHandler _typeHandler = null;
+				int parameterIndex = 1;
+				
+				// 실제 binding 파라미터 생성
 				if (parameterMappings != null) {
-					TypeHandlerRegistry typeHandlerRegistry = configuration.getTypeHandlerRegistry();
-					//MetaObject metaObject = paramObject == null ? null : configuration.newMetaObject(paramObject);
 					for (int i=0; i<parameterMappings.size(); i++) {
-						ParameterMapping parameterMapping = parameterMappings.get(i);
-						if (parameterMapping.getMode() == ParameterMode.IN) {
-							Object value = null;
-							String propertyName = parameterMapping.getProperty();
+						_parameter = parameterMappings.get(i);
+						if (_parameter.getMode() == ParameterMode.IN) {
+							Object value;
+							String propertyName = _parameter.getProperty();
 							PropertyTokenizer prop = new PropertyTokenizer(propertyName);
-							if (paramObject == null) {
+							if (boundSql.hasAdditionalParameter(propertyName)) {
+								value = boundSql.getAdditionalParameter(propertyName);
+							} else if (parameterObject == null) {
 								value = null;
-							} else if (typeHandlerRegistry.hasTypeHandler(paramObject.getClass())) {
-								value = paramObject;
-							} else if (propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && newBoundSql.hasAdditionalParameter(prop.getName())) {
-								value = newBoundSql.getAdditionalParameter(prop.getName());
+							} else if (typeHandlerRegistry.hasTypeHandler(parameterObject.getClass())) {
+								value = parameterObject;
+							} else if (propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && boundSql.hasAdditionalParameter(prop.getName())) {
+								value = boundSql.getAdditionalParameter(prop.getName());
 								if (value != null) {
 									value = configuration.newMetaObject(value).getValue(propertyName.substring(prop.getName().length()));
 								}
-							} else if (paramObject instanceof java.util.Map) {
-								value = ((Map)paramObject).get(propertyName);
+							} else if (parameterObject instanceof java.util.Map) {
+								value = ((Map)parameterObject).get(propertyName);
 							} else {
-								value = KObjectUtil.getValue(paramObject, propertyName);
+								value = KObjectUtil.getValue(parameterObject, propertyName);
 							}
-							TypeHandler typeHandler = parameterMapping.getTypeHandler();
-							JdbcType jdbcType = parameterMapping.getJdbcType();
-							if (value == null && jdbcType == null) {
-								jdbcType = configuration.getJdbcTypeForNull();
+							_typeHandler = _parameter.getTypeHandler();
+							try {
+								_typeHandler.setParameter(pstmt, parameterIndex, value, _parameter.getJdbcType());
+								parameterIndex++;
+							} catch(Exception e) {
+								throw e;
 							}
-							typeHandler.setParameter(pstmt, i+1, value, jdbcType);
+						} else if (_parameter.getMode() == ParameterMode.OUT) {
+							KLogSql.warn("statement 파라미터를 생성하는 중 ParameterMode.OUT 가 발견되었습니다.", _parameter.toString());
 						}
 					}
 				}
+				// -- 실제 binding 파라미터 생성
+				
 				rs = pstmt.executeQuery();
 				if (rs.next()) {
 					count = rs.getInt(1);
 				}
 			} catch(Exception ex) {
 				if (!isVerboss) {
-					KSqlUtil.createParamSql(paramObject, countMappedStatement, TSqlType.COUNT3_SQL);
+					KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.COUNT3_SQL);
 				} else {
 				}
 				throw ex;
