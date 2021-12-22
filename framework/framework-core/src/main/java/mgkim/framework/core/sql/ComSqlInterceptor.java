@@ -19,6 +19,7 @@ import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.ParameterMapping;
 import org.apache.ibatis.mapping.ParameterMode;
 import org.apache.ibatis.mapping.ResultMap;
+import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.plugin.Intercepts;
@@ -28,7 +29,6 @@ import org.apache.ibatis.plugin.Signature;
 import org.apache.ibatis.reflection.property.PropertyTokenizer;
 import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
 import org.apache.ibatis.scripting.xmltags.ForEachSqlNode;
-import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
@@ -36,6 +36,7 @@ import org.apache.ibatis.type.TypeHandlerRegistry;
 import org.springframework.util.StopWatch;
 
 import mgkim.framework.core.dto.KCmmVO;
+import mgkim.framework.core.dto.KInPageVO;
 import mgkim.framework.core.dto.KOutPageVO;
 import mgkim.framework.core.env.KConfig;
 import mgkim.framework.core.env.KConstant;
@@ -123,7 +124,7 @@ public class ComSqlInterceptor implements Interceptor {
 				{
 					KDtoUtil.setSysValues(paramObject);
 				} // -- paramObject 공통 필드 설정
-
+				
 				// paramObject 로깅
 				{
 					if (isLoggableSql) {
@@ -133,22 +134,34 @@ public class ComSqlInterceptor implements Interceptor {
 						}
 					}
 				} // -- paramObject 로깅
-
-				// paging 처리
+				
+				// paging 여부 확인
 				TSqlType sqlType = null;
 				{
-					Connection pagingConnection = null; 
-					if (!isComSql) { // com 패키지에 있는 sql 은 paging 처리 대상에서 제외함
-						pagingConnection = comSqlPagingList.preparePaging(invocation);
+					KInPageVO inPageVO = KContext.getT(AttrKey.IN_PAGE);
+					if (inPageVO == null || isComSql) { // // com 패키지에 있는 sql 은 paging 처리 대상에서 제외함
+						isPaging = false;
+					} else {
+						boolean isSelectSqlID = sqlId.matches("^.+\\.select.+(List)$");
+						boolean isSelectType = mappedStatement.getSqlCommandType() == SqlCommandType.SELECT;
+						boolean isPagingYN = inPageVO.getPaging();
+						isPaging = isSelectSqlID && isSelectType && isPagingYN;
 					}
 					
-					if (pagingConnection == null) {  // `null` 이면 paging 처리 대상이 아님
-						isPaging = false;
-						sqlType = TSqlType.ORIGINAL_SQL;
-					} else {
-						isPaging = true;
+					if (isPaging) {
 						sqlType = TSqlType.PAGING_SQL;
-						connection = pagingConnection;
+					} else {
+						sqlType = TSqlType.ORIGINAL_SQL;
+					}
+				} // -- paging 여부 확인
+				
+				
+				// paging 처리
+				{
+					//Connection pagingConnection = null; 
+					if (isPaging) {
+						PreparedStatement pstmt = comSqlPagingList.preparePaging(invocation);
+						invocation.getArgs()[0] = pstmt;
 					}
 					
 					// 파라미터 처리 후에는 반드시 아래 설정이 필요함
@@ -197,14 +210,14 @@ public class ComSqlInterceptor implements Interceptor {
 		{
 			if (!isPaging) {
 				orignalSql = KSqlUtil.insertSqlId(orignalSql, sqlId);
-				Configuration configuration = mappedStatement.getConfiguration();
 				connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
 				PreparedStatement pstmt = connection.prepareStatement(orignalSql);
 				DefaultParameterHandler parameterHandler = (DefaultParameterHandler)sHandler.getParameterHandler();
 				TypeHandlerRegistry typeHandlerRegistry = mappedStatement.getConfiguration().getTypeHandlerRegistry();
 				Object parameterObject = parameterHandler.getParameterObject();
 				List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
-
+				org.apache.ibatis.session.Configuration configuration = mappedStatement.getConfiguration();
+				
 				// 실제 binding 파라미터 생성
 				{
 					if (parameterMappings != null) {

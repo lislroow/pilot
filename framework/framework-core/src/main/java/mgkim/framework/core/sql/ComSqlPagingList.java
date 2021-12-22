@@ -1,7 +1,6 @@
 package mgkim.framework.core.sql;
 
 import java.lang.reflect.Field;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,12 +12,10 @@ import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.ParameterMapping;
 import org.apache.ibatis.mapping.ParameterMode;
-import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.reflection.property.PropertyTokenizer;
 import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
 import org.apache.ibatis.scripting.xmltags.ForEachSqlNode;
-import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.type.IntegerTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
@@ -51,45 +48,20 @@ public class ComSqlPagingList {
 		this.proxyDelegate = proxyDelegate;
 	}
 
-	public Connection preparePaging(Invocation invocation) throws Throwable {
+	public PreparedStatement preparePaging(Invocation invocation) throws Throwable {
 		// 실행 준비
 		StatementHandler sHandler = (StatementHandler) invocation.getTarget();
 		PreparedStatementHandler pstmtHandler = (PreparedStatementHandler) proxyDelegate.get(sHandler);
 		MappedStatement mappedStatement = (MappedStatement) proxyMappedStatement.get(pstmtHandler);
 		BoundSql boundSql = sHandler.getBoundSql();
 		String paramSql = boundSql.getSql();
-		Configuration configuration = mappedStatement.getConfiguration();
 		String sqlId = mappedStatement.getId();
 		//String orignalSql = boundSql.getSql();
 		String sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
 		Object paramObject = sHandler.getParameterHandler().getParameterObject();
-		// -- 실행 준비
-
-
-		// 반환값 준비
-		Connection connection = null;
-		// -- 반환값 준비
-
-
-		// paging 여부 확인
 		KInPageVO inPageVO = KContext.getT(AttrKey.IN_PAGE);
-		{
-			if (inPageVO == null) {
-				return connection; // paging 대상이 아닐 경우 Connection 객체를 null 로 반환
-			}
-
-			boolean isSelectSqlID = sqlId.matches("^.+\\.select.+(List)$");
-			boolean isSelectType = mappedStatement.getSqlCommandType() == SqlCommandType.SELECT;
-			boolean isPagingYN = inPageVO.getPaging();
-
-			boolean isPaging = isSelectSqlID && isSelectType && isPagingYN;
-
-			if (!isPaging) {
-				return connection; // paging 대상이 아닐 경우 Connection 객체를 null 로 반환
-			}
-		} // -- paging 여부 확인
-
-
+		// -- 실행 준비
+		
 		// 로깅 준비
 		//TExecType execType = (TExecType) KContext.get(AttrKey.EXEC_TYPE);
 		//boolean isDebugMode = KContext.isDebugMode();
@@ -152,7 +124,7 @@ public class ComSqlPagingList {
 		// 페이징 파라미터 설정
 		String pagingSql = String.format(KSqlUtil.PAGING_SQL, boundSql.getSql());
 		pagingSql = KSqlUtil.insertSqlId(pagingSql, "(paging-sql) "+sqlId);
-		connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
+		java.sql.Connection connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
 		PreparedStatement pstmt = connection.prepareStatement(pagingSql);
 		DefaultParameterHandler parameterHandler = (DefaultParameterHandler)sHandler.getParameterHandler();
 		TypeHandlerRegistry typeHandlerRegistry = mappedStatement.getConfiguration().getTypeHandlerRegistry();
@@ -162,6 +134,7 @@ public class ComSqlPagingList {
 		ParameterMapping _parameter = null;
 		TypeHandler _typeHandler = null;
 		JdbcType _jdbcType = null;
+		org.apache.ibatis.session.Configuration configuration = mappedStatement.getConfiguration();
 
 
 		// 첫번째 파라미터 생성 (`_rowcount`)
@@ -269,23 +242,9 @@ public class ComSqlPagingList {
 				throw e;
 			}
 		}
-
-		// 새로운 paing-sql로 `boundSql` 교체
-		//{
-		//	BoundSql newBoundSql = new BoundSql(mappedStatement.getConfiguration(), pagingSql, pagingParameterMappings, boundSql.getParameterObject());
-		//	MetaObject metaObject = SystemMetaObject.forObject(sHandler);
-		//	for (ParameterMapping mapping : pagingParameterMappings) {
-		//		String prop = mapping.getProperty();
-		//		if (boundSql.hasAdditionalParameter(prop)) {
-		//			newBoundSql.setAdditionalParameter(prop, boundSql.getAdditionalParameter(prop));
-		//		}
-		//	}
-		//	metaObject.setValue("delegate.boundSql", newBoundSql);
-		//}
-
+		
 		// invocation 의 args에 새로운 `StatementHandler` 교체
-		invocation.getArgs()[0] = pstmt;
-
-		return connection; // paging 처리가 되었음을 반환
+		//invocation.getArgs()[0] = pstmt;
+		return pstmt;
 	}
 }
