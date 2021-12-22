@@ -4,7 +4,6 @@ import static mgkim.framework.core.env.KConstant.GUID;
 import static mgkim.framework.core.env.KConstant.IP;
 import static mgkim.framework.core.env.KConstant.MDC_DEBUG_MODE_YN;
 import static mgkim.framework.core.env.KConstant.REFERER;
-import static mgkim.framework.core.env.KConstant.SSID;
 import static mgkim.framework.core.env.KConstant.TXID;
 import static mgkim.framework.core.env.KConstant.URI;
 
@@ -185,22 +184,21 @@ public class KContext {
 			KContext.reset();
 			map = attr.get();
 		}
-		
-		String jti = KStringUtil.nvl(token.getHeader().get(KConstant.TOKEN_JTI), "");
+		Map claims = ((Map)token.getBody());
+		String ssid = KStringUtil.nvl(claims.get(KConstant.SSID), "");
+		String userId = KStringUtil.nvl(claims.get(KConstant.USER_ID), "");
 		boolean debug = KContext.getT(AttrKey.DEBUG);
 		if (debug) {
-			KLogSys.debug("{} {}{} {}", KConstant.LT_SECURITY, KLogLayout.LINE, KConstant.LT_SECURITY, KMessage.get(KMessage.E6023, KContext.get(AttrKey.GUID), jti));
-			KContext.set(AttrKey.GUID, jti);
-			MDC.put(GUID, jti);
+			KLogSys.debug("{} {}{} {}", KConstant.LT_SECURITY, KLogLayout.LINE, KConstant.LT_SECURITY, KMessage.get(KMessage.E6023, KContext.get(AttrKey.SSID), ssid));
+			KContext.set(AttrKey.SSID, ssid);
+			MDC.put(KConstant.SSID, ssid);
 		}
 		
 		KContext.set(AttrKey.TOKEN, token);
-		KContext.set(AttrKey.SSID, jti);
-		MDC.put(SSID, jti);
-		
-//		String userId = KStringUtil.nvl(token.getBody().get("userId"), "");
-//		KContext.set(AttrKey.USER_ID, userId);
-//		MDC.put(USER_ID, userId);
+		KContext.set(AttrKey.SSID, ssid);
+		MDC.put(KConstant.SSID, ssid);
+		KContext.set(AttrKey.USER_ID, userId);
+		MDC.put(KConstant.USER_ID, userId);
 	}
 
 
