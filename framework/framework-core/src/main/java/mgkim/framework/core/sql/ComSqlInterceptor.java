@@ -228,9 +228,7 @@ public class ComSqlInterceptor implements Interceptor {
 							Object value;
 							String propertyName = _parameter.getProperty();
 							PropertyTokenizer prop = new PropertyTokenizer(propertyName);
-							if (boundSql.hasAdditionalParameter(propertyName)) {
-								value = boundSql.getAdditionalParameter(propertyName);
-							} else if (parameterObject == null) {
+							if (parameterObject == null) {
 								value = null;
 							} else if (typeHandlerRegistry.hasTypeHandler(parameterObject.getClass())) {
 								value = parameterObject;
