@@ -26,8 +26,8 @@ import mgkim.framework.core.type.TSqlType;
 
 public class KSqlUtil {
 
-	public static final String COUNT_SQL = "SELECT COUNT(*) \nFROM (\n  %s\n) TB";
-	public static final String PAGING_SQL = "SELECT * \nFROM ( SELECT rownum rn, (?+1)-rownum rnum, TB.* FROM (\n  %s\n) TB ) WHERE rn BETWEEN ? AND ?";
+	public static final String COUNT_SQL = "SELECT COUNT(*) \n  FROM (\n  %s\n) TB";
+	public static final String PAGING_SQL = "SELECT * \n  FROM (SELECT rownum rn, (?+1)-rownum rnum, TB.* FROM (\n    %s\n  ) TB\n) WHERE rn BETWEEN ? AND ?";
 
 	public static final int PAGING_RECORD_COUNT_PER_PAGE = 10;
 	public static final int PAGING_PAGE_SIZE = 10;
@@ -129,7 +129,7 @@ public class KSqlUtil {
 
 		// param-sql 로깅
 		{
-			paramSql = paramSql.replaceAll("\n\t\t", "\n");
+			paramSql = paramSql.replaceAll("\n    ", "\n");
 			switch(paramSqlType) {
 			case ORIGIN_SQL:
 				paramSql = KSqlUtil.insertSqlId(paramSql, "(origin-sql) "+sqlId);
