@@ -9,16 +9,13 @@ import java.util.regex.Pattern;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.ParameterMapping;
-import org.apache.ibatis.mapping.ParameterMode;
-import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.session.Configuration;
+import org.apache.ibatis.type.TypeHandlerRegistry;
 
 import mgkim.framework.core.dto.KCmmVO;
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
-import mgkim.framework.core.exception.KMessage;
-import mgkim.framework.core.exception.KSqlException;
 import mgkim.framework.core.logging.KLogCommon;
 import mgkim.framework.core.logging.KLogLayout;
 import mgkim.framework.core.logging.KLogSql;
@@ -50,33 +47,34 @@ public class KSqlUtil {
 		return path;
 	}
 
-	public static String createParamSql(Object paramObject, MappedStatement mappedStatement, TSqlType paramSqlType) throws Exception {
+	public static String createParamSql(Object parameterObject, MappedStatement mappedStatement, TSqlType paramSqlType) throws Exception {
 		// 준비
-		BoundSql boundSql = mappedStatement.getBoundSql(paramObject);
+		TypeHandlerRegistry typeHandlerRegistry = mappedStatement.getConfiguration().getTypeHandlerRegistry();
+		BoundSql boundSql = mappedStatement.getBoundSql(parameterObject);
 		String paramSql = boundSql.getSql();
 		Configuration configuration = mappedStatement.getConfiguration();
 		String sqlId = mappedStatement.getId();
 		String sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
 		// -- 준비
-
+		
 		// param-sql 생성
 		{
 			try {
 				paramSql = paramSql.replaceAll(PARAM_CHAR, PARAM_TEMP_CHAR);
-				if (paramObject == null) {
+				if (parameterObject == null) {
 					// null 타입
 					paramSql = paramSql.replaceAll(PARAM_TEMP_CHAR, "''");
-				} else if (paramObject instanceof Map) {
+				//} else if (parameterObject instanceof List) {
+					
+				} else if (parameterObject instanceof Map) {
 					// Map 타입
-					List<Object> entryParamsValueList = getParameters(configuration, boundSql, paramObject);
+					Map map = ((Map)parameterObject); 
 					List<ParameterMapping> entryParamKeyList = boundSql.getParameterMappings();
-					if (entryParamsValueList.size() != entryParamKeyList.size()) {
-						throw new KSqlException(KMessage.E8007, sqlId);
-					}
 					for (int i=0; i<entryParamKeyList.size(); i++) {
-						Object value = entryParamsValueList.get(i);
+						ParameterMapping _parameter = entryParamKeyList.get(i);
+						Object value = map.get(_parameter.getProperty());
 						if (value == null) {
-							continue;
+							value = "";
 						}
 						if (String.class.isInstance(value)) {
 							// `value` 에 `정규식에서 사용되는 특수문자`를 제거 합니다.
@@ -87,9 +85,9 @@ public class KSqlUtil {
 							paramSql = paramSql.replaceFirst(PARAM_TEMP_CHAR, KStringUtil.nvl(value));
 						}
 					}
-				} else if (paramObject instanceof String) {
+				} else if (parameterObject instanceof String) {
 					// String 타입
-					String val = String.format("'%s'", paramObject);
+					String val = String.format("'%s'", parameterObject);
 
 					// `value` 에 `정규식에서 사용되는 특수문자`를 제거 합니다.
 					String quoteStr = Matcher.quoteReplacement(val);
@@ -100,10 +98,15 @@ public class KSqlUtil {
 					List<ParameterMapping> entryParamKeyList = boundSql.getParameterMappings();
 					for (ParameterMapping mapping : entryParamKeyList) {
 						String propKey = mapping.getProperty();
-						String val = KObjectUtil.getSqlParamByFieldName(paramObject, propKey);
+						String val = KObjectUtil.getSqlParamByFieldName(parameterObject, propKey);
 						if (val == null) {
 							if (boundSql.hasAdditionalParameter(propKey)) {
-								val = (String) boundSql.getAdditionalParameter(propKey);
+								Object obj = (String) boundSql.getAdditionalParameter(propKey);
+								if (obj instanceof String) {
+									val = String.format("'%s'", KStringUtil.nvl(obj));
+								} else {
+									val = KStringUtil.nvl(obj);
+								}
 							}
 							
 							if (val == null) {
@@ -125,8 +128,8 @@ public class KSqlUtil {
 				KLogSql.error(String.format("param-sql을 생성하는 중 오류가 발생했습니다. `%s`", sqlId), e);
 			}
 		} // -- param-sql 생성
-
-
+		
+		
 		// param-sql 로깅
 		{
 			paramSql = paramSql.replaceAll("\n    ", "\n");
@@ -136,7 +139,7 @@ public class KSqlUtil {
 				KLogSql.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL, sqlId, KLogLayout.LINE, KConstant.LT_SQL, sqlFile, sqlId, KLogLayout.LINE, paramSql);
 				break;
 			case PAGING_SQL:
-				KCmmVO vo = (KCmmVO) paramObject;
+				KCmmVO vo = (KCmmVO) parameterObject;
 				paramSql = paramSql.replaceAll("\n", "\n\t");
 				paramSql = String.format(KSqlUtil.PAGING_SQL, paramSql);
 				paramSql = KSqlUtil.insertSqlId(paramSql, "(paging-sql) "+sqlId);
@@ -164,45 +167,23 @@ public class KSqlUtil {
 			}
 		}
 		// -- param-sql 로깅
-
+		
 		// param-sql 저장
 		{
 			// 예외 발생 시 시스템 로깅 및 응답에 포함시키기 위해 저장함
 			KContext.set(AttrKey.SQL_TEXT, KStringUtil.replaceWhiteSpace(paramSql));
 		}
 		// -- param-sql 저장
-
+		
 		return paramSql;
 	}
-
-	public static List<Object> getParameters(Configuration configuration, BoundSql boundSql, Object mehtodParam) {
-		List<Object> paramList = new ArrayList<Object>();
-		List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
-		if (parameterMappings != null) {
-			for (int i=0; i<parameterMappings.size(); i++) {
-				ParameterMapping parameterMapping = parameterMappings.get(i);
-				if (parameterMapping.getMode() != ParameterMode.OUT) {
-					Object value = null;
-					String propertyName = parameterMapping.getProperty();
-					if (boundSql.hasAdditionalParameter(propertyName)) {
-						value = boundSql.getAdditionalParameter(propertyName);
-					} else {
-						MetaObject metaObject = configuration.newMetaObject(mehtodParam);
-						value = metaObject.getValue(propertyName);
-					}
-					paramList.add(value);
-				}
-			}
-		}
-		return paramList;
-	}
-
+	
 	public static String insertSqlId(String sql, String sqlId) {
 		sqlId = String.format("$1 /* %s */", sqlId);
 		sql = sql.replaceFirst("^\\s*([0-9a-zA-Zㄱ-힣_]*)", sqlId);
 		return sql;
 	}
-
+	
 	public static String removeOrderBy(String sql) {
 		String ORDER_BY_REGEX = "(.*order\\s*by[\\w|\\s|,|\\.|\\/|\\*|가-힣]*)";
 		Pattern p = Pattern.compile(ORDER_BY_REGEX, Pattern.CASE_INSENSITIVE);
@@ -221,7 +202,7 @@ public class KSqlUtil {
 		m.appendTail(sb);
 		return sb.toString();
 	}
-
+	
 	public static void resolveTables(String sqlFile, String sqlId, String sqlText) {
 		String referer = KContext.getT(AttrKey.REFERER);
 		String uri = KContext.getT(AttrKey.URI);
