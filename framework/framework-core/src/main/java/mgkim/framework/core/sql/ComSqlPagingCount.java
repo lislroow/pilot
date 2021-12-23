@@ -90,10 +90,10 @@ public class ComSqlPagingCount {
 			}
 			// -- mybatis foreach 문
 			
-			// 실제 binding 파라미터 생성
+			// origin 파라미터 binding
 			int startBindingIndex = 1;
 			KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startBindingIndex);
-			// -- 실제 binding 파라미터 생성
+			// -- origin 파라미터 binding
 			
 			ResultSet rs = null;
 			try {
@@ -206,10 +206,10 @@ public class ComSqlPagingCount {
 				}
 				// -- mybatis foreach 문
 				
-				// 실제 binding 파라미터 생성
+				// origin 파라미터 binding
 				int startBindingIndex = 1;
 				KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startBindingIndex);
-				// -- 실제 binding 파라미터 생성
+				// -- origin 파라미터 binding
 				
 				rs = pstmt.executeQuery();
 				if (rs.next()) {

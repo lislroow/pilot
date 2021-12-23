@@ -73,13 +73,13 @@ public class KSqlUtil {
 		return sql;
 	}
 	
-	public static void bindParameterToPstmt(PreparedStatement pstmt, Object parameterObject, BoundSql boundSql, int startBindingIndex) throws Exception {
+	public static int bindParameterToPstmt(PreparedStatement pstmt, Object parameterObject, BoundSql boundSql, int startBindingIndex) throws Exception {
 		List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
 		TypeHandler _typeHandler = null;
 		
 		int parameterIndex = startBindingIndex;
 		
-		// 실제 binding 파라미터 생성
+		// origin 파라미터 binding
 		if (parameterMappings != null) {
 			for (ParameterMapping _parameter : parameterMappings) {
 				if (_parameter.getMode() == ParameterMode.IN) {
@@ -113,7 +113,9 @@ public class KSqlUtil {
 				}
 			}
 		}
-		// -- 실제 binding 파라미터 생성
+		// -- origin 파라미터 binding
+		
+		return parameterIndex;
 	}
 	
 	public static String createParamSql(Object parameterObject, MappedStatement mappedStatement, TSqlType paramSqlType) throws Exception {

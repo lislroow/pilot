@@ -3,15 +3,12 @@ package mgkim.framework.core.sql;
 import java.lang.reflect.Field;
 import java.sql.PreparedStatement;
 import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
 
 import org.apache.ibatis.executor.statement.PreparedStatementHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.ParameterMapping;
-import org.apache.ibatis.mapping.ParameterMode;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
 import org.apache.ibatis.type.IntegerTypeHandler;
@@ -29,7 +26,6 @@ import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.logging.KLogApm;
 import mgkim.framework.core.logging.KLogLayout;
 import mgkim.framework.core.logging.KLogSql;
-import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KSqlUtil;
 
 public class ComSqlPagingList {
@@ -137,79 +133,30 @@ public class ComSqlPagingList {
 		int parameterIndex = 1;
 		
 		{
-			// 첫번째 파라미터 생성 (`_rowcount`)
-			_parameter = new ParameterMapping.Builder(configuration, "_rowcount", new IntegerTypeHandler())
-					.javaType(java.lang.Integer.class)
-					.jdbcType(JdbcType.INTEGER).build();
 			try {
+				// 첫번째 파라미터 binding (`_rowcount`)
+				_parameter = new ParameterMapping.Builder(configuration, "_rowcount", new IntegerTypeHandler()).javaType(java.lang.Integer.class).jdbcType(JdbcType.INTEGER).build();
 				_typeHandler = _parameter.getTypeHandler();
-				_typeHandler.setParameter(pstmt, parameterIndex, outPageVO.getRowcount(), _parameter.getJdbcType());
-				parameterIndex++;
-			} catch(Exception e) {
+				_typeHandler.setParameter(pstmt, parameterIndex++, outPageVO.getRowcount(), _parameter.getJdbcType());
+				// -- 첫번째 파라미터 binding (`_rowcount`)
+				
+				// origin 파라미터 binding
+				int startBindingIndex = parameterIndex;
+				parameterIndex = KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startBindingIndex);
+				// -- origin 파라미터 binding
+				
+				// 두번째, 세번째 파라미터 binding (BETWEEN `_startrow` AND `_endrow`)
+				_parameter = new ParameterMapping.Builder(configuration, "_startrow", new IntegerTypeHandler()).javaType(java.lang.Integer.class).jdbcType(JdbcType.INTEGER).build();
+				_typeHandler = _parameter.getTypeHandler();
+				_typeHandler.setParameter(pstmt, parameterIndex++, outPageVO.getStartrow(), _parameter.getJdbcType());
+				
+				_parameter = new ParameterMapping.Builder(configuration, "_endrow", new IntegerTypeHandler()).javaType(java.lang.Integer.class).jdbcType(JdbcType.INTEGER).build();
+				_typeHandler = _parameter.getTypeHandler();
+				_typeHandler.setParameter(pstmt, parameterIndex++, outPageVO.getEndrow(), _parameter.getJdbcType());
+				// -- 두번째, 세번째 파라미터 binding (BETWEEN `_startrow` AND `_endrow`)
+			} catch (Exception e) {
 				throw e;
 			}
-			// -- 첫번째 파라미터 생성 (`_rowcount`)
-			
-			// 실제 binding 파라미터 생성
-			if (parameterMappings != null) {
-				for (int i=0; i<parameterMappings.size(); i++) {
-					_parameter = parameterMappings.get(i);
-					if (_parameter.getMode() == ParameterMode.IN) {
-						Object value;
-						String propertyName = _parameter.getProperty();
-						
-						if (Pattern.matches("__frch_index_\\d+", propertyName)) {
-							continue;
-						}
-						
-						if (parameterObject == null) {
-							value = null;
-						} else if (boundSql.hasAdditionalParameter(propertyName)) { // propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && 
-							value = boundSql.getAdditionalParameter(propertyName);
-						} else if (paramObject instanceof java.util.Map) {
-							value = ((Map)paramObject).get(propertyName);
-						} else {
-							value = KObjectUtil.getValue(paramObject, propertyName);
-						}
-						_typeHandler = _parameter.getTypeHandler();
-						JdbcType jdbcType = _parameter.getJdbcType();
-						if (value == null && jdbcType == null) {
-							jdbcType = configuration.getJdbcTypeForNull();
-						}
-						try {
-							_typeHandler.setParameter(pstmt, parameterIndex, value, jdbcType);
-							parameterIndex++;
-						} catch(Exception e) {
-							throw e;
-						}
-					}
-				}
-			}
-			// -- 실제 binding 파라미터 생성
-			
-			// 두번째, 세번째 파라미터 생성 (BETWEEN `_startrow` AND `_endrow`)
-			_parameter = new ParameterMapping.Builder(configuration, "_startrow", new IntegerTypeHandler())
-					.javaType(java.lang.Integer.class)
-					.jdbcType(JdbcType.INTEGER).build();
-			_typeHandler = _parameter.getTypeHandler();
-			try {
-				_typeHandler.setParameter(pstmt, parameterIndex, outPageVO.getStartrow(), _parameter.getJdbcType());
-				parameterIndex++;
-			} catch(Exception e) {
-				throw e;
-			}
-			
-			_parameter = new ParameterMapping.Builder(configuration, "_endrow", new IntegerTypeHandler())
-					.javaType(java.lang.Integer.class)
-					.jdbcType(JdbcType.INTEGER).build();
-			_typeHandler = _parameter.getTypeHandler();
-			try {
-				_typeHandler.setParameter(pstmt, parameterIndex, outPageVO.getEndrow(), _parameter.getJdbcType());
-				parameterIndex++;
-			} catch(Exception e) {
-				throw e;
-			}
-			// -- 두번째, 세번째 파라미터 생성 (BETWEEN `_startrow` AND `_endrow`)
 		}
 		
 		// invocation 의 args에 새로운 `StatementHandler` 교체

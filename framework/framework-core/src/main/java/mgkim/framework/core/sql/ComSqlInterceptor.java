@@ -220,10 +220,10 @@ public class ComSqlInterceptor implements Interceptor {
 				}
 				// -- mybatis foreach 문
 				
-				// 실제 binding 파라미터 생성
+				// origin 파라미터 binding
 				int startBindingIndex = 1;
 				KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startBindingIndex);
-				// -- 실제 binding 파라미터 생성
+				// -- origin 파라미터 binding
 				
 				invocation.getArgs()[0] = pstmt;
 			}
