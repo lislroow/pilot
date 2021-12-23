@@ -9,9 +9,9 @@ import mgkim.service.www.cmm.vo.CmmUserLoginPolicyVO;
 @Mapper
 public interface UserLoginMapper {
 
-	public int selectUserExist(Map<String, Object> claims) throws Exception;
+	public int selectUserExist(Map<String, Object> map) throws Exception;
 
-	public CmmUserLoginPolicyVO selectUserLoginPolicy(Map<String, Object> claims) throws Exception;
+	public CmmUserLoginPolicyVO selectUserLoginPolicy(Map<String, Object> map) throws Exception;
 
 
 }
