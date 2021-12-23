@@ -17,7 +17,7 @@ import mgkim.framework.core.dto.KInPageDTO;
 import mgkim.framework.core.dto.KOutDTO;
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.online.api.cmm.mapper.SqlcheckMapper;
-import mgkim.framework.online.api.cmm.vo.Sqlcheck1VO;
+import mgkim.framework.online.api.cmm.vo.SqlcheckVO;
 
 @Api( tags = { KConstant.SWG_SYSTEM_COMMON } )
 @RestController
@@ -37,10 +37,20 @@ public class SqlcheckController {
 	
 	@ApiOperation(value = "(sqlcheck) selectDumpList: foreach")
 	@RequestMapping(value = "/public/cmm/sqlcheck/selectDumpList", method = RequestMethod.POST)
-	public @ResponseBody KOutDTO<List<Map>> selectDumpList(@RequestBody KInPageDTO<Sqlcheck1VO> inDTO) throws Exception {
+	public @ResponseBody KOutDTO<List<Map>> selectDumpList(@RequestBody KInPageDTO<SqlcheckVO> inDTO) throws Exception {
 		KOutDTO<List<Map>> outDTO = new KOutDTO<List<Map>>();
-		Sqlcheck1VO inVO = inDTO.getBody();
+		SqlcheckVO inVO = inDTO.getBody();
 		List<Map> outMap = sqlcheckMapper.selectDumpList(inVO);
+		outDTO.setBody(outMap);
+		return outDTO;
+	}
+	
+	@ApiOperation(value = "(sqlcheck) selectDumpListByMap: foreach")
+	@RequestMapping(value = "/public/cmm/sqlcheck/selectDumpListByMap", method = RequestMethod.POST)
+	public @ResponseBody KOutDTO<List<Map>> selectDumpListByMap(@RequestBody KInPageDTO<Map> inDTO) throws Exception {
+		KOutDTO<List<Map>> outDTO = new KOutDTO<List<Map>>();
+		Map inMap = inDTO.getBody();
+		List<Map> outMap = sqlcheckMapper.selectDumpListByMap(inMap);
 		outDTO.setBody(outMap);
 		return outDTO;
 	}

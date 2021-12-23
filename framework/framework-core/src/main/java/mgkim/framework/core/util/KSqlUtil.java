@@ -94,7 +94,16 @@ public class KSqlUtil {
 					List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
 					for (int i=0; i<parameterMappings.size(); i++) {
 						ParameterMapping _parameter = parameterMappings.get(i);
-						Object value = map.get(_parameter.getProperty());
+						String propertyName = _parameter.getProperty();
+						Object value = null;
+						
+						if (boundSql.hasAdditionalParameter(propertyName)) {
+							// foreach 내부 index 변수는 Integer 형으로 반환됨
+							value = boundSql.getAdditionalParameter(propertyName);
+						} else {
+							value = map.get(propertyName);
+						}
+						
 						if (value == null) { 
 							paramSql = Pattern.compile(PARAM_TEMP_CHAR).matcher(paramSql).replaceFirst("null");
 						} else if (String.class.isInstance(value)) {

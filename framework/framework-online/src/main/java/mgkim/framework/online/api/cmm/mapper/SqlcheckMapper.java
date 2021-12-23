@@ -5,13 +5,15 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import mgkim.framework.online.api.cmm.vo.Sqlcheck1VO;
+import mgkim.framework.online.api.cmm.vo.SqlcheckVO;
 
 @Mapper
 public interface SqlcheckMapper {
 	
 	public Map selectDumpNoParam() throws Exception;
 	
-	public List<Map> selectDumpList(Sqlcheck1VO vo) throws Exception;
+	public List<Map> selectDumpList(SqlcheckVO vo) throws Exception;
+	
+	public List<Map> selectDumpListByMap(Map map) throws Exception;
 	
 }

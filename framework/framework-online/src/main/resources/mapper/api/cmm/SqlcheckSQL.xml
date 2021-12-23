@@ -8,7 +8,24 @@
       FROM DUAL
   </select>
 
-  <select id="selectDumpList" parameterType="Sqlcheck1VO" resultType="java.util.Map">
+  <select id="selectDumpList" parameterType="SqlcheckVO" resultType="java.util.Map">
+    SELECT 
+    <choose>
+      <when test='strList == null or strList.size() == 0'>
+        <![CDATA[
+        0 AS col_0
+        ]]>
+      </when>
+      <otherwise>
+        <foreach collection="strList" index="index" item="item" separator="," open="" close="">
+          #{item} AS col#{index}
+        </foreach>
+      </otherwise>
+    </choose>
+      FROM DUAL
+  </select>
+
+  <select id="selectDumpListByMap" parameterType="java.util.Map" resultType="java.util.Map">
     SELECT 
     <choose>
       <when test='strList == null or strList.size() == 0'>
