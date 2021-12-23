@@ -168,7 +168,6 @@ public class ComSqlPagingCount {
 		BoundSql boundSql = sHandler.getBoundSql();
 		Configuration configuration = mappedStatement.getConfiguration();
 		String sqlId = mappedStatement.getId();
-		String orignalSql = boundSql.getSql();
 		//String sqlFile = KSqlUtil.getRelativePath(mappedStatement);
 		Object paramObject = sHandler.getParameterHandler().getParameterObject();
 		Object parameterObject = sHandler.getParameterHandler().getParameterObject();
@@ -208,7 +207,7 @@ public class ComSqlPagingCount {
 			// mybatis foreach 문
 			{
 				String originSql = KSqlUtil.removeForeachIndex(boundSql);
-				String countSql = String.format(KSqlUtil.COUNT_SQL, orignalSql);
+				String countSql = String.format(KSqlUtil.COUNT_SQL, originSql);
 				countSql = KSqlUtil.insertSqlId(countSql, "(count-sql2) "+sqlId);
 				pstmt = connection.prepareStatement(countSql);
 			}
