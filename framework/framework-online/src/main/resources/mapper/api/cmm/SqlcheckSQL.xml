@@ -2,13 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mgkim.framework.online.api.cmm.mapper.SqlcheckMapper">
 
-  <select id="selectDumpNoParam" resultType="java.util.Map">
+  <select id="selectNoParam" resultType="java.util.Map">
     SELECT 
            1 AS col
       FROM DUAL
   </select>
 
-  <select id="selectDumpList" parameterType="Sqlcheck1VO" resultType="java.util.Map">
+  <select id="selectForeachList" parameterType="SqlcheckVO" resultType="java.util.Map">
+    SELECT 
+    <choose>
+      <when test='strList == null or strList.size() == 0'>
+        <![CDATA[
+        0 AS col_0
+        ]]>
+      </when>
+      <otherwise>
+        <foreach collection="strList" index="index" item="item" separator="," open="" close="">
+          #{item} AS col#{index}
+        </foreach>
+      </otherwise>
+    </choose>
+      FROM DUAL
+  </select>
+
+  <select id="selectForeachListByMap" parameterType="java.util.Map" resultType="java.util.Map">
     SELECT 
     <choose>
       <when test='strList == null or strList.size() == 0'>
