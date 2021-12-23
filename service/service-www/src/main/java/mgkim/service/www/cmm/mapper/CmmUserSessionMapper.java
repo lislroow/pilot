@@ -10,8 +10,8 @@ import mgkim.framework.core.session.KSession;
 @Mapper
 public interface CmmUserSessionMapper {
 
-	public KSession selectUserSession(Map<String, Object> claims) throws Exception;
+	public KSession selectUserSession(Map<String, Object> map) throws Exception;
 
-	public List<String> selectUserAuthority(Map<String, Object> claims) throws Exception;
+	public List<String> selectUserAuthority(Map<String, Object> map) throws Exception;
 
 }
