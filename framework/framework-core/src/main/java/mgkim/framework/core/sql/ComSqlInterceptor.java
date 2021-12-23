@@ -92,7 +92,7 @@ public class ComSqlInterceptor implements Interceptor {
 		String sqlId = mappedStatement.getId();
 		String originSql = boundSql.getSql();
 		String sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
-		Object paramObject = sHandler.getParameterHandler().getParameterObject();
+		Object parameterObject = sHandler.getParameterHandler().getParameterObject();
 		// -- sql 실행 준비
 
 		// 반환값 준비
@@ -118,20 +118,20 @@ public class ComSqlInterceptor implements Interceptor {
 		{
 			switch(execType) {
 			case REQUEST:
-				// paramObject 공통 필드 설정
+				// parameterObject 공통 필드 설정
 				{
-					KDtoUtil.setSysValues(paramObject);
-				} // -- paramObject 공통 필드 설정
+					KDtoUtil.setSysValues(parameterObject);
+				} // -- parameterObject 공통 필드 설정
 				
-				// paramObject 로깅
+				// parameterObject 로깅
 				{
 					if (isLoggableSql) {
 						if (!isVerboss) {
 						} else {
-							KLogSql.info("{} `{}` {}{} `{}` `{}` {}`paramObject` = {}", KConstant.LT_SQL_PARAM, sqlId, KLogLayout.LINE, KConstant.LT_SQL_PARAM, sqlFile, sqlId, KLogLayout.LINE, KStringUtil.toJson(paramObject));
+							KLogSql.info("{} `{}` {}{} `{}` `{}` {}`parameterObject` = {}", KConstant.LT_SQL_PARAM, sqlId, KLogLayout.LINE, KConstant.LT_SQL_PARAM, sqlFile, sqlId, KLogLayout.LINE, KStringUtil.toJson(parameterObject));
 						}
 					}
-				} // -- paramObject 로깅
+				} // -- parameterObject 로깅
 				
 				// paging 여부 확인
 				TSqlType sqlType = null;
@@ -165,8 +165,8 @@ public class ComSqlInterceptor implements Interceptor {
 					// 파라미터 처리 후에는 반드시 아래 설정이 필요함
 					if (isPaging) {
 						KOutPageVO outPageVO = KContext.getT(AttrKey.OUT_PAGE);
-						if (KCmmVO.class.isInstance(paramObject)) {
-							KCmmVO vo = (KCmmVO) paramObject;
+						if (KCmmVO.class.isInstance(parameterObject)) {
+							KCmmVO vo = (KCmmVO) parameterObject;
 							vo.set_rowcount(outPageVO.getRowcount());
 							vo.set_startrow(outPageVO.getStartrow());
 							vo.set_endrow(outPageVO.getEndrow());
@@ -178,7 +178,7 @@ public class ComSqlInterceptor implements Interceptor {
 				// -- paging 처리
 
 				if (!isComSql || isLoggableSql) {
-					paramSql = KSqlUtil.createParamSql(paramObject, mappedStatement, sqlType);
+					paramSql = KSqlUtil.createParamSql(parameterObject, mappedStatement, sqlType);
 				}
 
 				// -- origin-sql 생성 및 로깅
@@ -186,16 +186,16 @@ public class ComSqlInterceptor implements Interceptor {
 			case SCHEDULE:
 			case SYSTEM:
 			default:
-				// paramObject 로깅
+				// parameterObject 로깅
 				{
 					if (isLoggableSql) {
-						KLogSql.info("{} `{}` {}{} `{}` `{}` {}{}", KConstant.LT_SQL_PARAM, sqlId, KLogLayout.LINE, KConstant.LT_SQL_PARAM, sqlFile, sqlId, KLogLayout.LINE, KStringUtil.toJson(paramObject));
+						KLogSql.info("{} `{}` {}{} `{}` `{}` {}{}", KConstant.LT_SQL_PARAM, sqlId, KLogLayout.LINE, KConstant.LT_SQL_PARAM, sqlFile, sqlId, KLogLayout.LINE, KStringUtil.toJson(parameterObject));
 					}
-				} // -- paramObject 로깅
+				} // -- parameterObject 로깅
 
 				// origin-sql 생성 및 로깅
 				if (isLoggableSql) {
-					paramSql = KSqlUtil.createParamSql(paramObject, mappedStatement, TSqlType.ORIGIN_SQL);
+					paramSql = KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.ORIGIN_SQL);
 				}
 				// -- origin-sql 생성 및 로깅
 				break;
@@ -212,7 +212,6 @@ public class ComSqlInterceptor implements Interceptor {
 				PreparedStatement pstmt = null;
 				DefaultParameterHandler parameterHandler = (DefaultParameterHandler)sHandler.getParameterHandler();
 				TypeHandlerRegistry typeHandlerRegistry = mappedStatement.getConfiguration().getTypeHandlerRegistry();
-				Object parameterObject = parameterHandler.getParameterObject();
 				List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
 				TypeHandler _typeHandler = null;
 				
@@ -241,15 +240,15 @@ public class ComSqlInterceptor implements Interceptor {
 								value = null;
 							} else if (boundSql.hasAdditionalParameter(propertyName)) { // propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && 
 								value = boundSql.getAdditionalParameter(propertyName);
-							} else if (paramObject instanceof java.util.Map) {
-								value = ((Map)paramObject).get(propertyName);
+							} else if (parameterObject instanceof java.util.Map) {
+								value = ((Map)parameterObject).get(propertyName);
 							} else {
-								value = KObjectUtil.getValue(paramObject, propertyName);
+								value = KObjectUtil.getValue(parameterObject, propertyName);
 							}
 							_typeHandler = _parameter.getTypeHandler();
 							JdbcType jdbcType = _parameter.getJdbcType();
 							if (value == null && jdbcType == null) {
-								jdbcType = configuration.getJdbcTypeForNull();
+								jdbcType = JdbcType.VARCHAR;
 							}
 							try {
 								_typeHandler.setParameter(pstmt, parameterIndex, value, jdbcType);
@@ -290,7 +289,7 @@ public class ComSqlInterceptor implements Interceptor {
 				case SCHEDULE:
 				case SYSTEM:
 				default:
-					paramSql = KSqlUtil.createParamSql(paramObject, mappedStatement, TSqlType.ORIGIN_SQL);
+					paramSql = KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.ORIGIN_SQL);
 					break;
 				}
 				throw e;
