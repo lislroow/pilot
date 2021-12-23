@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.regex.Pattern;
 
 import org.apache.ibatis.executor.resultset.ResultSetHandler;
 import org.apache.ibatis.executor.statement.BaseStatementHandler;
@@ -214,17 +215,40 @@ public class ComSqlInterceptor implements Interceptor {
 				TypeHandlerRegistry typeHandlerRegistry = mappedStatement.getConfiguration().getTypeHandlerRegistry();
 				Object parameterObject = parameterHandler.getParameterObject();
 				List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
-				ParameterMapping _parameter = null;
 				TypeHandler _typeHandler = null;
+				
+				// mybatis foreach 문
+				{
+					if (parameterMappings != null) {
+						orignalSql = orignalSql.replaceAll(KSqlUtil.PARAM_CHAR, KSqlUtil.PARAM_TEMP_CHAR);
+						for (ParameterMapping _p : parameterMappings) {
+							String propertyName = _p.getProperty();
+							if (Pattern.matches("__frch_index_\\d+", propertyName)) {
+								Object value = boundSql.getAdditionalParameter(propertyName);
+								// value
+								orignalSql = Pattern.compile(KSqlUtil.PARAM_TEMP_CHAR).matcher(orignalSql).replaceFirst(value.toString());
+							} else {
+								orignalSql = Pattern.compile(KSqlUtil.PARAM_TEMP_CHAR).matcher(orignalSql).replaceFirst(KSqlUtil.PARAM_CHAR);
+							}
+						}
+					}
+					pstmt = connection.prepareStatement(orignalSql);
+				}
+				// -- mybatis foreach 문
+				
 				int parameterIndex = 1;
 				
 				// 실제 binding 파라미터 생성
 				if (parameterMappings != null) {
-					for (int i=0; i<parameterMappings.size(); i++) {
-						_parameter = parameterMappings.get(i);
+					for (ParameterMapping _parameter : parameterMappings) {
 						if (_parameter.getMode() == ParameterMode.IN) {
 							Object value;
 							String propertyName = _parameter.getProperty();
+							
+							if (Pattern.matches("__frch_index_\\d+", propertyName)) {
+								continue;
+							}
+							
 							if (parameterObject == null) {
 								value = null;
 							} else if (boundSql.hasAdditionalParameter(propertyName)) { // propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && 

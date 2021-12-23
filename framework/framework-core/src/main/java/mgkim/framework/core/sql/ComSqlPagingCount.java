@@ -8,8 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
-import org.apache.ibatis.executor.parameter.ParameterHandler;
 import org.apache.ibatis.executor.statement.PreparedStatementHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
@@ -17,8 +17,6 @@ import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.ParameterMapping;
 import org.apache.ibatis.mapping.ParameterMode;
 import org.apache.ibatis.plugin.Invocation;
-import org.apache.ibatis.reflection.MetaObject;
-import org.apache.ibatis.reflection.SystemMetaObject;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
@@ -92,6 +90,26 @@ public class ComSqlPagingCount {
 				List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
 				ParameterMapping _parameter = null;
 				TypeHandler _typeHandler = null;
+				
+				// mybatis foreach 문
+				{
+					if (parameterMappings != null) {
+						orignalSql = orignalSql.replaceAll(KSqlUtil.PARAM_CHAR, KSqlUtil.PARAM_TEMP_CHAR);
+						for (ParameterMapping _p : parameterMappings) {
+							String propertyName = _p.getProperty();
+							if (Pattern.matches("__frch_index_\\d+", propertyName)) {
+								Object value = boundSql.getAdditionalParameter(propertyName);
+								// value
+								orignalSql = Pattern.compile(KSqlUtil.PARAM_TEMP_CHAR).matcher(orignalSql).replaceFirst(value.toString());
+							} else {
+								orignalSql = Pattern.compile(KSqlUtil.PARAM_TEMP_CHAR).matcher(orignalSql).replaceFirst(KSqlUtil.PARAM_CHAR);
+							}
+						}
+					}
+					pstmt = connection.prepareStatement(orignalSql);
+				}
+				// -- mybatis foreach 문
+				
 				int parameterIndex = 1;
 				
 				// 실제 binding 파라미터 생성
@@ -101,6 +119,11 @@ public class ComSqlPagingCount {
 						if (_parameter.getMode() == ParameterMode.IN) {
 							Object value;
 							String propertyName = _parameter.getProperty();
+							
+							if (Pattern.matches("__frch_index_\\d+", propertyName)) {
+								continue;
+							}
+							
 							if (parameterObject == null) {
 								value = null;
 							} else if (boundSql.hasAdditionalParameter(propertyName)) { // propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && 
@@ -156,11 +179,14 @@ public class ComSqlPagingCount {
 		PreparedStatementHandler pstmtHandler = (PreparedStatementHandler) proxyDelegate.get(sHandler);
 		MappedStatement mappedStatement = (MappedStatement) proxyMappedStatement.get(pstmtHandler);
 		BoundSql boundSql = sHandler.getBoundSql();
-		//Configuration configuration = mappedStatement.getConfiguration();
+		Configuration configuration = mappedStatement.getConfiguration();
 		String sqlId = mappedStatement.getId();
 		String orignalSql = boundSql.getSql();
 		//String sqlFile = KSqlUtil.getRelativePath(mappedStatement);
 		Object paramObject = sHandler.getParameterHandler().getParameterObject();
+		String countSql = String.format(KSqlUtil.COUNT_SQL, orignalSql);
+		countSql = KSqlUtil.insertSqlId(countSql, "(count-sql2) "+sqlId);
+		Object parameterObject = sHandler.getParameterHandler().getParameterObject();
 		// -- count-sql 실행 준비
 
 		// 반환값 준비
@@ -190,15 +216,69 @@ public class ComSqlPagingCount {
 		{
 			Connection connection = null;
 			PreparedStatement pstmt = null;
+			connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
+			List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
+			TypeHandler _typeHandler = null;
+			
+			// mybatis foreach 문
+			{
+				if (parameterMappings != null) {
+					countSql = countSql.replaceAll(KSqlUtil.PARAM_CHAR, KSqlUtil.PARAM_TEMP_CHAR);
+					for (ParameterMapping _p : parameterMappings) {
+						String propertyName = _p.getProperty();
+						if (Pattern.matches("__frch_index_\\d+", propertyName)) {
+							Object value = boundSql.getAdditionalParameter(propertyName);
+							// value
+							countSql = Pattern.compile(KSqlUtil.PARAM_TEMP_CHAR).matcher(countSql).replaceFirst(value.toString());
+						} else {
+							countSql = Pattern.compile(KSqlUtil.PARAM_TEMP_CHAR).matcher(countSql).replaceFirst(KSqlUtil.PARAM_CHAR);
+						}
+					}
+				}
+				pstmt = connection.prepareStatement(countSql);
+			}
+			// -- mybatis foreach 문
+			
 			ResultSet rs = null;
 			try {
-				connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
-				String countSql = String.format(KSqlUtil.COUNT_SQL, orignalSql);
-				countSql = KSqlUtil.insertSqlId(countSql, "(count-sql2) "+sqlId);
-				pstmt = connection.prepareStatement(countSql);
-				MetaObject metaObject = SystemMetaObject.forObject(sHandler);
-				ParameterHandler parameterHandler = (ParameterHandler) metaObject.getValue("delegate.parameterHandler");
-				parameterHandler.setParameters(pstmt);
+				int parameterIndex = 1;
+				
+				// 실제 binding 파라미터 생성
+				if (parameterMappings != null) {
+					for (ParameterMapping _parameter : parameterMappings) {
+						if (_parameter.getMode() == ParameterMode.IN) {
+							Object value;
+							String propertyName = _parameter.getProperty();
+							
+							if (Pattern.matches("__frch_index_\\d+", propertyName)) {
+								continue;
+							}
+							
+							if (parameterObject == null) {
+								value = null;
+							} else if (boundSql.hasAdditionalParameter(propertyName)) { // propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && 
+								value = boundSql.getAdditionalParameter(propertyName);
+							} else if (paramObject instanceof java.util.Map) {
+								value = ((Map)paramObject).get(propertyName);
+							} else {
+								value = KObjectUtil.getValue(paramObject, propertyName);
+							}
+							_typeHandler = _parameter.getTypeHandler();
+							JdbcType jdbcType = _parameter.getJdbcType();
+							if (value == null && jdbcType == null) {
+								jdbcType = configuration.getJdbcTypeForNull();
+							}
+							try {
+								_typeHandler.setParameter(pstmt, parameterIndex, value, jdbcType);
+								parameterIndex++;
+							} catch(Exception e) {
+								throw e;
+							}
+						}
+					}
+				}
+				// -- 실제 binding 파라미터 생성
+				
 				rs = pstmt.executeQuery();
 				if (rs.next()) {
 					count = rs.getInt(1);
@@ -303,6 +383,26 @@ public class ComSqlPagingCount {
 				final BoundSql boundSql = new BoundSql(configuration, countSql, parameterMappings, parameterObject);
 				ParameterMapping _parameter = null;
 				TypeHandler _typeHandler = null;
+				
+				// mybatis foreach 문
+				{
+					if (parameterMappings != null) {
+						countSql = countSql.replaceAll(KSqlUtil.PARAM_CHAR, KSqlUtil.PARAM_TEMP_CHAR);
+						for (ParameterMapping _p : parameterMappings) {
+							String propertyName = _p.getProperty();
+							if (Pattern.matches("__frch_index_\\d+", propertyName)) {
+								Object value = boundSql.getAdditionalParameter(propertyName);
+								// value
+								countSql = Pattern.compile(KSqlUtil.PARAM_TEMP_CHAR).matcher(countSql).replaceFirst(value.toString());
+							} else {
+								countSql = Pattern.compile(KSqlUtil.PARAM_TEMP_CHAR).matcher(countSql).replaceFirst(KSqlUtil.PARAM_CHAR);
+							}
+						}
+					}
+					pstmt = connection.prepareStatement(countSql);
+				}
+				// -- mybatis foreach 문
+				
 				int parameterIndex = 1;
 				
 				// 실제 binding 파라미터 생성
@@ -312,6 +412,11 @@ public class ComSqlPagingCount {
 						if (_parameter.getMode() == ParameterMode.IN) {
 							Object value;
 							String propertyName = _parameter.getProperty();
+							
+							if (Pattern.matches("__frch_index_\\d+", propertyName)) {
+								continue;
+							}
+							
 							if (parameterObject == null) {
 								value = null;
 							} else if (boundSql.hasAdditionalParameter(propertyName)) { // propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && 
