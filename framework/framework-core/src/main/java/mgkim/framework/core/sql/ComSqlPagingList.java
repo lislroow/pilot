@@ -46,14 +46,12 @@ public class ComSqlPagingList {
 		MappedStatement mappedStatement = (MappedStatement) proxyMappedStatement.get(pstmtHandler);
 		BoundSql boundSql = sHandler.getBoundSql();
 		String sqlId = mappedStatement.getId();
-		//String orignalSql = boundSql.getSql();
 		String sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
 		KInPageVO inPageVO = KContext.getT(AttrKey.IN_PAGE);
 		// -- 실행 준비
 		
+		
 		// 로깅 준비
-		//TExecType execType = (TExecType) KContext.get(AttrKey.EXEC_TYPE);
-		//boolean isDebugMode = KContext.isDebugMode();
 		boolean isLogExclude = KLogSql.isLoggableSql(sqlId);
 		boolean isVerboss = KConfig.VERBOSS_ALL || KConfig.VERBOSS_SQL;
 		double elapsedTime = -1;
@@ -68,16 +66,13 @@ public class ComSqlPagingList {
 		KOutPageVO outPageVO = null;
 		{
 			Integer totalRecordCount = null;
-			String countSqlId = sqlId;
 			StopWatch stopWatch = new StopWatch(sqlId+"-count-sql."+KContext.getT(AttrKey.TXID));
 			stopWatch.start();
 			try {
-				// `countSql2`: sqlmap 에 `{sqlid}-count` 규칙의 sqlid가 있으면 `공통 count-sql`을 실행하지 않습니다.
+				// `countSql2`: `{sqlid}-count` sql 을 찾아서 실행합니다.
 				totalRecordCount = comSqlPagingCount.countSql2(invocation);
-				if (totalRecordCount != null) {
-					countSqlId += "-count";
-				} else {
-					// `countSql1`: `order by`문을 제거하지 않은 `공통 count-sql`을 실행합니다.
+				if (totalRecordCount == null) {
+					// `countSql1`: `공통 count-sql`을 실행합니다.
 					totalRecordCount = comSqlPagingCount.countSql1(invocation);
 				}
 			} catch(Exception e) {
@@ -110,12 +105,9 @@ public class ComSqlPagingList {
 		PreparedStatement pstmt = null;
 		java.sql.Connection connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
 		DefaultParameterHandler parameterHandler = (DefaultParameterHandler)sHandler.getParameterHandler();
-		//TypeHandlerRegistry typeHandlerRegistry = mappedStatement.getConfiguration().getTypeHandlerRegistry();
 		Object parameterObject = parameterHandler.getParameterObject();
-		//List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
 		ParameterMapping _parameter = null;
 		TypeHandler _typeHandler = null;
-		//JdbcType _jdbcType = null;
 		org.apache.ibatis.session.Configuration configuration = mappedStatement.getConfiguration();
 		
 		// mybatis foreach 문
@@ -127,9 +119,9 @@ public class ComSqlPagingList {
 		}
 		// -- mybatis foreach 문
 		
-		int parameterIndex = 1;
 		
 		{
+			int parameterIndex = 1;
 			try {
 				// 첫번째 파라미터 binding (`_rowcount`)
 				_parameter = new ParameterMapping.Builder(configuration, "_rowcount", new IntegerTypeHandler()).javaType(java.lang.Integer.class).jdbcType(JdbcType.INTEGER).build();

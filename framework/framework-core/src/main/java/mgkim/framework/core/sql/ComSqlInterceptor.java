@@ -145,7 +145,6 @@ public class ComSqlInterceptor implements Interceptor {
 				
 				// paging 처리
 				{
-					//Connection pagingConnection = null; 
 					if (isPaging) {
 						PreparedStatement pstmt = comSqlPagingList.preparePaging(invocation);
 						invocation.getArgs()[0] = pstmt;
@@ -198,10 +197,6 @@ public class ComSqlInterceptor implements Interceptor {
 			if (!isPaging) {
 				connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
 				PreparedStatement pstmt = null;
-				//DefaultParameterHandler parameterHandler = (DefaultParameterHandler)sHandler.getParameterHandler();
-				//TypeHandlerRegistry typeHandlerRegistry = mappedStatement.getConfiguration().getTypeHandlerRegistry();
-				//List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
-				//TypeHandler _typeHandler = null;
 				
 				// mybatis foreach 문
 				{
