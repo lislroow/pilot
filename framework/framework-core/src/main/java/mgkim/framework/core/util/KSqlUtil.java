@@ -44,7 +44,7 @@ public class KSqlUtil {
 		}
 		return path;
 	}
-
+	
 	public static String createParamSql(Object parameterObject, MappedStatement mappedStatement, TSqlType paramSqlType) throws Exception {
 		// 준비
 		BoundSql boundSql = mappedStatement.getBoundSql(parameterObject);
@@ -90,7 +90,8 @@ public class KSqlUtil {
 						String propertyName = _parameter.getProperty();
 						String value = null;
 						if (boundSql.hasAdditionalParameter(propertyName)) {
-							Object obj = (String) boundSql.getAdditionalParameter(propertyName);
+							// foreach 내부 index 변수는 Integer 형으로 반환됨
+							Object obj = boundSql.getAdditionalParameter(propertyName);
 							if (obj instanceof String) {
 								value = String.format("'%s'", KStringUtil.nvl(obj));
 							} else {
@@ -108,7 +109,6 @@ public class KSqlUtil {
 						paramSql = Pattern.compile(PARAM_TEMP_CHAR).matcher(paramSql).replaceFirst(quoteStr);
 					}
 				}
-				paramSql = paramSql.replaceAll(PARAM_TEMP_CHAR, PARAM_CHAR);
 			} catch(Exception e) {
 				KLogSql.error(String.format("param-sql을 생성하는 중 오류가 발생했습니다. `%s`", sqlId), e);
 			}
