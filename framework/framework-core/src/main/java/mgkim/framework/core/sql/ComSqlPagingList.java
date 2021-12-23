@@ -14,7 +14,6 @@ import org.apache.ibatis.mapping.ParameterMode;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.reflection.property.PropertyTokenizer;
 import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
-import org.apache.ibatis.scripting.xmltags.ForEachSqlNode;
 import org.apache.ibatis.type.IntegerTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
@@ -159,13 +158,8 @@ public class ComSqlPagingList {
 						PropertyTokenizer prop = new PropertyTokenizer(propertyName);
 						if (parameterObject == null) {
 							value = null;
-						} else if (typeHandlerRegistry.hasTypeHandler(parameterObject.getClass())) {
-							value = parameterObject;
-						} else if (propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && boundSql.hasAdditionalParameter(prop.getName())) {
+						} else if (boundSql.hasAdditionalParameter(prop.getName())) { // propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && 
 							value = boundSql.getAdditionalParameter(prop.getName());
-							//if (value == null) {
-							//	value = configuration.newMetaObject(value).getValue(propertyName.substring(prop.getName().length()));
-							//}
 						} else if (paramObject instanceof java.util.Map) {
 							value = ((Map)paramObject).get(propertyName);
 						} else {
@@ -182,8 +176,6 @@ public class ComSqlPagingList {
 						} catch(Exception e) {
 							throw e;
 						}
-					} else if (_parameter.getMode() == ParameterMode.OUT) {
-						KLogSql.warn("statement 파라미터를 생성하는 중 ParameterMode.OUT 가 발견되었습니다.", _parameter.toString());
 					}
 				}
 			}

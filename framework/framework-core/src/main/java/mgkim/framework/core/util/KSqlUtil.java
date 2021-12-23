@@ -9,8 +9,6 @@ import java.util.regex.Pattern;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.ParameterMapping;
-import org.apache.ibatis.session.Configuration;
-import org.apache.ibatis.type.TypeHandlerRegistry;
 
 import mgkim.framework.core.dto.KCmmVO;
 import mgkim.framework.core.env.KConstant;
@@ -49,10 +47,8 @@ public class KSqlUtil {
 
 	public static String createParamSql(Object parameterObject, MappedStatement mappedStatement, TSqlType paramSqlType) throws Exception {
 		// 준비
-		TypeHandlerRegistry typeHandlerRegistry = mappedStatement.getConfiguration().getTypeHandlerRegistry();
 		BoundSql boundSql = mappedStatement.getBoundSql(parameterObject);
 		String paramSql = boundSql.getSql();
-		Configuration configuration = mappedStatement.getConfiguration();
 		String sqlId = mappedStatement.getId();
 		String sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
 		// -- 준비
@@ -62,8 +58,12 @@ public class KSqlUtil {
 			try {
 				paramSql = paramSql.replaceAll(PARAM_CHAR, PARAM_TEMP_CHAR);
 				if (parameterObject == null) {
-					// null 타입
-					paramSql = paramSql.replaceAll(PARAM_TEMP_CHAR, "''");
+					paramSql = paramSql.replaceAll(PARAM_TEMP_CHAR, "null");
+				} else if (parameterObject instanceof String) {
+					String value = String.format("'%s'", parameterObject);
+					// `value` 에 `정규식에서 사용되는 특수문자`를 제거 합니다.
+					String quoteStr = Matcher.quoteReplacement(value);
+					paramSql = Pattern.compile(PARAM_TEMP_CHAR).matcher(paramSql).replaceAll(quoteStr);
 				} else if (parameterObject instanceof Map) {
 					// Map 타입
 					Map map = ((Map)parameterObject); 
@@ -82,14 +82,6 @@ public class KSqlUtil {
 							paramSql = Pattern.compile(PARAM_TEMP_CHAR).matcher(paramSql).replaceFirst(KStringUtil.nvl(value));
 						}
 					}
-				} else if (parameterObject instanceof String) {
-					// String 타입
-					String value = String.format("'%s'", parameterObject);
-
-					// `value` 에 `정규식에서 사용되는 특수문자`를 제거 합니다.
-					String quoteStr = Matcher.quoteReplacement(value);
-
-					paramSql = Pattern.compile(PARAM_TEMP_CHAR).matcher(paramSql).replaceAll(quoteStr);
 				} else {
 					// VO 타입
 					List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
@@ -107,14 +99,11 @@ public class KSqlUtil {
 						} else {
 							value = KObjectUtil.getSqlParamByFieldName(parameterObject, propertyName);
 						}
-						
 						if (value == null) {
 							value = "";
 						}
-
 						// `value` 에 `정규식에서 사용되는 특수문자`를 제거 합니다.
 						String quoteStr = Matcher.quoteReplacement(value);
-
 						// `value` 에 "$" 혹은 "\" 문자가 제거된 값으로 replace를 합니다.
 						paramSql = Pattern.compile(PARAM_TEMP_CHAR).matcher(paramSql).replaceFirst(quoteStr);
 					}
