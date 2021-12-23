@@ -11,11 +11,11 @@ import mgkim.framework.online.cmm.vo.sessionexpmng.CmmSessionStatusVO;
 @Mapper
 public interface CmmSessionStatusMngMapper {
 
-	public int insertNewStatus(Map<String, Object> claims) throws Exception;
+	public int insertNewStatus(Map<String, Object> map) throws Exception;
 
-	public CmmSessionStatusVO selectStatusForIsLogin(Map<String, Object> claims) throws Exception;
+	public CmmSessionStatusVO selectStatusForIsLogin(Map<String, Object> map) throws Exception;
 
-	public List<CmmSessionStatusVO> selectStatusListForDupl(Map<String, Object> claims) throws Exception;
+	public List<CmmSessionStatusVO> selectStatusListForDupl(Map<String, Object> map) throws Exception;
 
 	public int updateDupl(CmmSessionMngListVO vo) throws Exception;
 
