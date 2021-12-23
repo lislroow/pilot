@@ -141,8 +141,8 @@ public class ComSqlPagingList {
 		
 		int parameterIndex = 1;
 		
-		// 첫번째 파라미터 생성 (`_rowcount`)
 		{
+			// 첫번째 파라미터 생성 (`_rowcount`)
 			_parameter = new ParameterMapping.Builder(configuration, "_rowcount", new IntegerTypeHandler())
 					.javaType(java.lang.Integer.class)
 					.jdbcType(JdbcType.INTEGER).build();
@@ -153,10 +153,9 @@ public class ComSqlPagingList {
 			} catch(Exception e) {
 				throw e;
 			}
-		}
-		
-		// 실제 binding 파라미터 생성
-		{
+			// -- 첫번째 파라미터 생성 (`_rowcount`)
+			
+			// 실제 binding 파라미터 생성
 			if (parameterMappings != null) {
 				for (int i=0; i<parameterMappings.size(); i++) {
 					_parameter = parameterMappings.get(i);
@@ -191,11 +190,9 @@ public class ComSqlPagingList {
 					}
 				}
 			}
-		}
-		// -- 실제 binding 파라미터 생성
-		
-		// 두번째, 세번째 파라미터 생성 (BETWEEN `_startrow` AND `_endrow`)
-		{
+			// -- 실제 binding 파라미터 생성
+			
+			// 두번째, 세번째 파라미터 생성 (BETWEEN `_startrow` AND `_endrow`)
 			_parameter = new ParameterMapping.Builder(configuration, "_startrow", new IntegerTypeHandler())
 					.javaType(java.lang.Integer.class)
 					.jdbcType(JdbcType.INTEGER).build();
@@ -217,6 +214,7 @@ public class ComSqlPagingList {
 			} catch(Exception e) {
 				throw e;
 			}
+			// -- 두번째, 세번째 파라미터 생성 (BETWEEN `_startrow` AND `_endrow`)
 		}
 		
 		// invocation 의 args에 새로운 `StatementHandler` 교체
