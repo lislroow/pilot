@@ -2,7 +2,6 @@ package mgkim.framework.core.sql;
 
 import java.lang.reflect.Field;
 import java.sql.PreparedStatement;
-import java.util.List;
 
 import org.apache.ibatis.executor.statement.PreparedStatementHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
@@ -14,7 +13,6 @@ import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
 import org.apache.ibatis.type.IntegerTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
-import org.apache.ibatis.type.TypeHandlerRegistry;
 import org.springframework.util.StopWatch;
 
 import mgkim.framework.core.dto.KInPageVO;
@@ -50,7 +48,6 @@ public class ComSqlPagingList {
 		String sqlId = mappedStatement.getId();
 		//String orignalSql = boundSql.getSql();
 		String sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
-		Object paramObject = sHandler.getParameterHandler().getParameterObject();
 		KInPageVO inPageVO = KContext.getT(AttrKey.IN_PAGE);
 		// -- 실행 준비
 		
@@ -113,12 +110,12 @@ public class ComSqlPagingList {
 		PreparedStatement pstmt = null;
 		java.sql.Connection connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
 		DefaultParameterHandler parameterHandler = (DefaultParameterHandler)sHandler.getParameterHandler();
-		TypeHandlerRegistry typeHandlerRegistry = mappedStatement.getConfiguration().getTypeHandlerRegistry();
+		//TypeHandlerRegistry typeHandlerRegistry = mappedStatement.getConfiguration().getTypeHandlerRegistry();
 		Object parameterObject = parameterHandler.getParameterObject();
-		List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
+		//List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
 		ParameterMapping _parameter = null;
 		TypeHandler _typeHandler = null;
-		JdbcType _jdbcType = null;
+		//JdbcType _jdbcType = null;
 		org.apache.ibatis.session.Configuration configuration = mappedStatement.getConfiguration();
 		
 		// mybatis foreach 문
@@ -159,8 +156,6 @@ public class ComSqlPagingList {
 			}
 		}
 		
-		// invocation 의 args에 새로운 `StatementHandler` 교체
-		//invocation.getArgs()[0] = pstmt;
 		return pstmt;
 	}
 }

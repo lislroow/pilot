@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -15,19 +14,13 @@ import org.apache.ibatis.executor.statement.RoutingStatementHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
-import org.apache.ibatis.mapping.ParameterMapping;
-import org.apache.ibatis.mapping.ResultMap;
 import org.apache.ibatis.mapping.SqlCommandType;
-import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.plugin.Intercepts;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Plugin;
 import org.apache.ibatis.plugin.Signature;
-import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
 import org.apache.ibatis.session.ResultHandler;
-import org.apache.ibatis.type.TypeHandler;
-import org.apache.ibatis.type.TypeHandlerRegistry;
 import org.springframework.util.StopWatch;
 
 import mgkim.framework.core.dto.KCmmVO;
@@ -83,7 +76,6 @@ public class ComSqlInterceptor implements Interceptor {
 		PreparedStatementHandler pstmtHandler = (PreparedStatementHandler) proxyDelegate.get(sHandler);
 		MappedStatement mappedStatement = (MappedStatement) proxyMappedStatement.get(pstmtHandler);
 		BoundSql boundSql = sHandler.getBoundSql();
-		//Configuration configuration = mappedStatement.getConfiguration();
 		String sqlId = mappedStatement.getId();
 		String originSql = boundSql.getSql();
 		String sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
@@ -204,13 +196,12 @@ public class ComSqlInterceptor implements Interceptor {
 		// (페이징이 아닐 경우) 새로운 orignal-sql로 `boundSql` 교체
 		{
 			if (!isPaging) {
-				org.apache.ibatis.session.Configuration configuration = mappedStatement.getConfiguration();
 				connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
 				PreparedStatement pstmt = null;
-				DefaultParameterHandler parameterHandler = (DefaultParameterHandler)sHandler.getParameterHandler();
-				TypeHandlerRegistry typeHandlerRegistry = mappedStatement.getConfiguration().getTypeHandlerRegistry();
-				List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
-				TypeHandler _typeHandler = null;
+				//DefaultParameterHandler parameterHandler = (DefaultParameterHandler)sHandler.getParameterHandler();
+				//TypeHandlerRegistry typeHandlerRegistry = mappedStatement.getConfiguration().getTypeHandlerRegistry();
+				//List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
+				//TypeHandler _typeHandler = null;
 				
 				// mybatis foreach 문
 				{
@@ -228,7 +219,7 @@ public class ComSqlInterceptor implements Interceptor {
 				invocation.getArgs()[0] = pstmt;
 			}
 		}
-
+		
 		// sql 실행
 		int resultCount = -1;
 		double elapsedTime = -1;
@@ -278,8 +269,8 @@ public class ComSqlInterceptor implements Interceptor {
 				}
 			}
 		} // -- sql 실행
-
-
+		
+		
 		// sql 결과 로깅
 		{
 			if (isLoggableSql) {
@@ -327,51 +318,7 @@ public class ComSqlInterceptor implements Interceptor {
 		} // -- sql 실행 테이블 분석
 		return resultObject;
 	}
-	public static class BoundSqlSqlSource implements SqlSource {
-        BoundSql boundSql;
-
-        public BoundSqlSqlSource(BoundSql boundSql) {
-            this.boundSql = boundSql;
-        }
-
-        public BoundSql getBoundSql(Object parameterObject) {
-            return boundSql;
-        }
-    }
-
-
-    private MappedStatement copyFromMappedStatement(MappedStatement ms, SqlSource newSqlSource)
-    {
-    	org.apache.ibatis.mapping.MappedStatement.Builder builder = new MappedStatement.Builder(ms.getConfiguration(), ms
-                .getId(), newSqlSource, ms.getSqlCommandType());
-        builder.resource(ms.getResource());
-        builder.fetchSize(ms.getFetchSize());
-        builder.statementType(ms.getStatementType());
-        builder.keyGenerator(ms.getKeyGenerator());
-        // setStatementTimeout()
-        builder.timeout(ms.getTimeout());
-        // setParameterMap()
-        builder.parameterMap(ms.getParameterMap());
-        // setStatementResultMap()
-        List<ResultMap> resultMaps = new ArrayList<ResultMap>();
-        String id = "-inline";
-        if (ms.getResultMaps() != null)
-        {
-            id = ms.getResultMaps().get(0).getId() + "-inline";
-        }
-        ResultMap resultMap = new ResultMap.Builder(null, id, Long.class,
-                new ArrayList()).build();
-        resultMaps.add(resultMap);
-        builder.resultMaps(resultMaps);
-        builder.resultSetType(ms.getResultSetType());
-        // setStatementCache()
-        builder.cache(ms.getCache());
-        builder.flushCacheRequired(ms.isFlushCacheRequired());
-        builder.useCache(ms.isUseCache());
-        return builder.build();
-    }
-
-
+	
 	@Override
 	public Object plugin(Object target) {
 		if (target instanceof StatementHandler || target instanceof ResultSetHandler) {
@@ -380,7 +327,7 @@ public class ComSqlInterceptor implements Interceptor {
 			return target;
 		}
 	}
-
+	
 	@Override
 	public void setProperties(Properties properties) {
 	}
