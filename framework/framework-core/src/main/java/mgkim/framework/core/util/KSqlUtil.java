@@ -64,66 +64,62 @@ public class KSqlUtil {
 				if (parameterObject == null) {
 					// null 타입
 					paramSql = paramSql.replaceAll(PARAM_TEMP_CHAR, "''");
-				//} else if (parameterObject instanceof List) {
-					
 				} else if (parameterObject instanceof Map) {
 					// Map 타입
 					Map map = ((Map)parameterObject); 
-					List<ParameterMapping> entryParamKeyList = boundSql.getParameterMappings();
-					for (int i=0; i<entryParamKeyList.size(); i++) {
-						ParameterMapping _parameter = entryParamKeyList.get(i);
+					List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
+					for (int i=0; i<parameterMappings.size(); i++) {
+						ParameterMapping _parameter = parameterMappings.get(i);
 						Object value = map.get(_parameter.getProperty());
-						if (value == null) {
-							value = "";
-						}
-						if (String.class.isInstance(value)) {
+						if (value == null) { 
+							paramSql = Pattern.compile(PARAM_TEMP_CHAR).matcher(paramSql).replaceFirst("null");
+						} else if (String.class.isInstance(value)) {
 							// `value` 에 `정규식에서 사용되는 특수문자`를 제거 합니다.
 							String quoteStr = Matcher.quoteReplacement(KStringUtil.nvl(value));
 							quoteStr = String.format("'%s'", quoteStr);
 							paramSql = Pattern.compile(PARAM_TEMP_CHAR).matcher(paramSql).replaceFirst(quoteStr);
 						} else {
-							paramSql = paramSql.replaceFirst(PARAM_TEMP_CHAR, KStringUtil.nvl(value));
+							paramSql = Pattern.compile(PARAM_TEMP_CHAR).matcher(paramSql).replaceFirst(KStringUtil.nvl(value));
 						}
 					}
 				} else if (parameterObject instanceof String) {
 					// String 타입
-					String val = String.format("'%s'", parameterObject);
+					String value = String.format("'%s'", parameterObject);
 
 					// `value` 에 `정규식에서 사용되는 특수문자`를 제거 합니다.
-					String quoteStr = Matcher.quoteReplacement(val);
+					String quoteStr = Matcher.quoteReplacement(value);
 
 					paramSql = Pattern.compile(PARAM_TEMP_CHAR).matcher(paramSql).replaceAll(quoteStr);
 				} else {
 					// VO 타입
-					List<ParameterMapping> entryParamKeyList = boundSql.getParameterMappings();
-					for (ParameterMapping mapping : entryParamKeyList) {
-						String propKey = mapping.getProperty();
-						String val = KObjectUtil.getSqlParamByFieldName(parameterObject, propKey);
-						if (val == null) {
-							if (boundSql.hasAdditionalParameter(propKey)) {
-								Object obj = (String) boundSql.getAdditionalParameter(propKey);
-								if (obj instanceof String) {
-									val = String.format("'%s'", KStringUtil.nvl(obj));
-								} else {
-									val = KStringUtil.nvl(obj);
-								}
+					List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
+					for (int i=0; i<parameterMappings.size(); i++) {
+						ParameterMapping _parameter = parameterMappings.get(i);
+						String propertyName = _parameter.getProperty();
+						String value = null;
+						if (boundSql.hasAdditionalParameter(propertyName)) {
+							Object obj = (String) boundSql.getAdditionalParameter(propertyName);
+							if (obj instanceof String) {
+								value = String.format("'%s'", KStringUtil.nvl(obj));
+							} else {
+								value = KStringUtil.nvl(obj);
 							}
-							
-							if (val == null) {
-								val = "";
-							}
+						} else {
+							value = KObjectUtil.getSqlParamByFieldName(parameterObject, propertyName);
+						}
+						
+						if (value == null) {
+							value = "";
 						}
 
 						// `value` 에 `정규식에서 사용되는 특수문자`를 제거 합니다.
-						String quoteStr = Matcher.quoteReplacement(val);
+						String quoteStr = Matcher.quoteReplacement(value);
 
 						// `value` 에 "$" 혹은 "\" 문자가 제거된 값으로 replace를 합니다.
 						paramSql = Pattern.compile(PARAM_TEMP_CHAR).matcher(paramSql).replaceFirst(quoteStr);
 					}
 				}
 				paramSql = paramSql.replaceAll(PARAM_TEMP_CHAR, PARAM_CHAR);
-			} catch(NullPointerException e) {
-				KLogSql.error(String.format("param-sql을 생성하는 중 오류가 발생했습니다. `%s`", sqlId), e);
 			} catch(Exception e) {
 				KLogSql.error(String.format("param-sql을 생성하는 중 오류가 발생했습니다. `%s`", sqlId), e);
 			}
