@@ -18,6 +18,8 @@ import mgkim.framework.core.dto.KCmmVO;
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
+import mgkim.framework.core.exception.KMessage;
+import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.core.logging.KLogCommon;
 import mgkim.framework.core.logging.KLogLayout;
 import mgkim.framework.core.logging.KLogSql;
@@ -205,13 +207,25 @@ public class KSqlUtil {
 				KLogSql.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL, sqlId, KLogLayout.LINE, KConstant.LT_SQL, sqlFile, sqlId, KLogLayout.LINE, paramSql);
 				break;
 			case PAGING_SQL:
-				KCmmVO vo = (KCmmVO) parameterObject;
-				paramSql = paramSql.replaceAll("\n", "\n\t");
-				paramSql = String.format(KSqlUtil.PAGING_SQL, paramSql);
-				paramSql = KSqlUtil.insertSqlId(paramSql, "(paging-sql) "+sqlId);
-				paramSql = paramSql.replaceFirst("\\?", vo.get_rowcount()+"")
-						.replaceFirst("\\?", vo.get_startrow()+"")
-						.replaceFirst("\\?", vo.get_endrow()+"");
+				if (KCmmVO.class.isInstance(parameterObject)) {
+					KCmmVO vo = (KCmmVO) parameterObject;
+					paramSql = paramSql.replaceAll("\n", "\n  ");
+					paramSql = String.format(KSqlUtil.PAGING_SQL, paramSql);
+					paramSql = KSqlUtil.insertSqlId(paramSql, "(paging-sql) "+sqlId);
+					paramSql = paramSql.replaceFirst("\\?", vo.get_rowcount()+"")
+							.replaceFirst("\\?", vo.get_startrow()+"")
+							.replaceFirst("\\?", vo.get_endrow()+"");
+				} else if (Map.class.isInstance(parameterObject)) {
+					Map map = (Map) parameterObject;
+					paramSql = paramSql.replaceAll("\n", "\n  ");
+					paramSql = String.format(KSqlUtil.PAGING_SQL, paramSql);
+					paramSql = KSqlUtil.insertSqlId(paramSql, "(paging-sql) "+sqlId);
+					paramSql = paramSql.replaceFirst("\\?", KStringUtil.nvl(map.get("_rowcount")))
+							.replaceFirst("\\?", KStringUtil.nvl(map.get("_startrow")))
+							.replaceFirst("\\?", KStringUtil.nvl(map.get("_endrow")));
+				} else {
+					throw new KSysException(KMessage.E8102, KCmmVO.class.getName());
+				}
 				KLogSql.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL_PAING, sqlId, KLogLayout.LINE, KConstant.LT_SQL_PAING, sqlFile, sqlId, KLogLayout.LINE, paramSql);
 				break;
 			case COUNT_SQL1:

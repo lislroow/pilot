@@ -23,16 +23,12 @@ import org.apache.ibatis.plugin.Signature;
 import org.apache.ibatis.session.ResultHandler;
 import org.springframework.util.StopWatch;
 
-import mgkim.framework.core.dto.KCmmVO;
 import mgkim.framework.core.dto.KInPageVO;
-import mgkim.framework.core.dto.KOutPageVO;
 import mgkim.framework.core.env.KConfig;
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.env.KProfile;
-import mgkim.framework.core.exception.KMessage;
-import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.core.logging.KLogApm;
 import mgkim.framework.core.logging.KLogLayout;
 import mgkim.framework.core.logging.KLogSql;
@@ -157,15 +153,6 @@ public class ComSqlInterceptor implements Interceptor {
 						invocation.getArgs()[0] = pstmt;
 					} else {
 						PreparedStatement pstmt = comSqlPagingList.preparePaging(invocation);
-						KOutPageVO outPageVO = KContext.getT(AttrKey.OUT_PAGE);
-						if (KCmmVO.class.isInstance(parameterObject)) {
-							KCmmVO vo = (KCmmVO) parameterObject;
-							vo.set_rowcount(outPageVO.getRowcount());
-							vo.set_startrow(outPageVO.getStartrow());
-							vo.set_endrow(outPageVO.getEndrow());
-						} else {
-							throw new KSysException(KMessage.E8102, KCmmVO.class.getName());
-						}
 						invocation.getArgs()[0] = pstmt;
 					}
 				}

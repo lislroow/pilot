@@ -2,6 +2,7 @@ package mgkim.framework.core.sql;
 
 import java.lang.reflect.Field;
 import java.sql.PreparedStatement;
+import java.util.Map;
 
 import org.apache.ibatis.executor.statement.PreparedStatementHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
@@ -15,12 +16,15 @@ import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
 import org.springframework.util.StopWatch;
 
+import mgkim.framework.core.dto.KCmmVO;
 import mgkim.framework.core.dto.KInPageVO;
 import mgkim.framework.core.dto.KOutPageVO;
 import mgkim.framework.core.env.KConfig;
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
+import mgkim.framework.core.exception.KMessage;
+import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.core.logging.KLogApm;
 import mgkim.framework.core.logging.KLogLayout;
 import mgkim.framework.core.logging.KLogSql;
@@ -145,6 +149,19 @@ public class ComSqlPagingList {
 		}
 		// -- prepareStatment 생성
 		
+		if (KCmmVO.class.isInstance(parameterObject)) {
+			KCmmVO vo = (KCmmVO) parameterObject;
+			vo.set_rowcount(outPageVO.getRowcount());
+			vo.set_startrow(outPageVO.getStartrow());
+			vo.set_endrow(outPageVO.getEndrow());
+		} else if (Map.class.isInstance(parameterObject)) {
+			Map map = (Map) parameterObject;
+			map.put("_rowcount", outPageVO.getRowcount());
+			map.put("_startrow", outPageVO.getStartrow());
+			map.put("_endrow", outPageVO.getEndrow());
+		} else {
+			throw new KSysException(KMessage.E8102, KCmmVO.class.getName());
+		}
 		return pstmt;
 	}
 }
