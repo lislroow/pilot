@@ -10,8 +10,8 @@ import mgkim.framework.online.api.cmm.vo.Sqlcheck1VO;
 @Mapper
 public interface SqlcheckMapper {
 	
-	public List<Map> selectDumpList(Sqlcheck1VO vo) throws Exception;
+	public Map selectDumpNoParam() throws Exception;
 	
-	public List<Map> select2() throws Exception;
+	public List<Map> selectDumpList(Sqlcheck1VO vo) throws Exception;
 	
 }
