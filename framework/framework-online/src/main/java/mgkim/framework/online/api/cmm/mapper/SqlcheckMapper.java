@@ -12,7 +12,7 @@ public interface SqlcheckMapper {
 	
 	public Map selectNoParam() throws Exception;
 	
-	public List<Map> selectForeachList(SqlcheckVO vo) throws Exception;
+	public List<Map> selectForeachListByVO(SqlcheckVO vo) throws Exception;
 	
 	public List<Map> selectForeachListByMap(Map map) throws Exception;
 	

@@ -8,7 +8,7 @@
       FROM DUAL
   </select>
 
-  <select id="selectForeachList" parameterType="SqlcheckVO" resultType="java.util.Map">
+  <select id="selectForeachListByVO" parameterType="SqlcheckVO" resultType="java.util.Map">
     SELECT 
     <choose>
       <when test='strList == null or strList.size() == 0'>
