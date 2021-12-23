@@ -13,7 +13,7 @@ public interface CmmFieldCryptorMapper {
 
 	public int saveSymKey(CmmFieldCryptoVO vo) throws Exception;
 
-	public CmmFieldCryptoVO selectFieldCryptoKey(Map<String, Object> claims) throws Exception;
+	public CmmFieldCryptoVO selectFieldCryptoKey(Map<String, Object> map) throws Exception;
 
 }
 
