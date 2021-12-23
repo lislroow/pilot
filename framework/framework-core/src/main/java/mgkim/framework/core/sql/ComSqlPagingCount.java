@@ -85,28 +85,15 @@ public class ComSqlPagingCount {
 			ResultSet rs = null;
 			try {
 				connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
-				countSql = KSqlUtil.insertSqlId(countSql, "(count-sql1) "+sqlId);
-				pstmt = connection.prepareStatement(countSql);
 				List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
 				ParameterMapping _parameter = null;
 				TypeHandler _typeHandler = null;
 				
 				// mybatis foreach 문
 				{
-					if (parameterMappings != null) {
-						orignalSql = orignalSql.replaceAll(KSqlUtil.PARAM_CHAR, KSqlUtil.PARAM_TEMP_CHAR);
-						for (ParameterMapping _p : parameterMappings) {
-							String propertyName = _p.getProperty();
-							if (Pattern.matches("__frch_index_\\d+", propertyName)) {
-								Object value = boundSql.getAdditionalParameter(propertyName);
-								// value
-								orignalSql = Pattern.compile(KSqlUtil.PARAM_TEMP_CHAR).matcher(orignalSql).replaceFirst(value.toString());
-							} else {
-								orignalSql = Pattern.compile(KSqlUtil.PARAM_TEMP_CHAR).matcher(orignalSql).replaceFirst(KSqlUtil.PARAM_CHAR);
-							}
-						}
-					}
-					pstmt = connection.prepareStatement(orignalSql);
+					String originSql = KSqlUtil.removeForeachIndex(boundSql);
+					countSql = KSqlUtil.insertSqlId(countSql, "(count-sql1) "+sqlId);
+					pstmt = connection.prepareStatement(countSql);
 				}
 				// -- mybatis foreach 문
 				
@@ -184,8 +171,6 @@ public class ComSqlPagingCount {
 		String orignalSql = boundSql.getSql();
 		//String sqlFile = KSqlUtil.getRelativePath(mappedStatement);
 		Object paramObject = sHandler.getParameterHandler().getParameterObject();
-		String countSql = String.format(KSqlUtil.COUNT_SQL, orignalSql);
-		countSql = KSqlUtil.insertSqlId(countSql, "(count-sql2) "+sqlId);
 		Object parameterObject = sHandler.getParameterHandler().getParameterObject();
 		// -- count-sql 실행 준비
 
@@ -222,19 +207,9 @@ public class ComSqlPagingCount {
 			
 			// mybatis foreach 문
 			{
-				if (parameterMappings != null) {
-					countSql = countSql.replaceAll(KSqlUtil.PARAM_CHAR, KSqlUtil.PARAM_TEMP_CHAR);
-					for (ParameterMapping _p : parameterMappings) {
-						String propertyName = _p.getProperty();
-						if (Pattern.matches("__frch_index_\\d+", propertyName)) {
-							Object value = boundSql.getAdditionalParameter(propertyName);
-							// value
-							countSql = Pattern.compile(KSqlUtil.PARAM_TEMP_CHAR).matcher(countSql).replaceFirst(value.toString());
-						} else {
-							countSql = Pattern.compile(KSqlUtil.PARAM_TEMP_CHAR).matcher(countSql).replaceFirst(KSqlUtil.PARAM_CHAR);
-						}
-					}
-				}
+				String originSql = KSqlUtil.removeForeachIndex(boundSql);
+				String countSql = String.format(KSqlUtil.COUNT_SQL, orignalSql);
+				countSql = KSqlUtil.insertSqlId(countSql, "(count-sql2) "+sqlId);
 				pstmt = connection.prepareStatement(countSql);
 			}
 			// -- mybatis foreach 문
@@ -376,29 +351,16 @@ public class ComSqlPagingCount {
 			ResultSet rs = null;
 			try {
 				String countSql = mappedStatement.getBoundSql(parameterObject).getSql();
-				countSql = KSqlUtil.insertSqlId(countSql, "(count-sql3) "+sqlId);
 				List<ParameterMapping> parameterMappings = mappedStatement.getBoundSql(parameterObject).getParameterMappings();
 				connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
-				pstmt = connection.prepareStatement(countSql);
 				final BoundSql boundSql = new BoundSql(configuration, countSql, parameterMappings, parameterObject);
 				ParameterMapping _parameter = null;
 				TypeHandler _typeHandler = null;
 				
 				// mybatis foreach 문
 				{
-					if (parameterMappings != null) {
-						countSql = countSql.replaceAll(KSqlUtil.PARAM_CHAR, KSqlUtil.PARAM_TEMP_CHAR);
-						for (ParameterMapping _p : parameterMappings) {
-							String propertyName = _p.getProperty();
-							if (Pattern.matches("__frch_index_\\d+", propertyName)) {
-								Object value = boundSql.getAdditionalParameter(propertyName);
-								// value
-								countSql = Pattern.compile(KSqlUtil.PARAM_TEMP_CHAR).matcher(countSql).replaceFirst(value.toString());
-							} else {
-								countSql = Pattern.compile(KSqlUtil.PARAM_TEMP_CHAR).matcher(countSql).replaceFirst(KSqlUtil.PARAM_CHAR);
-							}
-						}
-					}
+					String originSql = KSqlUtil.removeForeachIndex(boundSql);
+					countSql = KSqlUtil.insertSqlId(countSql, "(count-sql3) "+sqlId);
 					pstmt = connection.prepareStatement(countSql);
 				}
 				// -- mybatis foreach 문

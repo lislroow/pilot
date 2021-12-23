@@ -51,7 +51,6 @@ public class ComSqlPagingList {
 		PreparedStatementHandler pstmtHandler = (PreparedStatementHandler) proxyDelegate.get(sHandler);
 		MappedStatement mappedStatement = (MappedStatement) proxyMappedStatement.get(pstmtHandler);
 		BoundSql boundSql = sHandler.getBoundSql();
-		String originSql = boundSql.getSql();
 		String sqlId = mappedStatement.getId();
 		//String orignalSql = boundSql.getSql();
 		String sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
@@ -119,7 +118,7 @@ public class ComSqlPagingList {
 		
 		
 		// 페이징 파라미터 설정
-		String pagingSql = originSql;
+		String pagingSql = null;
 		PreparedStatement pstmt = null;
 		java.sql.Connection connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
 		DefaultParameterHandler parameterHandler = (DefaultParameterHandler)sHandler.getParameterHandler();
@@ -133,20 +132,8 @@ public class ComSqlPagingList {
 		
 		// mybatis foreach 문
 		{
-			if (parameterMappings != null) {
-				pagingSql = pagingSql.replaceAll(KSqlUtil.PARAM_CHAR, KSqlUtil.PARAM_TEMP_CHAR);
-				for (ParameterMapping _p : parameterMappings) {
-					String propertyName = _p.getProperty();
-					if (Pattern.matches("__frch_index_\\d+", propertyName)) {
-						Object value = boundSql.getAdditionalParameter(propertyName);
-						// value
-						pagingSql = Pattern.compile(KSqlUtil.PARAM_TEMP_CHAR).matcher(pagingSql).replaceFirst(value.toString());
-					} else {
-						pagingSql = Pattern.compile(KSqlUtil.PARAM_TEMP_CHAR).matcher(pagingSql).replaceFirst(KSqlUtil.PARAM_CHAR);
-					}
-				}
-			}
-			pagingSql = String.format(KSqlUtil.PAGING_SQL, pagingSql);
+			String originSql = KSqlUtil.removeForeachIndex(boundSql);
+			pagingSql = String.format(KSqlUtil.PAGING_SQL, originSql);
 			pagingSql = KSqlUtil.insertSqlId(pagingSql, "(paging-sql) "+sqlId);
 			pstmt = connection.prepareStatement(pagingSql);
 		}

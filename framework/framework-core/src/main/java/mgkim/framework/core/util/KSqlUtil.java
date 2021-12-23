@@ -45,6 +45,30 @@ public class KSqlUtil {
 		return path;
 	}
 	
+	public static String removeForeachIndex(BoundSql boundSql) throws Exception {
+		String sql = boundSql.getSql();
+		List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
+
+		// mybatis foreach 문
+		{
+			if (parameterMappings != null) {
+				sql = sql.replaceAll(KSqlUtil.PARAM_CHAR, KSqlUtil.PARAM_TEMP_CHAR);
+				for (ParameterMapping _p : parameterMappings) {
+					String propertyName = _p.getProperty();
+					if (Pattern.matches("__frch_index_\\d+", propertyName)) {
+						Object value = boundSql.getAdditionalParameter(propertyName);
+						// value
+						sql = Pattern.compile(KSqlUtil.PARAM_TEMP_CHAR).matcher(sql).replaceFirst(value.toString());
+					} else {
+						sql = Pattern.compile(KSqlUtil.PARAM_TEMP_CHAR).matcher(sql).replaceFirst(KSqlUtil.PARAM_CHAR);
+					}
+				}
+			}
+		}
+		// -- mybatis foreach 문
+		return sql;
+	}
+	
 	public static String createParamSql(Object parameterObject, MappedStatement mappedStatement, TSqlType paramSqlType) throws Exception {
 		// 준비
 		BoundSql boundSql = mappedStatement.getBoundSql(parameterObject);

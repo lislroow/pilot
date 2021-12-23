@@ -90,7 +90,7 @@ public class ComSqlInterceptor implements Interceptor {
 		BoundSql boundSql = sHandler.getBoundSql();
 		//Configuration configuration = mappedStatement.getConfiguration();
 		String sqlId = mappedStatement.getId();
-		String orignalSql = boundSql.getSql();
+		String originSql = boundSql.getSql();
 		String sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
 		Object paramObject = sHandler.getParameterHandler().getParameterObject();
 		// -- sql 실행 준비
@@ -208,9 +208,8 @@ public class ComSqlInterceptor implements Interceptor {
 		{
 			if (!isPaging) {
 				org.apache.ibatis.session.Configuration configuration = mappedStatement.getConfiguration();
-				orignalSql = KSqlUtil.insertSqlId(orignalSql, sqlId);
 				connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
-				PreparedStatement pstmt = connection.prepareStatement(orignalSql);
+				PreparedStatement pstmt = null;
 				DefaultParameterHandler parameterHandler = (DefaultParameterHandler)sHandler.getParameterHandler();
 				TypeHandlerRegistry typeHandlerRegistry = mappedStatement.getConfiguration().getTypeHandlerRegistry();
 				Object parameterObject = parameterHandler.getParameterObject();
@@ -219,20 +218,9 @@ public class ComSqlInterceptor implements Interceptor {
 				
 				// mybatis foreach 문
 				{
-					if (parameterMappings != null) {
-						orignalSql = orignalSql.replaceAll(KSqlUtil.PARAM_CHAR, KSqlUtil.PARAM_TEMP_CHAR);
-						for (ParameterMapping _p : parameterMappings) {
-							String propertyName = _p.getProperty();
-							if (Pattern.matches("__frch_index_\\d+", propertyName)) {
-								Object value = boundSql.getAdditionalParameter(propertyName);
-								// value
-								orignalSql = Pattern.compile(KSqlUtil.PARAM_TEMP_CHAR).matcher(orignalSql).replaceFirst(value.toString());
-							} else {
-								orignalSql = Pattern.compile(KSqlUtil.PARAM_TEMP_CHAR).matcher(orignalSql).replaceFirst(KSqlUtil.PARAM_CHAR);
-							}
-						}
-					}
-					pstmt = connection.prepareStatement(orignalSql);
+					originSql = KSqlUtil.removeForeachIndex(boundSql);
+					originSql = KSqlUtil.insertSqlId(originSql, sqlId);
+					pstmt = connection.prepareStatement(originSql);
 				}
 				// -- mybatis foreach 문
 				
