@@ -8,6 +8,24 @@
       FROM DUAL
   </select>
 
+  <select id="selectListByCountSql2" parameterType="SqlcheckVO" resultType="java.util.Map">
+    SELECT 
+      <foreach collection="strList" index="index" item="item" separator="," open="" close="">
+        #{item} AS col#{index}
+      </foreach>
+      FROM DUAL
+  </select>
+
+  <select id="selectListByCountSql2-count" parameterType="SqlcheckVO" resultType="int">
+    SELECT 
+           COUNT(1)
+      FROM (SELECT 
+              <foreach collection="strList" index="index" item="item" separator="," open="" close="">
+                #{item} AS col#{index}
+              </foreach>
+              FROM DUAL)
+  </select>
+
   <select id="selectForeachListByVO" parameterType="SqlcheckVO" resultType="java.util.Map">
     SELECT 
     <choose>

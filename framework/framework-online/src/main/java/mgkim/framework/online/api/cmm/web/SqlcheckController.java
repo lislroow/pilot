@@ -35,6 +35,16 @@ public class SqlcheckController {
 		return outDTO;
 	}
 	
+	@ApiOperation(value = "(sqlcheck) selectListByCountSql2")
+	@RequestMapping(value = "/public/cmm/sqlcheck/selectListByCountSql2", method = RequestMethod.POST)
+	public @ResponseBody KOutDTO<List<Map>> selectListByCountSql2(@RequestBody KInPageDTO<SqlcheckVO> inDTO) throws Exception {
+		KOutDTO<List<Map>> outDTO = new KOutDTO<List<Map>>();
+		SqlcheckVO inVO = inDTO.getBody();
+		List<Map> outMap = sqlcheckMapper.selectListByCountSql2(inVO);
+		outDTO.setBody(outMap);
+		return outDTO;
+	}
+	
 	@ApiOperation(value = "(sqlcheck) selectForeachListByVO")
 	@RequestMapping(value = "/public/cmm/sqlcheck/selectForeachListByVO", method = RequestMethod.POST)
 	public @ResponseBody KOutDTO<List<Map>> selectForeachListByVO(@RequestBody KInPageDTO<SqlcheckVO> inDTO) throws Exception {
