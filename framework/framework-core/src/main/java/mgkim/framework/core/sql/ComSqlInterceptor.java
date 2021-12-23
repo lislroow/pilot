@@ -76,15 +76,12 @@ public class ComSqlInterceptor implements Interceptor {
 		String sql = boundSql.getSql();
 		String sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
 		Object parameterObject = sHandler.getParameterHandler().getParameterObject();
-		// -- sql 실행 준비
-
+		
 		// 반환값 준비
 		Object resultObject = null;
-		// -- 반환값 준비
-
+		
 		// 로깅 준비
 		TExecType execType = KContext.getT(AttrKey.EXEC_TYPE);
-		//boolean isDebugMode = KContext.isDebugMode();
 		boolean isLoggableSql = KLogSql.isLoggableSql(sqlId);
 		boolean isComSql = KLogSql.isCmmSql(sqlId);
 		boolean isVerboss = KConfig.VERBOSS_ALL || KConfig.VERBOSS_SQL;
@@ -92,8 +89,7 @@ public class ComSqlInterceptor implements Interceptor {
 			KContext.set(AttrKey.SQL_ID, sqlId);
 			KContext.set(AttrKey.SQL_FILE, sqlFile);
 		}
-		// -- 로깅 준비
-
+		
 		// paging 처리 및 sql 로깅
 		Connection connection = null;
 		String paramSql = null;
@@ -123,12 +119,7 @@ public class ComSqlInterceptor implements Interceptor {
 					if (inPageVO == null || isComSql) { // // com 패키지에 있는 sql 은 paging 처리 대상에서 제외함
 						isPaging = false;
 					} else {
-						boolean isSelectType = mappedStatement.getSqlCommandType() == SqlCommandType.SELECT;
-						boolean isPagingYN = inPageVO.getPaging();
-						// sqlId 로 페이징 여부 체크
-						//boolean isSelectSqlId = sqlId.matches("^.+\\.select.+(List)$");
-						//isPaging = isSelectSqlId && isSelectType && isPagingYN;
-						isPaging = isSelectType && isPagingYN;
+						isPaging = inPageVO.getPaging() && mappedStatement.getSqlCommandType() == SqlCommandType.SELECT;
 					}
 					
 					if (isPaging) {
@@ -139,22 +130,20 @@ public class ComSqlInterceptor implements Interceptor {
 				}
 				
 				// prepareStatment 생성
-				{
-					if (!isPaging) {
-						PreparedStatement pstmt = null;
-						connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
-						{
-							sql = KSqlUtil.removeForeachIndex(boundSql);
-							sql = KSqlUtil.insertSqlId(sql, sqlId);
-							pstmt = connection.prepareStatement(sql);
-							int startBindingIndex = 1;
-							KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startBindingIndex);
-						}
-						invocation.getArgs()[0] = pstmt;
-					} else {
-						PreparedStatement pstmt = comSqlPagingList.preparePaging(invocation);
-						invocation.getArgs()[0] = pstmt;
+				if (!isPaging) {
+					PreparedStatement pstmt = null;
+					connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
+					{
+						sql = KSqlUtil.removeForeachIndex(boundSql);
+						sql = KSqlUtil.insertSqlId(sql, sqlId);
+						pstmt = connection.prepareStatement(sql);
+						int startBindingIndex = 1;
+						KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startBindingIndex);
 					}
+					invocation.getArgs()[0] = pstmt;
+				} else {
+					PreparedStatement pstmt = comSqlPagingList.preparePaging(invocation);
+					invocation.getArgs()[0] = pstmt;
 				}
 				
 				// param-sql 로깅
@@ -193,7 +182,6 @@ public class ComSqlInterceptor implements Interceptor {
 				break;
 			}
 		}
-		// -- paging 처리 및 sql 로깅
 		
 		
 		// sql 실행
@@ -243,7 +231,7 @@ public class ComSqlInterceptor implements Interceptor {
 					connection.close();
 				}
 			}
-		} // -- sql 실행
+		}
 		
 		
 		// sql 결과 로깅
@@ -254,7 +242,7 @@ public class ComSqlInterceptor implements Interceptor {
 				} else if (resultObject instanceof Integer) {
 					resultCount = (Integer)resultObject;
 				}
-
+				
 				switch(execType) {
 				case REQUEST:
 					if (!isVerboss) {
@@ -274,9 +262,9 @@ public class ComSqlInterceptor implements Interceptor {
 					break;
 				}
 			}
-		} // -- sql 결과 로깅
-
-
+		}
+		
+		
 		// sql 실행 테이블 분석
 		{
 			switch(execType) {
@@ -290,7 +278,7 @@ public class ComSqlInterceptor implements Interceptor {
 			default:
 				break;
 			}
-		} // -- sql 실행 테이블 분석
+		}
 		return resultObject;
 	}
 	
