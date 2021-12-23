@@ -6,19 +6,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 import org.apache.ibatis.executor.statement.PreparedStatementHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.ParameterMapping;
-import org.apache.ibatis.mapping.ParameterMode;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.session.Configuration;
-import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.TypeHandlerRegistry;
 
@@ -28,139 +24,19 @@ import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.env.KSqlContext;
 import mgkim.framework.core.logging.KLogSql;
 import mgkim.framework.core.type.TSqlType;
-import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KSqlUtil;
 
 public class ComSqlPagingCount {
 
 	protected Field proxyMappedStatement;
 	protected Field proxyDelegate;
-
+	
 	public ComSqlPagingCount(Field proxyMappedStatement, Field proxyDelegate) {
 		this.proxyMappedStatement = proxyMappedStatement;
 		this.proxyDelegate = proxyDelegate;
 	}
-
-
-	public Integer executeRemoveOrderBy(Invocation invocation) throws Exception {
-		//Object resultObj = null;
-		StatementHandler statementHandler = (StatementHandler) invocation.getTarget();
-		PreparedStatementHandler preparedStatementHandler = (PreparedStatementHandler) proxyDelegate.get(statementHandler);
-		MappedStatement mappedStatement = (MappedStatement) proxyMappedStatement.get(preparedStatementHandler);
-		BoundSql boundSql = statementHandler.getBoundSql();
-		Configuration configuration = mappedStatement.getConfiguration();
-		String sqlId = mappedStatement.getId();
-		String orignalSql = boundSql.getSql();
-		//String sqlFile = KSqlUtil.getRelativePath(mappedStatement);
-		TypeHandlerRegistry typeHandlerRegistry = mappedStatement.getConfiguration().getTypeHandlerRegistry();
-		Object parameterObject = statementHandler.getParameterHandler().getParameterObject();
-
-		Integer count = null;
-
-		String countSql = String.format(KSqlUtil.COUNT_SQL, KSqlUtil.removeOrderBy(orignalSql));
-		
-		// 로깅 준비
-		//boolean isDebugMode = KContext.isDebugMode();
-		boolean isLoggableSql = KLogSql.isLoggableSql(sqlId);
-		boolean isVerboss = KConfig.VERBOSS_ALL || KConfig.VERBOSS_SQL;
-		{
-
-		}
-		// -- 로깅 준비
-
-		// count-sql 로깅
-		{
-			if (isLoggableSql) {
-				if (!isVerboss) {
-				} else {
-					KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.COUNT1_SQL);
-				}
-			}
-		} // -- count-sql 로깅
-
-		// count-sql 실행
-		{
-			Connection connection = null;
-			PreparedStatement pstmt = null;
-			ResultSet rs = null;
-			try {
-				connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
-				List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
-				ParameterMapping _parameter = null;
-				TypeHandler _typeHandler = null;
-				
-				// mybatis foreach 문
-				{
-					String originSql = KSqlUtil.removeForeachIndex(boundSql);
-					countSql = KSqlUtil.insertSqlId(countSql, "(count-sql1) "+sqlId);
-					pstmt = connection.prepareStatement(countSql);
-				}
-				// -- mybatis foreach 문
-				
-				int parameterIndex = 1;
-				
-				// 실제 binding 파라미터 생성
-				if (parameterMappings != null) {
-					for (int i=0; i<parameterMappings.size(); i++) {
-						_parameter = parameterMappings.get(i);
-						if (_parameter.getMode() == ParameterMode.IN) {
-							Object value;
-							String propertyName = _parameter.getProperty();
-							
-							if (Pattern.matches("__frch_index_\\d+", propertyName)) {
-								continue;
-							}
-							
-							if (parameterObject == null) {
-								value = null;
-							} else if (boundSql.hasAdditionalParameter(propertyName)) { // propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && 
-								value = boundSql.getAdditionalParameter(propertyName);
-							} else if (parameterObject instanceof java.util.Map) {
-								value = ((Map)parameterObject).get(propertyName);
-							} else {
-								value = KObjectUtil.getValue(parameterObject, propertyName);
-							}
-							_typeHandler = _parameter.getTypeHandler();
-							JdbcType jdbcType = _parameter.getJdbcType();
-							if (value == null && jdbcType == null) {
-								jdbcType = configuration.getJdbcTypeForNull();
-							}
-							try {
-								_typeHandler.setParameter(pstmt, parameterIndex, value, jdbcType);
-								parameterIndex++;
-							} catch(Exception e) {
-								throw e;
-							}
-						}
-					}
-				}
-				// -- 실제 binding 파라미터 생성
-				
-				rs = pstmt.executeQuery();
-				if (rs.next()) {
-					count = rs.getInt(1);
-				}
-			} catch(Exception ex) {
-				throw ex;
-			} finally {
-				if (rs != null) {
-					rs.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (connection != null) {
-					connection.close();
-				}
-			}
-		}
-		// -- count-sql 실행
-
-		return count;
-	}
-
-
-	public Integer executeNoRemoveOrderBy(Invocation invocation) throws Exception {
+	
+	public Integer countSql1(Invocation invocation) throws Exception {
 		// count-sql 실행 준비
 		StatementHandler sHandler = (StatementHandler) invocation.getTarget();
 		PreparedStatementHandler pstmtHandler = (PreparedStatementHandler) proxyDelegate.get(sHandler);
@@ -191,7 +67,7 @@ public class ComSqlPagingCount {
 			if (isLoggableSql) {
 				if (!isVerboss) {
 				} else {
-					KSqlUtil.createParamSql(paramObject, mappedStatement, TSqlType.COUNT2_SQL);
+					KSqlUtil.createParamSql(paramObject, mappedStatement, TSqlType.COUNT_SQL1);
 				}
 			}
 		} // -- count-sql 로깅
@@ -199,6 +75,7 @@ public class ComSqlPagingCount {
 		// count-sql 실행
 		{
 			Connection connection = null;
+			String countSql = null;
 			PreparedStatement pstmt = null;
 			connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
 			List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
@@ -207,8 +84,8 @@ public class ComSqlPagingCount {
 			// mybatis foreach 문
 			{
 				String originSql = KSqlUtil.removeForeachIndex(boundSql);
-				String countSql = String.format(KSqlUtil.COUNT_SQL, originSql);
-				countSql = KSqlUtil.insertSqlId(countSql, "(count-sql2) "+sqlId);
+				countSql = String.format(KSqlUtil.COUNT_SQL, originSql);
+				countSql = KSqlUtil.insertSqlId(countSql, TSqlType.COUNT_SQL1.code() + " " + sqlId);
 				pstmt = connection.prepareStatement(countSql);
 			}
 			// -- mybatis foreach 문
@@ -226,7 +103,7 @@ public class ComSqlPagingCount {
 				}
 			} catch(Exception ex) {
 				if (!isVerboss) {
-					KSqlUtil.createParamSql(paramObject, mappedStatement, TSqlType.COUNT2_SQL);
+					KSqlUtil.createParamSql(paramObject, mappedStatement, TSqlType.COUNT_SQL1);
 				} else {
 				}
 				throw ex;
@@ -247,7 +124,7 @@ public class ComSqlPagingCount {
 		return count;
 	}
 
-	public Integer executeFindCountSql(Invocation invocation) throws Exception {
+	public Integer countSql2(Invocation invocation) throws Exception {
 		// count-sql 실행 준비
 		StatementHandler statementHandler = (StatementHandler) invocation.getTarget();
 		PreparedStatementHandler preparedStatementHandler = (PreparedStatementHandler) proxyDelegate.get(statementHandler);
@@ -258,11 +135,11 @@ public class ComSqlPagingCount {
 		TypeHandlerRegistry typeHandlerRegistry = mappedStatement.getConfiguration().getTypeHandlerRegistry();
 		Object parameterObject = statementHandler.getParameterHandler().getParameterObject();
 		// -- count-sql 실행 준비
-
+		
 		// 반환값 준비
 		Integer count = null;
 		// -- 반환값 준비
-
+		
 		// count-sql 존재여부 확인
 		{
 			Set<MappedStatement> mappedStatementList = KSqlContext.MAPPED_STATEMENT_LIST;
@@ -285,7 +162,7 @@ public class ComSqlPagingCount {
 			}
 		}
 		// -- count-sql 존재여부 확인
-
+		
 		// 로깅 준비
 		//boolean isDebugMode = KContext.isDebugMode();
 		boolean isLoggableSql = KLogSql.isLoggableSql(sqlId);
@@ -293,23 +170,23 @@ public class ComSqlPagingCount {
 		{
 			sqlId = mappedStatement.getId();
 			sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
-
+			
 			KContext.set(AttrKey.SQL_ID, sqlId);
 			KContext.set(AttrKey.SQL_FILE, sqlFile);
 		}
 		// -- 로깅 준비
-
+		
 		// count-sql 로깅
 		{
 			if (isLoggableSql) {
 				if (!isVerboss) {
 				} else {
-					KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.COUNT3_SQL);
+					KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.COUNT_SQL2);
 				}
 			}
 		} // -- count-sql 로깅
-
-
+		
+		
 		// count-sql 실행
 		{
 			Connection connection = null;
@@ -320,54 +197,18 @@ public class ComSqlPagingCount {
 				List<ParameterMapping> parameterMappings = mappedStatement.getBoundSql(parameterObject).getParameterMappings();
 				connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
 				final BoundSql boundSql = new BoundSql(configuration, countSql, parameterMappings, parameterObject);
-				ParameterMapping _parameter = null;
-				TypeHandler _typeHandler = null;
 				
 				// mybatis foreach 문
 				{
-					String originSql = KSqlUtil.removeForeachIndex(boundSql);
-					countSql = KSqlUtil.insertSqlId(countSql, "(count-sql3) "+sqlId);
+					countSql = KSqlUtil.removeForeachIndex(boundSql);
+					countSql = KSqlUtil.insertSqlId(countSql, TSqlType.COUNT_SQL2.code() + " " + sqlId);
 					pstmt = connection.prepareStatement(countSql);
 				}
 				// -- mybatis foreach 문
 				
-				int parameterIndex = 1;
-				
 				// 실제 binding 파라미터 생성
-				if (parameterMappings != null) {
-					for (int i=0; i<parameterMappings.size(); i++) {
-						_parameter = parameterMappings.get(i);
-						if (_parameter.getMode() == ParameterMode.IN) {
-							Object value;
-							String propertyName = _parameter.getProperty();
-							
-							if (Pattern.matches("__frch_index_\\d+", propertyName)) {
-								continue;
-							}
-							
-							if (parameterObject == null) {
-								value = null;
-							} else if (boundSql.hasAdditionalParameter(propertyName)) { // propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && 
-								value = boundSql.getAdditionalParameter(propertyName);
-							} else if (parameterObject instanceof java.util.Map) {
-								value = ((Map)parameterObject).get(propertyName);
-							} else {
-								value = KObjectUtil.getValue(parameterObject, propertyName);
-							}
-							_typeHandler = _parameter.getTypeHandler();
-							JdbcType jdbcType = _parameter.getJdbcType();
-							if (value == null && jdbcType == null) {
-								jdbcType = configuration.getJdbcTypeForNull();
-							}
-							try {
-								_typeHandler.setParameter(pstmt, parameterIndex, value, jdbcType);
-								parameterIndex++;
-							} catch(Exception e) {
-								throw e;
-							}
-						}
-					}
-				}
+				int startBindingIndex = 1;
+				KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startBindingIndex);
 				// -- 실제 binding 파라미터 생성
 				
 				rs = pstmt.executeQuery();
@@ -376,7 +217,7 @@ public class ComSqlPagingCount {
 				}
 			} catch(Exception ex) {
 				if (!isVerboss) {
-					KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.COUNT3_SQL);
+					KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.COUNT_SQL2);
 				} else {
 				}
 				throw ex;

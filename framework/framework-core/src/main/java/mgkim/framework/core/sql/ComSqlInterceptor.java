@@ -6,9 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
-import java.util.regex.Pattern;
 
 import org.apache.ibatis.executor.resultset.ResultSetHandler;
 import org.apache.ibatis.executor.statement.BaseStatementHandler;
@@ -18,7 +16,6 @@ import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.ParameterMapping;
-import org.apache.ibatis.mapping.ParameterMode;
 import org.apache.ibatis.mapping.ResultMap;
 import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.mapping.SqlSource;
@@ -29,7 +26,6 @@ import org.apache.ibatis.plugin.Plugin;
 import org.apache.ibatis.plugin.Signature;
 import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
 import org.apache.ibatis.session.ResultHandler;
-import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.TypeHandlerRegistry;
 import org.springframework.util.StopWatch;
@@ -51,7 +47,6 @@ import mgkim.framework.core.type.TExecType;
 import mgkim.framework.core.type.TSqlType;
 import mgkim.framework.core.type.TSysType;
 import mgkim.framework.core.util.KDtoUtil;
-import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KSqlUtil;
 import mgkim.framework.core.util.KStringUtil;
 
@@ -140,10 +135,12 @@ public class ComSqlInterceptor implements Interceptor {
 					if (inPageVO == null || isComSql) { // // com 패키지에 있는 sql 은 paging 처리 대상에서 제외함
 						isPaging = false;
 					} else {
-						boolean isSelectSqlID = sqlId.matches("^.+\\.select.+(List)$");
 						boolean isSelectType = mappedStatement.getSqlCommandType() == SqlCommandType.SELECT;
 						boolean isPagingYN = inPageVO.getPaging();
-						isPaging = isSelectSqlID && isSelectType && isPagingYN;
+						// sqlId 로 페이징 여부 체크
+						//boolean isSelectSqlId = sqlId.matches("^.+\\.select.+(List)$");
+						//isPaging = isSelectSqlId && isSelectType && isPagingYN;
+						isPaging = isSelectType && isPagingYN;
 					}
 					
 					if (isPaging) {
@@ -223,42 +220,9 @@ public class ComSqlInterceptor implements Interceptor {
 				}
 				// -- mybatis foreach 문
 				
-				int parameterIndex = 1;
-				
 				// 실제 binding 파라미터 생성
-				if (parameterMappings != null) {
-					for (ParameterMapping _parameter : parameterMappings) {
-						if (_parameter.getMode() == ParameterMode.IN) {
-							Object value;
-							String propertyName = _parameter.getProperty();
-							
-							if (Pattern.matches("__frch_index_\\d+", propertyName)) {
-								continue;
-							}
-							
-							if (parameterObject == null) {
-								value = null;
-							} else if (boundSql.hasAdditionalParameter(propertyName)) { // propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && 
-								value = boundSql.getAdditionalParameter(propertyName);
-							} else if (parameterObject instanceof java.util.Map) {
-								value = ((Map)parameterObject).get(propertyName);
-							} else {
-								value = KObjectUtil.getValue(parameterObject, propertyName);
-							}
-							_typeHandler = _parameter.getTypeHandler();
-							JdbcType jdbcType = _parameter.getJdbcType();
-							if (value == null && jdbcType == null) {
-								jdbcType = JdbcType.VARCHAR;
-							}
-							try {
-								_typeHandler.setParameter(pstmt, parameterIndex, value, jdbcType);
-								parameterIndex++;
-							} catch(Exception e) {
-								throw e;
-							}
-						}
-					}
-				}
+				int startBindingIndex = 1;
+				KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startBindingIndex);
 				// -- 실제 binding 파라미터 생성
 				
 				invocation.getArgs()[0] = pstmt;

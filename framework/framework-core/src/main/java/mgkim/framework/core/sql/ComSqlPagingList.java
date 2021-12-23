@@ -79,21 +79,16 @@ public class ComSqlPagingList {
 			StopWatch stopWatch = new StopWatch(sqlId+"-count-sql."+KContext.getT(AttrKey.TXID));
 			stopWatch.start();
 			try {
-				// `executeFindCountSql`: sqlmap 에 `{sqlid}-count` 규칙의 sqlid가 있으면 `공통 count-sql`을 실행하지 않습니다.
-				totalRecordCount = comSqlPagingCount.executeFindCountSql(invocation);
+				// `countSql2`: sqlmap 에 `{sqlid}-count` 규칙의 sqlid가 있으면 `공통 count-sql`을 실행하지 않습니다.
+				totalRecordCount = comSqlPagingCount.countSql2(invocation);
 				if (totalRecordCount != null) {
 					countSqlId += "-count";
 				} else {
-					// `executeRemoveOrderBy`: `order by`문을 제거한 `공통 count-sql`을 실행합니다.
-					totalRecordCount = comSqlPagingCount.executeRemoveOrderBy(invocation);
+					// `countSql1`: `order by`문을 제거하지 않은 `공통 count-sql`을 실행합니다.
+					totalRecordCount = comSqlPagingCount.countSql1(invocation);
 				}
 			} catch(Exception e) {
-				// `executeNoRemoveOrderBy`: `order by`문을 제거하지 않은 `공통 count-sql`을 실행합니다.
-				try {
-					totalRecordCount = comSqlPagingCount.executeNoRemoveOrderBy(invocation);
-				} catch(Exception ex) {
-					throw ex;
-				}
+				throw e;
 			} finally {
 				stopWatch.stop();
 				if (!isLogExclude) {

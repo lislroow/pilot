@@ -4,9 +4,9 @@ public enum TSqlType {
 
 	ORIGIN_SQL("origin-sql"),
 	PAGING_SQL("paging-sql"),
-	COUNT1_SQL("count1-sql"),
-	COUNT2_SQL("count2-sql"),
-	COUNT3_SQL("count3-sql");
+	COUNT_SQL1("count-sql1"),
+	COUNT_SQL2("count-sql2"),
+	;
 
 	private final String code;
 

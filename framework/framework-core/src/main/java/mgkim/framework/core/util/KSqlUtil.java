@@ -1,5 +1,6 @@
 package mgkim.framework.core.util;
 
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,9 @@ import java.util.regex.Pattern;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.ParameterMapping;
+import org.apache.ibatis.mapping.ParameterMode;
+import org.apache.ibatis.type.JdbcType;
+import org.apache.ibatis.type.TypeHandler;
 
 import mgkim.framework.core.dto.KCmmVO;
 import mgkim.framework.core.env.KConstant;
@@ -55,10 +59,10 @@ public class KSqlUtil {
 				sql = sql.replaceAll(KSqlUtil.PARAM_CHAR, KSqlUtil.PARAM_TEMP_CHAR);
 				for (ParameterMapping _p : parameterMappings) {
 					String propertyName = _p.getProperty();
-					if (Pattern.matches("__frch_index_\\d+", propertyName)) {
-						Object value = boundSql.getAdditionalParameter(propertyName);
-						// value
-						sql = Pattern.compile(KSqlUtil.PARAM_TEMP_CHAR).matcher(sql).replaceFirst(value.toString());
+					Matcher matcher = Pattern.compile("__frch_index_(\\d+)").matcher(propertyName);
+					if (matcher.find()) {
+						String value = matcher.replaceFirst("$1");
+						sql = Pattern.compile(KSqlUtil.PARAM_TEMP_CHAR).matcher(sql).replaceFirst(value);
 					} else {
 						sql = Pattern.compile(KSqlUtil.PARAM_TEMP_CHAR).matcher(sql).replaceFirst(KSqlUtil.PARAM_CHAR);
 					}
@@ -67,6 +71,49 @@ public class KSqlUtil {
 		}
 		// -- mybatis foreach 문
 		return sql;
+	}
+	
+	public static void bindParameterToPstmt(PreparedStatement pstmt, Object parameterObject, BoundSql boundSql, int startBindingIndex) throws Exception {
+		List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
+		TypeHandler _typeHandler = null;
+		
+		int parameterIndex = startBindingIndex;
+		
+		// 실제 binding 파라미터 생성
+		if (parameterMappings != null) {
+			for (ParameterMapping _parameter : parameterMappings) {
+				if (_parameter.getMode() == ParameterMode.IN) {
+					Object value;
+					String propertyName = _parameter.getProperty();
+					
+					if (Pattern.matches("__frch_index_\\d+", propertyName)) {
+						continue;
+					}
+					
+					if (parameterObject == null) {
+						value = null;
+					} else if (boundSql.hasAdditionalParameter(propertyName)) { // propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && 
+						value = boundSql.getAdditionalParameter(propertyName);
+					} else if (parameterObject instanceof java.util.Map) {
+						value = ((Map)parameterObject).get(propertyName);
+					} else {
+						value = KObjectUtil.getValue(parameterObject, propertyName);
+					}
+					_typeHandler = _parameter.getTypeHandler();
+					JdbcType jdbcType = _parameter.getJdbcType();
+					if (value == null && jdbcType == null) {
+						jdbcType = JdbcType.VARCHAR;
+					}
+					try {
+						_typeHandler.setParameter(pstmt, parameterIndex, value, jdbcType);
+						parameterIndex++;
+					} catch(Exception e) {
+						throw e;
+					}
+				}
+			}
+		}
+		// -- 실제 binding 파라미터 생성
 	}
 	
 	public static String createParamSql(Object parameterObject, MappedStatement mappedStatement, TSqlType paramSqlType) throws Exception {
@@ -166,21 +213,15 @@ public class KSqlUtil {
 						.replaceFirst("\\?", vo.get_endrow()+"");
 				KLogSql.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL_PAING, sqlId, KLogLayout.LINE, KConstant.LT_SQL_PAING, sqlFile, sqlId, KLogLayout.LINE, paramSql);
 				break;
-			case COUNT1_SQL:
-				paramSql = paramSql.replaceAll("\n", "\n\t");
-				paramSql = String.format(KSqlUtil.COUNT_SQL, paramSql);
-				paramSql = KSqlUtil.insertSqlId(paramSql, "(count-sql1) "+sqlId);
+			case COUNT_SQL1:
+				paramSql = KSqlUtil.insertSqlId(paramSql, TSqlType.COUNT_SQL1.code() + " " + sqlId);
 				KLogSql.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL_COUNT1, sqlId, KLogLayout.LINE, KConstant.LT_SQL_COUNT1, sqlFile, sqlId, KLogLayout.LINE, paramSql);
 				break;
-			case COUNT2_SQL:
+			case COUNT_SQL2:
 				paramSql = paramSql.replaceAll("\n", "\n\t");
 				paramSql = String.format(KSqlUtil.COUNT_SQL, paramSql);
-				paramSql = KSqlUtil.insertSqlId(paramSql, "(count-sql2) "+sqlId);
+				paramSql = KSqlUtil.insertSqlId(paramSql, TSqlType.COUNT_SQL2.code() + " " + sqlId);
 				KLogSql.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL_COUNT2, sqlId, KLogLayout.LINE, KConstant.LT_SQL_COUNT2, sqlFile, sqlId, KLogLayout.LINE, paramSql);
-				break;
-			case COUNT3_SQL:
-				paramSql = KSqlUtil.insertSqlId(paramSql, "(count-sql3) "+sqlId);
-				KLogSql.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL_COUNT3, sqlId, KLogLayout.LINE, KConstant.LT_SQL_COUNT3, sqlFile, sqlId, KLogLayout.LINE, paramSql);
 				break;
 			}
 		}
