@@ -26,7 +26,6 @@ import org.apache.ibatis.plugin.Intercepts;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Plugin;
 import org.apache.ibatis.plugin.Signature;
-import org.apache.ibatis.reflection.property.PropertyTokenizer;
 import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.type.JdbcType;
@@ -226,11 +225,10 @@ public class ComSqlInterceptor implements Interceptor {
 						if (_parameter.getMode() == ParameterMode.IN) {
 							Object value;
 							String propertyName = _parameter.getProperty();
-							PropertyTokenizer prop = new PropertyTokenizer(propertyName);
 							if (parameterObject == null) {
 								value = null;
-							} else if (boundSql.hasAdditionalParameter(prop.getName())) { // propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && 
-								value = boundSql.getAdditionalParameter(prop.getName());
+							} else if (boundSql.hasAdditionalParameter(propertyName)) { // propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && 
+								value = boundSql.getAdditionalParameter(propertyName);
 							} else if (paramObject instanceof java.util.Map) {
 								value = ((Map)paramObject).get(propertyName);
 							} else {

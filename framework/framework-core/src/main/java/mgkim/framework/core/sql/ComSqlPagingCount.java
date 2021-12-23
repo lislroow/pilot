@@ -19,7 +19,6 @@ import org.apache.ibatis.mapping.ParameterMode;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.SystemMetaObject;
-import org.apache.ibatis.reflection.property.PropertyTokenizer;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
@@ -102,11 +101,10 @@ public class ComSqlPagingCount {
 						if (_parameter.getMode() == ParameterMode.IN) {
 							Object value;
 							String propertyName = _parameter.getProperty();
-							PropertyTokenizer prop = new PropertyTokenizer(propertyName);
 							if (parameterObject == null) {
 								value = null;
-							} else if (boundSql.hasAdditionalParameter(prop.getName())) { // propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && 
-								value = boundSql.getAdditionalParameter(prop.getName());
+							} else if (boundSql.hasAdditionalParameter(propertyName)) { // propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && 
+								value = boundSql.getAdditionalParameter(propertyName);
 							} else if (parameterObject instanceof java.util.Map) {
 								value = ((Map)parameterObject).get(propertyName);
 							} else {
@@ -314,11 +312,10 @@ public class ComSqlPagingCount {
 						if (_parameter.getMode() == ParameterMode.IN) {
 							Object value;
 							String propertyName = _parameter.getProperty();
-							PropertyTokenizer prop = new PropertyTokenizer(propertyName);
 							if (parameterObject == null) {
 								value = null;
-							} else if (boundSql.hasAdditionalParameter(prop.getName())) { // propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && 
-								value = boundSql.getAdditionalParameter(prop.getName());
+							} else if (boundSql.hasAdditionalParameter(propertyName)) { // propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && 
+								value = boundSql.getAdditionalParameter(propertyName);
 							} else if (parameterObject instanceof java.util.Map) {
 								value = ((Map)parameterObject).get(propertyName);
 							} else {
