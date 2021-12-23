@@ -104,7 +104,7 @@ public class ComSqlInterceptor implements Interceptor {
 				// parameterObject 공통 필드 설정
 				{
 					KDtoUtil.setSysValues(parameterObject);
-				} // -- parameterObject 공통 필드 설정
+				}
 				
 				// parameterObject 로깅
 				{
@@ -114,7 +114,7 @@ public class ComSqlInterceptor implements Interceptor {
 							KLogSql.info("{} `{}` {}{} `{}` `{}` {}`parameterObject` = {}", KConstant.LT_SQL_PARAM, sqlId, KLogLayout.LINE, KConstant.LT_SQL_PARAM, sqlFile, sqlId, KLogLayout.LINE, KStringUtil.toJson(parameterObject));
 						}
 					}
-				} // -- parameterObject 로깅
+				}
 				
 				// paging 여부 확인
 				TSqlType sqlType = null;
@@ -136,8 +136,8 @@ public class ComSqlInterceptor implements Interceptor {
 					} else {
 						sqlType = TSqlType.ORIGIN_SQL;
 					}
-				} // -- paging 여부 확인
-
+				}
+				
 				// prepareStatment 생성
 				{
 					if (!isPaging) {
@@ -156,13 +156,11 @@ public class ComSqlInterceptor implements Interceptor {
 						invocation.getArgs()[0] = pstmt;
 					}
 				}
-				// -- prepareStatment 생성
 				
+				// param-sql 로깅
 				if (!isComSql || isLoggableSql) {
 					paramSql = KSqlUtil.createParamSql(parameterObject, mappedStatement, sqlType);
 				}
-				
-				// -- origin-sql 생성 및 로깅
 				break;
 			case SCHEDULE:
 			case SYSTEM:
@@ -172,13 +170,26 @@ public class ComSqlInterceptor implements Interceptor {
 					if (isLoggableSql) {
 						KLogSql.info("{} `{}` {}{} `{}` `{}` {}{}", KConstant.LT_SQL_PARAM, sqlId, KLogLayout.LINE, KConstant.LT_SQL_PARAM, sqlFile, sqlId, KLogLayout.LINE, KStringUtil.toJson(parameterObject));
 					}
-				} // -- parameterObject 로깅
-
-				// origin-sql 생성 및 로깅
+				}
+				
+				// prepareStatment 생성
+				{
+					PreparedStatement pstmt = null;
+					connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
+					{
+						sql = KSqlUtil.removeForeachIndex(boundSql);
+						sql = KSqlUtil.insertSqlId(sql, sqlId);
+						pstmt = connection.prepareStatement(sql);
+						int startBindingIndex = 1;
+						KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startBindingIndex);
+					}
+					invocation.getArgs()[0] = pstmt;
+				}
+				
+				// param-sql 로깅
 				if (isLoggableSql) {
 					paramSql = KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.ORIGIN_SQL);
 				}
-				// -- origin-sql 생성 및 로깅
 				break;
 			}
 		}
@@ -221,8 +232,7 @@ public class ComSqlInterceptor implements Interceptor {
 					}
 					elapsedTime = stopWatch.getTotalTimeSeconds();
 				}
-				// paging 으로 처리되었을 경우에는 connection 이 null 이 아니며, 반드시 `connection.close()` 를 해야합니다.
-				// paging 처리 과정에는 새로운 connection 객체를 얻고 preparedStatement 가 생성됩니다.
+				
 				if (invocation.getArgs().length > 0 && invocation.getArgs()[0] instanceof java.sql.PreparedStatement) {
 					java.sql.PreparedStatement stmt = (java.sql.PreparedStatement) invocation.getArgs()[0];
 					if (stmt != null) {

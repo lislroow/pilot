@@ -125,7 +125,7 @@ public class KSqlUtil {
 		String paramSql = boundSql.getSql();
 		String sqlId = mappedStatement.getId();
 		String sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
-		// -- 준비
+		
 		
 		// param-sql 생성
 		{
@@ -195,7 +195,7 @@ public class KSqlUtil {
 			} catch(Exception e) {
 				KLogSql.error(String.format("param-sql을 생성하는 중 오류가 발생했습니다. `%s`", sqlId), e);
 			}
-		} // -- param-sql 생성
+		}
 		
 		
 		// param-sql 로깅
@@ -203,7 +203,7 @@ public class KSqlUtil {
 			paramSql = paramSql.replaceAll("\n    ", "\n");
 			switch(paramSqlType) {
 			case ORIGIN_SQL:
-				paramSql = KSqlUtil.insertSqlId(paramSql, "(origin-sql) "+sqlId);
+				paramSql = KSqlUtil.insertSqlId(paramSql, TSqlType.ORIGIN_SQL.code() + " " + sqlId);
 				KLogSql.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL, sqlId, KLogLayout.LINE, KConstant.LT_SQL, sqlFile, sqlId, KLogLayout.LINE, paramSql);
 				break;
 			case PAGING_SQL:
@@ -211,7 +211,7 @@ public class KSqlUtil {
 					KCmmVO vo = (KCmmVO) parameterObject;
 					paramSql = paramSql.replaceAll("\n", "\n  ");
 					paramSql = String.format(KSqlUtil.PAGING_SQL, paramSql);
-					paramSql = KSqlUtil.insertSqlId(paramSql, "(paging-sql) "+sqlId);
+					paramSql = KSqlUtil.insertSqlId(paramSql, TSqlType.PAGING_SQL.code() + " " + sqlId);
 					paramSql = paramSql.replaceFirst("\\?", vo.get_rowcount()+"")
 							.replaceFirst("\\?", vo.get_startrow()+"")
 							.replaceFirst("\\?", vo.get_endrow()+"");
@@ -219,7 +219,7 @@ public class KSqlUtil {
 					Map map = (Map) parameterObject;
 					paramSql = paramSql.replaceAll("\n", "\n  ");
 					paramSql = String.format(KSqlUtil.PAGING_SQL, paramSql);
-					paramSql = KSqlUtil.insertSqlId(paramSql, "(paging-sql) "+sqlId);
+					paramSql = KSqlUtil.insertSqlId(paramSql, TSqlType.PAGING_SQL.code() + " " + sqlId);
 					paramSql = paramSql.replaceFirst("\\?", KStringUtil.nvl(map.get("_rowcount")))
 							.replaceFirst("\\?", KStringUtil.nvl(map.get("_startrow")))
 							.replaceFirst("\\?", KStringUtil.nvl(map.get("_endrow")));
@@ -240,14 +240,12 @@ public class KSqlUtil {
 				break;
 			}
 		}
-		// -- param-sql 로깅
 		
 		// param-sql 저장
 		{
 			// 예외 발생 시 시스템 로깅 및 응답에 포함시키기 위해 저장함
 			KContext.set(AttrKey.SQL_TEXT, KStringUtil.replaceWhiteSpace(paramSql));
 		}
-		// -- param-sql 저장
 		
 		return paramSql;
 	}

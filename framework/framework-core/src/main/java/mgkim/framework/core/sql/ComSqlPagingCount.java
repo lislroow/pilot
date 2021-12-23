@@ -40,44 +40,28 @@ public class ComSqlPagingCount {
 		PreparedStatementHandler pstmtHandler = (PreparedStatementHandler) proxyDelegate.get(sHandler);
 		MappedStatement mappedStatement = (MappedStatement) proxyMappedStatement.get(pstmtHandler);
 		BoundSql boundSql = sHandler.getBoundSql();
-		//Configuration configuration = mappedStatement.getConfiguration();
 		String sqlId = mappedStatement.getId();
-		//String sqlFile = KSqlUtil.getRelativePath(mappedStatement);
 		Object parameterObject = sHandler.getParameterHandler().getParameterObject();
-		// -- count-sql 실행 준비
-
+		
 		// 반환값 준비
 		Integer count = null;
-		// -- 반환값 준비
-
+		
 		// 로깅 준비
-		//boolean isDebugMode = KContext.isDebugMode();
 		boolean isLoggableSql = KLogSql.isLoggableSql(sqlId);
 		boolean isVerboss = KConfig.VERBOSS_ALL || KConfig.VERBOSS_SQL;
-		{
-
-		}
-		// -- 로깅 준비
-
+		
 		// count-sql 로깅
-		{
-			if (isLoggableSql) {
-				if (!isVerboss) {
-				} else {
-					KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.COUNT_SQL1);
-				}
-			}
-		} // -- count-sql 로깅
-
+		if (isLoggableSql || isVerboss) {
+			KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.COUNT_SQL1);
+		}
+		
 		// count-sql 실행
 		{
 			Connection connection = null;
 			String sql = null;
 			PreparedStatement pstmt = null;
 			connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
-			//List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
-			//TypeHandler _typeHandler = null;
-
+			
 			// prepareStatment 생성
 			{
 				sql = KSqlUtil.removeForeachIndex(boundSql);
@@ -87,7 +71,6 @@ public class ComSqlPagingCount {
 				int startBindingIndex = 1;
 				KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startBindingIndex);
 			}
-			// -- prepareStatment 생성
 			
 			ResultSet rs = null;
 			try {
@@ -113,11 +96,10 @@ public class ComSqlPagingCount {
 				}
 			}
 		}
-		// -- count-sql 실행
-
+		
 		return count;
 	}
-
+	
 	public Integer countSql2(Invocation invocation) throws Exception {
 		// count-sql 실행 준비
 		StatementHandler statementHandler = (StatementHandler) invocation.getTarget();
@@ -126,13 +108,10 @@ public class ComSqlPagingCount {
 		Configuration configuration = mappedStatement.getConfiguration();
 		String sqlId = mappedStatement.getId();
 		String sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
-		//TypeHandlerRegistry typeHandlerRegistry = mappedStatement.getConfiguration().getTypeHandlerRegistry();
 		Object parameterObject = statementHandler.getParameterHandler().getParameterObject();
-		// -- count-sql 실행 준비
 		
 		// 반환값 준비
 		Integer count = null;
-		// -- 반환값 준비
 		
 		// count-sql 존재여부 확인
 		{
@@ -155,10 +134,8 @@ public class ComSqlPagingCount {
 				return count; // count-sql 이 존재하지 않을 경우 `null` 을 반환
 			}
 		}
-		// -- count-sql 존재여부 확인
 		
 		// 로깅 준비
-		//boolean isDebugMode = KContext.isDebugMode();
 		boolean isLoggableSql = KLogSql.isLoggableSql(sqlId);
 		boolean isVerboss = KConfig.VERBOSS_ALL || KConfig.VERBOSS_SQL;
 		{
@@ -168,17 +145,11 @@ public class ComSqlPagingCount {
 			KContext.set(AttrKey.SQL_ID, sqlId);
 			KContext.set(AttrKey.SQL_FILE, sqlFile);
 		}
-		// -- 로깅 준비
 		
 		// count-sql 로깅
-		{
-			if (isLoggableSql) {
-				if (!isVerboss) {
-				} else {
-					KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.COUNT_SQL2);
-				}
-			}
-		} // -- count-sql 로깅
+		if (isLoggableSql || isVerboss) {
+			KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.COUNT_SQL2);
+		}
 		
 		// count-sql 실행
 		{
@@ -199,7 +170,6 @@ public class ComSqlPagingCount {
 					int startBindingIndex = 1;
 					KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startBindingIndex);
 				}
-				// -- prepareStatment 생성
 				
 				rs = pstmt.executeQuery();
 				if (rs.next()) {
@@ -223,7 +193,6 @@ public class ComSqlPagingCount {
 				}
 			}
 		}
-		// -- count-sql 실행
 		
 		return count;
 	}
