@@ -72,25 +72,22 @@ public class ComSqlPagingCount {
 		// count-sql 실행
 		{
 			Connection connection = null;
-			String countSql = null;
+			String sql = null;
 			PreparedStatement pstmt = null;
 			connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
 			//List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
 			//TypeHandler _typeHandler = null;
-			
-			// mybatis foreach 문
+
+			// prepareStatment 생성
 			{
-				String originSql = KSqlUtil.removeForeachIndex(boundSql);
-				countSql = String.format(KSqlUtil.COUNT_SQL, originSql);
-				countSql = KSqlUtil.insertSqlId(countSql, TSqlType.COUNT_SQL1.code() + " " + sqlId);
-				pstmt = connection.prepareStatement(countSql);
+				sql = KSqlUtil.removeForeachIndex(boundSql);
+				sql = String.format(KSqlUtil.COUNT_SQL, sql);
+				sql = KSqlUtil.insertSqlId(sql, TSqlType.COUNT_SQL1.code() + " " + sqlId);
+				pstmt = connection.prepareStatement(sql);
+				int startBindingIndex = 1;
+				KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startBindingIndex);
 			}
-			// -- mybatis foreach 문
-			
-			// origin 파라미터 binding
-			int startBindingIndex = 1;
-			KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startBindingIndex);
-			// -- origin 파라미터 binding
+			// -- prepareStatment 생성
 			
 			ResultSet rs = null;
 			try {
@@ -189,23 +186,20 @@ public class ComSqlPagingCount {
 			PreparedStatement pstmt = null;
 			ResultSet rs = null;
 			try {
-				String countSql = mappedStatement.getBoundSql(parameterObject).getSql();
+				String sql = mappedStatement.getBoundSql(parameterObject).getSql();
 				List<ParameterMapping> parameterMappings = mappedStatement.getBoundSql(parameterObject).getParameterMappings();
 				connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
-				BoundSql boundSql = new BoundSql(configuration, countSql, parameterMappings, parameterObject);
+				BoundSql boundSql = new BoundSql(configuration, sql, parameterMappings, parameterObject);
 				
-				// mybatis foreach 문
+				// prepareStatment 생성
 				{
-					countSql = KSqlUtil.removeForeachIndex(boundSql);
-					countSql = KSqlUtil.insertSqlId(countSql, TSqlType.COUNT_SQL2.code() + " " + sqlId);
-					pstmt = connection.prepareStatement(countSql);
+					sql = KSqlUtil.removeForeachIndex(boundSql);
+					sql = KSqlUtil.insertSqlId(sql, TSqlType.COUNT_SQL2.code() + " " + sqlId);
+					pstmt = connection.prepareStatement(sql);
+					int startBindingIndex = 1;
+					KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startBindingIndex);
 				}
-				// -- mybatis foreach 문
-				
-				// origin 파라미터 binding
-				int startBindingIndex = 1;
-				KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startBindingIndex);
-				// -- origin 파라미터 binding
+				// -- prepareStatment 생성
 				
 				rs = pstmt.executeQuery();
 				if (rs.next()) {

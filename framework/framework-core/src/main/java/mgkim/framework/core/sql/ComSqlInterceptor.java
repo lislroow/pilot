@@ -77,7 +77,7 @@ public class ComSqlInterceptor implements Interceptor {
 		MappedStatement mappedStatement = (MappedStatement) proxyMappedStatement.get(pstmtHandler);
 		BoundSql boundSql = sHandler.getBoundSql();
 		String sqlId = mappedStatement.getId();
-		String originSql = boundSql.getSql();
+		String sql = boundSql.getSql();
 		String sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
 		Object parameterObject = sHandler.getParameterHandler().getParameterObject();
 		// -- sql 실행 준비
@@ -141,17 +141,22 @@ public class ComSqlInterceptor implements Interceptor {
 						sqlType = TSqlType.ORIGIN_SQL;
 					}
 				} // -- paging 여부 확인
-				
-				
-				// paging 처리
+
+				// prepareStatment 생성
 				{
-					if (isPaging) {
-						PreparedStatement pstmt = comSqlPagingList.preparePaging(invocation);
+					if (!isPaging) {
+						PreparedStatement pstmt = null;
+						connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
+						{
+							sql = KSqlUtil.removeForeachIndex(boundSql);
+							sql = KSqlUtil.insertSqlId(sql, sqlId);
+							pstmt = connection.prepareStatement(sql);
+							int startBindingIndex = 1;
+							KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startBindingIndex);
+						}
 						invocation.getArgs()[0] = pstmt;
-					}
-					
-					// 파라미터 처리 후에는 반드시 아래 설정이 필요함
-					if (isPaging) {
+					} else {
+						PreparedStatement pstmt = comSqlPagingList.preparePaging(invocation);
 						KOutPageVO outPageVO = KContext.getT(AttrKey.OUT_PAGE);
 						if (KCmmVO.class.isInstance(parameterObject)) {
 							KCmmVO vo = (KCmmVO) parameterObject;
@@ -161,14 +166,15 @@ public class ComSqlInterceptor implements Interceptor {
 						} else {
 							throw new KSysException(KMessage.E8102, KCmmVO.class.getName());
 						}
+						invocation.getArgs()[0] = pstmt;
 					}
 				}
-				// -- paging 처리
-
+				// -- prepareStatment 생성
+				
 				if (!isComSql || isLoggableSql) {
 					paramSql = KSqlUtil.createParamSql(parameterObject, mappedStatement, sqlType);
 				}
-
+				
 				// -- origin-sql 생성 및 로깅
 				break;
 			case SCHEDULE:
@@ -191,29 +197,6 @@ public class ComSqlInterceptor implements Interceptor {
 		}
 		// -- paging 처리 및 sql 로깅
 		
-		
-		// (페이징이 아닐 경우) 새로운 orignal-sql로 `boundSql` 교체
-		{
-			if (!isPaging) {
-				connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
-				PreparedStatement pstmt = null;
-				
-				// mybatis foreach 문
-				{
-					originSql = KSqlUtil.removeForeachIndex(boundSql);
-					originSql = KSqlUtil.insertSqlId(originSql, sqlId);
-					pstmt = connection.prepareStatement(originSql);
-				}
-				// -- mybatis foreach 문
-				
-				// origin 파라미터 binding
-				int startBindingIndex = 1;
-				KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startBindingIndex);
-				// -- origin 파라미터 binding
-				
-				invocation.getArgs()[0] = pstmt;
-			}
-		}
 		
 		// sql 실행
 		int resultCount = -1;

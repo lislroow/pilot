@@ -101,7 +101,7 @@ public class ComSqlPagingList {
 		
 		
 		// 페이징 파라미터 설정
-		String pagingSql = null;
+		String sql = null;
 		PreparedStatement pstmt = null;
 		java.sql.Connection connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
 		DefaultParameterHandler parameterHandler = (DefaultParameterHandler)sHandler.getParameterHandler();
@@ -110,17 +110,13 @@ public class ComSqlPagingList {
 		TypeHandler _typeHandler = null;
 		org.apache.ibatis.session.Configuration configuration = mappedStatement.getConfiguration();
 		
-		// mybatis foreach 문
+		// prepareStatment 생성
 		{
-			String originSql = KSqlUtil.removeForeachIndex(boundSql);
-			pagingSql = String.format(KSqlUtil.PAGING_SQL, originSql);
-			pagingSql = KSqlUtil.insertSqlId(pagingSql, "(paging-sql) "+sqlId);
-			pstmt = connection.prepareStatement(pagingSql);
-		}
-		// -- mybatis foreach 문
-		
-		
-		{
+			sql = KSqlUtil.removeForeachIndex(boundSql);
+			sql = String.format(KSqlUtil.PAGING_SQL, sql);
+			sql = KSqlUtil.insertSqlId(sql, "(paging-sql) "+sqlId);
+			pstmt = connection.prepareStatement(sql);
+			
 			int parameterIndex = 1;
 			try {
 				// 첫번째 파라미터 binding (`_rowcount`)
@@ -147,6 +143,7 @@ public class ComSqlPagingList {
 				throw e;
 			}
 		}
+		// -- prepareStatment 생성
 		
 		return pstmt;
 	}
