@@ -52,7 +52,6 @@ public class KSqlUtil {
 	public static String removeForeachIndex(BoundSql boundSql) throws Exception {
 		String sql = boundSql.getSql();
 		List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
-
 		// mybatis foreach 문
 		{
 			if (parameterMappings != null) {
