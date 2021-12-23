@@ -213,46 +213,13 @@ public class ComSqlPagingCount {
 			}
 			// -- mybatis foreach 문
 			
+			// 실제 binding 파라미터 생성
+			int startBindingIndex = 1;
+			KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startBindingIndex);
+			// -- 실제 binding 파라미터 생성
+			
 			ResultSet rs = null;
 			try {
-				int parameterIndex = 1;
-				
-				// 실제 binding 파라미터 생성
-				if (parameterMappings != null) {
-					for (ParameterMapping _parameter : parameterMappings) {
-						if (_parameter.getMode() == ParameterMode.IN) {
-							Object value;
-							String propertyName = _parameter.getProperty();
-							
-							if (Pattern.matches("__frch_index_\\d+", propertyName)) {
-								continue;
-							}
-							
-							if (parameterObject == null) {
-								value = null;
-							} else if (boundSql.hasAdditionalParameter(propertyName)) { // propertyName.startsWith(ForEachSqlNode.ITEM_PREFIX) && 
-								value = boundSql.getAdditionalParameter(propertyName);
-							} else if (paramObject instanceof java.util.Map) {
-								value = ((Map)paramObject).get(propertyName);
-							} else {
-								value = KObjectUtil.getValue(paramObject, propertyName);
-							}
-							_typeHandler = _parameter.getTypeHandler();
-							JdbcType jdbcType = _parameter.getJdbcType();
-							if (value == null && jdbcType == null) {
-								jdbcType = configuration.getJdbcTypeForNull();
-							}
-							try {
-								_typeHandler.setParameter(pstmt, parameterIndex, value, jdbcType);
-								parameterIndex++;
-							} catch(Exception e) {
-								throw e;
-							}
-						}
-					}
-				}
-				// -- 실제 binding 파라미터 생성
-				
 				rs = pstmt.executeQuery();
 				if (rs.next()) {
 					count = rs.getInt(1);
