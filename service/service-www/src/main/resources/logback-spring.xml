@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration scan="true" scanPeriod="3 seconds">
+<configuration scan="true" scanPeriod="1 seconds">
 
 	<property name="LEVEL-root" value="info" />
 	<property name="LOG_PATH" value="/outlog/WAS/www" />
-	<property name="LOG_PATTERN" value="%-5level %d{yy-MM-dd HH:mm:ss}[%thread] [%logger{0}:%line] - %msg%n"/>
+	<property name="LOG_PATTERN" value="%d{yy-MM-dd HH:mm:ss}[%-5level][%thread][%logger:%line] ### %msg%n"/>
 
 	<appender name="CONSOLE-root" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
