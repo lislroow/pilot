@@ -67,7 +67,7 @@ public class ComSqlInterceptor implements Interceptor {
 			proxyMappedStatement.setAccessible(true);
 			proxyDelegate = RoutingStatementHandler.class.getDeclaredField("delegate");
 			proxyDelegate.setAccessible(true);
-
+			
 			comSqlPagingList = new ComSqlPagingList(proxyMappedStatement, proxyDelegate);
 		} catch(SecurityException e) {
 			throw new RuntimeException(e);

@@ -114,16 +114,12 @@ public class ComSqlPagingList {
 			KContext.set(AttrKey.OUT_PAGE, outPageVO);
 			
 			// count-sql 결과 로깅
-			if (!isVerboss) {
-			} else {
+			if (isVerboss) {
 				KLogSql.info("{} `{}` {}{} `{}` `{}` {}`rows` = {},  `elapsed` = {}(ms)", KConstant.LT_SQL_RESULT, sqlId, KLogLayout.LINE, KConstant.LT_SQL_RESULT, sqlFile, sqlId, KLogLayout.LINE, totalRecordCount, elapsedTime);
 			}
 		}
 		
-		
-		// 페이징 파라미터 설정
-		
-		
+		// paging-sql pstmt 생성
 		try {
 			connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
 			DefaultParameterHandler parameterHandler = (DefaultParameterHandler)statementHandler.getParameterHandler();
