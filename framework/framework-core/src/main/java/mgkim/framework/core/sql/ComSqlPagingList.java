@@ -2,6 +2,8 @@ package mgkim.framework.core.sql;
 
 import java.lang.reflect.Field;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.executor.statement.PreparedStatementHandler;
@@ -10,6 +12,10 @@ import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.ParameterMapping;
 import org.apache.ibatis.plugin.Invocation;
+import org.apache.ibatis.reflection.DefaultReflectorFactory;
+import org.apache.ibatis.reflection.MetaObject;
+import org.apache.ibatis.reflection.factory.DefaultObjectFactory;
+import org.apache.ibatis.reflection.wrapper.DefaultObjectWrapperFactory;
 import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
 import org.apache.ibatis.type.IntegerTypeHandler;
 import org.apache.ibatis.type.JdbcType;
@@ -48,6 +54,7 @@ public class ComSqlPagingList {
 	public PreparedStatement preparePaging(Invocation invocation) throws Throwable {
 		// 실행 준비
 		StatementHandler sHandler = (StatementHandler) invocation.getTarget();
+		MetaObject sHandlerMetaObject = MetaObject.forObject(sHandler, new DefaultObjectFactory(), new DefaultObjectWrapperFactory(), new DefaultReflectorFactory());
 		PreparedStatementHandler pstmtHandler = (PreparedStatementHandler) proxyDelegate.get(sHandler);
 		MappedStatement mappedStatement = (MappedStatement) proxyMappedStatement.get(pstmtHandler);
 		BoundSql boundSql = sHandler.getBoundSql();
@@ -125,30 +132,39 @@ public class ComSqlPagingList {
 				sql = String.format(KSqlUtil.PAGING_SQL, sql);
 				sql = KSqlUtil.insertSqlId(sql, TSqlType.PAGING_SQL.code() + " " +sqlId);
 				sql = KStringUtil.replaceEmptyLine(sql);
+				sHandlerMetaObject.setValue("delegate.boundSql.sql", sql);
+				
 				pstmt = connection.prepareStatement(sql);
 				
 				int parameterIndex = 1;
 				try {
+					List<ParameterMapping> list = new ArrayList<ParameterMapping>();
 					// 첫번째 파라미터 binding (`_rowcount`)
 					_parameter = new ParameterMapping.Builder(configuration, "_rowcount", new IntegerTypeHandler()).javaType(java.lang.Integer.class).jdbcType(JdbcType.INTEGER).build();
+					list.add(_parameter);
 					_typeHandler = _parameter.getTypeHandler();
 					_typeHandler.setParameter(pstmt, parameterIndex++, outPageVO.getRowcount(), _parameter.getJdbcType());
 					// -- 첫번째 파라미터 binding (`_rowcount`)
 					
 					// origin 파라미터 binding
 					int startIndex = parameterIndex;
+					list.addAll(boundSql.getParameterMappings());
 					parameterIndex = KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startIndex);
 					// -- origin 파라미터 binding
 					
 					// 두번째, 세번째 파라미터 binding (BETWEEN `_startrow` AND `_endrow`)
 					_parameter = new ParameterMapping.Builder(configuration, "_startrow", new IntegerTypeHandler()).javaType(java.lang.Integer.class).jdbcType(JdbcType.INTEGER).build();
+					list.add(_parameter);
 					_typeHandler = _parameter.getTypeHandler();
 					_typeHandler.setParameter(pstmt, parameterIndex++, outPageVO.getStartrow(), _parameter.getJdbcType());
 					
 					_parameter = new ParameterMapping.Builder(configuration, "_endrow", new IntegerTypeHandler()).javaType(java.lang.Integer.class).jdbcType(JdbcType.INTEGER).build();
+					list.add(_parameter);
 					_typeHandler = _parameter.getTypeHandler();
 					_typeHandler.setParameter(pstmt, parameterIndex++, outPageVO.getEndrow(), _parameter.getJdbcType());
 					// -- 두번째, 세번째 파라미터 binding (BETWEEN `_startrow` AND `_endrow`)
+					
+					sHandlerMetaObject.setValue("delegate.boundSql.parameterMappings", list);
 				} catch (Exception e) {
 					throw e;
 				}

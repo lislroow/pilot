@@ -14,6 +14,10 @@ import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.ParameterMapping;
 import org.apache.ibatis.plugin.Invocation;
+import org.apache.ibatis.reflection.DefaultReflectorFactory;
+import org.apache.ibatis.reflection.MetaObject;
+import org.apache.ibatis.reflection.factory.DefaultObjectFactory;
+import org.apache.ibatis.reflection.wrapper.DefaultObjectWrapperFactory;
 import org.apache.ibatis.session.Configuration;
 
 import mgkim.framework.core.env.KContext;
@@ -35,6 +39,7 @@ public class ComSqlPagingCount {
 	public Integer countSql1(Invocation invocation) throws Exception {
 		// count-sql 실행 준비
 		StatementHandler sHandler = (StatementHandler) invocation.getTarget();
+		MetaObject sHandlerMetaObject = MetaObject.forObject(sHandler, new DefaultObjectFactory(), new DefaultObjectWrapperFactory(), new DefaultReflectorFactory());
 		PreparedStatementHandler pstmtHandler = (PreparedStatementHandler) proxyDelegate.get(sHandler);
 		MappedStatement mappedStatement = (MappedStatement) proxyMappedStatement.get(pstmtHandler);
 		BoundSql boundSql = sHandler.getBoundSql();
@@ -48,6 +53,9 @@ public class ComSqlPagingCount {
 		
 		// 반환값 준비
 		Integer count = null;
+		
+		// (주의) 반드시 finally 에서 originSql 을 boundSql 에 set 할 것
+		String originSql = boundSql.getSql();
 		
 		try {
 			// count-sql 실행
@@ -63,6 +71,7 @@ public class ComSqlPagingCount {
 					pstmt = connection.prepareStatement(sql);
 					int startIndex = 1;
 					KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startIndex);
+					sHandlerMetaObject.setValue("delegate.boundSql.sql", sql);
 				}
 				
 				try {
@@ -71,13 +80,16 @@ public class ComSqlPagingCount {
 						count = rs.getInt(1);
 					}
 				} catch(Exception ex) {
-					KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.COUNT_SQL1);
+					KSqlUtil.createParamSql(parameterObject, sHandler, TSqlType.COUNT_SQL1);
 					throw ex;
 				}
 			}
 		} catch (Exception e) {
 			throw e;
 		} finally {
+			// (주의) 반드시 finally 에서 originSql 을 boundSql 에 set 할 것
+			sHandlerMetaObject.setValue("delegate.boundSql.sql", originSql);
+			
 			if (rs != null) {
 				rs.close();
 			}
@@ -93,13 +105,15 @@ public class ComSqlPagingCount {
 	
 	public Integer countSql2(Invocation invocation) throws Exception {
 		// count-sql 실행 준비
-		StatementHandler statementHandler = (StatementHandler) invocation.getTarget();
-		PreparedStatementHandler preparedStatementHandler = (PreparedStatementHandler) proxyDelegate.get(statementHandler);
+		StatementHandler sHandler = (StatementHandler) invocation.getTarget();
+		MetaObject sHandlerMetaObject = MetaObject.forObject(sHandler, new DefaultObjectFactory(), new DefaultObjectWrapperFactory(), new DefaultReflectorFactory());
+		PreparedStatementHandler preparedStatementHandler = (PreparedStatementHandler) proxyDelegate.get(sHandler);
 		MappedStatement mappedStatement = (MappedStatement) proxyMappedStatement.get(preparedStatementHandler);
+		BoundSql boundSql = sHandler.getBoundSql();
 		Configuration configuration = mappedStatement.getConfiguration();
 		String sqlId = mappedStatement.getId();
 		String sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
-		Object parameterObject = statementHandler.getParameterHandler().getParameterObject();
+		Object parameterObject = sHandler.getParameterHandler().getParameterObject();
 		
 		// closable 객체
 		Connection connection = null;
@@ -109,33 +123,35 @@ public class ComSqlPagingCount {
 		// 반환값 준비
 		Integer count = null;
 		
+		// (주의) 반드시 finally 에서 originSql 을 boundSql 에 set 할 것
+		String originSql = boundSql.getSql();
+		
 		try {
 			// count-sql 존재여부 확인
+			MappedStatement countMappedStatement = null;
 			{
 				Set<MappedStatement> mappedStatementList = KSqlContext.MAPPED_STATEMENT_LIST;
 				Iterator<MappedStatement> iter = mappedStatementList.iterator();
-				boolean isFound = false;
 				while (iter.hasNext()) {
 					Object obj = iter.next();
 					if (obj instanceof MappedStatement) {
 						MappedStatement ms = (MappedStatement)obj;
 						if (ms.getId().equals(sqlId+"-count")) {
-							isFound = true;
-							mappedStatement = ms;
+							countMappedStatement = ms;
 							break;
 						}
 					}
 				}
 				
-				if (!isFound) {
+				if (countMappedStatement == null) {
 					return count; // count-sql 이 존재하지 않을 경우 `null` 을 반환
 				}
 			}
 			
 			// 로깅 준비
 			{
-				sqlId = mappedStatement.getId();
-				sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
+				sqlId = countMappedStatement.getId();
+				sqlFile = KSqlUtil.getRelativePath(countMappedStatement.getResource());
 				
 				KContext.set(AttrKey.SQL_ID, sqlId);
 				KContext.set(AttrKey.SQL_FILE, sqlFile);
@@ -144,18 +160,25 @@ public class ComSqlPagingCount {
 			// count-sql 실행
 			{
 				try {
-					String sql = mappedStatement.getBoundSql(parameterObject).getSql();
-					List<ParameterMapping> parameterMappings = mappedStatement.getBoundSql(parameterObject).getParameterMappings();
-					connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
-					BoundSql boundSql = new BoundSql(configuration, sql, parameterMappings, parameterObject);
+					// (주의) 반드시 finally 에서 originSql 을 boundSql 에 set 할 것
+					String countSql = countMappedStatement.getBoundSql(parameterObject).getSql();
+					
+					// (주의) 반드시 finally 에서 mappedStatement 을 mappedStatement 에 set 할 것
+					sHandlerMetaObject.setValue("delegate.mappedStatement", countMappedStatement);
+					
+					List<ParameterMapping> parameterMappings = countMappedStatement.getBoundSql(parameterObject).getParameterMappings();
+					connection = countMappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
+					boundSql = new BoundSql(configuration, countSql, parameterMappings, parameterObject);
 					
 					// prepareStatment 생성
 					{
+						String sql = null;
 						sql = KSqlUtil.removeForeachIndex(boundSql);
 						sql = KSqlUtil.insertSqlId(sql, TSqlType.COUNT_SQL2.code() + " " + sqlId);
 						pstmt = connection.prepareStatement(sql);
 						int startIndex = 1;
 						KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startIndex);
+						sHandlerMetaObject.setValue("delegate.boundSql.sql", sql);
 					}
 					
 					rs = pstmt.executeQuery();
@@ -163,13 +186,19 @@ public class ComSqlPagingCount {
 						count = rs.getInt(1);
 					}
 				} catch(Exception ex) {
-					KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.COUNT_SQL2);
+					KSqlUtil.createParamSql(parameterObject, sHandler, TSqlType.COUNT_SQL2);
 					throw ex;
 				}
 			}
 		} catch (Exception e) {
 			throw e;
 		} finally {
+			// (주의) 반드시 finally 에서 originSql 을 boundSql 에 set 할 것
+			sHandlerMetaObject.setValue("delegate.boundSql.sql", originSql);
+			
+			// (주의) 반드시 finally 에서 mappedStatement 을 mappedStatement 에 set 할 것
+			sHandlerMetaObject.setValue("delegate.mappedStatement", mappedStatement);
+			
 			if (rs != null) {
 				rs.close();
 			}

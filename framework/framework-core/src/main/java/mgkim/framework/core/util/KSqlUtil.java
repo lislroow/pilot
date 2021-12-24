@@ -7,10 +7,15 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.ParameterMapping;
 import org.apache.ibatis.mapping.ParameterMode;
+import org.apache.ibatis.reflection.DefaultReflectorFactory;
+import org.apache.ibatis.reflection.MetaObject;
+import org.apache.ibatis.reflection.factory.DefaultObjectFactory;
+import org.apache.ibatis.reflection.wrapper.DefaultObjectWrapperFactory;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
 
@@ -27,8 +32,8 @@ import mgkim.framework.core.type.TSqlType;
 
 public class KSqlUtil {
 
-	public static final String COUNT_SQL = "SELECT COUNT(*) \n  FROM (\n  %s\n) TB";
-	public static final String PAGING_SQL = "SELECT * \n  FROM (SELECT rownum rn, (?+1)-rownum rnum, TB.* FROM (\n    %s\n  ) TB\n) WHERE rn BETWEEN ? AND ?";
+	public static String COUNT_SQL = "SELECT COUNT(*) \n  FROM (\n  %s\n) TB";
+	public static String PAGING_SQL = "SELECT * \n  FROM (SELECT rownum rn, (?+1)-rownum rnum, TB.* FROM (\n    %s\n  ) TB\n) WHERE rn BETWEEN ? AND ?";
 
 	public static final int PAGING_RECORD_COUNT_PER_PAGE = 10;
 	public static final int PAGING_PAGE_SIZE = 10;
@@ -86,6 +91,7 @@ public class KSqlUtil {
 					Object value;
 					String propertyName = _parameter.getProperty();
 					
+					// (중요) foreach 문의 `index` 변수는 `removeForeachIndex(BoundSql boundSql)` 에서 제거됨
 					if (Pattern.matches("__frch_index_\\d+", propertyName)) {
 						continue;
 					}
@@ -118,13 +124,14 @@ public class KSqlUtil {
 		return parameterIndex;
 	}
 	
-	public static String createParamSql(Object parameterObject, MappedStatement mappedStatement, TSqlType paramSqlType) throws Exception {
+	public static String createParamSql(Object parameterObject, StatementHandler sHandler, TSqlType paramSqlType) throws Exception {
 		// 준비
-		BoundSql boundSql = mappedStatement.getBoundSql(parameterObject);
+		MetaObject sHandlerMetaObject = MetaObject.forObject(sHandler, new DefaultObjectFactory(), new DefaultObjectWrapperFactory(), new DefaultReflectorFactory());
+		MappedStatement mappedStatement = (MappedStatement) sHandlerMetaObject.getValue("delegate.mappedStatement");
+		BoundSql boundSql = (BoundSql) sHandlerMetaObject.getValue("delegate.boundSql");
 		String sql = boundSql.getSql();
 		String sqlId = mappedStatement.getId();
 		String sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
-		
 		
 		// param-sql 생성
 		{
@@ -148,6 +155,11 @@ public class KSqlUtil {
 						
 						if (boundSql.hasAdditionalParameter(propertyName)) {
 							// foreach 내부 index 변수는 Integer 형으로 반환됨
+							
+							// (중요) foreach 문의 `index` 변수는 `removeForeachIndex(BoundSql boundSql)` 에서 제거됨
+							if (Pattern.matches("__frch_index_\\d+", propertyName)) {
+								continue;
+							}
 							value = boundSql.getAdditionalParameter(propertyName);
 						} else {
 							value = map.get(propertyName);
@@ -171,6 +183,11 @@ public class KSqlUtil {
 						ParameterMapping _parameter = parameterMappings.get(i);
 						String propertyName = _parameter.getProperty();
 						String value = null;
+						
+						if (Pattern.matches("__frch_index_\\d+", propertyName)) {
+							continue;
+						}
+						
 						if (boundSql.hasAdditionalParameter(propertyName)) {
 							// foreach 내부 index 변수는 Integer 형으로 반환됨
 							Object obj = boundSql.getAdditionalParameter(propertyName);
@@ -244,6 +261,7 @@ public class KSqlUtil {
 		
 		// param-sql 저장
 		{
+			sHandlerMetaObject.setValue("delegate.boundSql.sql", sql);
 			// 예외 발생 시 시스템 로깅 및 응답에 포함시키기 위해 저장함
 			KContext.set(AttrKey.SQL_TEXT, KStringUtil.replaceWhiteSpace(sql));
 		}
