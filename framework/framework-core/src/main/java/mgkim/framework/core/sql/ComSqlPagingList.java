@@ -123,7 +123,6 @@ public class ComSqlPagingList {
 		
 		// 페이징 파라미터 설정
 		
-		String sql = null;
 		
 		try {
 			connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
@@ -135,7 +134,7 @@ public class ComSqlPagingList {
 			
 			// prepareStatment 생성
 			{
-				sql = KSqlUtil.removeForeachIndex(boundSql);
+				String sql = KSqlUtil.removeForeachIndex(boundSql);
 				sql = String.format(KSqlUtil.PAGING_SQL, sql);
 				sql = KSqlUtil.insertSqlId(sql, TSqlType.PAGING_SQL.code() + " " +sqlId);
 				sql = KStringUtil.replaceEmptyLine(sql);

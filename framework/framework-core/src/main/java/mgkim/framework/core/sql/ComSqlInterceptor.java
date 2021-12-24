@@ -85,7 +85,6 @@ public class ComSqlInterceptor implements Interceptor {
 		MappedStatement mappedStatement = (MappedStatement) proxyMappedStatement.get(pstmtHandler);
 		BoundSql boundSql = statementHandler.getBoundSql();
 		String sqlId = mappedStatement.getId();
-		String originSql = boundSql.getSql();
 		String sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
 		Object parameterObject = statementHandler.getParameterHandler().getParameterObject();
 		
@@ -155,12 +154,12 @@ public class ComSqlInterceptor implements Interceptor {
 					if (!isPaging) {
 						connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
 						{
-							originSql = KSqlUtil.removeForeachIndex(boundSql);
-							originSql = KSqlUtil.insertSqlId(originSql, sqlId);
-							pstmt = connection.prepareStatement(originSql);
+							String sql = KSqlUtil.removeForeachIndex(boundSql);
+							sql = KSqlUtil.insertSqlId(sql, sqlId);
+							pstmt = connection.prepareStatement(sql);
 							int startIndex = 1;
 							KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startIndex);
-							sHandlerMetaObject.setValue("delegate.boundSql.sql", originSql);
+							sHandlerMetaObject.setValue("delegate.boundSql.sql", sql);
 						}
 						invocation.getArgs()[0] = pstmt;
 					} else {
@@ -187,12 +186,12 @@ public class ComSqlInterceptor implements Interceptor {
 					{
 						connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
 						{
-							originSql = KSqlUtil.removeForeachIndex(boundSql);
-							originSql = KSqlUtil.insertSqlId(originSql, sqlId);
-							pstmt = connection.prepareStatement(originSql);
+							String sql = KSqlUtil.removeForeachIndex(boundSql);
+							sql = KSqlUtil.insertSqlId(sql, sqlId);
+							pstmt = connection.prepareStatement(sql);
 							int startIndex = 1;
 							KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startIndex);
-							sHandlerMetaObject.setValue("delegate.boundSql.sql", originSql);
+							sHandlerMetaObject.setValue("delegate.boundSql.sql", sql);
 						}
 						invocation.getArgs()[0] = pstmt;
 					}

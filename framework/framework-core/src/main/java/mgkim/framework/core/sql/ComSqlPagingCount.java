@@ -67,12 +67,11 @@ public class ComSqlPagingCount {
 		try {
 			// count-sql 실행
 			{
-				String sql = null;
 				connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
 				
 				// prepareStatment 생성
 				{
-					sql = KSqlUtil.removeForeachIndex(boundSql);
+					String sql = KSqlUtil.removeForeachIndex(boundSql);
 					sql = String.format(KSqlUtil.COUNT_SQL, sql);
 					sql = KSqlUtil.insertSqlId(sql, TSqlType.COUNT_SQL1.code() + " " + sqlId);
 					pstmt = connection.prepareStatement(sql);
@@ -179,8 +178,7 @@ public class ComSqlPagingCount {
 					
 					// prepareStatment 생성
 					{
-						String sql = null;
-						sql = KSqlUtil.removeForeachIndex(boundSql);
+						String sql = KSqlUtil.removeForeachIndex(boundSql);
 						sql = KSqlUtil.insertSqlId(sql, TSqlType.COUNT_SQL2.code() + " " + sqlId);
 						pstmt = connection.prepareStatement(sql);
 						int startIndex = 1;
