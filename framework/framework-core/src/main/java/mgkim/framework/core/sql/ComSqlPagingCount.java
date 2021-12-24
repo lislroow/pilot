@@ -68,8 +68,8 @@ public class ComSqlPagingCount {
 				sql = String.format(KSqlUtil.COUNT_SQL, sql);
 				sql = KSqlUtil.insertSqlId(sql, TSqlType.COUNT_SQL1.code() + " " + sqlId);
 				pstmt = connection.prepareStatement(sql);
-				int startBindingIndex = 1;
-				KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startBindingIndex);
+				int startIndex = 1;
+				KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startIndex);
 			}
 			
 			ResultSet rs = null;
@@ -167,8 +167,8 @@ public class ComSqlPagingCount {
 					sql = KSqlUtil.removeForeachIndex(boundSql);
 					sql = KSqlUtil.insertSqlId(sql, TSqlType.COUNT_SQL2.code() + " " + sqlId);
 					pstmt = connection.prepareStatement(sql);
-					int startBindingIndex = 1;
-					KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startBindingIndex);
+					int startIndex = 1;
+					KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startIndex);
 				}
 				
 				rs = pstmt.executeQuery();
