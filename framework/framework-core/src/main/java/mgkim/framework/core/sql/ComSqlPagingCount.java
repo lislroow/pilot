@@ -43,60 +43,65 @@ public class ComSqlPagingCount {
 		String sqlId = mappedStatement.getId();
 		Object parameterObject = sHandler.getParameterHandler().getParameterObject();
 		
+		// closable 객체
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
 		// 반환값 준비
 		Integer count = null;
 		
-		// 로깅 준비
-		boolean isLoggableSql = KLogSql.isLoggableSql(sqlId);
-		boolean isVerboss = KConfig.VERBOSS_ALL || KConfig.VERBOSS_SQL;
-		
-		// count-sql 로깅
-		if (isLoggableSql || isVerboss) {
-			KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.COUNT_SQL1);
-		}
-		
-		// count-sql 실행
-		{
-			Connection connection = null;
-			String sql = null;
-			PreparedStatement pstmt = null;
-			connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
+		try {
+			// 로깅 준비
+			boolean isLoggableSql = KLogSql.isLoggableSql(sqlId);
+			boolean isVerboss = KConfig.VERBOSS_ALL || KConfig.VERBOSS_SQL;
 			
-			// prepareStatment 생성
+			// count-sql 로깅
+			if (isLoggableSql || isVerboss) {
+				KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.COUNT_SQL1);
+			}
+			
+			// count-sql 실행
 			{
-				sql = KSqlUtil.removeForeachIndex(boundSql);
-				sql = String.format(KSqlUtil.COUNT_SQL, sql);
-				sql = KSqlUtil.insertSqlId(sql, TSqlType.COUNT_SQL1.code() + " " + sqlId);
-				pstmt = connection.prepareStatement(sql);
-				int startIndex = 1;
-				KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startIndex);
+				String sql = null;
+				connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
+				
+				// prepareStatment 생성
+				{
+					sql = KSqlUtil.removeForeachIndex(boundSql);
+					sql = String.format(KSqlUtil.COUNT_SQL, sql);
+					sql = KSqlUtil.insertSqlId(sql, TSqlType.COUNT_SQL1.code() + " " + sqlId);
+					pstmt = connection.prepareStatement(sql);
+					int startIndex = 1;
+					KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startIndex);
+				}
+				
+				try {
+					rs = pstmt.executeQuery();
+					if (rs.next()) {
+						count = rs.getInt(1);
+					}
+				} catch(Exception ex) {
+					if (!isVerboss) {
+						KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.COUNT_SQL1);
+					} else {
+					}
+					throw ex;
+				}
 			}
-			
-			ResultSet rs = null;
-			try {
-				rs = pstmt.executeQuery();
-				if (rs.next()) {
-					count = rs.getInt(1);
-				}
-			} catch(Exception ex) {
-				if (!isVerboss) {
-					KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.COUNT_SQL1);
-				} else {
-				}
-				throw ex;
-			} finally {
-				if (rs != null) {
-					rs.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (connection != null) {
-					connection.close();
-				}
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			if (pstmt != null) {
+				pstmt.close();
+			}
+			if (connection != null) {
+				connection.close();
 			}
 		}
-		
 		return count;
 	}
 	
@@ -110,90 +115,95 @@ public class ComSqlPagingCount {
 		String sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
 		Object parameterObject = statementHandler.getParameterHandler().getParameterObject();
 		
+		// closable 객체
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
 		// 반환값 준비
 		Integer count = null;
 		
-		// count-sql 존재여부 확인
-		{
-			Set<MappedStatement> mappedStatementList = KSqlContext.MAPPED_STATEMENT_LIST;
-			Iterator<MappedStatement> iter = mappedStatementList.iterator();
-			boolean isFound = false;
-			while (iter.hasNext()) {
-				Object obj = iter.next();
-				if (obj instanceof MappedStatement) {
-					MappedStatement ms = (MappedStatement)obj;
-					if (ms.getId().equals(sqlId+"-count")) {
-						isFound = true;
-						mappedStatement = ms;
-						break;
+		try {
+			// count-sql 존재여부 확인
+			{
+				Set<MappedStatement> mappedStatementList = KSqlContext.MAPPED_STATEMENT_LIST;
+				Iterator<MappedStatement> iter = mappedStatementList.iterator();
+				boolean isFound = false;
+				while (iter.hasNext()) {
+					Object obj = iter.next();
+					if (obj instanceof MappedStatement) {
+						MappedStatement ms = (MappedStatement)obj;
+						if (ms.getId().equals(sqlId+"-count")) {
+							isFound = true;
+							mappedStatement = ms;
+							break;
+						}
 					}
 				}
+				
+				if (!isFound) {
+					return count; // count-sql 이 존재하지 않을 경우 `null` 을 반환
+				}
 			}
 			
-			if (!isFound) {
-				return count; // count-sql 이 존재하지 않을 경우 `null` 을 반환
+			// 로깅 준비
+			boolean isLoggableSql = KLogSql.isLoggableSql(sqlId);
+			boolean isVerboss = KConfig.VERBOSS_ALL || KConfig.VERBOSS_SQL;
+			{
+				sqlId = mappedStatement.getId();
+				sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
+				
+				KContext.set(AttrKey.SQL_ID, sqlId);
+				KContext.set(AttrKey.SQL_FILE, sqlFile);
 			}
-		}
-		
-		// 로깅 준비
-		boolean isLoggableSql = KLogSql.isLoggableSql(sqlId);
-		boolean isVerboss = KConfig.VERBOSS_ALL || KConfig.VERBOSS_SQL;
-		{
-			sqlId = mappedStatement.getId();
-			sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
 			
-			KContext.set(AttrKey.SQL_ID, sqlId);
-			KContext.set(AttrKey.SQL_FILE, sqlFile);
-		}
-		
-		// count-sql 로깅
-		if (isLoggableSql || isVerboss) {
-			KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.COUNT_SQL2);
-		}
-		
-		// count-sql 실행
-		{
-			Connection connection = null;
-			PreparedStatement pstmt = null;
-			ResultSet rs = null;
-			try {
-				String sql = mappedStatement.getBoundSql(parameterObject).getSql();
-				List<ParameterMapping> parameterMappings = mappedStatement.getBoundSql(parameterObject).getParameterMappings();
-				connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
-				BoundSql boundSql = new BoundSql(configuration, sql, parameterMappings, parameterObject);
-				
-				// prepareStatment 생성
-				{
-					sql = KSqlUtil.removeForeachIndex(boundSql);
-					sql = KSqlUtil.insertSqlId(sql, TSqlType.COUNT_SQL2.code() + " " + sqlId);
-					pstmt = connection.prepareStatement(sql);
-					int startIndex = 1;
-					KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startIndex);
-				}
-				
-				rs = pstmt.executeQuery();
-				if (rs.next()) {
-					count = rs.getInt(1);
-				}
-			} catch(Exception ex) {
-				if (!isVerboss) {
-					KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.COUNT_SQL2);
-				} else {
-				}
-				throw ex;
-			} finally {
-				if (rs != null) {
-					rs.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (connection != null) {
-					connection.close();
+			// count-sql 로깅
+			if (isLoggableSql || isVerboss) {
+				KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.COUNT_SQL2);
+			}
+			
+			// count-sql 실행
+			{
+				try {
+					String sql = mappedStatement.getBoundSql(parameterObject).getSql();
+					List<ParameterMapping> parameterMappings = mappedStatement.getBoundSql(parameterObject).getParameterMappings();
+					connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
+					BoundSql boundSql = new BoundSql(configuration, sql, parameterMappings, parameterObject);
+					
+					// prepareStatment 생성
+					{
+						sql = KSqlUtil.removeForeachIndex(boundSql);
+						sql = KSqlUtil.insertSqlId(sql, TSqlType.COUNT_SQL2.code() + " " + sqlId);
+						pstmt = connection.prepareStatement(sql);
+						int startIndex = 1;
+						KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startIndex);
+					}
+					
+					rs = pstmt.executeQuery();
+					if (rs.next()) {
+						count = rs.getInt(1);
+					}
+				} catch(Exception ex) {
+					if (!isVerboss) {
+						KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.COUNT_SQL2);
+					} else {
+					}
+					throw ex;
 				}
 			}
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (rs != null) {
+				rs.close();
+			}
+			if (pstmt != null) {
+				pstmt.close();
+			}
+			if (connection != null) {
+				connection.close();
+			}
 		}
-		
 		return count;
 	}
 }
