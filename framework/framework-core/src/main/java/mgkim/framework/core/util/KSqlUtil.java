@@ -122,7 +122,7 @@ public class KSqlUtil {
 	public static String createParamSql(Object parameterObject, MappedStatement mappedStatement, TSqlType paramSqlType) throws Exception {
 		// 준비
 		BoundSql boundSql = mappedStatement.getBoundSql(parameterObject);
-		String paramSql = boundSql.getSql();
+		String sql = boundSql.getSql();
 		String sqlId = mappedStatement.getId();
 		String sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
 		
@@ -130,14 +130,14 @@ public class KSqlUtil {
 		// param-sql 생성
 		{
 			try {
-				paramSql = paramSql.replaceAll(PARAM_CHAR, PARAM_TEMP_CHAR);
+				sql = sql.replaceAll(PARAM_CHAR, PARAM_TEMP_CHAR);
 				if (parameterObject == null) {
-					paramSql = paramSql.replaceAll(PARAM_TEMP_CHAR, "null");
+					sql = sql.replaceAll(PARAM_TEMP_CHAR, "null");
 				} else if (parameterObject instanceof String) {
 					String value = String.format("'%s'", parameterObject);
 					// `value` 에 `정규식에서 사용되는 특수문자`를 제거 합니다.
 					String quoteStr = Matcher.quoteReplacement(value);
-					paramSql = Pattern.compile(PARAM_TEMP_CHAR).matcher(paramSql).replaceAll(quoteStr);
+					sql = Pattern.compile(PARAM_TEMP_CHAR).matcher(sql).replaceAll(quoteStr);
 				} else if (parameterObject instanceof Map) {
 					// Map 타입
 					Map map = ((Map)parameterObject); 
@@ -155,14 +155,14 @@ public class KSqlUtil {
 						}
 						
 						if (value == null) { 
-							paramSql = Pattern.compile(PARAM_TEMP_CHAR).matcher(paramSql).replaceFirst("null");
+							sql = Pattern.compile(PARAM_TEMP_CHAR).matcher(sql).replaceFirst("null");
 						} else if (String.class.isInstance(value)) {
 							// `value` 에 `정규식에서 사용되는 특수문자`를 제거 합니다.
 							String quoteStr = Matcher.quoteReplacement(KStringUtil.nvl(value));
 							quoteStr = String.format("'%s'", quoteStr);
-							paramSql = Pattern.compile(PARAM_TEMP_CHAR).matcher(paramSql).replaceFirst(quoteStr);
+							sql = Pattern.compile(PARAM_TEMP_CHAR).matcher(sql).replaceFirst(quoteStr);
 						} else {
-							paramSql = Pattern.compile(PARAM_TEMP_CHAR).matcher(paramSql).replaceFirst(KStringUtil.nvl(value));
+							sql = Pattern.compile(PARAM_TEMP_CHAR).matcher(sql).replaceFirst(KStringUtil.nvl(value));
 						}
 					}
 				} else {
@@ -189,9 +189,12 @@ public class KSqlUtil {
 						// `value` 에 `정규식에서 사용되는 특수문자`를 제거 합니다.
 						String quoteStr = Matcher.quoteReplacement(value);
 						// `value` 에 "$" 혹은 "\" 문자가 제거된 값으로 replace를 합니다.
-						paramSql = Pattern.compile(PARAM_TEMP_CHAR).matcher(paramSql).replaceFirst(quoteStr);
+						sql = Pattern.compile(PARAM_TEMP_CHAR).matcher(sql).replaceFirst(quoteStr);
 					}
 				}
+				
+				sql = KStringUtil.replaceEmptyLine(sql);
+				sql = sql.replaceAll("\n    ", "\n");
 			} catch(Exception e) {
 				KLogSql.error(String.format("param-sql을 생성하는 중 오류가 발생했습니다. `%s`", sqlId), e);
 			}
@@ -200,43 +203,42 @@ public class KSqlUtil {
 		
 		// param-sql 로깅
 		{
-			paramSql = paramSql.replaceAll("\n    ", "\n");
 			switch(paramSqlType) {
 			case ORIGIN_SQL:
-				paramSql = KSqlUtil.insertSqlId(paramSql, TSqlType.ORIGIN_SQL.code() + " " + sqlId);
-				KLogSql.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL, sqlId, KLogLayout.LINE, KConstant.LT_SQL, sqlFile, sqlId, KLogLayout.LINE, paramSql);
+				sql = KSqlUtil.insertSqlId(sql, TSqlType.ORIGIN_SQL.code() + " " + sqlId);
+				KLogSql.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL, sqlId, KLogLayout.LINE, KConstant.LT_SQL, sqlFile, sqlId, KLogLayout.LINE, sql);
 				break;
 			case PAGING_SQL:
 				if (KCmmVO.class.isInstance(parameterObject)) {
 					KCmmVO vo = (KCmmVO) parameterObject;
-					paramSql = paramSql.replaceAll("\n", "\n  ");
-					paramSql = String.format(KSqlUtil.PAGING_SQL, paramSql);
-					paramSql = KSqlUtil.insertSqlId(paramSql, TSqlType.PAGING_SQL.code() + " " + sqlId);
-					paramSql = paramSql.replaceFirst("\\?", vo.get_rowcount()+"")
+					sql = sql.replaceAll("\n", "\n  ");
+					sql = String.format(KSqlUtil.PAGING_SQL, sql);
+					sql = KSqlUtil.insertSqlId(sql, TSqlType.PAGING_SQL.code() + " " + sqlId);
+					sql = sql.replaceFirst("\\?", vo.get_rowcount()+"")
 							.replaceFirst("\\?", vo.get_startrow()+"")
 							.replaceFirst("\\?", vo.get_endrow()+"");
 				} else if (Map.class.isInstance(parameterObject)) {
 					Map map = (Map) parameterObject;
-					paramSql = paramSql.replaceAll("\n", "\n  ");
-					paramSql = String.format(KSqlUtil.PAGING_SQL, paramSql);
-					paramSql = KSqlUtil.insertSqlId(paramSql, TSqlType.PAGING_SQL.code() + " " + sqlId);
-					paramSql = paramSql.replaceFirst("\\?", KStringUtil.nvl(map.get("_rowcount")))
+					sql = sql.replaceAll("\n", "\n  ");
+					sql = String.format(KSqlUtil.PAGING_SQL, sql);
+					sql = KSqlUtil.insertSqlId(sql, TSqlType.PAGING_SQL.code() + " " + sqlId);
+					sql = sql.replaceFirst("\\?", KStringUtil.nvl(map.get("_rowcount")))
 							.replaceFirst("\\?", KStringUtil.nvl(map.get("_startrow")))
 							.replaceFirst("\\?", KStringUtil.nvl(map.get("_endrow")));
 				} else {
 					throw new KSysException(KMessage.E8102, KCmmVO.class.getName());
 				}
-				KLogSql.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL_PAING, sqlId, KLogLayout.LINE, KConstant.LT_SQL_PAING, sqlFile, sqlId, KLogLayout.LINE, paramSql);
+				KLogSql.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL_PAING, sqlId, KLogLayout.LINE, KConstant.LT_SQL_PAING, sqlFile, sqlId, KLogLayout.LINE, sql);
 				break;
 			case COUNT_SQL1:
-				paramSql = KSqlUtil.insertSqlId(paramSql, TSqlType.COUNT_SQL1.code() + " " + sqlId);
-				KLogSql.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL_COUNT1, sqlId, KLogLayout.LINE, KConstant.LT_SQL_COUNT1, sqlFile, sqlId, KLogLayout.LINE, paramSql);
+				sql = KSqlUtil.insertSqlId(sql, TSqlType.COUNT_SQL1.code() + " " + sqlId);
+				KLogSql.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL_COUNT1, sqlId, KLogLayout.LINE, KConstant.LT_SQL_COUNT1, sqlFile, sqlId, KLogLayout.LINE, sql);
 				break;
 			case COUNT_SQL2:
-				paramSql = paramSql.replaceAll("\n", "\n\t");
-				paramSql = String.format(KSqlUtil.COUNT_SQL, paramSql);
-				paramSql = KSqlUtil.insertSqlId(paramSql, TSqlType.COUNT_SQL2.code() + " " + sqlId);
-				KLogSql.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL_COUNT2, sqlId, KLogLayout.LINE, KConstant.LT_SQL_COUNT2, sqlFile, sqlId, KLogLayout.LINE, paramSql);
+				sql = sql.replaceAll("\n", "\n\t");
+				sql = String.format(KSqlUtil.COUNT_SQL, sql);
+				sql = KSqlUtil.insertSqlId(sql, TSqlType.COUNT_SQL2.code() + " " + sqlId);
+				KLogSql.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL_COUNT2, sqlId, KLogLayout.LINE, KConstant.LT_SQL_COUNT2, sqlFile, sqlId, KLogLayout.LINE, sql);
 				break;
 			}
 		}
@@ -244,10 +246,10 @@ public class KSqlUtil {
 		// param-sql 저장
 		{
 			// 예외 발생 시 시스템 로깅 및 응답에 포함시키기 위해 저장함
-			KContext.set(AttrKey.SQL_TEXT, KStringUtil.replaceWhiteSpace(paramSql));
+			KContext.set(AttrKey.SQL_TEXT, KStringUtil.replaceWhiteSpace(sql));
 		}
 		
-		return paramSql;
+		return sql;
 	}
 	
 	public static String insertSqlId(String sql, String sqlId) {

@@ -6,6 +6,7 @@ import java.text.DecimalFormat;
 import java.util.Formatter;
 import java.util.Map;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
@@ -213,6 +214,15 @@ public class KStringUtil {
 		ret = ret.replaceAll("</(E|e)(M|m)(B|b)(E|e)(D|d)", "&lt;embed");
 		ret = ret.replaceAll("<(F|f)(O|o)(R|r)(M|m)", "&lt;form");
 		ret = ret.replaceAll("</(F|f)(O|o)(R|r)(M|m)", "&lt;form");
+		return ret;
+	}
+
+	public static String replaceEmptyLine(String str) {
+		if (str == null || str.trim().equals(EMPTY)) {
+			return EMPTY;
+		}
+		String ret = str;
+		ret = Pattern.compile("([\r|\n])[\\s|\\t]*[\r|\n]").matcher(ret).replaceAll("$1");
 		return ret;
 	}
 

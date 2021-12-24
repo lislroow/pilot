@@ -28,7 +28,9 @@ import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.core.logging.KLogApm;
 import mgkim.framework.core.logging.KLogLayout;
 import mgkim.framework.core.logging.KLogSql;
+import mgkim.framework.core.type.TSqlType;
 import mgkim.framework.core.util.KSqlUtil;
+import mgkim.framework.core.util.KStringUtil;
 
 public class ComSqlPagingList {
 
@@ -118,7 +120,8 @@ public class ComSqlPagingList {
 		{
 			sql = KSqlUtil.removeForeachIndex(boundSql);
 			sql = String.format(KSqlUtil.PAGING_SQL, sql);
-			sql = KSqlUtil.insertSqlId(sql, "(paging-sql) "+sqlId);
+			sql = KSqlUtil.insertSqlId(sql, TSqlType.PAGING_SQL.code() + " " +sqlId);
+			sql = KStringUtil.replaceEmptyLine(sql);
 			pstmt = connection.prepareStatement(sql);
 			
 			int parameterIndex = 1;
