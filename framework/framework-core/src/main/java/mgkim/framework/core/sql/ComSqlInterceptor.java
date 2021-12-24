@@ -73,7 +73,7 @@ public class ComSqlInterceptor implements Interceptor {
 		MappedStatement mappedStatement = (MappedStatement) proxyMappedStatement.get(pstmtHandler);
 		BoundSql boundSql = sHandler.getBoundSql();
 		String sqlId = mappedStatement.getId();
-		String sql = boundSql.getSql();
+		String originSql = boundSql.getSql();
 		String sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
 		Object parameterObject = sHandler.getParameterHandler().getParameterObject();
 		
@@ -143,9 +143,9 @@ public class ComSqlInterceptor implements Interceptor {
 					if (!isPaging) {
 						connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
 						{
-							sql = KSqlUtil.removeForeachIndex(boundSql);
-							sql = KSqlUtil.insertSqlId(sql, sqlId);
-							pstmt = connection.prepareStatement(sql);
+							originSql = KSqlUtil.removeForeachIndex(boundSql);
+							originSql = KSqlUtil.insertSqlId(originSql, sqlId);
+							pstmt = connection.prepareStatement(originSql);
 							int startIndex = 1;
 							KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startIndex);
 						}
@@ -174,9 +174,9 @@ public class ComSqlInterceptor implements Interceptor {
 					{
 						connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
 						{
-							sql = KSqlUtil.removeForeachIndex(boundSql);
-							sql = KSqlUtil.insertSqlId(sql, sqlId);
-							pstmt = connection.prepareStatement(sql);
+							originSql = KSqlUtil.removeForeachIndex(boundSql);
+							originSql = KSqlUtil.insertSqlId(originSql, sqlId);
+							pstmt = connection.prepareStatement(originSql);
 							int startIndex = 1;
 							KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startIndex);
 						}
