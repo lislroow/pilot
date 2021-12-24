@@ -16,11 +16,9 @@ import org.apache.ibatis.mapping.ParameterMapping;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.session.Configuration;
 
-import mgkim.framework.core.env.KConfig;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.env.KSqlContext;
-import mgkim.framework.core.logging.KLogSql;
 import mgkim.framework.core.type.TSqlType;
 import mgkim.framework.core.util.KSqlUtil;
 
@@ -52,15 +50,6 @@ public class ComSqlPagingCount {
 		Integer count = null;
 		
 		try {
-			// 로깅 준비
-			boolean isLoggableSql = KLogSql.isLoggableSql(sqlId);
-			boolean isVerboss = KConfig.VERBOSS_ALL || KConfig.VERBOSS_SQL;
-			
-			// count-sql 로깅
-			if (isLoggableSql || isVerboss) {
-				KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.COUNT_SQL1);
-			}
-			
 			// count-sql 실행
 			{
 				String sql = null;
@@ -82,10 +71,7 @@ public class ComSqlPagingCount {
 						count = rs.getInt(1);
 					}
 				} catch(Exception ex) {
-					if (!isVerboss) {
-						KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.COUNT_SQL1);
-					} else {
-					}
+					KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.COUNT_SQL1);
 					throw ex;
 				}
 			}
@@ -147,19 +133,12 @@ public class ComSqlPagingCount {
 			}
 			
 			// 로깅 준비
-			boolean isLoggableSql = KLogSql.isLoggableSql(sqlId);
-			boolean isVerboss = KConfig.VERBOSS_ALL || KConfig.VERBOSS_SQL;
 			{
 				sqlId = mappedStatement.getId();
 				sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
 				
 				KContext.set(AttrKey.SQL_ID, sqlId);
 				KContext.set(AttrKey.SQL_FILE, sqlFile);
-			}
-			
-			// count-sql 로깅
-			if (isLoggableSql || isVerboss) {
-				KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.COUNT_SQL2);
 			}
 			
 			// count-sql 실행
@@ -184,10 +163,7 @@ public class ComSqlPagingCount {
 						count = rs.getInt(1);
 					}
 				} catch(Exception ex) {
-					if (!isVerboss) {
-						KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.COUNT_SQL2);
-					} else {
-					}
+					KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.COUNT_SQL2);
 					throw ex;
 				}
 			}
