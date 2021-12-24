@@ -133,8 +133,8 @@ public class ComSqlPagingList {
 				// -- 첫번째 파라미터 binding (`_rowcount`)
 				
 				// origin 파라미터 binding
-				int startBindingIndex = parameterIndex;
-				parameterIndex = KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startBindingIndex);
+				int startIndex = parameterIndex;
+				parameterIndex = KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startIndex);
 				// -- origin 파라미터 binding
 				
 				// 두번째, 세번째 파라미터 binding (BETWEEN `_startrow` AND `_endrow`)

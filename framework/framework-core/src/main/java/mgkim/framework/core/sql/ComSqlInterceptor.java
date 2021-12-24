@@ -144,8 +144,8 @@ public class ComSqlInterceptor implements Interceptor {
 							sql = KSqlUtil.removeForeachIndex(boundSql);
 							sql = KSqlUtil.insertSqlId(sql, sqlId);
 							pstmt = connection.prepareStatement(sql);
-							int startBindingIndex = 1;
-							KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startBindingIndex);
+							int startIndex = 1;
+							KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startIndex);
 						}
 						invocation.getArgs()[0] = pstmt;
 					} else {
@@ -176,8 +176,8 @@ public class ComSqlInterceptor implements Interceptor {
 							sql = KSqlUtil.removeForeachIndex(boundSql);
 							sql = KSqlUtil.insertSqlId(sql, sqlId);
 							pstmt = connection.prepareStatement(sql);
-							int startBindingIndex = 1;
-							KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startBindingIndex);
+							int startIndex = 1;
+							KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startIndex);
 						}
 						invocation.getArgs()[0] = pstmt;
 					}
