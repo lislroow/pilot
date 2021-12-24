@@ -22,8 +22,11 @@ import org.apache.ibatis.plugin.Plugin;
 import org.apache.ibatis.plugin.Signature;
 import org.apache.ibatis.reflection.DefaultReflectorFactory;
 import org.apache.ibatis.reflection.MetaObject;
+import org.apache.ibatis.reflection.ReflectorFactory;
 import org.apache.ibatis.reflection.factory.DefaultObjectFactory;
+import org.apache.ibatis.reflection.factory.ObjectFactory;
 import org.apache.ibatis.reflection.wrapper.DefaultObjectWrapperFactory;
+import org.apache.ibatis.reflection.wrapper.ObjectWrapperFactory;
 import org.apache.ibatis.session.ResultHandler;
 import org.springframework.util.StopWatch;
 
@@ -53,6 +56,10 @@ public class ComSqlInterceptor implements Interceptor {
 
 	protected Field proxyMappedStatement;
 	protected Field proxyDelegate;
+	
+	private static final ObjectFactory DEFAULT_OBJECT_FACTORY = new DefaultObjectFactory();
+	private static final ObjectWrapperFactory DEFAULT_OBJECT_WRAPPER_FACTORY = new DefaultObjectWrapperFactory();
+	private static final ReflectorFactory DEFAULT_REFLECTOR_FACTORY = new DefaultReflectorFactory();
 
 	public ComSqlInterceptor() {
 		try {
@@ -73,7 +80,7 @@ public class ComSqlInterceptor implements Interceptor {
 	public Object intercept(Invocation invocation) throws Throwable {
 		// sql 실행 준비
 		StatementHandler sHandler = (StatementHandler) invocation.getTarget();
-		MetaObject sHandlerMetaObject = MetaObject.forObject(sHandler, new DefaultObjectFactory(), new DefaultObjectWrapperFactory(), new DefaultReflectorFactory());
+		MetaObject sHandlerMetaObject = MetaObject.forObject(sHandler, DEFAULT_OBJECT_FACTORY, DEFAULT_OBJECT_WRAPPER_FACTORY, DEFAULT_REFLECTOR_FACTORY);
 		PreparedStatementHandler pstmtHandler = (PreparedStatementHandler) proxyDelegate.get(sHandler);
 		MappedStatement mappedStatement = (MappedStatement) proxyMappedStatement.get(pstmtHandler);
 		BoundSql boundSql = sHandler.getBoundSql();
