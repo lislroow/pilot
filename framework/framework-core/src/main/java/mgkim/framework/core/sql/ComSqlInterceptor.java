@@ -20,6 +20,10 @@ import org.apache.ibatis.plugin.Intercepts;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Plugin;
 import org.apache.ibatis.plugin.Signature;
+import org.apache.ibatis.reflection.DefaultReflectorFactory;
+import org.apache.ibatis.reflection.MetaObject;
+import org.apache.ibatis.reflection.factory.DefaultObjectFactory;
+import org.apache.ibatis.reflection.wrapper.DefaultObjectWrapperFactory;
 import org.apache.ibatis.session.ResultHandler;
 import org.springframework.util.StopWatch;
 
@@ -69,6 +73,7 @@ public class ComSqlInterceptor implements Interceptor {
 	public Object intercept(Invocation invocation) throws Throwable {
 		// sql 실행 준비
 		StatementHandler sHandler = (StatementHandler) invocation.getTarget();
+		MetaObject sHandlerMetaObject = MetaObject.forObject(sHandler, new DefaultObjectFactory(), new DefaultObjectWrapperFactory(), new DefaultReflectorFactory());
 		PreparedStatementHandler pstmtHandler = (PreparedStatementHandler) proxyDelegate.get(sHandler);
 		MappedStatement mappedStatement = (MappedStatement) proxyMappedStatement.get(pstmtHandler);
 		BoundSql boundSql = sHandler.getBoundSql();
@@ -148,6 +153,7 @@ public class ComSqlInterceptor implements Interceptor {
 							pstmt = connection.prepareStatement(originSql);
 							int startIndex = 1;
 							KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startIndex);
+							sHandlerMetaObject.setValue("delegate.boundSql.sql", originSql);
 						}
 						invocation.getArgs()[0] = pstmt;
 					} else {
@@ -179,13 +185,14 @@ public class ComSqlInterceptor implements Interceptor {
 							pstmt = connection.prepareStatement(originSql);
 							int startIndex = 1;
 							KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startIndex);
+							sHandlerMetaObject.setValue("delegate.boundSql.sql", originSql);
 						}
 						invocation.getArgs()[0] = pstmt;
 					}
 					
 					// param-sql 로깅
 					if (isLoggableSql) {
-						//paramSql = KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.ORIGIN_SQL);
+						paramSql = KSqlUtil.createParamSql(parameterObject, sHandler, TSqlType.ORIGIN_SQL);
 					}
 					break;
 				}
@@ -214,7 +221,7 @@ public class ComSqlInterceptor implements Interceptor {
 					case SCHEDULE:
 					case SYSTEM:
 					default:
-						//paramSql = KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.ORIGIN_SQL);
+						paramSql = KSqlUtil.createParamSql(parameterObject, sHandler, TSqlType.ORIGIN_SQL);
 						break;
 					}
 					throw e;

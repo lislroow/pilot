@@ -19,12 +19,9 @@ import org.apache.ibatis.reflection.wrapper.DefaultObjectWrapperFactory;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
 
-import mgkim.framework.core.dto.KCmmVO;
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
-import mgkim.framework.core.exception.KMessage;
-import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.core.logging.KLogCommon;
 import mgkim.framework.core.logging.KLogLayout;
 import mgkim.framework.core.logging.KLogSql;
@@ -221,39 +218,15 @@ public class KSqlUtil {
 		{
 			switch(paramSqlType) {
 			case ORIGIN_SQL:
-				sql = KSqlUtil.insertSqlId(sql, TSqlType.ORIGIN_SQL.code() + " " + sqlId);
 				KLogSql.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL, sqlId, KLogLayout.LINE, KConstant.LT_SQL, sqlFile, sqlId, KLogLayout.LINE, sql);
 				break;
 			case PAGING_SQL:
-				if (KCmmVO.class.isInstance(parameterObject)) {
-					KCmmVO vo = (KCmmVO) parameterObject;
-					sql = sql.replaceAll("\n", "\n  ");
-					sql = String.format(KSqlUtil.PAGING_SQL, sql);
-					sql = KSqlUtil.insertSqlId(sql, TSqlType.PAGING_SQL.code() + " " + sqlId);
-					sql = sql.replaceFirst("\\?", vo.get_rowcount()+"")
-							.replaceFirst("\\?", vo.get_startrow()+"")
-							.replaceFirst("\\?", vo.get_endrow()+"");
-				} else if (Map.class.isInstance(parameterObject)) {
-					Map map = (Map) parameterObject;
-					sql = sql.replaceAll("\n", "\n  ");
-					sql = String.format(KSqlUtil.PAGING_SQL, sql);
-					sql = KSqlUtil.insertSqlId(sql, TSqlType.PAGING_SQL.code() + " " + sqlId);
-					sql = sql.replaceFirst("\\?", KStringUtil.nvl(map.get("_rowcount")))
-							.replaceFirst("\\?", KStringUtil.nvl(map.get("_startrow")))
-							.replaceFirst("\\?", KStringUtil.nvl(map.get("_endrow")));
-				} else {
-					throw new KSysException(KMessage.E8102, KCmmVO.class.getName());
-				}
 				KLogSql.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL_PAING, sqlId, KLogLayout.LINE, KConstant.LT_SQL_PAING, sqlFile, sqlId, KLogLayout.LINE, sql);
 				break;
 			case COUNT_SQL1:
-				sql = KSqlUtil.insertSqlId(sql, TSqlType.COUNT_SQL1.code() + " " + sqlId);
 				KLogSql.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL_COUNT1, sqlId, KLogLayout.LINE, KConstant.LT_SQL_COUNT1, sqlFile, sqlId, KLogLayout.LINE, sql);
 				break;
 			case COUNT_SQL2:
-				sql = sql.replaceAll("\n", "\n\t");
-				sql = String.format(KSqlUtil.COUNT_SQL, sql);
-				sql = KSqlUtil.insertSqlId(sql, TSqlType.COUNT_SQL2.code() + " " + sqlId);
 				KLogSql.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL_COUNT2, sqlId, KLogLayout.LINE, KConstant.LT_SQL_COUNT2, sqlFile, sqlId, KLogLayout.LINE, sql);
 				break;
 			}
