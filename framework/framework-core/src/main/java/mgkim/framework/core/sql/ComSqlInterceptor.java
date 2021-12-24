@@ -76,6 +76,7 @@ public class ComSqlInterceptor implements Interceptor {
 		String sql = boundSql.getSql();
 		String sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
 		Object parameterObject = sHandler.getParameterHandler().getParameterObject();
+		Connection connection = null;
 		
 		// 반환값 준비
 		Object resultObject = null;
@@ -91,145 +92,152 @@ public class ComSqlInterceptor implements Interceptor {
 		}
 		
 		// paging 처리 및 sql 로깅
-		Connection connection = null;
 		String paramSql = null;
 		boolean isPaging = false;
-		{
-			switch(execType) {
-			case REQUEST:
-				// parameterObject 공통 필드 설정
-				{
-					KDtoUtil.setSysValues(parameterObject);
-				}
-				
-				// parameterObject 로깅
-				{
-					if (isLoggableSql) {
-						if (!isVerboss) {
-						} else {
-							KLogSql.info("{} `{}` {}{} `{}` `{}` {}`parameterObject` = {}", KConstant.LT_SQL_PARAM, sqlId, KLogLayout.LINE, KConstant.LT_SQL_PARAM, sqlFile, sqlId, KLogLayout.LINE, KStringUtil.toJson(parameterObject));
-						}
-					}
-				}
-				
-				// paging 여부 확인
-				TSqlType sqlType = null;
-				{
-					KInPageVO inPageVO = KContext.getT(AttrKey.IN_PAGE);
-					if (inPageVO == null || isComSql) { // // com 패키지에 있는 sql 은 paging 처리 대상에서 제외함
-						isPaging = false;
-					} else {
-						isPaging = inPageVO.getPaging() && mappedStatement.getSqlCommandType() == SqlCommandType.SELECT;
-					}
-					
-					if (isPaging) {
-						sqlType = TSqlType.PAGING_SQL;
-					} else {
-						sqlType = TSqlType.ORIGIN_SQL;
-					}
-				}
-				
-				// prepareStatment 생성
-				if (!isPaging) {
-					PreparedStatement pstmt = null;
-					connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
-					{
-						sql = KSqlUtil.removeForeachIndex(boundSql);
-						sql = KSqlUtil.insertSqlId(sql, sqlId);
-						pstmt = connection.prepareStatement(sql);
-						int startBindingIndex = 1;
-						KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startBindingIndex);
-					}
-					invocation.getArgs()[0] = pstmt;
-				} else {
-					PreparedStatement pstmt = comSqlPagingList.preparePaging(invocation);
-					invocation.getArgs()[0] = pstmt;
-				}
-				
-				// param-sql 로깅
-				if (!isComSql || isLoggableSql) {
-					paramSql = KSqlUtil.createParamSql(parameterObject, mappedStatement, sqlType);
-				}
-				break;
-			case SCHEDULE:
-			case SYSTEM:
-			default:
-				// parameterObject 로깅
-				{
-					if (isLoggableSql) {
-						KLogSql.info("{} `{}` {}{} `{}` `{}` {}{}", KConstant.LT_SQL_PARAM, sqlId, KLogLayout.LINE, KConstant.LT_SQL_PARAM, sqlFile, sqlId, KLogLayout.LINE, KStringUtil.toJson(parameterObject));
-					}
-				}
-				
-				// prepareStatment 생성
-				{
-					PreparedStatement pstmt = null;
-					connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
-					{
-						sql = KSqlUtil.removeForeachIndex(boundSql);
-						sql = KSqlUtil.insertSqlId(sql, sqlId);
-						pstmt = connection.prepareStatement(sql);
-						int startBindingIndex = 1;
-						KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startBindingIndex);
-					}
-					invocation.getArgs()[0] = pstmt;
-				}
-				
-				// param-sql 로깅
-				if (isLoggableSql) {
-					paramSql = KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.ORIGIN_SQL);
-				}
-				break;
-			}
-		}
-		
 		
 		// sql 실행
 		int resultCount = -1;
 		double elapsedTime = -1;
-		{
-			StopWatch stopWatch = null;
-			switch(execType) {
-			case REQUEST:
-				stopWatch = new StopWatch(sqlId+"#"+KContext.getT(AttrKey.TXID));
-				stopWatch.start();
-				break;
-			case SCHEDULE:
-			case SYSTEM:
-			default:
-				break;
-			}
-			try {
-				resultObject = invocation.proceed();
-			} catch(Exception e) {
+		
+		try {
+			// paging 처리 및 sql 로깅
+			{
 				switch(execType) {
 				case REQUEST:
+					// parameterObject 공통 필드 설정
+					{
+						KDtoUtil.setSysValues(parameterObject);
+					}
+					
+					// parameterObject 로깅
+					{
+						if (isLoggableSql) {
+							if (!isVerboss) {
+							} else {
+								KLogSql.info("{} `{}` {}{} `{}` `{}` {}`parameterObject` = {}", KConstant.LT_SQL_PARAM, sqlId, KLogLayout.LINE, KConstant.LT_SQL_PARAM, sqlFile, sqlId, KLogLayout.LINE, KStringUtil.toJson(parameterObject));
+							}
+						}
+					}
+					
+					// paging 여부 확인
+					TSqlType sqlType = null;
+					{
+						KInPageVO inPageVO = KContext.getT(AttrKey.IN_PAGE);
+						if (inPageVO == null || isComSql) { // // com 패키지에 있는 sql 은 paging 처리 대상에서 제외함
+							isPaging = false;
+						} else {
+							isPaging = inPageVO.getPaging() && mappedStatement.getSqlCommandType() == SqlCommandType.SELECT;
+						}
+						
+						if (isPaging) {
+							sqlType = TSqlType.PAGING_SQL;
+						} else {
+							sqlType = TSqlType.ORIGIN_SQL;
+						}
+					}
+					
+					// prepareStatment 생성
+					if (!isPaging) {
+						PreparedStatement pstmt = null;
+						connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
+						{
+							sql = KSqlUtil.removeForeachIndex(boundSql);
+							sql = KSqlUtil.insertSqlId(sql, sqlId);
+							pstmt = connection.prepareStatement(sql);
+							int startBindingIndex = 1;
+							KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startBindingIndex);
+						}
+						invocation.getArgs()[0] = pstmt;
+					} else {
+						PreparedStatement pstmt = comSqlPagingList.preparePaging(invocation);
+						invocation.getArgs()[0] = pstmt;
+					}
+					
+					// param-sql 로깅
+					if (!isComSql || isLoggableSql) {
+						paramSql = KSqlUtil.createParamSql(parameterObject, mappedStatement, sqlType);
+					}
 					break;
 				case SCHEDULE:
 				case SYSTEM:
 				default:
-					paramSql = KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.ORIGIN_SQL);
+					// parameterObject 로깅
+					{
+						if (isLoggableSql) {
+							KLogSql.info("{} `{}` {}{} `{}` `{}` {}{}", KConstant.LT_SQL_PARAM, sqlId, KLogLayout.LINE, KConstant.LT_SQL_PARAM, sqlFile, sqlId, KLogLayout.LINE, KStringUtil.toJson(parameterObject));
+						}
+					}
+					
+					// prepareStatment 생성
+					{
+						PreparedStatement pstmt = null;
+						connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
+						{
+							sql = KSqlUtil.removeForeachIndex(boundSql);
+							sql = KSqlUtil.insertSqlId(sql, sqlId);
+							pstmt = connection.prepareStatement(sql);
+							int startBindingIndex = 1;
+							KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startBindingIndex);
+						}
+						invocation.getArgs()[0] = pstmt;
+					}
+					
+					// param-sql 로깅
+					if (isLoggableSql) {
+						paramSql = KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.ORIGIN_SQL);
+					}
 					break;
 				}
-				throw e;
-			} finally {
-				if (stopWatch != null) {
-					stopWatch.stop();
-					if (!isLoggableSql) {
-						KLogApm.sql(stopWatch);
+			}
+			
+			
+			// sql 실행
+			{
+				StopWatch stopWatch = null;
+				switch(execType) {
+				case REQUEST:
+					stopWatch = new StopWatch(sqlId+"#"+KContext.getT(AttrKey.TXID));
+					stopWatch.start();
+					break;
+				case SCHEDULE:
+				case SYSTEM:
+				default:
+					break;
+				}
+				try {
+					resultObject = invocation.proceed();
+				} catch(Exception e) {
+					switch(execType) {
+					case REQUEST:
+						break;
+					case SCHEDULE:
+					case SYSTEM:
+					default:
+						paramSql = KSqlUtil.createParamSql(parameterObject, mappedStatement, TSqlType.ORIGIN_SQL);
+						break;
 					}
-					elapsedTime = stopWatch.getTotalTimeSeconds();
-				}
-				
-				if (invocation.getArgs().length > 0 && invocation.getArgs()[0] instanceof java.sql.PreparedStatement) {
-					java.sql.PreparedStatement stmt = (java.sql.PreparedStatement) invocation.getArgs()[0];
-					if (stmt != null) {
-						stmt.close();
+					throw e;
+				} finally {
+					if (stopWatch != null) {
+						stopWatch.stop();
+						if (!isLoggableSql) {
+							KLogApm.sql(stopWatch);
+						}
+						elapsedTime = stopWatch.getTotalTimeSeconds();
 					}
 				}
-				if (connection != null) {
-					connection.close();
+			}
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (invocation.getArgs().length > 0 && invocation.getArgs()[0] instanceof java.sql.PreparedStatement) {
+				java.sql.PreparedStatement stmt = (java.sql.PreparedStatement) invocation.getArgs()[0];
+				if (stmt != null) {
+					stmt.close();
 				}
+			}
+			if (connection != null) {
+				connection.close();
 			}
 		}
 		
