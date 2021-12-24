@@ -8,4 +8,5 @@
 /**/.externalToolBuilders
 /**/pom.xml.versionsBackup
 /**/bin
+/**/hs_err_pid*
 /.svn
