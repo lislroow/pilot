@@ -54,12 +54,12 @@ public class KSqlUtil {
 	public static String removeForeachIndex(BoundSql boundSql) throws Exception {
 		String sql = boundSql.getSql();
 		List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
-		// mybatis foreach 문
 		{
 			if (parameterMappings != null) {
 				sql = sql.replaceAll(KSqlUtil.PARAM_CHAR, KSqlUtil.PARAM_TEMP_CHAR);
 				for (ParameterMapping _p : parameterMappings) {
 					String propertyName = _p.getProperty();
+					// (중요) foreach 문의 `index` 변수는 `index`로 설정해야 remove 할 수 있음
 					Matcher matcher = Pattern.compile("__frch_index_(\\d+)").matcher(propertyName);
 					if (matcher.find()) {
 						String value = matcher.replaceFirst("$1");
@@ -70,7 +70,6 @@ public class KSqlUtil {
 				}
 			}
 		}
-		// -- mybatis foreach 문
 		return sql;
 	}
 	
