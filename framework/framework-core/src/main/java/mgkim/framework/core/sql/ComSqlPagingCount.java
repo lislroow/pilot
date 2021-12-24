@@ -45,13 +45,13 @@ public class ComSqlPagingCount {
 	
 	public Integer countSql1(Invocation invocation) throws Exception {
 		// count-sql 실행 준비
-		StatementHandler sHandler = (StatementHandler) invocation.getTarget();
-		MetaObject sHandlerMetaObject = MetaObject.forObject(sHandler, DEFAULT_OBJECT_FACTORY, DEFAULT_OBJECT_WRAPPER_FACTORY, DEFAULT_REFLECTOR_FACTORY);
-		PreparedStatementHandler pstmtHandler = (PreparedStatementHandler) proxyDelegate.get(sHandler);
+		StatementHandler statementHandler = (StatementHandler) invocation.getTarget();
+		MetaObject sHandlerMetaObject = MetaObject.forObject(statementHandler, DEFAULT_OBJECT_FACTORY, DEFAULT_OBJECT_WRAPPER_FACTORY, DEFAULT_REFLECTOR_FACTORY);
+		PreparedStatementHandler pstmtHandler = (PreparedStatementHandler) proxyDelegate.get(statementHandler);
 		MappedStatement mappedStatement = (MappedStatement) proxyMappedStatement.get(pstmtHandler);
-		BoundSql boundSql = sHandler.getBoundSql();
+		BoundSql boundSql = statementHandler.getBoundSql();
 		String sqlId = mappedStatement.getId();
-		Object parameterObject = sHandler.getParameterHandler().getParameterObject();
+		Object parameterObject = statementHandler.getParameterHandler().getParameterObject();
 		
 		// closable 객체
 		Connection connection = null;
@@ -87,7 +87,7 @@ public class ComSqlPagingCount {
 						count = rs.getInt(1);
 					}
 				} catch(Exception ex) {
-					KSqlUtil.createParamSql(parameterObject, sHandler, TSqlType.COUNT_SQL1);
+					KSqlUtil.createParamSql(parameterObject, statementHandler, TSqlType.COUNT_SQL1);
 					throw ex;
 				}
 			}
@@ -112,15 +112,15 @@ public class ComSqlPagingCount {
 	
 	public Integer countSql2(Invocation invocation) throws Exception {
 		// count-sql 실행 준비
-		StatementHandler sHandler = (StatementHandler) invocation.getTarget();
-		MetaObject sHandlerMetaObject = MetaObject.forObject(sHandler, DEFAULT_OBJECT_FACTORY, DEFAULT_OBJECT_WRAPPER_FACTORY, DEFAULT_REFLECTOR_FACTORY);
-		PreparedStatementHandler preparedStatementHandler = (PreparedStatementHandler) proxyDelegate.get(sHandler);
+		StatementHandler statementHandler = (StatementHandler) invocation.getTarget();
+		MetaObject sHandlerMetaObject = MetaObject.forObject(statementHandler, DEFAULT_OBJECT_FACTORY, DEFAULT_OBJECT_WRAPPER_FACTORY, DEFAULT_REFLECTOR_FACTORY);
+		PreparedStatementHandler preparedStatementHandler = (PreparedStatementHandler) proxyDelegate.get(statementHandler);
 		MappedStatement mappedStatement = (MappedStatement) proxyMappedStatement.get(preparedStatementHandler);
-		BoundSql boundSql = sHandler.getBoundSql();
+		BoundSql boundSql = statementHandler.getBoundSql();
 		Configuration configuration = mappedStatement.getConfiguration();
 		String sqlId = mappedStatement.getId();
 		String sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
-		Object parameterObject = sHandler.getParameterHandler().getParameterObject();
+		Object parameterObject = statementHandler.getParameterHandler().getParameterObject();
 		
 		// closable 객체
 		Connection connection = null;
@@ -193,8 +193,9 @@ public class ComSqlPagingCount {
 						count = rs.getInt(1);
 					}
 				} catch(Exception ex) {
-					KSqlUtil.createParamSql(parameterObject, sHandler, TSqlType.COUNT_SQL2);
 					throw ex;
+				} finally {
+					KSqlUtil.createParamSql(parameterObject, statementHandler, TSqlType.COUNT_SQL2);
 				}
 			}
 		} catch (Exception e) {

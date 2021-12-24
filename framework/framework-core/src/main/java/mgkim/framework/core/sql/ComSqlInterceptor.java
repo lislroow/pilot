@@ -79,15 +79,15 @@ public class ComSqlInterceptor implements Interceptor {
 
 	public Object intercept(Invocation invocation) throws Throwable {
 		// sql 실행 준비
-		StatementHandler sHandler = (StatementHandler) invocation.getTarget();
-		MetaObject sHandlerMetaObject = MetaObject.forObject(sHandler, DEFAULT_OBJECT_FACTORY, DEFAULT_OBJECT_WRAPPER_FACTORY, DEFAULT_REFLECTOR_FACTORY);
-		PreparedStatementHandler pstmtHandler = (PreparedStatementHandler) proxyDelegate.get(sHandler);
+		StatementHandler statementHandler = (StatementHandler) invocation.getTarget();
+		MetaObject sHandlerMetaObject = MetaObject.forObject(statementHandler, DEFAULT_OBJECT_FACTORY, DEFAULT_OBJECT_WRAPPER_FACTORY, DEFAULT_REFLECTOR_FACTORY);
+		PreparedStatementHandler pstmtHandler = (PreparedStatementHandler) proxyDelegate.get(statementHandler);
 		MappedStatement mappedStatement = (MappedStatement) proxyMappedStatement.get(pstmtHandler);
-		BoundSql boundSql = sHandler.getBoundSql();
+		BoundSql boundSql = statementHandler.getBoundSql();
 		String sqlId = mappedStatement.getId();
 		String originSql = boundSql.getSql();
 		String sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
-		Object parameterObject = sHandler.getParameterHandler().getParameterObject();
+		Object parameterObject = statementHandler.getParameterHandler().getParameterObject();
 		
 		// closable 객체
 		Connection connection = null;
@@ -170,7 +170,7 @@ public class ComSqlInterceptor implements Interceptor {
 					
 					// param-sql 로깅
 					if (!isComSql || isLoggableSql) {
-						paramSql = KSqlUtil.createParamSql(parameterObject, sHandler, sqlType);
+						paramSql = KSqlUtil.createParamSql(parameterObject, statementHandler, sqlType);
 					}
 					break;
 				case SCHEDULE:
@@ -199,7 +199,7 @@ public class ComSqlInterceptor implements Interceptor {
 					
 					// param-sql 로깅
 					if (isLoggableSql) {
-						paramSql = KSqlUtil.createParamSql(parameterObject, sHandler, TSqlType.ORIGIN_SQL);
+						paramSql = KSqlUtil.createParamSql(parameterObject, statementHandler, TSqlType.ORIGIN_SQL);
 					}
 					break;
 				}
@@ -228,7 +228,7 @@ public class ComSqlInterceptor implements Interceptor {
 					case SCHEDULE:
 					case SYSTEM:
 					default:
-						paramSql = KSqlUtil.createParamSql(parameterObject, sHandler, TSqlType.ORIGIN_SQL);
+						paramSql = KSqlUtil.createParamSql(parameterObject, statementHandler, TSqlType.ORIGIN_SQL);
 						break;
 					}
 					throw e;

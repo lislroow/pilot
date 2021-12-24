@@ -121,9 +121,9 @@ public class KSqlUtil {
 		return parameterIndex;
 	}
 	
-	public static String createParamSql(Object parameterObject, StatementHandler sHandler, TSqlType paramSqlType) throws Exception {
+	public static String createParamSql(Object parameterObject, StatementHandler statementHandler, TSqlType paramSqlType) throws Exception {
 		// 준비
-		MetaObject sHandlerMetaObject = MetaObject.forObject(sHandler, new DefaultObjectFactory(), new DefaultObjectWrapperFactory(), new DefaultReflectorFactory());
+		MetaObject sHandlerMetaObject = MetaObject.forObject(statementHandler, new DefaultObjectFactory(), new DefaultObjectWrapperFactory(), new DefaultReflectorFactory());
 		MappedStatement mappedStatement = (MappedStatement) sHandlerMetaObject.getValue("delegate.mappedStatement");
 		BoundSql boundSql = (BoundSql) sHandlerMetaObject.getValue("delegate.boundSql");
 		String sql = boundSql.getSql();

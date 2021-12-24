@@ -60,11 +60,11 @@ public class ComSqlPagingList {
 	
 	public PreparedStatement preparePaging(Invocation invocation) throws Throwable {
 		// 실행 준비
-		StatementHandler sHandler = (StatementHandler) invocation.getTarget();
-		MetaObject sHandlerMetaObject = MetaObject.forObject(sHandler, DEFAULT_OBJECT_FACTORY, DEFAULT_OBJECT_WRAPPER_FACTORY, DEFAULT_REFLECTOR_FACTORY);
-		PreparedStatementHandler pstmtHandler = (PreparedStatementHandler) proxyDelegate.get(sHandler);
+		StatementHandler statementHandler = (StatementHandler) invocation.getTarget();
+		MetaObject sHandlerMetaObject = MetaObject.forObject(statementHandler, DEFAULT_OBJECT_FACTORY, DEFAULT_OBJECT_WRAPPER_FACTORY, DEFAULT_REFLECTOR_FACTORY);
+		PreparedStatementHandler pstmtHandler = (PreparedStatementHandler) proxyDelegate.get(statementHandler);
 		MappedStatement mappedStatement = (MappedStatement) proxyMappedStatement.get(pstmtHandler);
-		BoundSql boundSql = sHandler.getBoundSql();
+		BoundSql boundSql = statementHandler.getBoundSql();
 		String sqlId = mappedStatement.getId();
 		String sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
 		KInPageVO inPageVO = KContext.getT(AttrKey.IN_PAGE);
@@ -127,7 +127,7 @@ public class ComSqlPagingList {
 		
 		try {
 			connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
-			DefaultParameterHandler parameterHandler = (DefaultParameterHandler)sHandler.getParameterHandler();
+			DefaultParameterHandler parameterHandler = (DefaultParameterHandler)statementHandler.getParameterHandler();
 			Object parameterObject = parameterHandler.getParameterObject();
 			ParameterMapping _parameter = null;
 			TypeHandler _typeHandler = null;
