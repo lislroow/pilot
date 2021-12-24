@@ -118,7 +118,7 @@ public class ComSqlPagingCount {
 		BoundSql boundSql = statementHandler.getBoundSql();
 		Configuration configuration = mappedStatement.getConfiguration();
 		String sqlId = mappedStatement.getId();
-		String sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
+		String sqlFile = null;
 		Object parameterObject = statementHandler.getParameterHandler().getParameterObject();
 		
 		// closable 객체
