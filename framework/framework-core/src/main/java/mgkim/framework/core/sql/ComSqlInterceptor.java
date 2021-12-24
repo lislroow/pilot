@@ -76,7 +76,10 @@ public class ComSqlInterceptor implements Interceptor {
 		String sql = boundSql.getSql();
 		String sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
 		Object parameterObject = sHandler.getParameterHandler().getParameterObject();
+		
+		// closable 객체
 		Connection connection = null;
+		PreparedStatement pstmt = null;
 		
 		// 반환값 준비
 		Object resultObject = null;
@@ -138,7 +141,6 @@ public class ComSqlInterceptor implements Interceptor {
 					
 					// prepareStatment 생성
 					if (!isPaging) {
-						PreparedStatement pstmt = null;
 						connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
 						{
 							sql = KSqlUtil.removeForeachIndex(boundSql);
@@ -149,7 +151,7 @@ public class ComSqlInterceptor implements Interceptor {
 						}
 						invocation.getArgs()[0] = pstmt;
 					} else {
-						PreparedStatement pstmt = comSqlPagingList.preparePaging(invocation);
+						pstmt = comSqlPagingList.preparePaging(invocation);
 						invocation.getArgs()[0] = pstmt;
 					}
 					
@@ -170,7 +172,6 @@ public class ComSqlInterceptor implements Interceptor {
 					
 					// prepareStatment 생성
 					{
-						PreparedStatement pstmt = null;
 						connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
 						{
 							sql = KSqlUtil.removeForeachIndex(boundSql);
@@ -230,11 +231,8 @@ public class ComSqlInterceptor implements Interceptor {
 		} catch (Exception e) {
 			throw e;
 		} finally {
-			if (invocation.getArgs().length > 0 && invocation.getArgs()[0] instanceof java.sql.PreparedStatement) {
-				java.sql.PreparedStatement stmt = (java.sql.PreparedStatement) invocation.getArgs()[0];
-				if (stmt != null) {
-					stmt.close();
-				}
+			if (pstmt != null) {
+				pstmt.close();
 			}
 			if (connection != null) {
 				connection.close();
