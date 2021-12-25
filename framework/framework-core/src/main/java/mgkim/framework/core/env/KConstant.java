@@ -7,8 +7,11 @@ public class KConstant {
 	public static final String VM_SPRING_PROFILES_ACTIVE = "spring.profiles.active";
 
 	public static final String EMPTY = "";
-
+	
+	// spring-boot 에서는 경로가 다름
+	@Deprecated
 	public static final String PATH_WEBINF_CLASSES;
+	@Deprecated
 	public static final String PATH_WEBINF_LIB;
 
 	static {

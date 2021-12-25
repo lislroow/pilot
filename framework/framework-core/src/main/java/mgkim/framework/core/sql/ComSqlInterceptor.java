@@ -85,7 +85,9 @@ public class ComSqlInterceptor implements Interceptor {
 		MappedStatement mappedStatement = (MappedStatement) proxyMappedStatement.get(pstmtHandler);
 		BoundSql boundSql = statementHandler.getBoundSql();
 		String sqlId = mappedStatement.getId();
-		String sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
+		//String sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
+		String sqlFile = mappedStatement.getResource();
+		sqlFile = sqlFile.substring(sqlFile.lastIndexOf(java.io.File.separator)+1, sqlFile.length()-1);
 		Object parameterObject = statementHandler.getParameterHandler().getParameterObject();
 		
 		// closable 객체
@@ -128,9 +130,10 @@ public class ComSqlInterceptor implements Interceptor {
 						if (isLoggableSql) {
 							if (!isVerboss) {
 							} else {
-								KLogSql.info("{} `{}` {}{} `{}` `{}` {}`parameterObject` = {}", KConstant.LT_SQL_PARAM, sqlId, KLogLayout.LINE, KConstant.LT_SQL_PARAM, sqlFile, sqlId, KLogLayout.LINE, KStringUtil.toJson(parameterObject));
+								//KLogSql.info("{} `{}` {}{} `{}` `{}` {}`parameterObject` = {}", KConstant.LT_SQL_PARAM, sqlId, KLogLayout.LINE, KConstant.LT_SQL_PARAM, sqlFile, sqlId, KLogLayout.LINE, KStringUtil.toJson(parameterObject));
 							}
 						}
+						KLogSql.info("{} `{}` {}{} `{}` `{}` {}`parameterObject` = {}", KConstant.LT_SQL_PARAM, sqlId, KLogLayout.LINE, KConstant.LT_SQL_PARAM, sqlFile, sqlId, KLogLayout.LINE, KStringUtil.toJson(parameterObject));
 					}
 					
 					// paging 여부 확인

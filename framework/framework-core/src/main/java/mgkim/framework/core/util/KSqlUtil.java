@@ -40,7 +40,9 @@ public class KSqlUtil {
 	public static final String PARAM_TEMP_CHAR = "\\Ξ"; // SQL 파라미터의 값에 '?' 문자가 있을 수 있으므로 prepareStatement의 파라미터 문자인 '?'을  'Ξ' 로 치환
 
 	public static final String TABLE_PATTERN = "[A-Z]{4}[0-9]{3}[A-Z]{2}";
-
+	
+	// spring-boot 에서는 경로가 다름
+	@Deprecated
 	public static String getRelativePath(String resourcePath) {
 		String path = new java.io.File(resourcePath.replaceAll("file \\[(.*)\\]", "$1")).getAbsolutePath()
 				.replace(new java.io.File(KConstant.PATH_WEBINF_CLASSES).getAbsolutePath(), "")
