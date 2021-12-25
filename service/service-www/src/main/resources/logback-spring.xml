@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="1 seconds">
-
-	<property name="LEVEL-root" value="info" />
-	<property name="LOG_PATH" value="/outlog/WAS/www" />
-	<property name="LOG_PATTERN" value="%d{yy-MM-dd HH:mm:ss}[%-5level][%thread][%logger:%line] ### %msg%n"/>
-
-	<appender name="CONSOLE-root" class="ch.qos.logback.core.ConsoleAppender">
-		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-			<pattern>${LOG_PATTERN}</pattern>
-		</encoder>
-	</appender>
-
-	<appender name="FILE-root" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${LOG_PATH}/default.log</file>
-		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-			<pattern>${LOG_PATTERN}</pattern>
-		</encoder>
-		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>${LOG_PATH}/default-%d{yyyyMMdd}.log</fileNamePattern>
-		</rollingPolicy>
-	</appender>
-
-	<root level="${LEVEL-root}">
-		<appender-ref ref="CONSOLE-root" />
-		<appender-ref ref="FILE-root" />
-	</root>
+  
+  <property name="LEVEL-root" value="info" />
+  <property name="LOG_PATH" value="/outlog/WAS/www" />
+  <property name="LOG_PATTERN" value="%d{yy-MM-dd HH:mm:ss}[%-5level][%thread][%logger:%line] ### %msg%n"/>
+  
+  <appender name="CONSOLE-root" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <pattern>${LOG_PATTERN}</pattern>
+    </encoder>
+  </appender>
+  
+  <appender name="FILE-root" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${LOG_PATH}/default.log</file>
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <pattern>${LOG_PATTERN}</pattern>
+    </encoder>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>${LOG_PATH}/default-%d{yyyyMMdd}.log</fileNamePattern>
+    </rollingPolicy>
+  </appender>
+  
+  <root level="${LEVEL-root}">
+    <appender-ref ref="CONSOLE-root" />
+    <appender-ref ref="FILE-root" />
+  </root>
 
 </configuration>
