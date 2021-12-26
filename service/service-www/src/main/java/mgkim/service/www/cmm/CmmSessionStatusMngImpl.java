@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import mgkim.framework.core.logging.KLogSys;
 import mgkim.framework.core.type.TSsStcdType;
 import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.cmm.CmmSessionStatusMng;
@@ -17,6 +18,8 @@ import mgkim.service.www.cmm.mapper.CmmSessionStatusMngMapper;
 
 @Service
 public class CmmSessionStatusMngImpl implements CmmSessionStatusMng {
+	
+	private static final Logger log = LoggerFactory.getLogger(CmmSessionStatusMngImpl.class);
 
 	@Autowired
 	private CmmSessionStatusMngMapper cmmSessionStatusMngMapper;
@@ -110,12 +113,12 @@ public class CmmSessionStatusMngImpl implements CmmSessionStatusMng {
 	public void updateInvalidStatus() throws Exception {
 		int cnt;
 		cnt = cmmSessionStatusMngMapper.updateLoginToExpire();
-		if (cnt > 0) KLogSys.info("`{}` sessions expired", cnt);
+		if (cnt > 0) log.info("`{}` sessions expired", cnt);
 		cnt = cmmSessionStatusMngMapper.updateExpireToLogout();
-		if (cnt > 0) KLogSys.info("`{}` sessions logouted", cnt);
+		if (cnt > 0) log.info("`{}` sessions logouted", cnt);
 		cnt = cmmSessionStatusMngMapper.insertMoveToHistory();
-		if (cnt > 0) KLogSys.info("`{}` sessions saved history table", cnt);
+		if (cnt > 0) log.info("`{}` sessions saved history table", cnt);
 		cnt = cmmSessionStatusMngMapper.deleteLogout();
-		if (cnt > 0) KLogSys.info("`{}` sessions delete from status table", cnt);
+		if (cnt > 0) log.info("`{}` sessions delete from status table", cnt);
 	}
 }

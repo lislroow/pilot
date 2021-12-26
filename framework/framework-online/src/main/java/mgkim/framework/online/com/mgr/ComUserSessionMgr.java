@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,7 +19,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
-import mgkim.framework.core.logging.KLogSys;
 import mgkim.framework.core.session.KSession;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KStringUtil;
@@ -25,6 +26,8 @@ import mgkim.framework.online.cmm.CmmUserSession;
 
 @KBean(name = "사용자 session 관리")
 public class ComUserSessionMgr implements InitializingBean {
+	
+	private static final Logger log = LoggerFactory.getLogger(ComUserSessionMgr.class);
 
 	@Autowired(required = false)
 	private CmmUserSession cmmUserSession;
@@ -35,7 +38,7 @@ public class ComUserSessionMgr implements InitializingBean {
 			if (KObjectUtil.required(CmmUserSession.class)) {
 				throw new KSysException(KMessage.E5001, KObjectUtil.name(CmmUserSession.class));
 			} else {
-				KLogSys.warn(KMessage.get(KMessage.E5003, KObjectUtil.name(ComUserSessionMgr.class), KObjectUtil.name(CmmUserSession.class)));
+				log.warn(KMessage.get(KMessage.E5003, KObjectUtil.name(ComUserSessionMgr.class), KObjectUtil.name(CmmUserSession.class)));
 			}
 		}
 	}
@@ -62,7 +65,7 @@ public class ComUserSessionMgr implements InitializingBean {
 				while (iter.hasNext()) {
 					String item = iter.next();
 					if (KStringUtil.isEmpty(item)) {
-						KLogSys.warn(KMessage.E6110.text());
+						log.warn(KMessage.E6110.text());
 						continue;
 					}
 					authorities.add(new SimpleGrantedAuthority(item));

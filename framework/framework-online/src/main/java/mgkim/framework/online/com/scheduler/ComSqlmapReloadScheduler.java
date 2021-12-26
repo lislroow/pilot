@@ -14,6 +14,8 @@ import java.util.stream.Collectors;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
@@ -22,13 +24,14 @@ import mgkim.framework.core.annotation.KTaskSchedule;
 import mgkim.framework.core.env.KSqlContext;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
-import mgkim.framework.core.logging.KLogSys;
 import mgkim.framework.core.stereo.KScheduler;
 import mgkim.framework.core.stereo.KTask;
 import mgkim.framework.core.util.KSqlUtil;
 
 @KTaskSchedule(name = "sqlmap-file-reload 스케줄러", interval = 500, manage = false)
 public class ComSqlmapReloadScheduler extends KScheduler {
+	
+	private static final Logger log = LoggerFactory.getLogger(ComSqlmapReloadScheduler.class);
 
 	private final ReentrantReadWriteLock rwl = new ReentrantReadWriteLock();
 	private final Lock r = rwl.readLock();
@@ -117,10 +120,10 @@ public class ComSqlmapReloadScheduler extends KScheduler {
 						map.put(resource, new Long(modified));
 					}
 				} catch (IOException e) {
-					KLogSys.error("caught exception", e);
+					log.error("caught exception", e);
 				}
 				if (retVal) {
-					KLogSys.warn("modified files " + modifiedResources);
+					log.warn("modified files " + modifiedResources);
 				}
 				return retVal;
 			}

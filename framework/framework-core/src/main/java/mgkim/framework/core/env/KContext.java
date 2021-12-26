@@ -12,13 +12,14 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.http.HttpHeaders;
 
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.core.logging.KLogLayout;
-import mgkim.framework.core.logging.KLogSys;
 import mgkim.framework.core.type.TApiType;
 import mgkim.framework.core.type.TAuthType;
 import mgkim.framework.core.type.TExecType;
@@ -28,9 +29,11 @@ import mgkim.framework.core.util.KMatcherUtil;
 import mgkim.framework.core.util.KStringUtil;
 
 public class KContext {
-
+	
+	private static final Logger log = LoggerFactory.getLogger(KContext.class);
+	
 	private static final ThreadLocal<Map<AttrKey, Object>> attr = new ThreadLocal<Map<AttrKey, Object>>();
-
+	
 	public enum AttrKey {
 		  REQ_TIME
 		, LOGGABLE, DEBUG
@@ -189,7 +192,7 @@ public class KContext {
 		String userId = KStringUtil.nvl(claims.get(KConstant.USER_ID), "");
 		boolean debug = KContext.getT(AttrKey.DEBUG);
 		if (debug) {
-			KLogSys.debug("{} {}{} {}", KConstant.LT_SECURITY, KLogLayout.LINE, KConstant.LT_SECURITY, KMessage.get(KMessage.E6023, KContext.get(AttrKey.SSID), ssid));
+			log.info("{} {}{} {}", KConstant.LT_SECURITY, KLogLayout.LINE, KConstant.LT_SECURITY, KMessage.get(KMessage.E6023, KContext.get(AttrKey.SSID), ssid));
 			KContext.set(AttrKey.SSID, ssid);
 			MDC.put(KConstant.SSID, ssid);
 		}

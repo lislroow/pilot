@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -22,7 +24,6 @@ import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
-import mgkim.framework.core.logging.KLogSys;
 import mgkim.framework.core.util.KAesUtil;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KRsaUtil;
@@ -32,6 +33,8 @@ import mgkim.framework.online.cmm.vo.fieldcryptor.CmmFieldCryptoVO;
 
 @KBean(name = "필드암호화키 관리")
 public class ComFieldCryptorMgr implements InitializingBean {
+	
+	private static final Logger log = LoggerFactory.getLogger(ComFieldCryptorMgr.class);
 
 	final String BEAN_NAME = KObjectUtil.name(ComFieldCryptorMgr.class);
 
@@ -147,21 +150,21 @@ public class ComFieldCryptorMgr implements InitializingBean {
 					KEncrypt annotation =  fields[i].getDeclaredAnnotation(KEncrypt.class);
 					if (annotation != null) {
 						if (KStringUtil.isEmpty(value)) {
-							KLogSys.info("암호화 필드가 빈 문자열 입니다. : 필드명={}", fields[i].getName());
+							log.info("암호화 필드가 빈 문자열 입니다. : 필드명={}", fields[i].getName());
 							continue;
 						}
 						if (!value.startsWith("ENC('")) {
-							KLogSys.info("암호화 필드가 ENC('') 포맷이 아닙니다. : 필드명={}", fields[i].getName());
+							log.info("암호화 필드가 ENC('') 포맷이 아닙니다. : 필드명={}", fields[i].getName());
 							continue;
 						}
 						if (KStringUtil.isEmpty(privateKey)) {
 							throw new KSysException(KMessage.E6204);
 						}
 						String encValue = value.substring("ENC(\'".length(), value.length() - "')".length());
-						KLogSys.debug("서버(개인키) : API_SVR_PRKY={}", privateKey);
-						KLogSys.debug("암호문 : value={}", value);
+						log.debug("서버(개인키) : API_SVR_PRKY={}", privateKey);
+						log.debug("암호문 : value={}", value);
 						String decValue = KRsaUtil.decrypt(encValue, privateKey);
-						KLogSys.debug("복호문 : decValue={}", decValue);
+						log.debug("복호문 : decValue={}", decValue);
 						KObjectUtil.setValue(obj, fields[i].getName(), decValue);
 					}
 				} catch(Exception e) {
@@ -220,7 +223,7 @@ public class ComFieldCryptorMgr implements InitializingBean {
 					KEncrypt annotation =  fields[i].getDeclaredAnnotation(KEncrypt.class);
 					if (annotation != null) {
 						if (KStringUtil.isEmpty(value)) {
-							KLogSys.info("암호화 필드가 빈 문자열 입니다. : 필드명={}", fields[i].getName());
+							log.info("암호화 필드가 빈 문자열 입니다. : 필드명={}", fields[i].getName());
 							continue;
 						}
 						if (KStringUtil.isEmpty(cryptoClntSyky)) {
@@ -228,10 +231,10 @@ public class ComFieldCryptorMgr implements InitializingBean {
 						}
 
 						String encValue = KAesUtil.encrypt(value, cryptoClntSyky);
-						KLogSys.debug("클라이언트 암호화키(대칭키,AES) : CLNT_SYKY={}", cryptoClntSyky);
-						KLogSys.debug("평문 : value={}", value);
+						log.debug("클라이언트 암호화키(대칭키,AES) : CLNT_SYKY={}", cryptoClntSyky);
+						log.debug("평문 : value={}", value);
 						encValue = String.format("ENC('%s')", encValue);
-						KLogSys.debug("암호문 : encValue={}", encValue);
+						log.debug("암호문 : encValue={}", encValue);
 						KObjectUtil.setValue(obj, fields[i].getName(), encValue);
 					}
 				} catch(Exception e) {
@@ -276,7 +279,7 @@ public class ComFieldCryptorMgr implements InitializingBean {
 			}
 			try {
 				if (fields[i].getDeclaredAnnotation(KEncrypt.class) != null) {
-					KLogSys.warn("암호화 필드가 있음 : 확인된 필드명={}", fields[i].getName());
+					log.warn("암호화 필드가 있음 : 확인된 필드명={}", fields[i].getName());
 					return true;
 				}
 			} catch(Exception e) {

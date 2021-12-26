@@ -15,6 +15,8 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.security.access.ConfigAttribute;
@@ -26,17 +28,18 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.env.KContext;
-import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.env.KContext.AttrKey;
+import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
-import mgkim.framework.core.logging.KLogSys;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KStringUtil;
 
 @KBean(name = "url-authority 매핑")
 public class ComUriAuthorityMgr implements FilterInvocationSecurityMetadataSource {
+	
+	private static final Logger log = LoggerFactory.getLogger(ComUriAuthorityMgr.class);
 
 	final String BEAN_NAME = KObjectUtil.name(ComUriAuthorityMgr.class);
 
@@ -120,12 +123,12 @@ public class ComUriAuthorityMgr implements FilterInvocationSecurityMetadataSourc
 		try {
 			loadedMap = init();
 		} catch(KSysException e) {
-			KLogSys.error(e.getText(), e);
+			log.error(e.getText(), e);
 			return null;
 		}
 		uriAuthorityMap = loadedMap;
 		if (uriAuthorityMap == null) {
-			KLogSys.warn(KMessage.get(KMessage.E5202));
+			log.warn(KMessage.get(KMessage.E5202));
 			return null;
 		}
 		Set<ConfigAttribute> allAttributes = new HashSet<ConfigAttribute>();
@@ -172,10 +175,10 @@ public class ComUriAuthorityMgr implements FilterInvocationSecurityMetadataSourc
 	}
 
 	public void reload() throws Exception {
-		KLogSys.warn("************ VERY SECURED PROCESS [시작] ************");
+		log.warn("************ VERY SECURED PROCESS [시작] ************");
 		LinkedHashMap<RequestMatcher, List<ConfigAttribute>> reloadedMap = init();
 		Iterator<Entry<RequestMatcher, List<ConfigAttribute>>> iterator = reloadedMap.entrySet().iterator();
-		KLogSys.warn("`uri-authority` 정보를 다시 적재합니다. 적재 전 건수={}", uriAuthorityMap.size());
+		log.warn("`uri-authority` 정보를 다시 적재합니다. 적재 전 건수={}", uriAuthorityMap.size());
 		long start = System.currentTimeMillis();
 		uriAuthorityMap.clear();
 		while (iterator.hasNext()) {
@@ -183,8 +186,8 @@ public class ComUriAuthorityMgr implements FilterInvocationSecurityMetadataSourc
 			uriAuthorityMap.put(entry.getKey(), entry.getValue());
 		}
 		long finished = System.currentTimeMillis();
-		KLogSys.warn("`uri-authority` 정보 적재를 마쳤습니다. 적재 후 건수={}, 적재 소요시간={} 밀리초", uriAuthorityMap.size(), (finished - start));
-		KLogSys.warn("************ VERY SECURED PROCESS [종료] ************");
+		log.warn("`uri-authority` 정보 적재를 마쳤습니다. 적재 후 건수={}, 적재 소요시간={} 밀리초", uriAuthorityMap.size(), (finished - start));
+		log.warn("************ VERY SECURED PROCESS [종료] ************");
 	}
 
 }

@@ -18,16 +18,19 @@ import org.apache.ibatis.reflection.factory.DefaultObjectFactory;
 import org.apache.ibatis.reflection.wrapper.DefaultObjectWrapperFactory;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.logging.KLogCommon;
 import mgkim.framework.core.logging.KLogLayout;
-import mgkim.framework.core.logging.KLogSql;
 import mgkim.framework.core.type.TSqlType;
 
 public class KSqlUtil {
+	
+	private static final Logger log = LoggerFactory.getLogger(KSqlUtil.class);
 
 	public static String COUNT_SQL = "SELECT COUNT(*) \n  FROM (\n  %s\n) TB";
 	public static String PAGING_SQL = "SELECT * \n  FROM (SELECT rownum rn, (?+1)-rownum rnum, TB.* FROM (\n    %s\n  ) TB\n) WHERE rn BETWEEN ? AND ?";
@@ -211,7 +214,7 @@ public class KSqlUtil {
 				sql = KStringUtil.replaceEmptyLine(sql);
 				sql = sql.replaceAll("\n    ", "\n");
 			} catch(Exception e) {
-				KLogSql.error(String.format("param-sql을 생성하는 중 오류가 발생했습니다. `%s`", sqlId), e);
+				log.error(String.format("param-sql을 생성하는 중 오류가 발생했습니다. `%s`", sqlId), e);
 			}
 		}
 		
@@ -220,16 +223,16 @@ public class KSqlUtil {
 		{
 			switch(paramSqlType) {
 			case ORIGIN_SQL:
-				KLogSql.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL, sqlId, KLogLayout.LINE, KConstant.LT_SQL, sqlFile, sqlId, KLogLayout.LINE, sql);
+				log.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL, sqlId, KLogLayout.LINE, KConstant.LT_SQL, sqlFile, sqlId, KLogLayout.LINE, sql);
 				break;
 			case PAGING_SQL:
-				KLogSql.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL_PAING, sqlId, KLogLayout.LINE, KConstant.LT_SQL_PAING, sqlFile, sqlId, KLogLayout.LINE, sql);
+				log.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL_PAING, sqlId, KLogLayout.LINE, KConstant.LT_SQL_PAING, sqlFile, sqlId, KLogLayout.LINE, sql);
 				break;
 			case COUNT_SQL1:
-				KLogSql.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL_COUNT1, sqlId, KLogLayout.LINE, KConstant.LT_SQL_COUNT1, sqlFile, sqlId, KLogLayout.LINE, sql);
+				log.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL_COUNT1, sqlId, KLogLayout.LINE, KConstant.LT_SQL_COUNT1, sqlFile, sqlId, KLogLayout.LINE, sql);
 				break;
 			case COUNT_SQL2:
-				KLogSql.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL_COUNT2, sqlId, KLogLayout.LINE, KConstant.LT_SQL_COUNT2, sqlFile, sqlId, KLogLayout.LINE, sql);
+				log.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL_COUNT2, sqlId, KLogLayout.LINE, KConstant.LT_SQL_COUNT2, sqlFile, sqlId, KLogLayout.LINE, sql);
 				break;
 			}
 		}

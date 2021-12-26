@@ -28,6 +28,8 @@ import org.apache.ibatis.reflection.factory.ObjectFactory;
 import org.apache.ibatis.reflection.wrapper.DefaultObjectWrapperFactory;
 import org.apache.ibatis.reflection.wrapper.ObjectWrapperFactory;
 import org.apache.ibatis.session.ResultHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StopWatch;
 
 import mgkim.framework.core.dto.KInPageVO;
@@ -51,6 +53,8 @@ import mgkim.framework.core.util.KStringUtil;
 	, @Signature(type = StatementHandler.class, method = "update", args = { Statement.class })
 })
 public class ComSqlInterceptor implements Interceptor {
+	
+	private static final Logger log = LoggerFactory.getLogger(ComSqlInterceptor.class);
 
 	private ComSqlPagingList comSqlPagingList;
 
@@ -130,10 +134,10 @@ public class ComSqlInterceptor implements Interceptor {
 						if (isLoggableSql) {
 							if (!isVerboss) {
 							} else {
-								//KLogSql.info("{} `{}` {}{} `{}` `{}` {}`parameterObject` = {}", KConstant.LT_SQL_PARAM, sqlId, KLogLayout.LINE, KConstant.LT_SQL_PARAM, sqlFile, sqlId, KLogLayout.LINE, KStringUtil.toJson(parameterObject));
+								//log.info("{} `{}` {}{} `{}` `{}` {}`parameterObject` = {}", KConstant.LT_SQL_PARAM, sqlId, KLogLayout.LINE, KConstant.LT_SQL_PARAM, sqlFile, sqlId, KLogLayout.LINE, KStringUtil.toJson(parameterObject));
 							}
 						}
-						KLogSql.info("{} `{}` {}{} `{}` `{}` {}`parameterObject` = {}", KConstant.LT_SQL_PARAM, sqlId, KLogLayout.LINE, KConstant.LT_SQL_PARAM, sqlFile, sqlId, KLogLayout.LINE, KStringUtil.toJson(parameterObject));
+						log.info("{} `{}` {}{} `{}` `{}` {}`parameterObject` = {}", KConstant.LT_SQL_PARAM, sqlId, KLogLayout.LINE, KConstant.LT_SQL_PARAM, sqlFile, sqlId, KLogLayout.LINE, KStringUtil.toJson(parameterObject));
 					}
 					
 					// paging 여부 확인
@@ -181,7 +185,7 @@ public class ComSqlInterceptor implements Interceptor {
 					// parameterObject 로깅
 					{
 						if (isLoggableSql) {
-							KLogSql.info("{} `{}` {}{} `{}` `{}` {}{}", KConstant.LT_SQL_PARAM, sqlId, KLogLayout.LINE, KConstant.LT_SQL_PARAM, sqlFile, sqlId, KLogLayout.LINE, KStringUtil.toJson(parameterObject));
+							log.info("{} `{}` {}{} `{}` `{}` {}{}", KConstant.LT_SQL_PARAM, sqlId, KLogLayout.LINE, KConstant.LT_SQL_PARAM, sqlFile, sqlId, KLogLayout.LINE, KStringUtil.toJson(parameterObject));
 						}
 					}
 					
@@ -268,17 +272,17 @@ public class ComSqlInterceptor implements Interceptor {
 				switch(execType) {
 				case REQUEST:
 					if (!isVerboss) {
-						KLogSql.info("{} `{}` {}{} `{}` `{}` {}`rows` = {},  `elapsed` = {} sec",                       KConstant.LT_SQL_RESULT, sqlId, KLogLayout.LINE, KConstant.LT_SQL_RESULT, sqlFile, sqlId, KLogLayout.LINE, resultCount, String.format("%.3f", elapsedTime));
+						log.info("{} `{}` {}{} `{}` `{}` {}`rows` = {},  `elapsed` = {} sec",                       KConstant.LT_SQL_RESULT, sqlId, KLogLayout.LINE, KConstant.LT_SQL_RESULT, sqlFile, sqlId, KLogLayout.LINE, resultCount, String.format("%.3f", elapsedTime));
 					} else {
-						KLogSql.info("{} `{}` {}{} `{}` `{}` {}`rows` = {},  `elapsed` = {} sec,{}`resultObject` = {}", KConstant.LT_SQL_RESULT, sqlId, KLogLayout.LINE, KConstant.LT_SQL_RESULT_VERBOSS, sqlFile, sqlId, KLogLayout.LINE, resultCount, String.format("%.3f", elapsedTime), KLogLayout.LINE, KStringUtil.toJson(resultObject));
+						log.info("{} `{}` {}{} `{}` `{}` {}`rows` = {},  `elapsed` = {} sec,{}`resultObject` = {}", KConstant.LT_SQL_RESULT, sqlId, KLogLayout.LINE, KConstant.LT_SQL_RESULT_VERBOSS, sqlFile, sqlId, KLogLayout.LINE, resultCount, String.format("%.3f", elapsedTime), KLogLayout.LINE, KStringUtil.toJson(resultObject));
 					}
 					break;
 				case SCHEDULE:
 				case SYSTEM:
 					if (!isVerboss) {
-						KLogSql.info("{} `{}` {}{} `{}` `{}` {}`rows` = {}",                        KConstant.LT_SQL_RESULT, sqlId, KLogLayout.LINE, KConstant.LT_SQL_RESULT, sqlFile, sqlId, KLogLayout.LINE, resultCount);
+						log.info("{} `{}` {}{} `{}` `{}` {}`rows` = {}",                        KConstant.LT_SQL_RESULT, sqlId, KLogLayout.LINE, KConstant.LT_SQL_RESULT, sqlFile, sqlId, KLogLayout.LINE, resultCount);
 					} else {
-						KLogSql.info("{} `{}` {}{} `{}` `{}` {}`rows` = {}, {}`resultObject` = {}", KConstant.LT_SQL_RESULT, sqlId, KLogLayout.LINE, KConstant.LT_SQL_RESULT_VERBOSS, sqlFile, sqlId, KLogLayout.LINE, resultCount, KLogLayout.LINE, KStringUtil.toJson(resultObject));
+						log.info("{} `{}` {}{} `{}` `{}` {}`rows` = {}, {}`resultObject` = {}", KConstant.LT_SQL_RESULT, sqlId, KLogLayout.LINE, KConstant.LT_SQL_RESULT_VERBOSS, sqlFile, sqlId, KLogLayout.LINE, resultCount, KLogLayout.LINE, KStringUtil.toJson(resultObject));
 					}
 				default:
 					break;

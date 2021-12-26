@@ -35,7 +35,6 @@ import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.core.logging.KLogLayout;
-import mgkim.framework.core.logging.KLogSys;
 import mgkim.framework.core.stereo.KFilter;
 import mgkim.framework.core.type.TRequestType;
 import mgkim.framework.core.type.TResponseType;
@@ -45,6 +44,8 @@ import mgkim.framework.online.com.scheduler.CmmApiTxLogScheduler;
 
 @KBean(name = "access 로그 필터")
 public class KFilterAccessLog  extends KFilter {
+	
+	private static final Logger log = LoggerFactory.getLogger(KFilterAccessLog.class);
 
 	final String BEAN_NAME = KObjectUtil.name(KFilterAccessLog.class);
 
@@ -74,9 +75,9 @@ public class KFilterAccessLog  extends KFilter {
 				requestWrapper = new ReadableRequestWrapper(request);
 				String reqBody = requestWrapper.getBodyString();
 				if (KStringUtil.isJson(reqBody)) {
-					KLogSys.info("{} {}{} {}{}`InDTO` = {}{}`Authorization` = {}", KConstant.LT_REQ_BODY, KLogLayout.LINE, KConstant.LT_REQ_BODY, KContext.getT(AttrKey.URI), KLogLayout.LINE, reqBody, KLogLayout.LINE, KContext.getT(AttrKey.AUTHORIZATION));
+					log.info("{} {}{} {}{}`InDTO` = {}{}`Authorization` = {}", KConstant.LT_REQ_BODY, KLogLayout.LINE, KConstant.LT_REQ_BODY, KContext.getT(AttrKey.URI), KLogLayout.LINE, reqBody, KLogLayout.LINE, KContext.getT(AttrKey.AUTHORIZATION));
 				} else {
-					KLogSys.warn("{} `{}`에서 request-body 가 json 이 아닙니다. request-body={}", KConstant.LT_SECURITY_FILTER, BEAN_NAME, reqBody);
+					log.warn("{} `{}`에서 request-body 가 json 이 아닙니다. request-body={}", KConstant.LT_SECURITY_FILTER, BEAN_NAME, reqBody);
 				}
 			} else {
 				/*
@@ -132,7 +133,7 @@ public class KFilterAccessLog  extends KFilter {
 						while ((readLine = br.readLine()) != null) {
 							buf.append(readLine);
 						}
-						KLogSys.info("{} [{}] {} (`{}` bytes){}{}{}`OutDTO` = {}", KConstant.LT_RES_INFO, code, rhMessage, responseWrapper.getContentSize(), KLogLayout.LINE, KConstant.LT_RES_VERBOSS, KLogLayout.LINE, buf.toString());
+						log.info("{} [{}] {} (`{}` bytes){}{}{}`OutDTO` = {}", KConstant.LT_RES_INFO, code, rhMessage, responseWrapper.getContentSize(), KLogLayout.LINE, KConstant.LT_RES_VERBOSS, KLogLayout.LINE, buf.toString());
 					} finally {
 						if (br != null) {
 							br.close();
@@ -140,15 +141,15 @@ public class KFilterAccessLog  extends KFilter {
 					}
 				} else {
 					String contentSize = MessageFormat.format("{0}", responseWrapper.getContentSize());
-					KLogSys.info("{} [{}] {} (`{}` bytes)", KConstant.LT_RES_INFO, code, rhMessage, contentSize);
+					log.info("{} [{}] {} (`{}` bytes)", KConstant.LT_RES_INFO, code, rhMessage, contentSize);
 				}
 			} else if (responseType == TResponseType.FILE) {
 				String filename = KContext.getT(AttrKey.DOWN_FILE);
 				String contentSize = MessageFormat.format("{0}", responseWrapper.getContentSize());
-				KLogSys.info("{} download file=`{}` (`{}` bytes)", KConstant.LT_RES_INFO, filename, contentSize);
+				log.info("{} download file=`{}` (`{}` bytes)", KConstant.LT_RES_INFO, filename, contentSize);
 			} else {
-				KLogSys.info("분류되지 않은 응답 형태 입니다.");
-				KLogSys.info("{} Content-Type=`{}` (`{}` bytes)", KConstant.LT_RES_INFO, response.getContentType(), responseWrapper.getContentSize());
+				log.info("분류되지 않은 응답 형태 입니다.");
+				log.info("{} Content-Type=`{}` (`{}` bytes)", KConstant.LT_RES_INFO, response.getContentType(), responseWrapper.getContentSize());
 			}
 		} catch(Exception e) {
 			KExceptionHandler.response(response, new KSysException(KMessage.E7008, e, BEAN_NAME, "응답"));

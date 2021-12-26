@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
@@ -26,13 +28,12 @@ import mgkim.framework.core.dto.KOutPageDTO;
 import mgkim.framework.core.dto.KOutPageVO;
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KContext;
-import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.env.KContext.AttrKey;
+import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.exception.KException;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
-import mgkim.framework.core.logging.KLogSys;
 import mgkim.framework.core.type.TApiType;
 import mgkim.framework.core.type.TAuthType;
 import mgkim.framework.core.type.TResponseType;
@@ -43,6 +44,8 @@ import mgkim.framework.online.com.mgr.ComFieldCryptorMgr;
 
 @RestControllerAdvice(basePackages=KProfile.GROUP)
 public class KOutDTOHandler extends AbstractMappingJacksonResponseBodyAdvice implements InitializingBean {
+	
+	private static final Logger log = LoggerFactory.getLogger(KOutDTOHandler.class);
 
 	public static final boolean HIDEONERROR_ENABLED = false;
 	public static final String HIDEONERROR_TEXT = "처리 중 오류가 발생했습니다.";
@@ -67,7 +70,7 @@ public class KOutDTOHandler extends AbstractMappingJacksonResponseBodyAdvice imp
 			throw new KSysException(KMessage.E5001, KObjectUtil.name(ComFieldCryptorMgr.class));
 		}
 		if (cmmDtoHandler == null) {
-			KLogSys.warn(KMessage.get(KMessage.E5002, KObjectUtil.name(CmmDtoHandler.class)));
+			log.warn(KMessage.get(KMessage.E5002, KObjectUtil.name(CmmDtoHandler.class)));
 			return;
 		}
 	}

@@ -5,16 +5,17 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import mgkim.framework.core.annotation.KTaskSchedule;
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KContext;
-import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.env.KContext.AttrKey;
+import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
-import mgkim.framework.core.logging.KLogSys;
 import mgkim.framework.core.stereo.KScheduler;
 import mgkim.framework.core.stereo.KTask;
 import mgkim.framework.core.util.KDateUtil;
@@ -24,6 +25,8 @@ import mgkim.framework.online.cmm.vo.apitxlog.CmmApiTxLogVO;
 
 @KTaskSchedule(name = "api처리로그 관리", interval = 1000, manage = true)
 public class CmmApiTxLogScheduler extends KScheduler {
+	
+	private static final Logger log = LoggerFactory.getLogger(CmmApiTxLogScheduler.class);
 
 	private final int MAX_QUEUQ_SIZE = 3;
 
@@ -41,7 +44,7 @@ public class CmmApiTxLogScheduler extends KScheduler {
 				if (KObjectUtil.required(CmmApiTxLog.class)) {
 					throw new KSysException(KMessage.E5001, KObjectUtil.name(CmmApiTxLog.class));
 				} else {
-					KLogSys.warn(KMessage.get(KMessage.E5003, KObjectUtil.name(CmmApiTxLogScheduler.class), KObjectUtil.name(CmmApiTxLog.class)));
+					log.warn(KMessage.get(KMessage.E5003, KObjectUtil.name(CmmApiTxLogScheduler.class), KObjectUtil.name(CmmApiTxLog.class)));
 				}
 				return;
 			}
@@ -100,7 +103,7 @@ public class CmmApiTxLogScheduler extends KScheduler {
 		long timestamp = System.currentTimeMillis() - (secondsAgo * KConstant.MSEC);
 		String archiveDttm = KDateUtil.convert(timestamp, KConstant.FMT_YYYY_MM_DD_HH_MM_SS);
 		int cnt = cmmApiTxLog.archive(archiveDttm);
-		KLogSys.warn(KMessage.get(KMessage.E1001, cnt));
+		log.warn(KMessage.get(KMessage.E1001, cnt));
 		return cnt;
 	}
 }

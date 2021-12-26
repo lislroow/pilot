@@ -6,12 +6,13 @@ import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.exception.KMessage;
-import mgkim.framework.core.logging.KLogSys;
 import mgkim.framework.core.type.TPrivacyType;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.online.cmm.CmmPrivacy;
@@ -20,6 +21,8 @@ import mgkim.framework.online.cmm.vo.privacy.CmmPrivacyMngVO;
 
 @KBean(name = "개인정보관리")
 public class ComPrivacyMgr implements InitializingBean {
+	
+	private static final Logger log = LoggerFactory.getLogger(ComPrivacyMgr.class);
 
 	final String BEAN_NAME = KObjectUtil.name(ComPrivacyMgr.class);
 
@@ -34,7 +37,7 @@ public class ComPrivacyMgr implements InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		if (cmmPrivacy == null) {
-			KLogSys.warn(KMessage.get(KMessage.E5002, KObjectUtil.name(CmmPrivacy.class)));
+			log.warn(KMessage.get(KMessage.E5002, KObjectUtil.name(CmmPrivacy.class)));
 			return;
 		}
 
@@ -66,7 +69,7 @@ public class ComPrivacyMgr implements InitializingBean {
 			}
 		}
 
-		KLogSys.info("개인정보관리 대상 sql {}개 가 로드 되었습니다.", mngList.size());
+		log.info("개인정보관리 대상 sql {}개 가 로드 되었습니다.", mngList.size());
 	}
 
 	public void insertLog(CmmPrivacyLogVO vo) throws Exception {

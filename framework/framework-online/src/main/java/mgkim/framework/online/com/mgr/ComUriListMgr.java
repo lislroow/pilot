@@ -10,6 +10,8 @@ import java.util.regex.Matcher;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -24,12 +26,13 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.dto.KOutDTO;
 import mgkim.framework.core.logging.KLogLayout;
-import mgkim.framework.core.logging.KLogSys;
 import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.cmm.vo.uri.CmmUriVO;
 
 @KBean(name = "url-목록 관리")
 public class ComUriListMgr {
+	
+	private static final Logger log = LoggerFactory.getLogger(ComUriListMgr.class);
 
 	RequestMappingHandlerMapping requestMapping;
 	List<CmmUriVO> uriList = new ArrayList<CmmUriVO>();
@@ -97,8 +100,8 @@ public class ComUriListMgr {
 		});
 
 		Collections.sort(uriList);
-		KLogSys.debug("api 목록 = {} ", KStringUtil.toJson(uriList).replaceAll(",", KLogLayout.LINE).replaceAll("\"", "").replaceAll("\\[", "").replaceAll("\\]", ""));
-		KLogSys.info("api 목록 {}개 가 로드 되었습니다.", uriList.size());
+		log.debug("api 목록 = {} ", KStringUtil.toJson(uriList).replaceAll(",", KLogLayout.LINE).replaceAll("\"", "").replaceAll("\\[", "").replaceAll("\\]", ""));
+		log.info("api 목록 {}개 가 로드 되었습니다.", uriList.size());
 	}
 
 	public HandlerMethod getHandlerMethod(HttpServletRequest request) throws Exception {

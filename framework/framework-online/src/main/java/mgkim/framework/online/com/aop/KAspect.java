@@ -3,6 +3,8 @@ package mgkim.framework.online.com.aop;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,7 +18,6 @@ import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.exception.KMessage;
-import mgkim.framework.core.logging.KLogSys;
 import mgkim.framework.core.type.TExecType;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.online.cmm.aop.CmmMapperAspect;
@@ -26,6 +27,8 @@ import mgkim.framework.online.cmm.aop.CmmServiceAspect;
 @Aspect
 @KBean
 public class KAspect implements InitializingBean {
+	
+	private static final Logger log = LoggerFactory.getLogger(KAspect.class);
 
 	@Autowired(required = false)
 	private CmmServiceAspect cmmServiceAspect;
@@ -36,10 +39,10 @@ public class KAspect implements InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		if (cmmServiceAspect == null) {
-			KLogSys.warn(KMessage.get(KMessage.E5002, KObjectUtil.name(CmmServiceAspect.class)));
+			log.warn(KMessage.get(KMessage.E5002, KObjectUtil.name(CmmServiceAspect.class)));
 		}
 		if (cmmMapperAspect == null) {
-			KLogSys.warn(KMessage.get(KMessage.E5002, KObjectUtil.name(CmmMapperAspect.class)));
+			log.warn(KMessage.get(KMessage.E5002, KObjectUtil.name(CmmMapperAspect.class)));
 		}
 	}
 
@@ -133,7 +136,7 @@ public class KAspect implements InitializingBean {
 			}
 		}
 
-		KLogSys.info(text);
+		log.info(text);
 		Object result = joinPoint.proceed();
 
 		return result;

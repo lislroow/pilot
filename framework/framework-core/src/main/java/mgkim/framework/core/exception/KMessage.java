@@ -2,7 +2,7 @@ package mgkim.framework.core.exception;
 
 import java.text.MessageFormat;
 
-import mgkim.framework.core.logging.KLogSys;
+import org.slf4j.LoggerFactory;
 
 public enum KMessage {
 
@@ -226,7 +226,7 @@ public enum KMessage {
 			try {
 				result = MessageFormat.format(object.text(), args);
 			} catch(Exception e) {
-				KLogSys.error("메시지 생성이 실패했습니다.", e);
+				LoggerFactory.getLogger(KMessage.class).error("메시지 생성을 실패했습니다.", e);
 			}
 		} else {
 			result = object.text();

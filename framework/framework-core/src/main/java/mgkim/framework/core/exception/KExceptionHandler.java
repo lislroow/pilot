@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -20,12 +22,13 @@ import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.env.KSqlContext;
 import mgkim.framework.core.logging.KLogLayout;
-import mgkim.framework.core.logging.KLogSys;
 import mgkim.framework.core.type.TEncodingType;
 import mgkim.framework.core.util.KExceptionUtil;
 
 @KBean
 public class KExceptionHandler {
+	
+	private static final Logger log = LoggerFactory.getLogger(KExceptionHandler.class);
 
 	public static void response(HttpServletResponse response, Exception ex) {
 		// 1) `exception` 분석
@@ -171,7 +174,7 @@ public class KExceptionHandler {
 
 		// 2) `exception` 로깅
 		{
-			KLogSys.error("{}{}{} [{}] {}{}{}", KConstant.LT_EXCEPTION, KLogLayout.LINE, KConstant.LT_EXCEPTION, exception.getId(), exception.getText(), KLogLayout.LINE, cause);
+			log.error("{}{}{} [{}] {}{}{}", KConstant.LT_EXCEPTION, KLogLayout.LINE, KConstant.LT_EXCEPTION, exception.getId(), exception.getText(), KLogLayout.LINE, cause);
 		}
 	}
 }

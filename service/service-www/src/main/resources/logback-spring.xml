@@ -2,28 +2,61 @@
 <configuration scan="true" scanPeriod="1 seconds" packagingData="true">
   
   <property name="LEVEL-root" value="info" />
+  <property name="LEVEL-framework" value="info" />
   <property name="LOG_PATH" value="/outlog/WAS/www" />
-  <property name="LOG_PATTERN" value="%d{yy-MM-dd HH:mm:ss}[%-5level][%thread][%logger:%line] ### %msg%n"/>
+  <property name="PATTERN-root" value="%d{yyyy-MM-dd HH:mm:ss} [%-5level][%mdc{ssid}][%mdc{txid}][root][%logger:%line] ### %msg%n"/>
+  <property name="PATTERN-KLogSys" value="%d{yyyy-MM-dd HH:mm:ss} [%-5level][%mdc{ssid}][%mdc{txid}][deprecated-KLogSys] ### %msg%n"/>
+  <property name="PATTERN-framework" value="%d{yyyy-MM-dd HH:mm:ss} [%-5level][%mdc{ssid}][%mdc{txid}][fw][%logger:%line] ### %msg%n"/>
+  <property name="PATTERN-sql" value="%d{yyyy-MM-dd HH:mm:ss} [%-5level][%mdc{ssid}][%mdc{txid}][sql][%logger:%line] ### %msg%n"/>
   
   <appender name="CONSOLE-root" class="ch.qos.logback.core.ConsoleAppender">
     <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-      <pattern>${LOG_PATTERN}</pattern>
+      <pattern>${PATTERN-root}</pattern>
+    </encoder>
+  </appender>
+  
+  <appender name="CONSOLE-KLogSys" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <pattern>${PATTERN-KLogSys}</pattern>
+    </encoder>
+  </appender>
+  
+  <appender name="CONSOLE-framework" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <pattern>${PATTERN-framework}</pattern>
+    </encoder>
+  </appender>
+  
+  <appender name="CONSOLE-sql" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <pattern>${PATTERN-sql}</pattern>
     </encoder>
   </appender>
   
   <appender name="FILE-root" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <file>${LOG_PATH}/default.log</file>
     <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-      <pattern>${LOG_PATTERN}</pattern>
+      <pattern>${PATTERN-root}</pattern>
     </encoder>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
       <fileNamePattern>${LOG_PATH}/default-%d{yyyyMMdd}.log</fileNamePattern>
     </rollingPolicy>
   </appender>
   
+  <logger name="mgkim.framework.online" additivity="false" level="${LEVEL-framework}">
+    <appender-ref ref="CONSOLE-framework" />
+  </logger>
+  
+  <logger name="mgkim.framework.core.sql" additivity="false" level="${LEVEL-framework}">
+    <appender-ref ref="CONSOLE-sql" />
+  </logger>
+  
+  <logger name="KLogSys" additivity="false" level="${LEVEL-framework}">
+    <appender-ref ref="CONSOLE-KLogSys" />
+  </logger>
+  
   <root level="${LEVEL-root}">
     <appender-ref ref="CONSOLE-root" />
-    <appender-ref ref="FILE-root" />
   </root>
 
 </configuration>

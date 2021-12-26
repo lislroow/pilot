@@ -2,19 +2,23 @@ package mgkim.service.www.cmm;
 
 import java.text.MessageFormat;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.dto.KInDTO;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.logging.KLog;
 import mgkim.framework.core.logging.KLogSign;
-import mgkim.framework.core.logging.KLogSys;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.cmm.CmmDtoLog;
 
 @KBean
 public class CmmDtoLogImpl implements CmmDtoLog {
+	
+	private static final Logger log = LoggerFactory.getLogger(CmmDtoLogImpl.class);
 
 	@Override
 	public void logging(KInDTO<?> inDTO) throws Exception {
@@ -58,7 +62,7 @@ public class CmmDtoLogImpl implements CmmDtoLog {
 				}
 			}
 		} catch(Exception e) {
-			KLogSys.error("Dto 로그를 저장하는 중 오류가 발생했습니다.", e);
+			log.error("Dto 로그를 저장하는 중 오류가 발생했습니다.", e);
 		}
 	}
 

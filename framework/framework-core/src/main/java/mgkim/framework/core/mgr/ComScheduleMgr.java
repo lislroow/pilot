@@ -3,6 +3,8 @@ package mgkim.framework.core.mgr;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +18,14 @@ import mgkim.framework.core.env.KConfig;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.logging.KAnsi;
-import mgkim.framework.core.logging.KLogSys;
 import mgkim.framework.core.stereo.KScheduler;
 import mgkim.framework.core.stereo.KTask;
 import mgkim.framework.core.util.KObjectUtil;
 
 @KBean(name = "스케줄러 관리")
 public class ComScheduleMgr implements InitializingBean, DisposableBean {
+	
+	private static final Logger log = LoggerFactory.getLogger(ComScheduleMgr.class);
 
 	protected boolean enabled = true;
 	protected int interval = 2000;
@@ -53,9 +56,9 @@ public class ComScheduleMgr implements InitializingBean, DisposableBean {
 			for (int i=0; i<scheduleList.size(); i++) {
 				KScheduler scheduler = scheduleList.get(i);
 				if (KObjectUtil.manage(scheduler.getClass())) {
-					KLogSys.info(KMessage.get(KMessage.E5010, KAnsi.boldCyan(KObjectUtil.name(scheduler.getClass()))));
+					log.info(KMessage.get(KMessage.E5010, KAnsi.boldCyan(KObjectUtil.name(scheduler.getClass()))));
 				} else {
-					KLogSys.warn(KMessage.get(KMessage.E5009, KAnsi.boldRed(KObjectUtil.name(scheduler.getClass()))));
+					log.warn(KMessage.get(KMessage.E5009, KAnsi.boldRed(KObjectUtil.name(scheduler.getClass()))));
 				}
 			}
 		} catch(Exception e) {

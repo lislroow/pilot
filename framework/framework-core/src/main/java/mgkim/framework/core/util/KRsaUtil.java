@@ -22,11 +22,13 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StopWatch;
 
-import mgkim.framework.core.logging.KLogSys;
-
 public class KRsaUtil {
+	
+	private static final Logger log = LoggerFactory.getLogger(KRsaUtil.class);
 
 	public static KeyPair generate(int keySize) throws NoSuchAlgorithmException, NoSuchProviderException {
 		SecureRandom random = new SecureRandom();
@@ -38,14 +40,14 @@ public class KRsaUtil {
 		watch.start();
 		KeyPair pair = generator.generateKeyPair();
 		watch.stop();
-		KLogSys.info("RSA KEY SIZE={}, {}", keySize, watch.shortSummary());
-		KLogSys.info("구간암호화 키 생성. rsa key size={}, {} sec elapsed.", keySize, watch.getTotalTimeSeconds());
+		log.info("RSA KEY SIZE={}, {}", keySize, watch.shortSummary());
+		log.info("구간암호화 키 생성. rsa key size={}, {} sec elapsed.", keySize, watch.getTotalTimeSeconds());
 		Key pubKey = pair.getPublic();
 		Key privKey = pair.getPrivate();
 
-		KLogSys.info("====================== B64 STRING ======================");
-		KLogSys.info("pubKeyB64:"+Base64.getEncoder().encodeToString(pubKey.getEncoded()));
-		KLogSys.info("privKeyB64:"+Base64.getEncoder().encodeToString(privKey.getEncoded()));
+		log.info("====================== B64 STRING ======================");
+		log.info("pubKeyB64:"+Base64.getEncoder().encodeToString(pubKey.getEncoded()));
+		log.info("privKeyB64:"+Base64.getEncoder().encodeToString(privKey.getEncoded()));
 
 		return pair;
 	}
@@ -59,9 +61,9 @@ public class KRsaUtil {
 		PublicKey publicKey = null;
 		try {
 			publicKey = ukeyFactory.generatePublic(ukeySpec);
-			KLogSys.info("pubKeyB64:"+Base64.getEncoder().encodeToString(publicKey.getEncoded()));
+			log.info("pubKeyB64:"+Base64.getEncoder().encodeToString(publicKey.getEncoded()));
 		} catch (InvalidKeySpecException e) {
-			KLogSys.error("", e);
+			log.error("", e);
 		}
 
 		cipher.init(Cipher.ENCRYPT_MODE, publicKey);
@@ -79,9 +81,9 @@ public class KRsaUtil {
 		PrivateKey privateKey = null;
 		try {
 			privateKey = rkeyFactory.generatePrivate(rkeySpec);
-			KLogSys.info("privKeyB64:"+Base64.getEncoder().encodeToString(privateKey.getEncoded()));
+			log.info("privKeyB64:"+Base64.getEncoder().encodeToString(privateKey.getEncoded()));
 		} catch (InvalidKeySpecException e) {
-			KLogSys.error("", e);
+			log.error("", e);
 		}
 
 		// 개인키를 가지고있는쪽에서 복호화

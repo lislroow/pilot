@@ -59,7 +59,6 @@ import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
-import mgkim.framework.core.logging.KLogSys;
 import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.com.mybatis.ComSqlSessionFactory;
 
@@ -79,7 +78,7 @@ import mgkim.framework.online.com.mybatis.ComSqlSessionFactory;
 	}
 )
 public class KInit implements ServletContextInitializer, BeanFactoryPostProcessor {
-
+	
 	private static final Logger log = LoggerFactory.getLogger(KInit.class);
 
 	static {
@@ -87,7 +86,7 @@ public class KInit implements ServletContextInitializer, BeanFactoryPostProcesso
 		{
 			// 초기화를 진행하는 thread 의 KContext 초기화
 			KContext.initSystem();
-			KLogSys.debug("current profile={}", KStringUtil.toJson2(KProfile.profiles));
+			log.debug("current profile={}", KStringUtil.toJson2(KProfile.profiles));
 		}
 
 	}
@@ -239,7 +238,7 @@ public class KInit implements ServletContextInitializer, BeanFactoryPostProcesso
 	//public JndiObjectFactoryBean jndiObjectFactoryBean() {
 	//	JndiObjectFactoryBean bean = new JndiObjectFactoryBean();
 	//	boolean isWeblogic = bean.getClass().getClassLoader().toString().contains("weblogic");
-	//	KLogSys.debug("jndi-name 설정을 위해 weblogic 여부를 확인합니다. ClassLoader명={}", bean.getClass().getClassLoader().toString());
+	//	log.debug("jndi-name 설정을 위해 weblogic 여부를 확인합니다. ClassLoader명={}", bean.getClass().getClassLoader().toString());
 	//	if (!isWeblogic) {
 	//		bean.setJndiName("java:comp/env/"+JNDI);
 	//	} else {
@@ -292,7 +291,7 @@ public class KInit implements ServletContextInitializer, BeanFactoryPostProcesso
 		//result = new Resource[resourceInClasspath.length+resourceInJar.length];
 		//System.arraycopy(resourceInClasspath, 0, result, 0, resourceInClasspath.length);
 		//System.arraycopy(resourceInJar, 0, result, resourceInClasspath.length, resourceInJar.length);
-		//KLogSys.info("{} mapper files loaded", result.length);
+		//log.info("{} mapper files loaded", result.length);
 		//return result;
 		return resourceInClasspath;
 	}

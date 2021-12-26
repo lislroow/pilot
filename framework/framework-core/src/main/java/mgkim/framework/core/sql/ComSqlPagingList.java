@@ -23,6 +23,8 @@ import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
 import org.apache.ibatis.type.IntegerTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StopWatch;
 
 import mgkim.framework.core.dto.KCmmVO;
@@ -42,6 +44,8 @@ import mgkim.framework.core.util.KSqlUtil;
 import mgkim.framework.core.util.KStringUtil;
 
 public class ComSqlPagingList {
+	
+	private static final Logger log = LoggerFactory.getLogger(ComSqlPagingList.class);
 
 	private ComSqlPagingCount comSqlPagingCount;
 	
@@ -115,7 +119,7 @@ public class ComSqlPagingList {
 			
 			// count-sql 결과 로깅
 			if (isVerboss) {
-				KLogSql.info("{} `{}` {}{} `{}` `{}` {}`rows` = {},  `elapsed` = {}(ms)", KConstant.LT_SQL_RESULT, sqlId, KLogLayout.LINE, KConstant.LT_SQL_RESULT, sqlFile, sqlId, KLogLayout.LINE, totalRecordCount, elapsedTime);
+				log.info("{} `{}` {}{} `{}` `{}` {}`rows` = {},  `elapsed` = {}(ms)", KConstant.LT_SQL_RESULT, sqlId, KLogLayout.LINE, KConstant.LT_SQL_RESULT, sqlFile, sqlId, KLogLayout.LINE, totalRecordCount, elapsedTime);
 			}
 		}
 		

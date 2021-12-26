@@ -12,22 +12,24 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.util.AntPathMatcher;
 
-import mgkim.framework.core.logging.KLogSys;
-
 public class KResourceUtil {
+	
+	private static final Logger log = LoggerFactory.getLogger(KResourceUtil.class);
 
 	private static AntPathMatcher antPathMatcher = new AntPathMatcher();
 
 	public static Resource[] getResourceInJar(File rootFile, List<String> jarPattern, String jarEntryPattern) throws IOException {
-		KLogSys.debug("PATH_WEBINF_LIB={}", rootFile.getAbsolutePath());
+		log.debug("PATH_WEBINF_LIB={}", rootFile.getAbsolutePath());
 
 		String _jarEntryPattern = jarEntryPattern.replaceFirst("classpath:", "");
 		if (!jarEntryPattern.equals(_jarEntryPattern)) {
-			KLogSys.debug("jarEntryPattern에 classpath:문자열을 제거합니다. {} => {}", jarEntryPattern, _jarEntryPattern);
+			log.debug("jarEntryPattern에 classpath:문자열을 제거합니다. {} => {}", jarEntryPattern, _jarEntryPattern);
 			jarEntryPattern = _jarEntryPattern;
 		}
 
@@ -45,7 +47,7 @@ public class KResourceUtil {
 				}
 			}
 			if (isMatched) {
-				KLogSys.info("[matched][jar-relative-path] {}", fileRelativePath);
+				log.info("[matched][jar-relative-path] {}", fileRelativePath);
 				String urlPath = String.format("jar:file:%s!/", filePath);
 				URL urlFile = new URL(urlPath);
 				URLConnection con = urlFile.openConnection();
@@ -57,11 +59,11 @@ public class KResourceUtil {
 					if (antPathMatcher.match(jarEntryPattern, entryPath)) {
 						UrlResource resource = new UrlResource(urlPath+entryPath);
 						result.add(resource);
-						KLogSys.debug("[matched][jar-entry] {}", resource.getURL());
+						log.debug("[matched][jar-entry] {}", resource.getURL());
 					}
 				}
 			} else {
-				KLogSys.debug("[skipped][jar-relative-path] {}", fileRelativePath);
+				log.debug("[skipped][jar-relative-path] {}", fileRelativePath);
 			}
 		}
 		return result.toArray(new Resource[result.size()]);

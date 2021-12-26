@@ -1,5 +1,7 @@
 package mgkim.framework.online.api.cmm;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +15,6 @@ import mgkim.framework.core.dto.KInDTO;
 import mgkim.framework.core.dto.KOutDTO;
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.exception.KMessage;
-import mgkim.framework.core.logging.KLogSys;
 import mgkim.framework.core.util.KDateUtil;
 import mgkim.framework.online.cmm.vo.debug.CmmDebugVO;
 import mgkim.framework.online.com.scheduler.CmmApiTxLogScheduler;
@@ -22,6 +23,8 @@ import mgkim.framework.online.com.scheduler.ComDebugScheduler;
 @Api( tags = { KConstant.SWG_SYSTEM_COMMON } )
 @RestController
 public class ComController {
+	
+	private static final Logger log = LoggerFactory.getLogger(ComController.class);
 
 	@Autowired(required = false)
 	private CmmApiTxLogScheduler cmmApiTxLogScheduler;
@@ -36,7 +39,7 @@ public class ComController {
 		Long inData = inDTO.getBody();
 		if (inData == null) {
 			inData = 10L;
-			KLogSys.warn(KMessage.get(KMessage.E3001, "로그 데이터 보관 시점(초)", inData));
+			log.warn(KMessage.get(KMessage.E3001, "로그 데이터 보관 시점(초)", inData));
 		}
 		int cnt = cmmApiTxLogScheduler.archive(inData);
 		String outData = KMessage.get(KMessage.E1001, cnt);

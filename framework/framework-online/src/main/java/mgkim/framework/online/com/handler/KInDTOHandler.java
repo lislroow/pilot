@@ -2,6 +2,8 @@ package mgkim.framework.online.com.handler;
 
 import java.lang.reflect.Type;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
@@ -15,13 +17,12 @@ import mgkim.framework.core.dto.KInDTO;
 import mgkim.framework.core.dto.KInPageDTO;
 import mgkim.framework.core.dto.KInPageVO;
 import mgkim.framework.core.env.KContext;
-import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.env.KContext.AttrKey;
+import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.exception.KException;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
-import mgkim.framework.core.logging.KLogSys;
 import mgkim.framework.core.type.TApiType;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.online.cmm.CmmDtoLog;
@@ -30,6 +31,8 @@ import mgkim.framework.online.com.mgr.ComFieldCryptorMgr;
 
 @RestControllerAdvice(basePackages=KProfile.GROUP)
 public class KInDTOHandler extends RequestBodyAdviceAdapter implements InitializingBean {
+	
+	private static final Logger log = LoggerFactory.getLogger(KInDTOHandler.class);
 
 	@Autowired(required = false)
 	private ComFieldCryptorMgr comFieldCryptorMgr;
@@ -46,10 +49,10 @@ public class KInDTOHandler extends RequestBodyAdviceAdapter implements Initializ
 			throw new KSysException(KMessage.E5001, KObjectUtil.name(ComFieldCryptorMgr.class));
 		}
 		if (cmmDtoLog == null) {
-			KLogSys.warn(KMessage.get(KMessage.E5002, KObjectUtil.name(CmmDtoLog.class)));
+			log.warn(KMessage.get(KMessage.E5002, KObjectUtil.name(CmmDtoLog.class)));
 		}
 		if (cmmDtoHandler == null) {
-			KLogSys.warn(KMessage.get(KMessage.E5002, KObjectUtil.name(CmmDtoHandler.class)));
+			log.warn(KMessage.get(KMessage.E5002, KObjectUtil.name(CmmDtoHandler.class)));
 		}
 	}
 

@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -13,7 +15,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KProfile;
-import mgkim.framework.core.logging.KLogSys;
 import mgkim.framework.core.util.KStringUtil;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
@@ -39,9 +40,11 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 @EnableSwagger2WebMvc // io.springfox:2.10.5
 @EnableWebMvc
 public class KInitMvc implements WebMvcConfigurer {
+	
+	private static final Logger log = LoggerFactory.getLogger(KInitMvc.class);
 
 	static {
-		KLogSys.debug("current profile={}", KStringUtil.toJson2(KProfile.profiles));
+		log.debug("current profile={}", KStringUtil.toJson2(KProfile.profiles));
 	}
 
 	@Override

@@ -2,6 +2,8 @@ package mgkim.framework.core.stereo;
 
 import java.util.concurrent.ScheduledFuture;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
@@ -9,11 +11,12 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
-import mgkim.framework.core.logging.KLogSys;
 import mgkim.framework.core.util.KDateUtil;
 import mgkim.framework.core.util.KObjectUtil;
 
 public abstract class KScheduler implements InitializingBean, DisposableBean {
+	
+	private static final Logger log = LoggerFactory.getLogger(KScheduler.class);
 
 	public boolean enabled = true;
 	protected int interval = 1000;
@@ -55,14 +58,14 @@ public abstract class KScheduler implements InitializingBean, DisposableBean {
 
 	public void start() {
 		if (!enabled) {
-			KLogSys.warn(KMessage.get(KMessage.E5014, KObjectUtil.name(this.getClass())));
+			log.warn(KMessage.get(KMessage.E5014, KObjectUtil.name(this.getClass())));
 			return;
 		}
 		
 		// scheduler 실행 중인지 확인
 		{
 			if (isRunning()) {
-				KLogSys.warn(KMessage.get(KMessage.E5015, KObjectUtil.name(this.getClass())));
+				log.warn(KMessage.get(KMessage.E5015, KObjectUtil.name(this.getClass())));
 				return;
 			}
 		}
@@ -71,7 +74,7 @@ public abstract class KScheduler implements InitializingBean, DisposableBean {
 		try {
 			task = task();
 			interval = KObjectUtil.interval(this.getClass());
-			KLogSys.warn(KMessage.get(KMessage.E5011, KObjectUtil.name(this.getClass()), interval));
+			log.warn(KMessage.get(KMessage.E5011, KObjectUtil.name(this.getClass()), interval));
 			
 			// org.springframework.scheduling.concurrent
 			//future = scheduler.scheduleWithFixedDelay(task, interval);
@@ -93,7 +96,7 @@ public abstract class KScheduler implements InitializingBean, DisposableBean {
 		}
 		if (future != null) {
 			future.cancel(true);
-			KLogSys.warn(KMessage.get(KMessage.E5012, KObjectUtil.name(this.getClass())));
+			log.warn(KMessage.get(KMessage.E5012, KObjectUtil.name(this.getClass())));
 		}
 		
 		scheduler.shutdown();
