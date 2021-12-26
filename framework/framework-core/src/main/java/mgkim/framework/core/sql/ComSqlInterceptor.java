@@ -177,6 +177,7 @@ public class ComSqlInterceptor implements Interceptor {
 					// param-sql 로깅
 					if (!isComSql || isLoggableSql) {
 						paramSql = KSqlUtil.createParamSql(parameterObject, statementHandler, sqlType);
+						log.info("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL, sqlId, KLogLayout.LINE, KConstant.LT_SQL, sqlFile, sqlId, KLogLayout.LINE, paramSql);
 					}
 					break;
 				case SCHEDULE:
@@ -206,6 +207,7 @@ public class ComSqlInterceptor implements Interceptor {
 					// param-sql 로깅
 					if (isLoggableSql) {
 						paramSql = KSqlUtil.createParamSql(parameterObject, statementHandler, TSqlType.ORIGIN_SQL);
+						log.info("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL, sqlId, KLogLayout.LINE, KConstant.LT_SQL, sqlFile, sqlId, KLogLayout.LINE, paramSql);
 					}
 					break;
 				}
@@ -235,6 +237,7 @@ public class ComSqlInterceptor implements Interceptor {
 					case SYSTEM:
 					default:
 						paramSql = KSqlUtil.createParamSql(parameterObject, statementHandler, TSqlType.ORIGIN_SQL);
+						log.info("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL, sqlId, KLogLayout.LINE, KConstant.LT_SQL, sqlFile, sqlId, KLogLayout.LINE, paramSql);
 						break;
 					}
 					throw e;

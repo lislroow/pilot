@@ -25,7 +25,6 @@ import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.logging.KLogCommon;
-import mgkim.framework.core.logging.KLogLayout;
 import mgkim.framework.core.type.TSqlType;
 
 public class KSqlUtil {
@@ -215,25 +214,6 @@ public class KSqlUtil {
 				sql = sql.replaceAll("\n    ", "\n");
 			} catch(Exception e) {
 				log.error(String.format("param-sql을 생성하는 중 오류가 발생했습니다. `%s`", sqlId), e);
-			}
-		}
-		
-		
-		// param-sql 로깅
-		{
-			switch(paramSqlType) {
-			case ORIGIN_SQL:
-				log.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL, sqlId, KLogLayout.LINE, KConstant.LT_SQL, sqlFile, sqlId, KLogLayout.LINE, sql);
-				break;
-			case PAGING_SQL:
-				log.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL_PAING, sqlId, KLogLayout.LINE, KConstant.LT_SQL_PAING, sqlFile, sqlId, KLogLayout.LINE, sql);
-				break;
-			case COUNT_SQL1:
-				log.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL_COUNT1, sqlId, KLogLayout.LINE, KConstant.LT_SQL_COUNT1, sqlFile, sqlId, KLogLayout.LINE, sql);
-				break;
-			case COUNT_SQL2:
-				log.warn("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL_COUNT2, sqlId, KLogLayout.LINE, KConstant.LT_SQL_COUNT2, sqlFile, sqlId, KLogLayout.LINE, sql);
-				break;
 			}
 		}
 		

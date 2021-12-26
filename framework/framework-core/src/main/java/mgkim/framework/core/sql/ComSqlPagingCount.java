@@ -22,14 +22,20 @@ import org.apache.ibatis.reflection.factory.ObjectFactory;
 import org.apache.ibatis.reflection.wrapper.DefaultObjectWrapperFactory;
 import org.apache.ibatis.reflection.wrapper.ObjectWrapperFactory;
 import org.apache.ibatis.session.Configuration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.env.KSqlContext;
+import mgkim.framework.core.logging.KLogLayout;
 import mgkim.framework.core.type.TSqlType;
 import mgkim.framework.core.util.KSqlUtil;
 
 public class ComSqlPagingCount {
+	
+	private static final Logger log = LoggerFactory.getLogger(ComSqlPagingCount.class);
 
 	protected Field proxyMappedStatement;
 	protected Field proxyDelegate;
@@ -51,6 +57,8 @@ public class ComSqlPagingCount {
 		MappedStatement mappedStatement = (MappedStatement) proxyMappedStatement.get(pstmtHandler);
 		BoundSql boundSql = statementHandler.getBoundSql();
 		String sqlId = mappedStatement.getId();
+		String sqlFile = mappedStatement.getResource();
+		sqlFile = sqlFile.substring(sqlFile.lastIndexOf(java.io.File.separator)+1, sqlFile.length()-1);
 		Object parameterObject = statementHandler.getParameterHandler().getParameterObject();
 		
 		// closable 객체
@@ -86,7 +94,8 @@ public class ComSqlPagingCount {
 						count = rs.getInt(1);
 					}
 				} catch(Exception ex) {
-					KSqlUtil.createParamSql(parameterObject, statementHandler, TSqlType.COUNT_SQL1);
+					String countSql = KSqlUtil.createParamSql(parameterObject, statementHandler, TSqlType.COUNT_SQL1);
+					log.error("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL_COUNT1, sqlId, KLogLayout.LINE, KConstant.LT_SQL_COUNT1, sqlFile, sqlId, KLogLayout.LINE, countSql);
 					throw ex;
 				}
 			}
@@ -157,7 +166,8 @@ public class ComSqlPagingCount {
 			// 로깅 준비
 			{
 				sqlId = countMappedStatement.getId();
-				sqlFile = KSqlUtil.getRelativePath(countMappedStatement.getResource());
+				sqlFile = countMappedStatement.getResource();
+				sqlFile = sqlFile.substring(sqlFile.lastIndexOf(java.io.File.separator)+1, sqlFile.length()-1);
 				
 				KContext.set(AttrKey.SQL_ID, sqlId);
 				KContext.set(AttrKey.SQL_FILE, sqlFile);
@@ -193,7 +203,8 @@ public class ComSqlPagingCount {
 				} catch(Exception ex) {
 					throw ex;
 				} finally {
-					KSqlUtil.createParamSql(parameterObject, statementHandler, TSqlType.COUNT_SQL2);
+					String countSql = KSqlUtil.createParamSql(parameterObject, statementHandler, TSqlType.COUNT_SQL2);
+					log.error("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL_COUNT2, sqlId, KLogLayout.LINE, KConstant.LT_SQL_COUNT2, sqlFile, sqlId, KLogLayout.LINE, countSql);
 				}
 			}
 		} catch (Exception e) {
