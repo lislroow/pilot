@@ -56,7 +56,7 @@ public class KProfile {
 			TSiteType[] type = TSiteType.values();
 			for (int i=0; i<type.length; i++) {
 				for (int j=0; j<arr.length; j++) {
-					if (arr[j].contains(type[i].toString())) { // 업무구분은 like 로 비교합니다.
+					if (arr[j].equalsIgnoreCase(type[i].name())) {
 						KProfile.SITE = type[i];
 						KProfile.profiles.add(arr[j]);
 						break;
@@ -83,7 +83,7 @@ public class KProfile {
 			TSysType[] sysType = TSysType.values();
 			for (int i=0; i<sysType.length; i++) {
 				for (int j=0; j<arr.length; j++) {
-					if (arr[j].equals(sysType[i].toString())) { // 시스템구분은 equal 로 비교합니다.
+					if (arr[j].equalsIgnoreCase(sysType[i].name())) {
 						KProfile.SYS = sysType[i];
 						KProfile.profiles.add(KProfile.SYS.toString());
 						break;
