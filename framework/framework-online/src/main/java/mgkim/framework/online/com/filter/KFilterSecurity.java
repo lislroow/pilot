@@ -62,7 +62,7 @@ public class KFilterSecurity extends KFilter {
 					if (allow) {
 						log.warn("{} {}{} {}", KConstant.LT_SECURITY, KLogLayout.LINE, KConstant.LT_SECURITY, KMessage.get(KMessage.E6024));
 					} else {
-						throw new KSysException(KMessage.E7009);
+						throw new KSysException(KMessage.E7009, KProfile.SYS);
 					}
 				}
 
