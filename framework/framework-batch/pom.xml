@@ -4,7 +4,7 @@
   <parent>
     <groupId>mgkim.bom</groupId>
     <artifactId>framework-bom</artifactId>
-    <version>0.1</version>
+    <version>1-SNAPSHOT</version>
   </parent>
   <groupId>mgkim.framework</groupId>
   <artifactId>framework-batch</artifactId>
