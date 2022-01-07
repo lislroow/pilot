@@ -58,8 +58,15 @@ if [ ! -e target/$JAR_FILE ]; then
   echo "build output file '$JAR_FILE' is not found."
 fi
 
+## deploy-nexus
+MVN_ARGS=""
+MVN_ARGS="${MVN_ARGS} -DpomFile=${PROJECT_BASE}/pom.xml"
+MVN_ARGS="${MVN_ARGS} -DrepositoryId=maven-snapshot"
+MVN_ARGS="${MVN_ARGS} -Dfile=./target/${JAR_FILE}"
+MVN_ARGS="${MVN_ARGS} -Durl=http://nexus/repository/maven-snapshot/"
+mvn deploy:deploy-file $MVN_ARGS
 
-## deploy
+## deploy-was
 SVR_LIST=$(cat << EOF
   172.28.200.30
 EOF
