@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>mgkim.bom</groupId>
   <artifactId>service-bom</artifactId>
-  <version>1-SNAPSHOT</version>
+  <version>1</version><!-- -SNAPSHOT -->
   <packaging>pom</packaging>
   <name>${project.groupId}:${project.artifactId}</name>
   <url>https://github.com/lislroow/pilot.git</url>
@@ -39,10 +39,22 @@
     <downloadSources>true</downloadSources>
     <downloadJavadocs>true</downloadJavadocs>
     <java.version>11</java.version>
+    
+    <framework-bom.version>1.0</framework-bom.version>
+    <!-- for snapshot
+    <framework-bom.version>[,2.0)</framework-bom.version>
+    -->
+    
+    <framework-core.version>1.0</framework-core.version>
+    <framework-online.version>1.0</framework-online.version>
+    <framework-batch.version>1.0</framework-batch.version>
+    <framework-daemon.version>1.0</framework-daemon.version>
+    <!-- for snapshot
     <framework-core.version>[,2.0)</framework-core.version>
     <framework-online.version>[,2.0)</framework-online.version>
     <framework-batch.version>[,2.0)</framework-batch.version>
     <framework-daemon.version>[,2.0)</framework-daemon.version>
+    -->
   </properties>
   
   <dependencyManagement>
@@ -51,7 +63,7 @@
       <dependency>
         <groupId>mgkim.bom</groupId>
         <artifactId>framework-bom</artifactId>
-        <version>2-SNAPSHOT</version>
+        <version>${framework-bom.version}</version>
         <type>pom</type>
       </dependency>
       <dependency>

@@ -8,7 +8,7 @@
   </parent>
   <groupId>mgkim.framework</groupId>
   <artifactId>framework-batch</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version><!-- -SNAPSHOT -->
   <packaging>jar</packaging>
   <name>${project.groupId}:${project.artifactId}</name>
   <url>https://github.com/lislroow/pilot.git</url>
@@ -25,7 +25,10 @@
   </scm>
   
   <properties>
+    <framework-core.version>1.0</framework-core.version>
+    <!-- for snapshot
     <framework-core.version>[,2.0)</framework-core.version>
+    -->
   </properties>
   
   <dependencies>
