@@ -39,10 +39,10 @@
     <downloadSources>true</downloadSources>
     <downloadJavadocs>true</downloadJavadocs>
     <java.version>11</java.version>
-    <framework-core.version>[1.0,2.0)</framework-core.version>
-    <framework-online.version>[1.0,2.0)</framework-online.version>
-    <framework-batch.version>[1.0,2.0)</framework-batch.version>
-    <framework-daemon.version>[1.0,2.0)</framework-daemon.version>
+    <framework-core.version>[,2.0)</framework-core.version>
+    <framework-online.version>[,2.0)</framework-online.version>
+    <framework-batch.version>[,2.0)</framework-batch.version>
+    <framework-daemon.version>[,2.0)</framework-daemon.version>
   </properties>
   
   <dependencyManagement>
