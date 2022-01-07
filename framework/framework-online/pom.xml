@@ -8,7 +8,7 @@
   </parent>
   <groupId>mgkim.framework</groupId>
   <artifactId>framework-online</artifactId>
-  <version>0.3-SNAPSHOT</version>
+  <version>0.4-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>${project.groupId}:${project.artifactId}</name>
   <url>https://github.com/lislroow/pilot.git</url>
