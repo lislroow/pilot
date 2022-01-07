@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>mgkim.bom</groupId>
   <artifactId>service-bom</artifactId>
-  <version>1-SNAPHOST</version>
+  <version>1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>${project.groupId}:${project.artifactId}</name>
   <url>https://github.com/lislroow/pilot.git</url>
@@ -51,7 +51,7 @@
       <dependency>
         <groupId>mgkim.bom</groupId>
         <artifactId>framework-bom</artifactId>
-        <version>1-SNAPHOST</version>
+        <version>1-SNAPSHOT</version>
         <type>pom</type>
       </dependency>
       <dependency>
