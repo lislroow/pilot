@@ -2,6 +2,7 @@
 
 ## env
 PROJECT_BASE=$PWD
+PROFILE_SYS=$1
 
 UNAME=`uname -s`
 if [[ "$UNAME" = "Linux"* ]]; then
@@ -80,7 +81,7 @@ EOF
 
 POST_CMD=$(cat << EOF
   chmod u+x $APP_HOME/*.sh;
-  $APP_HOME/start.sh staging;
+  $APP_HOME/start.sh $PROFILE_SYS;
 EOF
 )
 
