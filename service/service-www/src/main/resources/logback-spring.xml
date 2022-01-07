@@ -5,9 +5,10 @@
   <property name="LEVEL-framework" value="info" />
   <property name="LOG_PATH" value="/outlog/WAS/www" />
   <property name="PATTERN-root" value="[%mdc{profiles}] %d{yyyy-MM-dd HH:mm:ss} [%-5level][%mdc{ssid}][%mdc{txid}][root][%logger:%line] ### %msg%n"/>
-  <property name="PATTERN-KLogSys" value="[%mdc{profiles}] %d{yyyy-MM-dd HH:mm:ss} [%-5level][%mdc{ssid}][%mdc{txid}][deprecated-KLogSys] ### %msg%n"/>
+  <!-- 
   <property name="PATTERN-framework" value="[%mdc{profiles}] %d{yyyy-MM-dd HH:mm:ss} [%-5level][%mdc{ssid}][%mdc{txid}][fw][%logger:%line] ### %msg%n"/>
   <property name="PATTERN-sql" value="[%mdc{profiles}] %d{yyyy-MM-dd HH:mm:ss} [%-5level][%mdc{ssid}][%mdc{txid}][sql][%logger:%line] ### %msg%n"/>
+  -->
   
   <appender name="CONSOLE-root" class="ch.qos.logback.core.ConsoleAppender">
     <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
@@ -15,12 +16,7 @@
     </encoder>
   </appender>
   
-  <appender name="CONSOLE-KLogSys" class="ch.qos.logback.core.ConsoleAppender">
-    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-      <pattern>${PATTERN-KLogSys}</pattern>
-    </encoder>
-  </appender>
-  
+  <!-- 
   <appender name="CONSOLE-framework" class="ch.qos.logback.core.ConsoleAppender">
     <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
       <pattern>${PATTERN-framework}</pattern>
@@ -32,6 +28,7 @@
       <pattern>${PATTERN-sql}</pattern>
     </encoder>
   </appender>
+  -->
   
   <appender name="FILE-root" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <file>${LOG_PATH}/default.log</file>
@@ -43,6 +40,7 @@
     </rollingPolicy>
   </appender>
   
+  <!-- 
   <logger name="mgkim.framework.online" additivity="false" level="${LEVEL-framework}">
     <appender-ref ref="CONSOLE-framework" />
   </logger>
@@ -50,13 +48,11 @@
   <logger name="mgkim.framework.core.sql" additivity="false" level="${LEVEL-framework}">
     <appender-ref ref="CONSOLE-sql" />
   </logger>
-  
-  <logger name="KLogSys" additivity="false" level="${LEVEL-framework}">
-    <appender-ref ref="CONSOLE-KLogSys" />
-  </logger>
+  -->
   
   <root level="${LEVEL-root}">
     <appender-ref ref="CONSOLE-root" />
+    <appender-ref ref="FILE-root" />
   </root>
 
 </configuration>
