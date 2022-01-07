@@ -1,13 +1,13 @@
 #!/bin/bash
 
 ## env
+PROJECT_BASE=$PWD
+
 UNAME=`uname -s`
 if [[ "$UNAME" = "Linux"* ]]; then
   OS_NAME="linux"
-  PROJECT_BASE=$1
 elif [[ "$UNAME" = "CYGWIN"* || "$UNAME" = "MINGW"* ]]; then
   OS_NAME="win"
-  PROJECT_BASE=$PWD
 fi
 
 echo "OS_NAME: $OS_NAME"
