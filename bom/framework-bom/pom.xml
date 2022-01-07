@@ -38,6 +38,7 @@
     <downloadSources>true</downloadSources>
     <downloadJavadocs>true</downloadJavadocs>
     <java.version>11</java.version>
+    <org.apache.tomcat.version>9.0.56</org.apache.tomcat.version>
     <io.springfox.version>2.10.5</io.springfox.version>
     <io.swagger.parser.v3.version>2.0.27</io.swagger.parser.v3.version>
     <io.swagger.core.v3.version>2.1.10</io.swagger.core.v3.version>
@@ -165,7 +166,12 @@
     <dependency>
       <groupId>org.apache.tomcat</groupId>
       <artifactId>tomcat-catalina-ha</artifactId>
-      <version>9.0.56</version>
+      <version>${org.apache.tomcat.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.tomcat.embed</groupId>
+      <artifactId>tomcat-embed-core</artifactId>
+      <version>${org.apache.tomcat.version}</version>
     </dependency>
     <!-- //tomcat -->
     
