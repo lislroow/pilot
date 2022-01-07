@@ -47,7 +47,7 @@ public class KFilterSecurity extends KFilter {
 				case LOC:
 					break;
 				case DEV:
-				case TEST:
+				case STAGING:
 				case PROD:
 				default:
 					if (debug) {

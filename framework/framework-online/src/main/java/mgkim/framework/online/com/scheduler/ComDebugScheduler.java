@@ -84,7 +84,7 @@ public class ComDebugScheduler extends KScheduler {
 					}
 					break;
 				case DEV:
-				case TEST:
+				case STAGING:
 				case PROD:
 					for (CmmDebugVO item : debugList) {
 						long stopTime = item.stopTime.getTime();
@@ -125,7 +125,7 @@ public class ComDebugScheduler extends KScheduler {
 			debugList.add(debugVO);
 			break;
 		case DEV:
-		case TEST:
+		case STAGING:
 		case PROD:
 			try {
 				debugVO = cmmDebug.startDebug(debugVO);

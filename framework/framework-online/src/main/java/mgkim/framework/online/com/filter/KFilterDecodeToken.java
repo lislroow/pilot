@@ -99,7 +99,7 @@ public class KFilterDecodeToken extends KFilter implements InitializingBean {
 					//		// 로컬 환경에서는 IP가 127.0.0.1 로 나오기 때문에 체크하지 않도록 함
 					//		break;
 					//	case DEV:
-					//	case TEST:
+					//	case STAGING:
 					//	case PROD:
 					//		throw new KSysException(KMessage.E6005);
 					//	}
