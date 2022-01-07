@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>mgkim.bom</groupId>
   <artifactId>framework-bom</artifactId>
-  <version>1</version><!-- -SNAPSHOT -->
+  <version>2-SNAPSHOT</version><!-- -SNAPSHOT -->
   <packaging>pom</packaging>
   <name>${project.groupId}:${project.artifactId}</name>
   <url>https://github.com/lislroow/pilot.git</url>
@@ -192,6 +192,11 @@
         <artifactId>logback-core</artifactId>
         <version>${ch.qos.logback.version}</version>
     </dependency>
+    <!-- <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${ch.qos.logback.version}</version>
+    </dependency> -->
     <!-- //logback -->
     
     
