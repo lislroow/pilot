@@ -4,7 +4,7 @@
   <parent>
     <groupId>mgkim.bom</groupId>
     <artifactId>service-bom</artifactId>
-    <version>1-SNAPSHOT</version>
+    <version>1</version><!-- -SNAPSHOT -->
   </parent>
   <groupId>mgkim.service</groupId>
   <artifactId>service-www</artifactId>
