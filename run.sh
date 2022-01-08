@@ -74,10 +74,10 @@ function install() {
 
 
 case $1 in
-  del)
+  del*)
     del
     ;;
-  install)
+  inst*)
     install
     ;;
   *)
