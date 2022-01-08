@@ -26,7 +26,7 @@ JAVA_OPTS="${JAVA_OPTS} -Dspring.profiles.active=${PROFILE_SYS}"
 
 PS_CMD="ps -ef | grep -v grep | egrep ${INST_ID}.*\.jar | awk '{ print \$2 }'"
 echo "${PS_CMD}"
-_PID=eval "${PS_CMD}"
+_PID=$(eval "${PS_CMD}")
 
 if [ "${_PID}" != "" ]; then
   echo "execute ${APP_HOME}/stop.sh"
@@ -35,7 +35,7 @@ fi
 
 FIND_CMD="find ${APP_HOME} -maxdepth 1 -type f -name ${INST_ID}*.jar | sort -V | tail -n 1"
 echo "${FIND_CMD}"
-JAR_FILE=eval "${FIND_CMD}"
+JAR_FILE=$(eval "${FIND_CMD}")
 echo "JAR_FILE=${JAR_FILE}"
 
 JAVA_CMD="nohup $JAVA_HOME/bin/java ${JAVA_OPTS} -jar ${JAR_FILE} > /dev/null 2>&1 &"
