@@ -78,6 +78,8 @@ case $1 in
     del
     ;;
   install)
+    install
+    ;;
   *)
     install
     ;;
