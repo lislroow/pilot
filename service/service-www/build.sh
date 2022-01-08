@@ -5,15 +5,16 @@ PROJECT_BASE=$PWD
 PROFILE_SYS=$1
 
 UNAME=`uname -s`
+echo "UNAME=${UNAME}"
 if [[ "${UNAME}" = "Linux"* ]]; then
   OS_NAME="linux"
 elif [[ "${UNAME}" = "CYGWIN"* || "${UNAME}" = "MINGW"* ]]; then
   OS_NAME="win"
 fi
 
-echo "OS_NAME: $OS_NAME"
+echo "OS_NAME=${OS_NAME}"
 
-case $OS_NAME in
+case ${OS_NAME} in
   linux)
     M2_HOME=/prod/maven/maven
     JAVA_HOME=/prod/java/openjdk-11.0.13.8-temurin
@@ -30,6 +31,12 @@ case $OS_NAME in
     ;;
 esac
 
+printf '%s\n' $(cat << EOF
+M2_HOME=${M2_HOME}
+JAVA_HOME=${JAVA_HOME}
+EOF
+)
+
 ## build
 MVN_ARGS=""
 MVN_ARGS="${MVN_ARGS} --file ${PROJECT_BASE}/pom.xml"
@@ -37,8 +44,11 @@ MVN_ARGS="${MVN_ARGS} -Dfile.encoding=utf-8"
 MVN_ARGS="${MVN_ARGS} -Dmaven.test.skip=true"
 MVN_ARGS="${MVN_ARGS} --update-snapshots"
 MVN_ARGS="${MVN_ARGS} --batch-mode"
+MVN_ARGS="${MVN_ARGS} --quiet"
 
-mvn $MVN_ARGS clean package spring-boot:repackage
+MVN_CMD="mvn $MVN_ARGS clean package spring-boot:repackage"
+echo "${MVN_CMD}"
+eval "${MVN_CMD}"
 
 JAR_FILE=`eval $(cat << EOF
   xmlstarlet sel -N x="http://maven.apache.org/POM/4.0.0"
@@ -47,6 +57,8 @@ JAR_FILE=`eval $(cat << EOF
     ${PROJECT_BASE}/pom.xml;
 EOF
 )`
+echo "JAR_FILE=${JAR_FILE}"
+
 JAR_FILE_PTRN=`eval $(cat << EOF
   xmlstarlet sel -N x="http://maven.apache.org/POM/4.0.0"
     -t -v 
@@ -54,6 +66,7 @@ JAR_FILE_PTRN=`eval $(cat << EOF
     ${PROJECT_BASE}/pom.xml;
 EOF
 )`
+echo "JAR_FILE_PTRN=${JAR_FILE_PTRN}"
 
 if [ ! -e target/$JAR_FILE ]; then
   echo "build output file '$JAR_FILE' is not found."
@@ -63,6 +76,7 @@ fi
 MVN_ARGS=""
 MVN_ARGS="${MVN_ARGS} -DpomFile=${PROJECT_BASE}/pom.xml"
 MVN_ARGS="${MVN_ARGS} -Dfile=${PROJECT_BASE}/target/${JAR_FILE}"
+MVN_ARGS="${MVN_ARGS} --quiet"
 
 # jar 파일명에 "-SNAPSHOT" 이 있으면 snapshot 저장소에 deploy 되어야 합니다. 
 if [[ "${JAR_FILE}" = *"-SNAPSHOT"* ]]; then
@@ -73,22 +87,27 @@ else
   MVN_ARGS="${MVN_ARGS} -Durl=http://nexus/repository/maven-release/"
 fi
 
-mvn deploy:deploy-file $MVN_ARGS
+MVN_CMD="mvn deploy:deploy-file $MVN_ARGS"
+echo "${MVN_CMD}"
+eval "${MVN_CMD}"
+
 
 
 ## deploy-was
-SVR_LIST=$(cat << EOF
-  172.28.200.30
-EOF
+SVR_LIST=(
+  '172.28.200.30'
 )
+echo "SVR_LIST=${SVR_LIST[*]}"
 
 APP_HOME=/app/WAS/pilot
-DEPLOY_FILES=$(cat << EOF
-./target/$JAR_FILE
-./start.sh
-./stop.sh
-EOF
+echo "APP_HOME=${APP_HOME}"
+
+DEPLOY_FILES=(
+  "./target/${JAR_FILE}"
+  "./start.sh"
+  "./stop.sh"
 )
+echo "DEPLOY_FILES=${DEPLOY_FILES[*]}"
 
 PREPARE_CMD=$(cat << EOF
   $APP_HOME/stop.sh;
@@ -102,14 +121,18 @@ POST_CMD=$(cat << EOF
 EOF
 )
 
-for SVR in $SVR_LIST
+for SVR in ${SVR_LIST[*]}
 do
-  echo "SVR: $SVR"
+  echo "=== PREPARE_CMD ==="
+  echo ${PREPARE_CMD}
+  echo "=== //PREPARE_CMD ==="
+  ssh root@${SVR} ${PREPARE_CMD}
   
-  echo "+++ prepare +++"
-  ssh root@$SVR $PREPARE_CMD
-  echo "+++ send +++"
-  scp $DEPLOY_FILES root@$SVR:$APP_HOME
-  echo "+++ post +++"
-  ssh root@$SVR $POST_CMD
+  echo "DEPLOY_FILES=${DEPLOY_FILES[*]}"
+  scp ${DEPLOY_FILES[*]} root@${SVR}:$APP_HOME
+  
+  echo "=== POST_CMD ==="
+  echo ${POST_CMD}
+  echo "=== //POST_CMD ==="
+  ssh root@${SVR} ${POST_CMD}
 done
