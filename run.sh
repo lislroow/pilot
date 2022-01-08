@@ -49,7 +49,7 @@ function install() {
     'framework/framework-daemon'
     'framework/framework-online'
   )
-  echo "${PROJECT_LIST[*]}"
+  echo "PROJECT_LIST=${PROJECT_LIST[*]}"
   
   idx=0
   for PROJECT in ${PROJECT_LIST[*]}
