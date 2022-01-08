@@ -3,7 +3,7 @@
 APP_HOME=/app/WAS/pilot
 INST_ID=service-www
 
-PS_CMD="ps -ef | grep -v grep | egrep ${INST_ID}.*\.jar | awk '{ print $2 }'"
+PS_CMD="ps -ef | grep -v grep | egrep ${INST_ID}.*\.jar | awk '{ print \$2 }'"
 echo "${PS_CMD}"
 _PID=eval "${PS_CMD}"
 
