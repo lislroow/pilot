@@ -3,22 +3,23 @@
 APP_HOME=/app/WAS/pilot
 INST_ID=service-www
 
-_PID=`ps -ef | grep -v grep | egrep ${INST_ID}.*\.jar | awk '{ print $2 }'`
+PS_CMD="ps -ef | grep -v grep | egrep ${INST_ID}.*\.jar | awk '{ print $2 }'"
+_PID=eval "${PS_CMD}"
 
 if [ "${_PID}" != "" ]; then
   echo "stopping ${INST_ID}(pid:'${_PID}')"
-  kill -15 $_PID
+  kill -15 ${_PID}
   
   i=1
   while [ $i -lt 600 ];
   do
-    _CHECK_PID=`ps -ef | grep -v grep | egrep ${INST_ID}.*\.jar | awk '{ print $2 }'`
+    _CHECK_PID=eval "${PS_CMD}"
     if [ "${_CHECK_PID}" == "" ]; then
       echo "${INST_ID}(pid:'${_PID}') killed"
       break
     fi
     echo "wait for ${INST_ID}(pid:'${_PID}') killing"
-    i=$(($i+1))
+    i=$(( $i + 1 ))
     sleep 1
   done
 else
