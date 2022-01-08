@@ -34,7 +34,16 @@ EOF
 )
 
 function del() {
-  LOC_M2=`mvn help:evaluate -Dexpression=settings.localRepository -q -DforceStdout`
+  MVN_ARGS=""
+  MVN_ARGS="${MVN_ARGS} "
+  MVN_ARGS="${MVN_ARGS} -Dexpression=settings.localRepository"
+  MVN_ARGS="${MVN_ARGS} -DforceStdout"
+  MVN_ARGS="${MVN_ARGS} --quiet"
+  
+  MVN_CMD="mvn ${MVN_ARGS} help:evaluate"
+  echo "${MVN_CMD}"
+  LOC_M2=$(eval "${MVN_CMD}")
+  echo "${LOC_M2}"
   if [ -e ${LOC_M2} ]; then
     rm -rf ${LOC_M2}/mgkim
   fi
@@ -67,8 +76,8 @@ function install() {
     MVN_ARGS="${MVN_ARGS} --quiet"
     
     MVN_CMD="mvn ${MVN_ARGS} clean install"
-    eval "${MVN_CMD}"
     echo "[${idx}/${#PROJECT_LIST[*]}] ${MVN_CMD}"
+    eval "${MVN_CMD}"
   done
 }
 
