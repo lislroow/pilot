@@ -1,6 +1,6 @@
 #!/bin/bash
 
-APP_HOME=/app/WAS/proto
+APP_HOME=/app/WAS/pilot
 INST_ID=service-www
 
 _PID=`ps -ef | grep -v grep | egrep ${INST_ID}.*\.jar | awk '{ print $2 }'`

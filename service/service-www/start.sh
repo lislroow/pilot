@@ -1,6 +1,6 @@
 #!/bin/bash
 
-APP_HOME=/app/WAS/proto
+APP_HOME=/app/WAS/pilot
 INST_ID=service-www
 
 JAVA_HOME=/prod/java/openjdk-11.0.2

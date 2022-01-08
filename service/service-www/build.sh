@@ -72,7 +72,7 @@ SVR_LIST=$(cat << EOF
 EOF
 )
 
-APP_HOME=/app/WAS/proto
+APP_HOME=/app/WAS/pilot
 DEPLOY_FILES=$(cat << EOF
 ./target/$JAR_FILE
 ./start.sh
