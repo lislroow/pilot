@@ -8,8 +8,9 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
 
 import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.exception.KMessage;
@@ -20,7 +21,7 @@ import mgkim.framework.online.cmm.vo.privacy.CmmPrivacyLogVO;
 import mgkim.framework.online.cmm.vo.privacy.CmmPrivacyMngVO;
 
 @KBean(name = "개인정보관리")
-public class ComPrivacyMgr implements InitializingBean {
+public class ComPrivacyMgr {
 	
 	private static final Logger log = LoggerFactory.getLogger(ComPrivacyMgr.class);
 
@@ -34,17 +35,18 @@ public class ComPrivacyMgr implements InitializingBean {
 
 	private Map<String, CmmPrivacyMngVO> mngList = new LinkedHashMap<String, CmmPrivacyMngVO>();
 
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		if (cmmPrivacy == null) {
-			log.warn(KMessage.get(KMessage.E5002, KObjectUtil.name(CmmPrivacy.class)));
-			return;
+	@EventListener
+	public void refreshed(ContextRefreshedEvent event) {
+		if (event.getApplicationContext().getParent() == null) {
+			if (cmmPrivacy == null) {
+				log.warn(KMessage.get(KMessage.E5002, KObjectUtil.name(CmmPrivacy.class)));
+				return;
+			}
+			refresh();
 		}
-
-		refresh();
 	}
 
-	public void refresh() throws Exception {
+	public void refresh() {
 		List<CmmPrivacyMngVO> list = null;
 		try {
 			CmmPrivacyMngVO vo = new CmmPrivacyMngVO();
@@ -52,7 +54,7 @@ public class ComPrivacyMgr implements InitializingBean {
 
 			list = cmmPrivacy.selectMngAll(vo);
 		} catch (Exception e) {
-			throw e;
+			e.printStackTrace();
 		}
 
 		if (list != null) {
