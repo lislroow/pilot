@@ -4,6 +4,7 @@ APP_HOME=/app/WAS/pilot
 INST_ID=service-www
 
 PS_CMD="ps -ef | grep -v grep | egrep ${INST_ID}.*\.jar | awk '{ print $2 }'"
+echo "${PS_CMD}"
 _PID=eval "${PS_CMD}"
 
 if [ "${_PID}" != "" ]; then
@@ -25,4 +26,3 @@ if [ "${_PID}" != "" ]; then
 else
   echo "${INST_ID} is not started"
 fi
-
