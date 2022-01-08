@@ -24,7 +24,7 @@ echo "PROFILE_SYS=${PROFILE_SYS}"
 
 JAVA_OPTS="${JAVA_OPTS} -Dspring.profiles.active=${PROFILE_SYS}"
 
-PS_CMD="ps -ef | grep -v grep | egrep ${INST_ID}.*\.jar | awk '{ print \$2 }'"
+PS_CMD="ps -ef | grep -v grep | egrep ${INST_ID}.*\\.jar | awk '{ print \$2 }'"
 echo "${PS_CMD}"
 _PID=$(eval "${PS_CMD}")
 
