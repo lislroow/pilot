@@ -109,16 +109,14 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-logging</artifactId>
-      <exclusions>
-        <exclusion>
-          <!-- 2.14.1(Mar 12, 2021) > 2.17.1 (Dec 27, 2021) -->
-          <groupId>org.apache.logging.log4j</groupId>
-          <artifactId>log4j-to-slf4j</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     
     <!-- slf4j -->
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>1.7.32</version>
+    </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-to-slf4j</artifactId>
@@ -129,8 +127,8 @@
     
     <dependency>
       <groupId>com.oracle.database.jdbc</groupId>
-      <artifactId>ojdbc8</artifactId>
-      <scope>runtime</scope>
+      <artifactId>ojdbc10</artifactId>
+      <version>19.13.0.0.1</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -165,11 +163,6 @@
     <!-- //json -->
     
     <!-- jdbc -->
-    <!-- <dependency>
-      <groupId>ojdbc</groupId>
-      <artifactId>ojdbc</artifactId>
-      <version>8</version>
-    </dependency> -->
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-dbcp2</artifactId>
@@ -223,9 +216,9 @@
     
     <!-- logback -->
     <dependency>
-        <groupId>ch.qos.logback</groupId>
-        <artifactId>logback-core</artifactId>
-        <version>${ch.qos.logback.version}</version>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-core</artifactId>
+      <version>${ch.qos.logback.version}</version>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
