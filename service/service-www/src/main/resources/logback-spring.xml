@@ -3,7 +3,7 @@
   
   <property name="LEVEL-root" value="info" />
   <property name="LEVEL-framework" value="info" />
-  <property name="LOG_PATH" value="/outlog/WAS/proto" />
+  <property name="LOG_PATH" value="/outlog/WAS/pilot" />
   <property name="PATTERN-root" value="[%mdc{profiles}] %d{yyyy-MM-dd HH:mm:ss} [%-5level][%mdc{ssid}][%mdc{txid}][root][%logger:%line] ### %msg%n"/>
   <!-- 
   <property name="PATTERN-framework" value="[%mdc{profiles}] %d{yyyy-MM-dd HH:mm:ss} [%-5level][%mdc{ssid}][%mdc{txid}][fw][%logger:%line] ### %msg%n"/>
