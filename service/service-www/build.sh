@@ -4,6 +4,18 @@
 PROJECT_BASE=$PWD
 PROFILE_SYS=$1
 
+if [ "${PROFILE_SYS}" = "" ]; then
+  PROFILE_SYS=dev
+fi
+
+case ${PROFILE_SYS} in
+  dev|sta*)
+    ;;
+  *)
+    echo "PROFILE_SYS('${PROFILE_SYS}') is not yet!"
+    exit -1
+esac
+
 UNAME=`uname -s`
 echo "UNAME=${UNAME}"
 if [[ "${UNAME}" = "Linux"* ]]; then
@@ -126,11 +138,11 @@ do
   echo "=== //send DEPLOY_FILES ==="
   
   echo "=== restart www11 / www12 ==="
-  ssh root@${SVR} "${APP_HOME}/stop-www11.sh"
-  ssh root@${SVR} "${APP_HOME}/start-www11.sh"
+  ssh root@${SVR} "${APP_HOME}/stop-dwww11.sh"
+  ssh root@${SVR} "${APP_HOME}/start-dwww11.sh"
   
-  ssh root@${SVR} "${APP_HOME}/stop-www12.sh"
-  ssh root@${SVR} "${APP_HOME}/start-www12.sh"
+  ssh root@${SVR} "${APP_HOME}/stop-dwww12.sh"
+  ssh root@${SVR} "${APP_HOME}/start-dwww12.sh"
   echo "=== //restart www11 / www12 ==="
   
 done
