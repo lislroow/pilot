@@ -1,14 +1,15 @@
 #!/bin/bash
 
 APP_HOME=/app/WAS/pilot
-INST_ID=service-www
+JAR_NAME=service-www
+APP_NAME=www11
 
-PS_CMD="ps -ef | grep -v grep | egrep ${INST_ID}.*\\.jar | awk '{ print \$2 }'"
+PS_CMD="ps -ef | grep -v grep | grep -Dapp.name=${APP_NAME} | awk '{ print \$2 }'"
 echo "${PS_CMD}"
 _PID=$(eval "${PS_CMD}")
 
 if [ "${_PID}" != "" ]; then
-  echo "stopping ${INST_ID}(pid:'${_PID}')"
+  echo "stopping ${APP_NAME}(pid:'${_PID}')"
   kill -15 ${_PID}
   
   i=1
@@ -16,13 +17,13 @@ if [ "${_PID}" != "" ]; then
   do
     _CHECK_PID=$(eval "${PS_CMD}")
     if [ "${_CHECK_PID}" == "" ]; then
-      echo "${INST_ID}(pid:'${_PID}') killed"
+      echo "${APP_NAME}(pid:'${_PID}') killed"
       break
     fi
-    echo "wait for ${INST_ID}(pid:'${_PID}') killing"
+    echo "wait for ${APP_NAME}(pid:'${_PID}') killing"
     i=$(( $i + 1 ))
     sleep 1
   done
 else
-  echo "${INST_ID} is not started"
+  echo "${APP_NAME} is not started"
 fi

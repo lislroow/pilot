@@ -104,20 +104,22 @@ echo "APP_HOME=${APP_HOME}"
 
 DEPLOY_FILES=(
   "./target/${JAR_FILE}"
-  "./start.sh"
-  "./stop.sh"
+  "./start-*.sh"
+  "./stop-*.sh"
 )
 echo "DEPLOY_FILES=${DEPLOY_FILES[*]}"
 
 PREPARE_CMD=$(cat << EOF
-  $APP_HOME/stop.sh;
+  $APP_HOME/stop-www11.sh;
+  $APP_HOME/stop-www12.sh;
   find $APP_HOME -maxdepth 1 -type f -name '*.jar' | xargs -i mv {} $APP_HOME/backup;
 EOF
 )
 
 POST_CMD=$(cat << EOF
   chmod u+x $APP_HOME/*.sh;
-  $APP_HOME/start.sh $PROFILE_SYS;
+  $APP_HOME/start-www11.sh $PROFILE_SYS;
+  $APP_HOME/start-www12.sh $PROFILE_SYS;
 EOF
 )
 
