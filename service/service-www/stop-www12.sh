@@ -2,7 +2,7 @@
 
 APP_HOME=/app/WAS/pilot
 JAR_NAME=service-www
-APP_NAME=www11
+APP_NAME=www12
 
 PS_CMD="ps -ef | grep -v grep | grep -v tail |  grep -v .sh | grep ${APP_NAME} | awk '{ print \$2 }'"
 echo "${PS_CMD}"
