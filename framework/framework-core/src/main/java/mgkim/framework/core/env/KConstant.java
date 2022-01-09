@@ -5,7 +5,7 @@ import mgkim.framework.core.logging.KAnsi;
 public class KConstant {
 
 	public static final String VM_SPRING_PROFILES_ACTIVE = "spring.profiles.active";
-	public static final String VM_APP_NAME = "app.name";
+	public static final String VM_APP_ID = "app.id";
 
 	public static final String EMPTY = "";
 	

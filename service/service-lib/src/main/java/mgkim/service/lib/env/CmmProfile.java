@@ -9,16 +9,16 @@ import mgkim.service.lib.type.TSiteType;
 
 public class CmmProfile {
 	
-	public static void init(String defAppName) {
+	public static void init(String defAppId) {
 		// 사이트 구분 설정 (www, adm, bat)
 		{
-			String appName = System.getProperty(KConstant.VM_APP_NAME);
-			if (appName == null) {
-				appName = defAppName;
-				System.setProperty(KConstant.VM_APP_NAME, appName);
+			String appId = System.getProperty(KConstant.VM_APP_ID);
+			if (appId == null) {
+				appId = defAppId;
+				System.setProperty(KConstant.VM_APP_ID, appId);
 			}
 			String[] arr = java.util.Arrays.stream(TSiteType.values()).map(item -> item.label()).toArray(String[]::new);
-			Matcher matcher = Pattern.compile("("+String.join("|", arr)+")[0-9]{1,2}").matcher(appName);
+			Matcher matcher = Pattern.compile("[ds]*("+String.join("|", arr)+")[0-9]{1,2}").matcher(appId);
 			if (matcher.find()) {
 				TSiteType site = TSiteType.get(matcher.group(1));
 				KProfile.SITE_TPCD = site.code();
