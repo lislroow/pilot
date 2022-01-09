@@ -44,7 +44,7 @@ public class CmmMapperAspectImpl implements CmmMapperAspect {
 		// 개인정보접근 로그 (10: SQL)
 		{
 			CmmPrivacyLogVO vo = new CmmPrivacyLogVO();
-			vo.setSiteTpcd(KProfile.SITE.code());
+			vo.setSiteTpcd(KProfile.SITE_TPCD);
 			vo.setMngtgId(KContext.getT(AttrKey.SQL_ID));
 			vo.setMngtgTpcd(TPrivacyType.SQL.code());
 			vo.setIp(KContext.getT(AttrKey.IP));

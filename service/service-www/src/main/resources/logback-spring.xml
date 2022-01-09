@@ -4,11 +4,7 @@
   <property name="LEVEL-root" value="info" />
   <property name="LEVEL-framework" value="info" />
   <property name="LOG_PATH" value="/outlog/WAS/pilot" />
-  <property name="PATTERN-root" value="[%mdc{profiles}] %d{yyyy-MM-dd HH:mm:ss} [%-5level][%mdc{ssid}][%mdc{txid}][root][%logger:%line] ### %msg%n"/>
-  <!-- 
-  <property name="PATTERN-framework" value="[%mdc{profiles}] %d{yyyy-MM-dd HH:mm:ss} [%-5level][%mdc{ssid}][%mdc{txid}][fw][%logger:%line] ### %msg%n"/>
-  <property name="PATTERN-sql" value="[%mdc{profiles}] %d{yyyy-MM-dd HH:mm:ss} [%-5level][%mdc{ssid}][%mdc{txid}][sql][%logger:%line] ### %msg%n"/>
-  -->
+  <property name="PATTERN-root" value="[${spring.profiles.active}][${app.name}] %d{yyyy-MM-dd HH:mm:ss} [%-5level][%thread]%boldRed(%marker)[%logger:%line] ### %msg%n"/>
   
   <appender name="CONSOLE-root" class="ch.qos.logback.core.ConsoleAppender">
     <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
@@ -16,39 +12,16 @@
     </encoder>
   </appender>
   
-  <!-- 
-  <appender name="CONSOLE-framework" class="ch.qos.logback.core.ConsoleAppender">
-    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-      <pattern>${PATTERN-framework}</pattern>
-    </encoder>
-  </appender>
-  
-  <appender name="CONSOLE-sql" class="ch.qos.logback.core.ConsoleAppender">
-    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-      <pattern>${PATTERN-sql}</pattern>
-    </encoder>
-  </appender>
-  -->
-  
   <appender name="FILE-root" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>${LOG_PATH}/www.log</file>
+    <file>${LOG_PATH}/${app.name}.log</file>
     <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
       <pattern>${PATTERN-root}</pattern>
     </encoder>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <fileNamePattern>${LOG_PATH}/www-%d{yyyyMMdd}.log</fileNamePattern>
+      <fileNamePattern>${LOG_PATH}/${app.name}-%d{yyyyMMdd}.log</fileNamePattern>
     </rollingPolicy>
   </appender>
   
-  <!-- 
-  <logger name="mgkim.framework.online" additivity="false" level="${LEVEL-framework}">
-    <appender-ref ref="CONSOLE-framework" />
-  </logger>
-  
-  <logger name="mgkim.framework.core.sql" additivity="false" level="${LEVEL-framework}">
-    <appender-ref ref="CONSOLE-sql" />
-  </logger>
-  -->
   
   <root level="${LEVEL-root}">
     <appender-ref ref="CONSOLE-root" />

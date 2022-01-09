@@ -58,7 +58,7 @@ public class UserLoginController {
 		Map<String, Object> claims = new HashMap<String, Object>();
 		{
 			// `필수 정의`
-			claims.put("siteTpcd", KProfile.SITE.code());
+			claims.put("siteTpcd", KProfile.SITE_TPCD);
 			claims.put("userTpcd", TUserType.API.code());
 			claims.put("aumthTpcd", TAumthType.IDLOGIN.code());
 			claims.put("userId", inVO.getUserId());
