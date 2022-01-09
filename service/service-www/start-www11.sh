@@ -45,7 +45,6 @@ JAVA_CMD="nohup $JAVA_HOME/bin/java ${JAVA_OPTS} -jar ${JAR_FILE} > /dev/null 2>
 echo "${JAVA_CMD}"
 eval "${JAVA_CMD}"
 
-PS_CMD="ps -ef | grep -v grep | grep -Dapp.name=${APP_NAME} | awk '{ print \$2 }'"
 echo "${PS_CMD}"
 _PID=$(eval "${PS_CMD}")
 
