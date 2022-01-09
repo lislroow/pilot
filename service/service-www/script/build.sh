@@ -64,7 +64,7 @@ MVN_ARGS="${MVN_ARGS} --update-snapshots"
 MVN_ARGS="${MVN_ARGS} --batch-mode"
 MVN_ARGS="${MVN_ARGS} --quiet"
 
-MVN_CMD="mvn $MVN_ARGS clean package spring-boot:repackage"
+MVN_CMD="mvn ${MVN_ARGS} clean package spring-boot:repackage"
 echo "${MVN_CMD}"
 eval "${MVN_CMD}"
 
@@ -111,7 +111,7 @@ else
   MVN_ARGS="${MVN_ARGS} -Durl=http://nexus/repository/maven-release/"
 fi
 
-MVN_CMD="mvn deploy:deploy-file $MVN_ARGS"
+MVN_CMD="mvn deploy:deploy-file ${MVN_ARGS}"
 echo "${MVN_CMD}"
 eval "${MVN_CMD}"
 
