@@ -60,7 +60,7 @@ ARTIFACT_FILE=`eval $(cat << EOF
 EOF
 )`
 
-CHECKSUM=$(${MD5SUM_CMD} ${ARTIFACT_FILE} | awk '{ print substr($1, 1, 4) }')
+CHECKSUM=$(${MD5SUM_CMD} target/${ARTIFACT_FILE} | awk '{ print substr($1, 1, 4) }')
 JAR_FILE=${ARTIFACT_FILE%.*}_${CHECKSUM}.${ARTIFACT_FILE##*.}
 cp target/${ARTIFACT_FILE} target/${JAR_FILE}
 
@@ -129,8 +129,8 @@ do
   ssh root@${SVR} "${APP_HOME}/stop-www11.sh"
   ssh root@${SVR} "${APP_HOME}/start-www11.sh"
   
-  #ssh root@${SVR} "${APP_HOME}/stop-www12.sh"
-  #ssh root@${SVR} "${APP_HOME}/start-www12.sh"
+  ssh root@${SVR} "${APP_HOME}/stop-www12.sh"
+  ssh root@${SVR} "${APP_HOME}/start-www12.sh"
   echo "=== //restart www11 / www12 ==="
   
 done

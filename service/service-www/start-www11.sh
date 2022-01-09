@@ -49,5 +49,19 @@ echo "${PS_CMD}"
 _PID=$(eval "${PS_CMD}")
 
 if [ "${_PID}" != "" ]; then
-  echo "${APP_NAME}(pid:'${_PID}') is started"
+  echo "${APP_NAME}(pid:'${_PID}') is starting"
 fi
+
+i=1
+while [ $i -lt 600 ];
+do
+  HTTP_CODE=$(curl --write-out "%{http_code}" --silent --output /dev/null "http://localhost:${SERVER_PORT}/")
+  if [ "${HTTP_CODE}" == "200" ]; then
+    echo "${APP_NAME}(pid:'${_PID}') is started"
+    break
+  fi
+  echo "${APP_NAME}(pid:'${_PID}') is booting"
+  i=$(( $i + 1 ))
+  sleep 1
+done
+
