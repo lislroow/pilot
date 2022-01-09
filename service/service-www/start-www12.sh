@@ -25,6 +25,7 @@ esac
 echo "PROFILE_SYS=${PROFILE_SYS}"
 
 JAVA_OPTS="${JAVA_OPTS} -Dspring.profiles.active=${PROFILE_SYS}"
+JAVA_OPTS="${JAVA_OPTS} -Dapp.name=${APP_NAME}"
 JAVA_OPTS="${JAVA_OPTS} -Dserver.port=${SERVER_PORT}"
 
 PS_CMD="ps -ef | grep -v grep | grep -v tail | grep ${APP_NAME} | awk '{ print \$2 }'"
