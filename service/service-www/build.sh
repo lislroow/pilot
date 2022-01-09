@@ -19,11 +19,13 @@ case ${OS_NAME} in
     M2_HOME=/prod/maven/maven
     JAVA_HOME=/prod/java/openjdk-11.0.13.8-temurin
     PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
+    MD5SUM_CMD=md5sum
     ;;
   win)
     M2_HOME=/z/develop/build/maven-3.6.3
     JAVA_HOME=/z/develop/java/openjdk-11.0.13.8-temurin
     PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
+    MD5SUM_CMD=md5sum.exe
     ;;
   *)
     echo "invalid os"
@@ -50,13 +52,19 @@ MVN_CMD="mvn $MVN_ARGS clean package spring-boot:repackage"
 echo "${MVN_CMD}"
 eval "${MVN_CMD}"
 
-JAR_FILE=`eval $(cat << EOF
+ARTIFACT_FILE=`eval $(cat << EOF
   xmlstarlet sel -N x="http://maven.apache.org/POM/4.0.0"
     -t -v 
     "concat(x:project/x:artifactId, '-', x:project/x:version, '.', x:project/x:packaging)"
     ${PROJECT_BASE}/pom.xml;
 EOF
 )`
+
+CHECKSUM=$(${MD5SUM_CMD} ${ARTIFACT_FILE} | awk '{ print substr($1, 1, 4) }')
+JAR_FILE=${ARTIFACT_FILE%.*}_${CHECKSUM}.${ARTIFACT_FILE##*.}
+cp target/${ARTIFACT_FILE} target/${JAR_FILE}
+
+echo "ARTIFACT_FILE=${ARTIFACT_FILE}"
 echo "JAR_FILE=${JAR_FILE}"
 
 JAR_FILE_PTRN=`eval $(cat << EOF
@@ -109,32 +117,20 @@ DEPLOY_FILES=(
 )
 echo "DEPLOY_FILES=${DEPLOY_FILES[*]}"
 
-PREPARE_CMD=$(cat << EOF
-  $APP_HOME/stop-www11.sh;
-  $APP_HOME/stop-www12.sh;
-  find $APP_HOME -maxdepth 1 -type f -name '*.jar' | xargs -i mv {} $APP_HOME/backup;
-EOF
-)
-
-POST_CMD=$(cat << EOF
-  chmod u+x $APP_HOME/*.sh;
-  $APP_HOME/start-www11.sh $PROFILE_SYS;
-  $APP_HOME/start-www12.sh $PROFILE_SYS;
-EOF
-)
-
 for SVR in ${SVR_LIST[*]}
 do
-  echo "=== PREPARE_CMD ==="
-  echo ${PREPARE_CMD}
-  echo "=== //PREPARE_CMD ==="
-  ssh root@${SVR} ${PREPARE_CMD}
-  
+  echo "=== send DEPLOY_FILES ==="
   echo "DEPLOY_FILES=${DEPLOY_FILES[*]}"
-  scp ${DEPLOY_FILES[*]} root@${SVR}:$APP_HOME
+  scp ${DEPLOY_FILES[*]} root@${SVR}:${APP_HOME}
+  ssh root@${SVR} "chmod u+x ${APP_HOME}/*.sh;"
+  echo "=== //send DEPLOY_FILES ==="
   
-  echo "=== POST_CMD ==="
-  echo ${POST_CMD}
-  echo "=== //POST_CMD ==="
-  ssh root@${SVR} ${POST_CMD}
+  echo "=== restart www11 / www12 ==="
+  ssh root@${SVR} "${APP_HOME}/stop-www11.sh"
+  ssh root@${SVR} "${APP_HOME}/start-www11.sh"
+  
+  #ssh root@${SVR} "${APP_HOME}/stop-www12.sh"
+  #ssh root@${SVR} "${APP_HOME}/start-www12.sh"
+  echo "=== //restart www11 / www12 ==="
+  
 done
