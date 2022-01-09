@@ -34,12 +34,10 @@ import org.springframework.util.StopWatch;
 
 import mgkim.framework.core.dto.KInPageVO;
 import mgkim.framework.core.env.KConfig;
-import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.env.KProfile;
-import mgkim.framework.core.logging.KLogApm;
-import mgkim.framework.core.logging.KLogLayout;
+import mgkim.framework.core.logging.KLogMarker;
 import mgkim.framework.core.logging.KLogSql;
 import mgkim.framework.core.type.TExecType;
 import mgkim.framework.core.type.TSqlType;
@@ -116,9 +114,10 @@ public class ComSqlInterceptor implements Interceptor {
 		boolean isPaging = false;
 		
 		// sql 실행
+		boolean isOnError = false;
 		int resultCount = -1;
-		double elapsedTime = -1;
-		
+		String elapsed = null;
+		TSqlType sqlType = TSqlType.ORIGIN_SQL;
 		try {
 			// paging 처리 및 sql 로깅
 			{
@@ -129,19 +128,7 @@ public class ComSqlInterceptor implements Interceptor {
 						KDtoUtil.setSysValues(parameterObject);
 					}
 					
-					// parameterObject 로깅
-					{
-						if (isLoggableSql) {
-							if (!isVerboss) {
-							} else {
-								//log.info("{} `{}` {}{} `{}` `{}` {}`parameterObject` = {}", KConstant.LT_SQL_PARAM, sqlId, KLogLayout.LINE, KConstant.LT_SQL_PARAM, sqlFile, sqlId, KLogLayout.LINE, KStringUtil.toJson(parameterObject));
-							}
-						}
-						log.info("{} `{}` {}{} `{}` `{}` {}`parameterObject` = {}", KConstant.LT_SQL_PARAM, sqlId, KLogLayout.LINE, KConstant.LT_SQL_PARAM, sqlFile, sqlId, KLogLayout.LINE, KStringUtil.toJson(parameterObject));
-					}
-					
 					// paging 여부 확인
-					TSqlType sqlType = null;
 					{
 						KInPageVO inPageVO = KContext.getT(AttrKey.IN_PAGE);
 						if (inPageVO == null || isComSql) { // // com 패키지에 있는 sql 은 paging 처리 대상에서 제외함
@@ -162,7 +149,8 @@ public class ComSqlInterceptor implements Interceptor {
 						connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
 						{
 							String sql = KSqlUtil.removeForeachIndex(boundSql);
-							sql = KSqlUtil.insertSqlId(sql, sqlId);
+							String comment = String.format("/* (%s) %s::%s */", KContext.getT(AttrKey.TXID), sqlFile, sqlId);
+							sql = KSqlUtil.insertSqlComment(sql, comment);
 							pstmt = connection.prepareStatement(sql);
 							int startIndex = 1;
 							KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startIndex);
@@ -173,41 +161,23 @@ public class ComSqlInterceptor implements Interceptor {
 						pstmt = comSqlPagingList.preparePaging(invocation);
 						invocation.getArgs()[0] = pstmt;
 					}
-					
-					// param-sql 로깅
-					if (!isComSql || isLoggableSql) {
-						paramSql = KSqlUtil.createParamSql(parameterObject, statementHandler, sqlType);
-						log.info("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL, sqlId, KLogLayout.LINE, KConstant.LT_SQL, sqlFile, sqlId, KLogLayout.LINE, paramSql);
-					}
 					break;
 				case SCHEDULE:
 				case SYSTEM:
 				default:
-					// parameterObject 로깅
-					{
-						if (isLoggableSql) {
-							log.info("{} `{}` {}{} `{}` `{}` {}{}", KConstant.LT_SQL_PARAM, sqlId, KLogLayout.LINE, KConstant.LT_SQL_PARAM, sqlFile, sqlId, KLogLayout.LINE, KStringUtil.toJson(parameterObject));
-						}
-					}
-					
 					// prepareStatment 생성
 					{
 						connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
 						{
 							String sql = KSqlUtil.removeForeachIndex(boundSql);
-							sql = KSqlUtil.insertSqlId(sql, sqlId);
+							String comment = String.format("/* %s::%s */", sqlFile, sqlId);
+							sql = KSqlUtil.insertSqlComment(sql, comment);
 							pstmt = connection.prepareStatement(sql);
 							int startIndex = 1;
 							KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startIndex);
 							sHandlerMetaObject.setValue("delegate.boundSql.sql", sql);
 						}
 						invocation.getArgs()[0] = pstmt;
-					}
-					
-					// param-sql 로깅
-					if (isLoggableSql) {
-						paramSql = KSqlUtil.createParamSql(parameterObject, statementHandler, TSqlType.ORIGIN_SQL);
-						log.info("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL, sqlId, KLogLayout.LINE, KConstant.LT_SQL, sqlFile, sqlId, KLogLayout.LINE, paramSql);
 					}
 					break;
 				}
@@ -227,31 +197,18 @@ public class ComSqlInterceptor implements Interceptor {
 				default:
 					break;
 				}
+				
 				try {
 					resultObject = invocation.proceed();
-				} catch(Exception e) {
-					switch(execType) {
-					case REQUEST:
-						break;
-					case SCHEDULE:
-					case SYSTEM:
-					default:
-						paramSql = KSqlUtil.createParamSql(parameterObject, statementHandler, TSqlType.ORIGIN_SQL);
-						log.info("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL, sqlId, KLogLayout.LINE, KConstant.LT_SQL, sqlFile, sqlId, KLogLayout.LINE, paramSql);
-						break;
-					}
-					throw e;
 				} finally {
 					if (stopWatch != null) {
 						stopWatch.stop();
-						if (!isLoggableSql) {
-							KLogApm.sql(stopWatch);
-						}
-						elapsedTime = stopWatch.getTotalTimeSeconds();
+						elapsed = String.format("%.3f", stopWatch.getTotalTimeSeconds());
 					}
 				}
 			}
 		} catch (Exception e) {
+			isOnError = true;
 			throw e;
 		} finally {
 			if (pstmt != null) {
@@ -260,54 +217,41 @@ public class ComSqlInterceptor implements Interceptor {
 			if (connection != null) {
 				connection.close();
 			}
-		}
-		
-		
-		// sql 결과 로깅
-		{
-			if (isLoggableSql) {
+			
+			// param-sql 로깅
+			switch(execType) {
+			case REQUEST:
+				paramSql = KSqlUtil.createParamSql(parameterObject, statementHandler, sqlType);
 				if (resultObject instanceof List) {
 					resultCount = ((List)resultObject).size();
 				} else if (resultObject instanceof Integer) {
 					resultCount = (Integer)resultObject;
+				} else if (resultObject == null) {
+					resultCount = 0;
+				} else {
+					resultCount = 1;
 				}
-				
-				switch(execType) {
-				case REQUEST:
-					if (!isVerboss) {
-						log.info("{} `{}` {}{} `{}` `{}` {}`rows` = {},  `elapsed` = {} sec",                       KConstant.LT_SQL_RESULT, sqlId, KLogLayout.LINE, KConstant.LT_SQL_RESULT, sqlFile, sqlId, KLogLayout.LINE, resultCount, String.format("%.3f", elapsedTime));
-					} else {
-						log.info("{} `{}` {}{} `{}` `{}` {}`rows` = {},  `elapsed` = {} sec,{}`resultObject` = {}", KConstant.LT_SQL_RESULT, sqlId, KLogLayout.LINE, KConstant.LT_SQL_RESULT_VERBOSS, sqlFile, sqlId, KLogLayout.LINE, resultCount, String.format("%.3f", elapsedTime), KLogLayout.LINE, KStringUtil.toJson(resultObject));
-					}
-					break;
-				case SCHEDULE:
-				case SYSTEM:
-					if (!isVerboss) {
-						log.info("{} `{}` {}{} `{}` `{}` {}`rows` = {}",                        KConstant.LT_SQL_RESULT, sqlId, KLogLayout.LINE, KConstant.LT_SQL_RESULT, sqlFile, sqlId, KLogLayout.LINE, resultCount);
-					} else {
-						log.info("{} `{}` {}{} `{}` `{}` {}`rows` = {}, {}`resultObject` = {}", KConstant.LT_SQL_RESULT, sqlId, KLogLayout.LINE, KConstant.LT_SQL_RESULT_VERBOSS, sqlFile, sqlId, KLogLayout.LINE, resultCount, KLogLayout.LINE, KStringUtil.toJson(resultObject));
-					}
-				default:
-					break;
+				if (isVerboss) {
+					log.info(KLogMarker.SQL, "\nparam = {}\n{}\n(rows={}, elapsed={})\nresult = {}", KStringUtil.toJson(parameterObject), paramSql, resultCount, elapsed, KStringUtil.toJson(resultObject));
+				} else {
+					log.info(KLogMarker.SQL, "\n{}\n(rows={}, elapsed={})", paramSql, resultCount, elapsed);
 				}
-			}
-		}
-		
-		
-		// sql 실행 테이블 분석
-		{
-			switch(execType) {
-			case REQUEST:
-				if (KProfile.SYS == TSysType.LOC && !KStringUtil.isEmpty(paramSql)) {
+				// sql 실행 테이블 분석
+				if (false && KProfile.SYS == TSysType.LOC) {
 					KSqlUtil.resolveTables(sqlFile, sqlId, paramSql);
 				}
 				break;
 			case SCHEDULE:
 			case SYSTEM:
+				if (isOnError) {
+					paramSql = KSqlUtil.createParamSql(parameterObject, statementHandler, sqlType);
+					log.info(KLogMarker.SQL, "\nparam = {}\n{}", KStringUtil.toJson(parameterObject), paramSql);
+				}
 			default:
 				break;
 			}
 		}
+		
 		return resultObject;
 	}
 	

@@ -83,14 +83,14 @@ public class CmmApiTxLogScheduler extends KScheduler {
 		}
 
 		CmmApiTxLogVO vo = new CmmApiTxLogVO();
-		vo.setSiteTpcd(KProfile.SITE.code());
+		vo.setSiteTpcd(KProfile.SITE_TPCD);
 		vo.setUserId(KContext.getT(AttrKey.USER_ID));
 		vo.setIp(KContext.getT(AttrKey.IP));
 		vo.setSsid(KContext.getT(AttrKey.SSID));
 		vo.setTxid(KContext.getT(AttrKey.TXID));
 		vo.setUriVal(KContext.getT(AttrKey.URI));
 		vo.setHostname(KProfile.HOSTNAME);
-		vo.setWasId(KProfile.getWasId());
+		vo.setWasId(KProfile.APP_NAME);
 		vo.setRsltcd(KContext.getT(AttrKey.RESULT_CODE));
 		vo.setRsltmsg(KContext.getT(AttrKey.RESULT_MESSAGE));
 		vo.setErrtxt(KContext.getT(AttrKey.RESULT_TEXT));

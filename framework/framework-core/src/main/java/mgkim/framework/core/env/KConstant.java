@@ -5,6 +5,7 @@ import mgkim.framework.core.logging.KAnsi;
 public class KConstant {
 
 	public static final String VM_SPRING_PROFILES_ACTIVE = "spring.profiles.active";
+	public static final String VM_APP_NAME = "app.name";
 
 	public static final String EMPTY = "";
 	
@@ -54,10 +55,10 @@ public class KConstant {
 	public static final String TOKEN_ORG_NM = "orgNm";
 	//public static final String TOKEN_EXPIRES_IN = org.springframework.security.oauth2.common.OAuth2AccessToken.EXPIRES_IN;
 
-	public static final String LT_REQUEST = KAnsi.boldMagenta("[ ##### REQUEST ##### ]");
-	public static final String LT_RESPONSE = KAnsi.boldMagenta("[ $$$$$ RESPONSE $$$$$ ]");
+	//public static final String LT_REQUEST = KAnsi.boldMagenta("[ ##### REQUEST ##### ]");
+	//public static final String LT_RESPONSE = KAnsi.boldMagenta("[ $$$$$ RESPONSE $$$$$ ]");
 	public static final String LT_SECURITY = KAnsi.magenta("[ *** SECURITY *** ]");
-	public static final String LT_REQ_HEADER = KAnsi.magenta("[ *** REQ-HEADER *** ]");
+	//public static final String LT_REQ_HEADER = KAnsi.magenta("[ *** REQ-HEADER *** ]");
 	public static final String LT_REQ_BODY = KAnsi.magenta("[ *** REQ-BODY *** ]");
 	public static final String LT_RES_INFO = KAnsi.magenta("[ *** RES-INFO *** ]");
 	public static final String LT_RES_VERBOSS = KAnsi.magenta("[ *** RES-INFO-VERBOSS_ALL *** ]");
@@ -67,15 +68,6 @@ public class KConstant {
 	public static final String LT_SECURITY_EXCEPTION = KAnsi.magenta("[ *** SECURITY-EXCEPTION *** ]");
 	public static final String LT_SECURITY_IGNORED = KAnsi.magenta("[ *** SECURITY-IGNORED *** ]");
 	public static final String LT_SECURITY_FILTER = KAnsi.magenta("[ *** SECURITY-FILTER *** ]");
-	public static final String LT_SQL = KAnsi.magenta("[ *** SQL *** ]");
-	public static final String LT_SQL_COUNT1 = KAnsi.magenta("[ *** SQL-COUNT(t1) *** ]");
-	public static final String LT_SQL_COUNT2 = KAnsi.magenta("[ *** SQL-COUNT(t2) *** ]");
-	public static final String LT_SQL_COUNT3 = KAnsi.magenta("[ *** SQL-COUNT(t3) *** ]");
-	public static final String LT_SQL_ERROR = KAnsi.boldMagenta("[ *** SQL-ERROR *** ]");
-	public static final String LT_SQL_PAING = KAnsi.boldMagenta("[ *** SQL-PAGING *** ]");
-	public static final String LT_SQL_PARAM = KAnsi.magenta("[ *** SQL-PARAM *** ]");
-	public static final String LT_SQL_RESULT = KAnsi.magenta("[ *** SQL-RESULT *** ]");
-	public static final String LT_SQL_RESULT_VERBOSS = KAnsi.magenta("[ *** SQL-RESULT-VERBOSS_ALL *** ]");
 	public static final String LT_EXCEPTION = KAnsi.magenta("[ *** EXCEPTION *** ]");
 	public static final String LT_PROFILE = KAnsi.magenta("[ *** PROFILE *** ]");
 	public static final String LT_CONFIG = KAnsi.magenta("[ *** CONFIG *** ]");

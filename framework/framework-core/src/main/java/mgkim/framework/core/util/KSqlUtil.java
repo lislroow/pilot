@@ -227,9 +227,8 @@ public class KSqlUtil {
 		return sql;
 	}
 	
-	public static String insertSqlId(String sql, String sqlId) {
-		sqlId = String.format("$1 /* %s */", sqlId);
-		sql = sql.replaceFirst("^\\s*([0-9a-zA-Zㄱ-힣_]*)", sqlId);
+	public static String insertSqlComment(String sql, String comment) {
+		sql = sql.replaceFirst("^\\s*([0-9a-zA-Zㄱ-힣_]*)", "$1 "+comment);
 		return sql;
 	}
 	

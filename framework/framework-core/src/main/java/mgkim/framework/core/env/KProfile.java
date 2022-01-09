@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
-import mgkim.framework.core.type.TSiteType;
 import mgkim.framework.core.type.TSysType;
 
 public class KProfile {
@@ -20,7 +19,8 @@ public class KProfile {
 	public static final String GROUP = "mgkim";
 	public static final String DOMAIN = "proto";
 	public static final String HOSTNAME;
-	public static TSiteType SITE;
+	public static String APP_NAME;
+	public static String SITE_TPCD;
 	public static TSysType SYS;
 	public static List<String> profiles = new ArrayList<String>();
 	public static String PROFILES_STR;
@@ -67,26 +67,19 @@ public class KProfile {
 				KProfile.profiles.add(KProfile.SYS.toString());
 			}
 			log.warn("{} KProfile.SYS={}", KConstant.LT_PROFILE, KProfile.SYS.toString());
-
-			//
-			String str = System.getProperty(KConstant.VM_SPRING_PROFILES_ACTIVE);
-			if (str == null || "".equals(str)) {
-				System.setProperty(KConstant.VM_SPRING_PROFILES_ACTIVE, KProfile.SYS.toString());
-			} else {
-				System.setProperty(KConstant.VM_SPRING_PROFILES_ACTIVE, str + "," + KProfile.SYS.toString());
-			}
 		}
-
+	}
+	
+	public static void addProfile(String addVal) {
+		String val = System.getProperty(KConstant.VM_SPRING_PROFILES_ACTIVE);
+		if (val == null || "".equals(val)) {
+			System.setProperty(KConstant.VM_SPRING_PROFILES_ACTIVE, addVal);
+		} else {
+			System.setProperty(KConstant.VM_SPRING_PROFILES_ACTIVE, val + "," + addVal);
+		}
+		
 		// PROFILES_STR (시스템로깅에서 사용할 문자열 생성)
-		{
-			if (profiles.size() > 0) {
-				PROFILES_STR = profiles.toString().substring(1, profiles.toString().length() -1);
-			} else {
-				PROFILES_STR = "";
-			}
-		}
-
-		MDC.put("profiles", PROFILES_STR);
+		MDC.put("profiles", System.getProperty(KConstant.VM_SPRING_PROFILES_ACTIVE));
 	}
 
 	public static boolean isLocal() {
@@ -95,9 +88,5 @@ public class KProfile {
 
 	public static String getHostname() {
 		return HOSTNAME;
-	}
-
-	public static String getWasId() {
-		return KProfile.SITE.label();
 	}
 }

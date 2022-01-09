@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.text.MessageFormat;
 import java.util.stream.Collectors;
 
 import javax.servlet.FilterChain;
@@ -34,10 +33,11 @@ import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
-import mgkim.framework.core.logging.KLogLayout;
+import mgkim.framework.core.logging.KLogMarker;
 import mgkim.framework.core.stereo.KFilter;
 import mgkim.framework.core.type.TRequestType;
 import mgkim.framework.core.type.TResponseType;
+import mgkim.framework.core.util.KHttpUtil;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.com.scheduler.CmmApiTxLogScheduler;
@@ -73,11 +73,13 @@ public class KFilterAccessLog  extends KFilter {
 		try {
 			if (requestType == TRequestType.JSON) {
 				requestWrapper = new ReadableRequestWrapper(request);
-				String reqBody = requestWrapper.getBodyString();
-				if (KStringUtil.isJson(reqBody)) {
-					log.info("{} {}{} {}{}`InDTO` = {}{}`Authorization` = {}", KConstant.LT_REQ_BODY, KLogLayout.LINE, KConstant.LT_REQ_BODY, KContext.getT(AttrKey.URI), KLogLayout.LINE, reqBody, KLogLayout.LINE, KContext.getT(AttrKey.AUTHORIZATION));
+				String body = requestWrapper.getBodyString();
+				String header = KStringUtil.toJson(KHttpUtil.getHeaders());
+				if (KStringUtil.isJson(body)) {
+					//log.info(KLogMarker.request, "\nrequest-header = {}\nrequest-body = {}", header, body);
+					log.info(KLogMarker.request, "\nrequest-body = {}", body);
 				} else {
-					log.warn("{} `{}`에서 request-body 가 json 이 아닙니다. request-body={}", KConstant.LT_SECURITY_FILTER, BEAN_NAME, reqBody);
+					log.warn("{} `{}`에서 request-body 가 json 이 아닙니다. request-body={}", KConstant.LT_SECURITY_FILTER, BEAN_NAME, body);
 				}
 			} else {
 				/*
@@ -120,9 +122,10 @@ public class KFilterAccessLog  extends KFilter {
 		// 2) response 로그
 		try {
 			TResponseType responseType = KContext.getT(AttrKey.RESPONSE_TYPE);
+			long contentSize = responseWrapper.getContentSize();
 			if (responseType == TResponseType.JSON) {
-				String code = KContext.getT(AttrKey.RESULT_CODE);
-				String rhMessage = KContext.getT(AttrKey.RESULT_MESSAGE);
+				String resultCode = KContext.getT(AttrKey.RESULT_CODE);
+				String resultMessage = KContext.getT(AttrKey.RESULT_MESSAGE);
 				boolean isVerboss = KConfig.VERBOSS_ALL || KConfig.VERBOSS_REQ;
 				if (isVerboss) {
 					BufferedReader br = null;
@@ -133,23 +136,21 @@ public class KFilterAccessLog  extends KFilter {
 						while ((readLine = br.readLine()) != null) {
 							buf.append(readLine);
 						}
-						log.info("{} [{}] {} (`{}` bytes){}{}{}`OutDTO` = {}", KConstant.LT_RES_INFO, code, rhMessage, responseWrapper.getContentSize(), KLogLayout.LINE, KConstant.LT_RES_VERBOSS, KLogLayout.LINE, buf.toString());
+						log.info(KLogMarker.response, "[{}] {} (bytes={})\nrequest-body = {}", resultCode, resultMessage, contentSize, buf.toString());
 					} finally {
 						if (br != null) {
 							br.close();
 						}
 					}
 				} else {
-					String contentSize = MessageFormat.format("{0}", responseWrapper.getContentSize());
-					log.info("{} [{}] {} (`{}` bytes)", KConstant.LT_RES_INFO, code, rhMessage, contentSize);
+					log.info(KLogMarker.response, "[{}] {} (bytes={})", resultCode, resultMessage, contentSize);
 				}
 			} else if (responseType == TResponseType.FILE) {
 				String filename = KContext.getT(AttrKey.DOWN_FILE);
-				String contentSize = MessageFormat.format("{0}", responseWrapper.getContentSize());
-				log.info("{} download file=`{}` (`{}` bytes)", KConstant.LT_RES_INFO, filename, contentSize);
+				log.info(KLogMarker.response, "download file=`{}` (`{}` bytes)", filename, contentSize);
 			} else {
 				log.info("분류되지 않은 응답 형태 입니다.");
-				log.info("{} Content-Type=`{}` (`{}` bytes)", KConstant.LT_RES_INFO, response.getContentType(), responseWrapper.getContentSize());
+				log.info(KLogMarker.response, "Content-Type=`{}` (`{}` bytes)", response.getContentType(), contentSize);
 			}
 		} catch(Exception e) {
 			KExceptionHandler.response(response, new KSysException(KMessage.E7008, e, BEAN_NAME, "응답"));

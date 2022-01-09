@@ -57,6 +57,7 @@ function install() {
     'framework/framework-core'
     'framework/framework-daemon'
     'framework/framework-online'
+    'service/service-lib'
   )
   echo "PROJECT_LIST=${PROJECT_LIST[*]}"
   

@@ -25,11 +25,9 @@ import org.apache.ibatis.session.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.env.KSqlContext;
-import mgkim.framework.core.logging.KLogLayout;
 import mgkim.framework.core.type.TSqlType;
 import mgkim.framework.core.util.KSqlUtil;
 
@@ -81,7 +79,8 @@ public class ComSqlPagingCount {
 				{
 					String sql = KSqlUtil.removeForeachIndex(boundSql);
 					sql = String.format(KSqlUtil.COUNT_SQL, sql);
-					sql = KSqlUtil.insertSqlId(sql, TSqlType.COUNT_SQL1.code() + " " + sqlId);
+					String comment = String.format("/* (%s) %s::%s */", KContext.getT(AttrKey.TXID), sqlFile, (TSqlType.COUNT_SQL1.code() + " " + sqlId));
+					sql = KSqlUtil.insertSqlComment(sql, comment);
 					pstmt = connection.prepareStatement(sql);
 					int startIndex = 1;
 					KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startIndex);
@@ -95,7 +94,7 @@ public class ComSqlPagingCount {
 					}
 				} catch(Exception ex) {
 					String countSql = KSqlUtil.createParamSql(parameterObject, statementHandler, TSqlType.COUNT_SQL1);
-					log.error("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL_COUNT1, sqlId, KLogLayout.LINE, KConstant.LT_SQL_COUNT1, sqlFile, sqlId, KLogLayout.LINE, countSql);
+					log.error("{}", countSql);
 					throw ex;
 				}
 			}
@@ -189,7 +188,8 @@ public class ComSqlPagingCount {
 					// prepareStatment 생성
 					{
 						String sql = KSqlUtil.removeForeachIndex(boundSql);
-						sql = KSqlUtil.insertSqlId(sql, TSqlType.COUNT_SQL2.code() + " " + sqlId);
+						String comment = String.format("/* (%s) %s::%s */", KContext.getT(AttrKey.TXID), sqlFile, (TSqlType.COUNT_SQL2.code() + " " + sqlId));
+						sql = KSqlUtil.insertSqlComment(sql, comment);
 						pstmt = connection.prepareStatement(sql);
 						int startIndex = 1;
 						KSqlUtil.bindParameterToPstmt(pstmt, parameterObject, boundSql, startIndex);
@@ -204,7 +204,7 @@ public class ComSqlPagingCount {
 					throw ex;
 				} finally {
 					String countSql = KSqlUtil.createParamSql(parameterObject, statementHandler, TSqlType.COUNT_SQL2);
-					log.error("{} `{}` {}{} `{}` `{}`{}{}", KConstant.LT_SQL_COUNT2, sqlId, KLogLayout.LINE, KConstant.LT_SQL_COUNT2, sqlFile, sqlId, KLogLayout.LINE, countSql);
+					log.error("{}", countSql);
 				}
 			}
 		} catch (Exception e) {

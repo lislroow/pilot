@@ -59,10 +59,25 @@
     <framework-online.version>[,3.0)</framework-online.version>
     <framework-batch.version>[,3.0)</framework-batch.version>
     <framework-daemon.version>[,3.0)</framework-daemon.version>
+    
+    <!-- for release
+    <service-lib.version>1.0</service-lib.version>
+    -->
+    <!-- for snapshot
+    -->
+    <service-lib.version>[,2.0)</service-lib.version>
   </properties>
   
   <dependencyManagement>
     <dependencies>
+      <!-- service -->
+      <dependency>
+        <groupId>mgkim.service</groupId>
+        <artifactId>service-lib</artifactId>
+        <version>${service-lib.version}</version>
+      </dependency>
+      <!-- service -->
+      
       <!-- framework -->
       <dependency>
         <groupId>mgkim.bom</groupId>

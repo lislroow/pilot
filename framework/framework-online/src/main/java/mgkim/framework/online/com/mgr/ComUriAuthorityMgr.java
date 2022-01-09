@@ -79,7 +79,7 @@ public class ComUriAuthorityMgr implements FilterInvocationSecurityMetadataSourc
 			KContext.set(AttrKey.SQL_FILE, "mgkim.framework.core.session.SysUriAuthorityMgr.CONFIG_SQL");
 			KContext.set(AttrKey.SQL_TEXT, CONFIG_SQL);
 			Map<String, String> paramMap = new HashMap<String, String>();
-			paramMap.put("siteTpcd", KProfile.SITE.code());
+			paramMap.put("siteTpcd", KProfile.SITE_TPCD);
 			resultList = jdbcTemplate.queryForList(CONFIG_SQL, paramMap);
 		} catch(Exception e) {
 			KExceptionHandler.resolve(e);
