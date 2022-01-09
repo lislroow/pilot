@@ -28,7 +28,7 @@ JAVA_OPTS="${JAVA_OPTS} -Dspring.profiles.active=${PROFILE_SYS}"
 JAVA_OPTS="${JAVA_OPTS} -Dapp.name=${APP_NAME}"
 JAVA_OPTS="${JAVA_OPTS} -Dserver.port=${SERVER_PORT}"
 
-PS_CMD="ps -ef | grep -v grep | grep -v tail | grep ${APP_NAME} | awk '{ print \$2 }'"
+PS_CMD="ps -ef | grep -v grep | grep -v tail |  grep -v .sh | grep ${APP_NAME} | awk '{ print \$2 }'"
 echo "${PS_CMD}"
 _PID=$(eval "${PS_CMD}")
 
