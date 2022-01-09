@@ -3,6 +3,7 @@
 APP_HOME=/app/WAS/pilot
 JAR_NAME=service-www
 APP_NAME=www12
+SERVER_PORT=7101
 
 JAVA_HOME=/prod/java/openjdk-11.0.2
 PATH=$JAVA_HOME/bin:$PATH
@@ -24,6 +25,7 @@ esac
 echo "PROFILE_SYS=${PROFILE_SYS}"
 
 JAVA_OPTS="${JAVA_OPTS} -Dspring.profiles.active=${PROFILE_SYS}"
+JAVA_OPTS="${JAVA_OPTS} -Dserver.port=${SERVER_PORT}"
 
 PS_CMD="ps -ef | grep -v grep | grep -v tail | grep ${APP_NAME} | awk '{ print \$2 }'"
 echo "${PS_CMD}"
