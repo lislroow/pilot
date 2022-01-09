@@ -12,8 +12,8 @@ public class CmmProfile {
 	public static void init(String defAppName) {
 		// 사이트 구분 설정 (www, adm, bat)
 		{
-			String appName = null;
-			if (System.getProperty(KConstant.VM_APP_NAME) == null) {
+			String appName = System.getProperty(KConstant.VM_APP_NAME);
+			if (appName == null) {
 				appName = defAppName;
 				System.setProperty(KConstant.VM_APP_NAME, appName);
 			}
