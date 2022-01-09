@@ -4,7 +4,7 @@ APP_HOME=/app/WAS/pilot
 JAR_NAME=service-www
 APP_NAME=www11
 
-PS_CMD="ps -ef | grep -v grep | grep Dapp.name=${APP_NAME} | awk '{ print \$2 }'"
+PS_CMD="ps -ef | grep -v grep | grep Dapp.name\=${APP_NAME} | awk '{ print \$2 }'"
 echo "${PS_CMD}"
 _PID=$(eval "${PS_CMD}")
 
