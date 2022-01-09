@@ -34,7 +34,7 @@ _PID=$(eval "${PS_CMD}")
 
 if [ "${_PID}" != "" ]; then
   echo "execute ${APP_HOME}/stop-www11.sh"
-  ${APP_HOME}/stop.sh
+  ${APP_HOME}/stop-www11.sh
 fi
 
 FIND_CMD="find ${APP_HOME} -maxdepth 1 -type f -name ${JAR_NAME}*.jar | sort -V | tail -n 1"
