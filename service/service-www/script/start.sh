@@ -1,10 +1,25 @@
 #!/bin/bash
 
-APP_HOME=/app/WAS/pilot
-APP_NAME=service-www
-APP_ID=dwww11
-SERVER_PORT=7100
-PROFILE_SYS=dev
+if [ "${APP_HOME}" == "" ]; then
+  echo "APP_HOME is undefined!"
+  exit -1
+fi
+if [ "${APP_NAME}" == "" ]; then
+  echo "APP_NAME is undefined!"
+  exit -1
+fi
+if [ "${APP_ID}" == "" ]; then
+  echo "APP_ID is undefined!"
+  exit -1
+fi
+if [ "${SERVER_PORT}" == "" ]; then
+  echo "SERVER_PORT is undefined!"
+  exit -1
+fi
+if [ "${PROFILE_SYS}" == "" ]; then
+  echo "PROFILE_SYS is undefined!"
+  exit -1
+fi
 
 JAVA_HOME=/prod/java/openjdk-11.0.2
 PATH=$JAVA_HOME/bin:$PATH

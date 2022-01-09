@@ -1,8 +1,17 @@
 #!/bin/bash
 
-APP_HOME=/app/WAS/pilot
-APP_NAME=service-www
-APP_ID=dwww11
+if [ "${APP_HOME}" == "" ]; then
+  echo "APP_HOME is undefined!"
+  exit -1
+fi
+if [ "${APP_NAME}" == "" ]; then
+  echo "APP_NAME is undefined!"
+  exit -1
+fi
+if [ "${APP_ID}" == "" ]; then
+  echo "APP_ID is undefined!"
+  exit -1
+fi
 
 PS_CMD="ps -ef | grep -v grep | grep -v tail |  grep -v .sh | grep ${APP_ID} | awk '{ print \$2 }'"
 echo "${PS_CMD}"

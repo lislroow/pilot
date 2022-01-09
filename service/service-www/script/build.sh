@@ -1,21 +1,5 @@
 #!/bin/bash
 
-## env
-PROJECT_BASE=$PWD
-PROFILE_SYS=$1
-
-if [ "${PROFILE_SYS}" = "" ]; then
-  PROFILE_SYS=dev
-fi
-
-case ${PROFILE_SYS} in
-  dev|sta*)
-    ;;
-  *)
-    echo "PROFILE_SYS('${PROFILE_SYS}') is not yet!"
-    exit -1
-esac
-
 UNAME=`uname -s`
 echo "UNAME=${UNAME}"
 if [[ "${UNAME}" = "Linux"* ]]; then
@@ -32,12 +16,14 @@ case ${OS_NAME} in
     JAVA_HOME=/prod/java/openjdk-11.0.13.8-temurin
     PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
     MD5SUM_CMD=md5sum
+    DIRNAME_CMD=dirname
     ;;
   win)
     M2_HOME=/z/develop/build/maven-3.6.3
     JAVA_HOME=/z/develop/java/openjdk-11.0.13.8-temurin
     PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
     MD5SUM_CMD=md5sum.exe
+    DIRNAME_CMD=dirname.exe
     ;;
   *)
     echo "invalid os"
@@ -50,6 +36,24 @@ M2_HOME=${M2_HOME}
 JAVA_HOME=${JAVA_HOME}
 EOF
 )
+
+## env
+PROJECT_BASE="$( cd $( ${DIRNAME_CMD} "$0" )/.. && pwd -P)"
+echo "${PROJECT_BASE}"
+
+PROFILE_SYS=$1
+
+if [ "${PROFILE_SYS}" = "" ]; then
+  PROFILE_SYS=dev
+fi
+
+case ${PROFILE_SYS} in
+  dev|sta*)
+    ;;
+  *)
+    echo "PROFILE_SYS('${PROFILE_SYS}') is not yet!"
+    exit -1
+esac
 
 ## build
 MVN_ARGS=""
@@ -72,9 +76,9 @@ ARTIFACT_FILE=`eval $(cat << EOF
 EOF
 )`
 
-CHECKSUM=$(${MD5SUM_CMD} target/${ARTIFACT_FILE} | awk '{ print substr($1, 1, 4) }')
+CHECKSUM=$(${MD5SUM_CMD} ${PROJECT_BASE}/target/${ARTIFACT_FILE} | awk '{ print substr($1, 1, 4) }')
 JAR_FILE=${ARTIFACT_FILE%.*}_${CHECKSUM}.${ARTIFACT_FILE##*.}
-cp target/${ARTIFACT_FILE} target/${JAR_FILE}
+cp ${PROJECT_BASE}/target/${ARTIFACT_FILE} ${PROJECT_BASE}/target/${JAR_FILE}
 
 echo "ARTIFACT_FILE=${ARTIFACT_FILE}"
 echo "JAR_FILE=${JAR_FILE}"
@@ -88,7 +92,7 @@ EOF
 )`
 echo "JAR_FILE_PTRN=${JAR_FILE_PTRN}"
 
-if [ ! -e target/$JAR_FILE ]; then
+if [ ! -e ${PROJECT_BASE}/target/$JAR_FILE ]; then
   echo "build output file '$JAR_FILE' is not found."
 fi
 
@@ -123,11 +127,11 @@ APP_HOME=/app/WAS/pilot
 echo "APP_HOME=${APP_HOME}"
 
 DEPLOY_FILES=(
-  "./target/${JAR_FILE}"
-  "./start-*.sh"
-  "./stop-*.sh"
-  "./status.sh"
-  "./backup.sh"
+  "${PROJECT_BASE}/target/${JAR_FILE}"
+  "${PROJECT_BASE}/script/start*.sh"
+  "${PROJECT_BASE}/script/stop*.sh"
+  "${PROJECT_BASE}/script/status.sh"
+  "${PROJECT_BASE}/script/backup.sh"
 )
 echo "DEPLOY_FILES=${DEPLOY_FILES[*]}"
 
