@@ -32,7 +32,7 @@ echo "${PS_CMD}"
 _PID=$(eval "${PS_CMD}")
 
 if [ "${_PID}" != "" ]; then
-  echo "execute ${APP_HOME}/stop.sh"
+  echo "execute ${APP_HOME}/stop-www11.sh"
   ${APP_HOME}/stop.sh
 fi
 
