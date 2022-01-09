@@ -126,6 +126,8 @@ DEPLOY_FILES=(
   "./target/${JAR_FILE}"
   "./start-*.sh"
   "./stop-*.sh"
+  "./status.sh"
+  "./backup.sh"
 )
 echo "DEPLOY_FILES=${DEPLOY_FILES[*]}"
 
