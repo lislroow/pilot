@@ -24,12 +24,11 @@ import mgkim.framework.core.logging.KLogMarker;
 import mgkim.framework.core.stereo.KFilter;
 import mgkim.framework.core.util.KHttpUtil;
 import mgkim.framework.core.util.KObjectUtil;
-import mgkim.framework.online.com.listener.KRequestListener;
 
 @KBean(name = "security 필터")
 public class KFilterSecurity extends KFilter {
 	
-	private static final Logger log = LoggerFactory.getLogger(KRequestListener.class);
+	private static final Logger log = LoggerFactory.getLogger(KFilterSecurity.class);
 
 	final String BEAN_NAME = KObjectUtil.name(KFilterSecurity.class);
 
