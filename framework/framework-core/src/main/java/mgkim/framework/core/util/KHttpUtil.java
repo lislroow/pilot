@@ -2,9 +2,12 @@ package mgkim.framework.core.util;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,11 +17,17 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import mgkim.framework.core.env.KConfig;
 import mgkim.framework.core.env.KConstant;
-import mgkim.framework.core.logging.KLog;
 import mgkim.framework.core.type.TApiType;
 
 public class KHttpUtil {
-
+	
+	private static final List<String> IP_HEADERS = Arrays.asList(
+			"X-Forwarded-For", "Proxy-Client-IP", "WL-Proxy-Client-IP", "HTTP_CLIENT_IP", "HTTP_X_FORWARDED_FOR");
+	
+	public static final String LOCAL_IPv4 = "127.0.0.1";
+	public static final List<String> LOCAL_IP = Arrays.asList("0:0:0:0:0:0:0:1", LOCAL_IPv4);
+	
+	
 	public static String getUri() {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 		return request.getRequestURI();
@@ -47,21 +56,18 @@ public class KHttpUtil {
 
 	public static String getIp() {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-		// 클라이언트의 IP를 체크하는 순서는 weblogic 과 jboss-web 이 연동된 환경에서 wl_proxy 가 활성화 된 상태를 우선합니다.
-		// http-header 에 WL-Proxy-Client-IP 가 있는지 확인하고, 없을 경우에 http-request 객체에서 확인합니다.
-		String ip = request.getHeader(KConstant.HK_WL_PROXY_ClIENT_IP);
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-			ip = request.getHeader(KConstant.HK_X_FORWARDED_FOR);
-		}
-		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-			ip = request.getRemoteAddr();
-		}
-		// 네트워크상에서 IP의 정보가 request 객체에 포함되기까지 2개 이상의 식별된 IP가 포함될 경우
-		// 맨 우측에 있는 끝부분의 IP를 가져오도록 합니다.
-		int n = ip.lastIndexOf(", ");
-		if (n > -1) {
-			ip = ip.substring(n+", ".length(), ip.length());
-			KLog.warn("cmm/http", String.format("ip.lastIndexOf() > ip.substring() = %s", ip));
+		String ip = IP_HEADERS.stream()
+				.map(request::getHeader)
+				.filter(Objects::nonNull)
+				.filter(val -> !val.isEmpty() && !val.equalsIgnoreCase("unknown"))
+				.findFirst()
+				.orElseGet(request::getRemoteAddr);
+		
+		// -Djava.net.preferIPv4Stack=true 설정이 없을 경우 IPv6 로 기본 표시됩니다.
+		// IPv6 일 경우 `0:0:0:0:0:0:0:1`
+		// IPv4 일 경우 `127.0.0.1`
+		if (LOCAL_IP.contains(ip)) {
+			return LOCAL_IPv4;
 		}
 		return ip;
 	}

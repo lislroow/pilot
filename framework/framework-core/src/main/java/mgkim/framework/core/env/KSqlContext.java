@@ -27,8 +27,10 @@ public class KSqlContext {
 			return null;
 		}
 		
-		return new java.io.File(mappedStatement.getResource().replaceAll("file \\[(.*)\\]", "$1")).getAbsolutePath()
-			.replace(new java.io.File(KConstant.PATH_WEBINF_CLASSES).getAbsolutePath(), "")
-			.replaceAll("\\\\", "/").substring(1);
+		// TODO [2022.01.10] spring-boot 에서 classpath 경로 확인
+		//return new java.io.File(mappedStatement.getResource().replaceAll("file \\[(.*)\\]", "$1")).getAbsolutePath()
+		//	.replace(new java.io.File(KConstant.PATH_WEBINF_CLASSES).getAbsolutePath(), "")
+		//	.replaceAll("\\\\", "/").substring(1);
+		return null;
 	}
 }

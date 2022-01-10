@@ -77,8 +77,8 @@ import mgkim.framework.online.com.mybatis.ComSqlSessionFactory;
 		@ComponentScan.Filter(type = FilterType.ANNOTATION, value = EnableWebMvc.class)
 	}
 )
-// [2022.01.10] Main 클래스(mgkim/Main.java)의 경로를 (/mgkim/service/www/Main.java)로 변경할 경우
-// MapperScan(MapperScannerConfigurer) 에서 오류가 발생함 
+// TODO [2022.01.10] Main 클래스(mgkim/Main.java)의 경로를 (/mgkim/service/www/Main.java)로 변경할 경우
+// MapperScan(MapperScannerConfigurer) 에서 오류가 발생함
 @MapperScan(basePackages = "mgkim.**.mapper",
 	annotationClass = org.apache.ibatis.annotations.Mapper.class)
 public class KInit implements ServletContextInitializer, BeanFactoryPostProcessor {

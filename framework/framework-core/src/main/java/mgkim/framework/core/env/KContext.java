@@ -19,7 +19,7 @@ import org.springframework.http.HttpHeaders;
 
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
-import mgkim.framework.core.logging.KLogLayout;
+import mgkim.framework.core.logging.KLogMarker;
 import mgkim.framework.core.type.TApiType;
 import mgkim.framework.core.type.TAuthType;
 import mgkim.framework.core.type.TExecType;
@@ -192,7 +192,7 @@ public class KContext {
 		String userId = KStringUtil.nvl(claims.get(KConstant.USER_ID), "");
 		boolean debug = KContext.getT(AttrKey.DEBUG);
 		if (debug) {
-			log.info("{} {}{} {}", KConstant.LT_SECURITY, KLogLayout.LINE, KConstant.LT_SECURITY, KMessage.get(KMessage.E6023, KContext.get(AttrKey.SSID), ssid));
+			log.debug(KLogMarker.security, "{}", KMessage.get(KMessage.E6023, KContext.get(AttrKey.SSID), ssid));
 			KContext.set(AttrKey.SSID, ssid);
 			MDC.put(KConstant.SSID, ssid);
 		}

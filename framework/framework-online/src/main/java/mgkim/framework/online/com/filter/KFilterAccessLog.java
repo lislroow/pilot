@@ -27,7 +27,6 @@ import org.springframework.web.util.ContentCachingResponseWrapper;
 
 import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.env.KConfig;
-import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.exception.KExceptionHandler;
@@ -79,7 +78,7 @@ public class KFilterAccessLog  extends KFilter {
 					//log.info(KLogMarker.request, "\nrequest-header = {}\nrequest-body = {}", header, body);
 					log.info(KLogMarker.request, "\nrequest-body = {}", body);
 				} else {
-					log.warn("{} `{}`에서 request-body 가 json 이 아닙니다. request-body={}", KConstant.LT_SECURITY_FILTER, BEAN_NAME, body);
+					log.warn(KLogMarker.request, "request-body 가 json 형식이 아닙니다. request-body={}", body);
 				}
 			} else {
 				/*

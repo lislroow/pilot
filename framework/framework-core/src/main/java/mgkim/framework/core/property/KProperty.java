@@ -22,10 +22,11 @@ import mgkim.framework.core.util.KStringUtil;
 public class KProperty {
 
 	private static final Logger log = LoggerFactory.getLogger(KProperty.class);
-
+	
+	// TODO [2022.01.10] spring-boot 에서 classpath 경로 확인 
 	public static final String[] CONFIG_FILE = new String[] {
-		  KConstant.PATH_WEBINF_CLASSES + "config.properties"
-		, "jar:file:" + KConstant.PATH_WEBINF_LIB + "META-INF/core-online/core-config.properties" + "!/"
+		//  KConstant.PATH_WEBINF_CLASSES + "config.properties"
+		//, "jar:file:" + KConstant.PATH_WEBINF_LIB + "META-INF/core-online/core-config.properties" + "!/"
 	};
 
 	private static void printKeyValue(String key, Object value) {

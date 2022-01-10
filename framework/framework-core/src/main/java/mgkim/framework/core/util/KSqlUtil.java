@@ -21,7 +21,6 @@ import org.apache.ibatis.type.TypeHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.logging.KLogCommon;
@@ -43,11 +42,10 @@ public class KSqlUtil {
 
 	public static final String TABLE_PATTERN = "[A-Z]{4}[0-9]{3}[A-Z]{2}";
 	
-	// spring-boot 에서는 경로가 다름
-	@Deprecated
 	public static String getRelativePath(String resourcePath) {
 		String path = new java.io.File(resourcePath.replaceAll("file \\[(.*)\\]", "$1")).getAbsolutePath()
-				.replace(new java.io.File(KConstant.PATH_WEBINF_CLASSES).getAbsolutePath(), "")
+				// TODO [2022.01.10] spring-boot 에서 classpath 경로 확인
+				//.replace(new java.io.File(KConstant.PATH_WEBINF_CLASSES).getAbsolutePath(), "")
 				.replaceAll("\\\\", "/").substring(1);
 		final String injar = ".jar!/";
 		if (path.indexOf(injar) > 0) {

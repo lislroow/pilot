@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import mgkim.framework.core.annotation.KBean;
-import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.env.KProfile;
@@ -21,8 +20,9 @@ import mgkim.framework.core.exception.KException;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
-import mgkim.framework.core.logging.KLogLayout;
+import mgkim.framework.core.logging.KLogMarker;
 import mgkim.framework.core.stereo.KFilter;
+import mgkim.framework.core.util.KHttpUtil;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.online.com.listener.KRequestListener;
 
@@ -33,12 +33,11 @@ public class KFilterSecurity extends KFilter {
 
 	final String BEAN_NAME = KObjectUtil.name(KFilterSecurity.class);
 
-	final List<String> DEBUG_IP = Arrays.asList("172.28.");
+	final List<String> DEBUG_IP = Arrays.asList("172.28.", KHttpUtil.LOCAL_IPv4);
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws ServletException, IOException {
-		boolean allow = false;
 		boolean debug = KContext.getT(AttrKey.DEBUG);
 		try {
 			// `debug` 여부 확인
@@ -52,17 +51,14 @@ public class KFilterSecurity extends KFilter {
 				default:
 					if (debug) {
 						String ip = KContext.getT(AttrKey.IP);
-						for (String allowIp : DEBUG_IP) {
-							if (ip.startsWith(allowIp)) {
-								allow = true;
-								break;
-							}
+						String matched = DEBUG_IP.stream()
+							.filter(val -> ip.startsWith(val))
+							.findFirst()
+							.orElse(null);
+						if (matched == null) {
+							throw new KSysException(KMessage.E7009, KProfile.SYS);
 						}
-					}
-					if (allow) {
-						log.warn("{} {}{} {}", KConstant.LT_SECURITY, KLogLayout.LINE, KConstant.LT_SECURITY, KMessage.get(KMessage.E6024));
-					} else {
-						throw new KSysException(KMessage.E7009, KProfile.SYS);
+						log.warn(KLogMarker.security, "debug=Y");
 					}
 				}
 
