@@ -144,11 +144,11 @@ do
   echo "=== //send DEPLOY_FILES ==="
   
   echo "=== restart www11 / www12 ==="
-  ssh root@${SVR} "${APP_HOME}/stop-dwww11.sh"
-  ssh root@${SVR} "${APP_HOME}/start-dwww11.sh"
+  ssh root@${SVR} "${APP_HOME}/stopdwww11.sh"
+  ssh root@${SVR} "${APP_HOME}/startdwww11.sh"
   
-  ssh root@${SVR} "${APP_HOME}/stop-dwww12.sh"
-  ssh root@${SVR} "${APP_HOME}/start-dwww12.sh"
+  ssh root@${SVR} "${APP_HOME}/stopdwww12.sh"
+  ssh root@${SVR} "${APP_HOME}/startdwww12.sh"
   echo "=== //restart www11 / www12 ==="
   
 done
