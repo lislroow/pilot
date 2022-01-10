@@ -48,8 +48,12 @@ public class ComSessionStatusMgr {
 				return true;
 			}
 
-			if (ssStcdType == TSsStcdType.DUP_LOGIN && "N".equals(statusVO.getDloginAlowYn())) {
-				throw new KSysException(KMessage.E6102);
+			if (ssStcdType == TSsStcdType.DUP_LOGIN) {
+				if ("N".equals(statusVO.getDloginAlowYn())) {
+					throw new KSysException(KMessage.E6102);
+				} else {
+					return true;
+				}
 			} else if (ssStcdType == TSsStcdType.EXPIRED
 					|| ssStcdType == TSsStcdType.LOGOUT) {
 				throw new KSysException(KMessage.E6101);
