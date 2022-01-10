@@ -18,7 +18,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.tomcat.util.descriptor.web.ContextResource;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
-import org.mybatis.spring.mapper.MapperScannerConfigurer;
+import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
@@ -77,7 +77,20 @@ import mgkim.framework.online.com.mybatis.ComSqlSessionFactory;
 		@ComponentScan.Filter(type = FilterType.ANNOTATION, value = EnableWebMvc.class)
 	}
 )
+// [2022.01.10] Main 클래스(mgkim/Main.java)의 경로를 (/mgkim/service/www/Main.java)로 변경할 경우
+// MapperScan(MapperScannerConfigurer) 에서 오류가 발생함 
+@MapperScan(basePackages = "mgkim.**.mapper",
+	annotationClass = org.apache.ibatis.annotations.Mapper.class)
 public class KInit implements ServletContextInitializer, BeanFactoryPostProcessor {
+
+	//public static final String MAPPER_CLASS = "mgkim.**.mapper";
+	//@Bean("mapperScannerConfigurer")
+	//public MapperScannerConfigurer mapperScannerConfigurer() {
+	//	MapperScannerConfigurer bean = new MapperScannerConfigurer();
+	//	bean.setBasePackage(MAPPER_CLASS);
+	//	bean.setAnnotationClass(Mapper.class);
+	//	return bean;
+	//}
 	
 	private static final Logger log = LoggerFactory.getLogger(KInit.class);
 
@@ -118,11 +131,10 @@ public class KInit implements ServletContextInitializer, BeanFactoryPostProcesso
 	public static final String JNDI = "jdbc/space-app";
 
 	public static final String TRANSACTION_POINTCUT = ""
-			+ "     execution(* mgkim..service.*.*(..))"
+			+ "     execution(* mgkim..service.*Service*.*(..))"
 			+ " && !execution(* mgkim..service.*NonTx.*(..))"
 			+ " && !execution(* mgkim..service.*.*NonTx(..))";
 
-	public static final String MAPPER_CLASS = "**.mapper";
 	public static final String CONFIG_FILE_PATH = "classpath:mybatis/mybatis-config.xml";
 	public static final String SQL_FILE = "classpath*:mapper/**/*SQL.xml";
 	//public static final List<String> JAR = Arrays.asList("core*.jar");
@@ -262,13 +274,6 @@ public class KInit implements ServletContextInitializer, BeanFactoryPostProcesso
 		bean.setConfigLocation(mybatisConfigLocation);
 		bean.setMapperLocations(mapperLocations);
 		bean.setTypeAliasesPackage(KProfile.GROUP);
-		return bean;
-	}
-
-	@Bean("mapperScannerConfigurer")
-	public MapperScannerConfigurer mapperScannerConfigurer() {
-		MapperScannerConfigurer bean = new MapperScannerConfigurer();
-		bean.setBasePackage(MAPPER_CLASS);
 		return bean;
 	}
 

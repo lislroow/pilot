@@ -1,8 +1,11 @@
 package mgkim.framework.online.api.adm.initdata.mapper;
 
+import org.apache.ibatis.annotations.Mapper;
+
 import mgkim.framework.online.api.adm.initdata.vo.InitLoadMockVO;
 import mgkim.framework.online.cmm.vo.uri.CmmUriVO;
 
+@Mapper
 public interface InitDataLoadMapper {
 	// ##############
 	// 1) 권한
