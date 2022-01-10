@@ -21,7 +21,7 @@ if [ "${PROFILE_SYS}" == "" ]; then
   exit -1
 fi
 
-JAVA_HOME=/prod/java/openjdk-11.0.2
+JAVA_HOME=/prod/java/openjdk-11.0.13.8-temurin
 PATH=$JAVA_HOME/bin:$PATH
 
 if [ "$1" != "" ]; then
