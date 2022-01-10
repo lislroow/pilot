@@ -16,7 +16,7 @@
   <repositories>
     <repository>
       <id>maven-group</id>
-      <url>http://nexus/repository/maven-group-snapshot/</url>
+      <url>https://nexus/repository/maven-group-snapshot/</url>
     </repository>
   </repositories>
   

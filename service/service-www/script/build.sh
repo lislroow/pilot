@@ -105,10 +105,10 @@ MVN_ARGS="${MVN_ARGS} --quiet"
 # jar 파일명에 "-SNAPSHOT" 이 있으면 snapshot 저장소에 deploy 되어야 합니다. 
 if [[ "${JAR_FILE}" = *"-SNAPSHOT"* ]]; then
   MVN_ARGS="${MVN_ARGS} -DrepositoryId=maven-snapshot"
-  MVN_ARGS="${MVN_ARGS} -Durl=http://nexus/repository/maven-snapshot/"
+  MVN_ARGS="${MVN_ARGS} -Durl=https://nexus/repository/maven-snapshot/"
 else
   MVN_ARGS="${MVN_ARGS} -DrepositoryId=maven-release"
-  MVN_ARGS="${MVN_ARGS} -Durl=http://nexus/repository/maven-release/"
+  MVN_ARGS="${MVN_ARGS} -Durl=https://nexus/repository/maven-release/"
 fi
 
 MVN_CMD="mvn deploy:deploy-file ${MVN_ARGS}"

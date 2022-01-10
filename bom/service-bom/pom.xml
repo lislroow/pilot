@@ -11,7 +11,7 @@
   <repositories>
     <repository>
       <id>maven-group</id>
-      <url>http://nexus/repository/maven-group-snapshot/</url>
+      <url>https://nexus/repository/maven-group-snapshot/</url>
     </repository>
   </repositories>
   
@@ -24,11 +24,11 @@
   <distributionManagement>
     <snapshotRepository>
       <id>maven-snapshot</id>
-      <url>http://nexus/repository/maven-snapshot/</url>
+      <url>https://nexus/repository/maven-snapshot/</url>
     </snapshotRepository>
     <repository>
       <id>maven-release</id>
-      <url>http://nexus/repository/maven-release/</url>
+      <url>https://nexus/repository/maven-release/</url>
     </repository>
   </distributionManagement>
   <!-- //only from bom project -->
