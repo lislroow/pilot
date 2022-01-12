@@ -44,20 +44,48 @@ function deploy() {
       DOWNLOAD_URL="${nexus_url}/mgkim/service/${APP_NAME}/${app_ver}/${APP_NAME}-${app_snap_ver}.jar"
       jar_file="${APP_NAME}-${app_snap_ver}.jar"
       echo "DOWNLOAD_URL=${DOWNLOAD_URL}"
-      curl --silent --output ${BASEDIR}/${jar_file} ${DOWNLOAD_URL}
+      
+      DOWNLOAD_CMD="curl --silent --output ${BASEDIR}/${jar_file} ${DOWNLOAD_URL}"
+      echo "DOWNLOAD_CMD=${DOWNLOAD_CMD}"
+      if [ $(whoami) == "root" ]; then
+        su ${EXEC_USER} -c "${DOWNLOAD_CMD}"
+      elif [ $(whoami) == ${EXEC_USER} ]; then
+        eval "${DOWNLOAD_CMD}"
+      else
+        echo "current user "$(whoami)
+        exit -1
+      fi
       
       md5str=$(md5sum ${BASEDIR}/${jar_file} | awk '{ print substr($1, 1, 4) }')
       FINAL_NAME=${jar_file%.*}_${md5str}.${jar_file##*.}
-      mv ${BASEDIR}/${jar_file} ${BASEDIR}/${FINAL_NAME}
+      MV_CMD="mv ${BASEDIR}/${jar_file} ${BASEDIR}/${FINAL_NAME}"
+      echo "MV_CMD=${MV_CMD}"
+      if [ $(whoami) == "root" ]; then
+        su ${EXEC_USER} -c "${MV_CMD}"
+      elif [ $(whoami) == ${EXEC_USER} ]; then
+        eval "${MV_CMD}"
+      else
+        echo "current user "$(whoami)
+        exit -1
+      fi
       
       # result
       echo "FINAL_NAME=${FINAL_NAME}"
       
-      ${BASEDIR}/stop.sh dwww11
-      ${BASEDIR}/start.sh dwww11 ${FINAL_NAME}
-      
-      ${BASEDIR}/stop.sh dwww12
-      ${BASEDIR}/start.sh dwww12 ${FINAL_NAME}
+      if [ $(whoami) == "root" ]; then
+        su ${EXEC_USER} -c "${BASEDIR}/stop.sh dwww11"
+        su ${EXEC_USER} -c "${BASEDIR}/start.sh dwww11 ${FINAL_NAME}"
+        su ${EXEC_USER} -c "${BASEDIR}/stop.sh dwww12"
+        su ${EXEC_USER} -c "${BASEDIR}/start.sh dwww12 ${FINAL_NAME}"
+      elif [ $(whoami) == ${EXEC_USER} ]; then
+        ${BASEDIR}/stop.sh dwww11
+        ${BASEDIR}/start.sh dwww11 ${FINAL_NAME}
+        ${BASEDIR}/stop.sh dwww12
+        ${BASEDIR}/start.sh dwww12 ${FINAL_NAME}
+      else
+        echo "current user "$(whoami)
+        exit -1
+      fi
       ;;
     sta*)
       exit -1

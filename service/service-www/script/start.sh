@@ -60,7 +60,14 @@ function start() {
   
   JAVA_CMD="nohup $JAVA_HOME/bin/java ${JAVA_OPTS} -jar ${JAR_FILE} > /dev/null 2>&1 &"
   echo "${JAVA_CMD}"
-  eval "${JAVA_CMD}"
+  if [ $(whoami) == "root" ]; then
+    su ${EXEC_USER} -c "${JAVA_CMD}"
+  elif [ $(whoami) == ${EXEC_USER} ]; then
+    eval "${JAVA_CMD}"
+  else
+    echo "current user "$(whoami)
+    exit -1
+  fi
   
   echo "${PS_CMD}"
   _PID=$(eval "${PS_CMD}")
