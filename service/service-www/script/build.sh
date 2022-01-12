@@ -68,13 +68,12 @@ MVN_CMD="mvn ${MVN_ARGS} clean package spring-boot:repackage"
 echo "${MVN_CMD}"
 eval "${MVN_CMD}"
 
-ARTIFACT_FILE=`eval $(cat << EOF
-  xmlstarlet sel -N x="http://maven.apache.org/POM/4.0.0"
-    -t -v 
-    "concat(x:project/x:artifactId, '-', x:project/x:version, '.', x:project/x:packaging)"
-    ${PROJECT_BASE}/pom.xml;
-EOF
-)`
+ARTIFACT_FILE=$(xmlstarlet sel -N x="http://maven.apache.org/POM/4.0.0" \
+  -t -v \
+  "concat(x:project/x:artifactId, '-', x:project/x:version, '.', x:project/x:packaging)" \
+  ${PROJECT_BASE}/pom.xml)
+
+echo "ARTIFACT_FILE=${ARTIFACT_FILE}"
 
 CHECKSUM=$(${MD5SUM_CMD} ${PROJECT_BASE}/target/${ARTIFACT_FILE} | awk '{ print substr($1, 1, 4) }')
 JAR_FILE=${ARTIFACT_FILE%.*}_${CHECKSUM}.${ARTIFACT_FILE##*.}
@@ -83,13 +82,11 @@ cp ${PROJECT_BASE}/target/${ARTIFACT_FILE} ${PROJECT_BASE}/target/${JAR_FILE}
 echo "ARTIFACT_FILE=${ARTIFACT_FILE}"
 echo "JAR_FILE=${JAR_FILE}"
 
-JAR_FILE_PTRN=`eval $(cat << EOF
-  xmlstarlet sel -N x="http://maven.apache.org/POM/4.0.0"
-    -t -v 
-    "concat(x:project/x:artifactId, '-*.', x:project/x:packaging)"
-    ${PROJECT_BASE}/pom.xml;
-EOF
-)`
+JAR_FILE_PTRN=$(xmlstarlet sel -N x="http://maven.apache.org/POM/4.0.0" \
+  -t -v \
+  "concat(x:project/x:artifactId, '-*.', x:project/x:packaging)" \
+  ${PROJECT_BASE}/pom.xml)
+
 echo "JAR_FILE_PTRN=${JAR_FILE_PTRN}"
 
 if [ ! -e ${PROJECT_BASE}/target/$JAR_FILE ]; then
