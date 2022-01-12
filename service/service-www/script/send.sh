@@ -31,10 +31,13 @@ case $PROFILE_SYS in
   dev)
     SVR_LIST=('172.28.200.30')
     APP_HOME="/app/WAS/pilot"
-  ;;
+    ;;
   sta*)
     exit -1
-  ;;
+    ;;
+  *)
+    exit -1
+    ;;
 esac
 echo "SVR_LIST=${SVR_LIST[*]}"
 echo "APP_HOME=${APP_HOME}"
