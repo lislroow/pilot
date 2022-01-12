@@ -1,13 +1,32 @@
 #!/bin/bash
 
-APP_HOME=/app/WAS/pilot
-APP_NAME=service-www
+SCRIPT_DIR="$( cd $( dirname "$0" ) && pwd -P)"
+BASEDIR="${SCRIPT_DIR}"
+ARCHIVE_DIR="${BASEDIR}/archive"
 
-LATEST_JAR=$(ls -rt ${APP_HOME}/${APP_NAME}*.jar | tail -n 1)
+printf '%s\n' $(cat << EOF
+SCRIPT_DIR=${SCRIPT_DIR}
+BASEDIR=${BASEDIR}
+ARCHIVE_DIR=${ARCHIVE_DIR}
+EOF
+)
+
+if [ ! -e ${ARCHIVE_DIR} ]; then
+  mkdir -p ${ARCHIVE_DIR}
+fi
+
+LATEST_CMD="ls -rt ${BASEDIR}/*.jar | tail -n 1"
+#echo ${LATEST_CMD}
+LATEST_JAR=$(eval ${LATEST_CMD})
+
+OLD_CMD="find ${BASEDIR} -maxdepth 1 -type f ! -newer ${LATEST_JAR} -name '*.jar' ! -samefile ${LATEST_JAR}"
+#echo ${OLD_CMD}
+OLD_JAR=$(eval ${OLD_CMD})
+
 echo "LATEST_JAR=${LATEST_JAR}"
+echo "OLD_JAR=${OLD_JAR[*]}"
 
-BACKUP_FILE=$(find ${APP_HOME} -maxdepth 1 -type f ! -newer ${LATEST_JAR} -name '*.jar' ! -samefile ${LATEST_JAR})
-echo "BACKUP_FILE=${BACKUP_FILE[*]}"
-
-mv ${BACKUP_FILE[*]} ${APP_HOME}/backup
+if [ "${OLD_JAR[*]}" != "" ]; then
+  mv ${OLD_JAR[*]} ${ARCHIVE_DIR}
+fi
 
