@@ -15,7 +15,7 @@ echo "--- (system-env) ---"
 
 ## (status) status
 function status() {
-  echo "+++ (status) status +++"
+  echo $'\n'"+++ (status) status +++"
   for APP_ID in ${APP_ID_LIST[*]}
   do
     echo "--- ${APP_ID} ---"
