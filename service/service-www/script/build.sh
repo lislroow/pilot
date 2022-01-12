@@ -91,7 +91,7 @@ function deploy() {
   echo "+++ (deploy) deploying trigger +++"
   for SVR in ${SVR_LIST[*]}
   do
-    ssh root@${SVR} "${APP_HOME}/deploy.sh dev"
+    ssh root@${SVR} "${APP_HOME}/deploy.sh ${PROFILE_SYS}"
   done
   
   echo "--- (deploy) deploying trigger ---"$'\n'
