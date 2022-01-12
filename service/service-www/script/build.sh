@@ -3,6 +3,9 @@
 ## env
 . ./env.sh
 
+PROJECT_BASE="$( cd $( ${DIRNAME_CMD} "$0" )/.. && pwd -P)"
+echo "${PROJECT_BASE}"
+
 PROFILE_SYS=dev
 
 printf '%s\n' $(cat << EOF
@@ -86,7 +89,6 @@ function build() {
 function transfer() {
   echo "+++ (transfer) transfer *.sh files +++"
   
-  PROFILE_SYS=$1
   case $PROFILE_SYS in
     dev)
       SVR_LIST=(
@@ -118,7 +120,6 @@ function transfer() {
 function deploy() {
   echo "+++ (deploy) deploying trigger +++"
   
-  PROFILE_SYS=$1
   case $PROFILE_SYS in
     dev)
       SVR_LIST=(
@@ -145,11 +146,7 @@ case $1 in
     build
     ;;
   trans*)
-    if [ $# -lt 2 ]; then
-      echo $'\n'"[usage] build.sh transfer {dev|staging}"$'\n'
-      exit -1
-    fi
-    transfer "$2"
+    transfer
     ;;
   deploy)
     deploy

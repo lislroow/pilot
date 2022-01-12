@@ -31,5 +31,3 @@ case ${OS_NAME} in
     ;;
 esac
 
-#PROJECT_BASE="$( cd $( ${DIRNAME_CMD} "$0" )/.. && pwd -P)"
-#echo "${PROJECT_BASE}"
