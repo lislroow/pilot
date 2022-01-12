@@ -1,17 +1,16 @@
 #!/bin/bash
 
-if [ "${APP_HOME}" == "" ]; then
-  echo "APP_HOME is undefined!"
-  exit -1
-fi
-if [ "${APP_NAME}" == "" ]; then
-  echo "APP_NAME is undefined!"
-  exit -1
-fi
-if [ "${APP_ID}" == "" ]; then
-  echo "APP_ID is undefined!"
-  exit -1
-fi
+APP_ID=$1
+
+case ${APP_ID} in
+  dwww11)
+    ;;
+  dwww12)
+    ;;
+  *)
+    exit -1
+    ;;
+esac
 
 PS_CMD="ps -ef | grep -v grep | grep -v tail |  grep -v .sh | grep ${APP_ID} | awk '{ print \$2 }'"
 echo "${PS_CMD}"
