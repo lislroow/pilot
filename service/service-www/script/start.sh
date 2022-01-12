@@ -86,6 +86,7 @@ function start() {
 
 
 echo "+++ (runtime-env) +++"
+EXEC_USER="tomcat"
 APP_NAME="service-www"
 APP_ID=$1
 case ${APP_ID} in
@@ -116,6 +117,7 @@ fi
 
 
 printf '%s\n' $(cat << EOF
+EXEC_USER=${EXEC_USER}
 APP_NAME=${APP_NAME}
 APP_ID=${APP_ID}
 SERVER_PORT=${SERVER_PORT}

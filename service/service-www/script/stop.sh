@@ -56,6 +56,7 @@ echo "--- (stop) stop ---"
 
 
 echo "+++ (runtime-env) +++"
+EXEC_USER="tomcat"
 APP_ID=$1
 case ${APP_ID} in
   dwww11)
@@ -68,6 +69,7 @@ case ${APP_ID} in
 esac
 
 printf '%s\n' $(cat << EOF
+EXEC_USER=${EXEC_USER}
 APP_ID=${APP_ID}
 EOF
 )

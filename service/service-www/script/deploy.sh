@@ -70,6 +70,7 @@ function deploy() {
 }
 
 echo "+++ (runtime-env) +++"
+EXEC_USER="tomcat"
 APP_NAME="service-www"
 PROFILE_SYS=$1
 
@@ -78,6 +79,7 @@ if [ "$1" == "" ]; then
 fi
 
 printf '%s\n' $(cat << EOF
+EXEC_USER=${EXEC_USER}
 APP_NAME=${APP_NAME}
 PROFILE_SYS=${PROFILE_SYS}
 EOF

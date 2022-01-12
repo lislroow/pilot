@@ -93,7 +93,7 @@ function deploy() {
   echo "+++ (deploy) deploying trigger +++"
   for SVR in ${SVR_LIST[*]}
   do
-    ssh root@${SVR} "${APP_HOME}/deploy.sh ${PROFILE_SYS}"
+    ssh ${EXEC_USER}@${SVR} "${APP_HOME}/deploy.sh ${PROFILE_SYS}"
   done
   
   echo "--- (deploy) deploying trigger ---"$'\n'
@@ -101,6 +101,7 @@ function deploy() {
 
 
 echo "+++ (runtime-env) +++"
+EXEC_USER="tomcat"
 PROFILE_SYS=$1
 
 if [ "$1" == "" ]; then
@@ -122,6 +123,7 @@ esac
 
 
 printf '%s\n' $(cat << EOF
+EXEC_USER=${EXEC_USER}
 PROFILE_SYS=${PROFILE_SYS}
 SVR_LIST=${SVR_LIST}
 APP_HOME=${APP_HOME}

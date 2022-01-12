@@ -27,13 +27,14 @@ function transfer() {
   for SVR in ${SVR_LIST[*]}
   do
     scp ${FILES[*]} root@${SVR}:${APP_HOME}
-    ssh root@${SVR} "chmod u+x ${APP_HOME}/*.sh;"
+    ssh ${EXEC_USER}@${SVR} "chmod u+x ${APP_HOME}/*.sh;"
   done
   echo "--- (transfer) transfer *.sh files ---"$'\n'
 }
 
 
 echo "+++ (runtime-env) +++"
+EXEC_USER="tomcat"
 PROFILE_SYS=$1
 if [ "$1" == "" ]; then
   PROFILE_SYS="dev"
@@ -53,6 +54,7 @@ esac
 
 
 printf '%s\n' $(cat << EOF
+EXEC_USER=${EXEC_USER}
 PROFILE_SYS=${PROFILE_SYS}
 SVR_LIST=${SVR_LIST[*]}
 APP_HOME=${APP_HOME}
