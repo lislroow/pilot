@@ -68,19 +68,19 @@ MVN_CMD="mvn ${MVN_ARGS} clean package spring-boot:repackage"
 echo "${MVN_CMD}"
 eval "${MVN_CMD}"
 
-ARTIFACT_FILE=$(xmlstarlet sel -N x="http://maven.apache.org/POM/4.0.0" \
+JAR_FILE=$(xmlstarlet sel -N x="http://maven.apache.org/POM/4.0.0" \
   -t -v \
   "concat(x:project/x:artifactId, '-', x:project/x:version, '.', x:project/x:packaging)" \
   ${PROJECT_BASE}/pom.xml)
 
-echo "ARTIFACT_FILE=${ARTIFACT_FILE}"
-
-CHECKSUM=$(${MD5SUM_CMD} ${PROJECT_BASE}/target/${ARTIFACT_FILE} | awk '{ print substr($1, 1, 4) }')
-JAR_FILE=${ARTIFACT_FILE%.*}_${CHECKSUM}.${ARTIFACT_FILE##*.}
-cp ${PROJECT_BASE}/target/${ARTIFACT_FILE} ${PROJECT_BASE}/target/${JAR_FILE}
-
-echo "ARTIFACT_FILE=${ARTIFACT_FILE}"
 echo "JAR_FILE=${JAR_FILE}"
+
+CHECKSUM=$(${MD5SUM_CMD} ${PROJECT_BASE}/target/${JAR_FILE} | awk '{ print substr($1, 1, 4) }')
+JAR_MD5_FILE=${JAR_FILE%.*}_${CHECKSUM}.${JAR_FILE##*.}
+cp ${PROJECT_BASE}/target/${JAR_FILE} ${PROJECT_BASE}/target/${JAR_MD5_FILE}
+
+echo "JAR_FILE=${JAR_FILE}"
+echo "JAR_MD5_FILE=${JAR_MD5_FILE}"
 
 JAR_FILE_PTRN=$(xmlstarlet sel -N x="http://maven.apache.org/POM/4.0.0" \
   -t -v \
@@ -89,24 +89,24 @@ JAR_FILE_PTRN=$(xmlstarlet sel -N x="http://maven.apache.org/POM/4.0.0" \
 
 echo "JAR_FILE_PTRN=${JAR_FILE_PTRN}"
 
-if [ ! -e ${PROJECT_BASE}/target/$JAR_FILE ]; then
-  echo "build output file '$JAR_FILE' is not found."
+if [ ! -e ${PROJECT_BASE}/target/$JAR_MD5_FILE ]; then
+  echo "build output file '${JAR_MD5_FILE}' is not found."
+fi
+
+# jar 파일명에 "-SNAPSHOT" 이 있으면 snapshot 저장소에 deploy 되어야 합니다. 
+if [[ "${JAR_MD5_FILE}" = *"-SNAPSHOT"* ]]; then
+  NX_REPO=snapshot
+else
+  NX_REPO=release
 fi
 
 ## deploy-nexus
 MVN_ARGS=""
 MVN_ARGS="${MVN_ARGS} -DpomFile=${PROJECT_BASE}/pom.xml"
-MVN_ARGS="${MVN_ARGS} -Dfile=${PROJECT_BASE}/target/${JAR_FILE}"
+MVN_ARGS="${MVN_ARGS} -Dfile=${PROJECT_BASE}/target/${JAR_MD5_FILE}"
 MVN_ARGS="${MVN_ARGS} --quiet"
-
-# jar 파일명에 "-SNAPSHOT" 이 있으면 snapshot 저장소에 deploy 되어야 합니다. 
-if [[ "${JAR_FILE}" = *"-SNAPSHOT"* ]]; then
-  MVN_ARGS="${MVN_ARGS} -DrepositoryId=maven-snapshot"
-  MVN_ARGS="${MVN_ARGS} -Durl=https://nexus/repository/maven-snapshot/"
-else
-  MVN_ARGS="${MVN_ARGS} -DrepositoryId=maven-release"
-  MVN_ARGS="${MVN_ARGS} -Durl=https://nexus/repository/maven-release/"
-fi
+MVN_ARGS="${MVN_ARGS} -DrepositoryId=maven-${NX_REPO}"
+MVN_ARGS="${MVN_ARGS} -Durl=https://nexus/repository/maven-${NX_REPO}/"
 
 MVN_CMD="mvn deploy:deploy-file ${MVN_ARGS}"
 echo "${MVN_CMD}"
@@ -124,7 +124,7 @@ APP_HOME=/app/WAS/pilot
 echo "APP_HOME=${APP_HOME}"
 
 DEPLOY_FILES=(
-  "${PROJECT_BASE}/target/${JAR_FILE}"
+  "${PROJECT_BASE}/target/${JAR_MD5_FILE}"
   "${PROJECT_BASE}/script/start*.sh"
   "${PROJECT_BASE}/script/stop*.sh"
   "${PROJECT_BASE}/script/status.sh"
