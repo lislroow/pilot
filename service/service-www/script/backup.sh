@@ -7,12 +7,9 @@ echo $"+++ (system-env) +++"
 SCRIPT_DIR="$( cd $( dirname "$0" ) && pwd -P)"
 BASEDIR="${SCRIPT_DIR}"
 
-ARCHIVE_DIR="${BASEDIR}/archive"
-
 printf '%s\n' $(cat << EOF
 SCRIPT_DIR=${SCRIPT_DIR}
 BASEDIR=${BASEDIR}
-ARCHIVE_DIR=${ARCHIVE_DIR}
 EOF
 )
 echo "--- (system-env) ---"
@@ -36,9 +33,29 @@ function backup() {
   echo "OLD_JAR=${OLD_JAR[*]}"
   
   if [ "${OLD_JAR[*]}" != "" ]; then
-    mv ${OLD_JAR[*]} ${ARCHIVE_DIR}
+    MV_CMD="mv ${OLD_JAR[*]} ${ARCHIVE_DIR}"
+    if [ $(whoami) == "root" ]; then
+      su ${EXEC_USER} -c "${MV_CMD}"
+    elif [ $(whoami) == ${EXEC_USER} ]; then
+      eval "${MV_CMD}"
+    else
+      echo "current user "$(whoami)
+      exit -1
+    fi
   fi
   echo "--- (backup) backup except for lastest jar ---"
 }
+
+
+echo "+++ (runtime-env) +++"
+EXEC_USER="tomcat"
+ARCHIVE_DIR="${BASEDIR}/archive"
+
+printf '%s\n' $(cat << EOF
+EXEC_USER=${EXEC_USER}
+ARCHIVE_DIR=${ARCHIVE_DIR}
+EOF
+)
+echo "--- (runtime-env) ---"
 
 backup;
