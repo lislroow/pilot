@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ## env
-echo "+++ (system-env) +++"
+echo $'\n'"+++ (system-env) +++"
 SCRIPT_DIR="$( cd $( dirname "$0" ) && pwd -P)"
 BASEDIR="${SCRIPT_DIR}"
 
@@ -37,6 +37,9 @@ EOF
 )
 echo "--- (system-env) ---"
 
+
+
+## (start) start
 function start() {
   echo "+++ (start) start +++"
   PS_CMD="ps -ef | grep -v grep | grep -v tail |  grep -v .sh | grep ${APP_ID} | awk '{ print \$2 }'"
@@ -78,6 +81,7 @@ function start() {
   done
   echo "--- (start) start ---"
 }
+
 
 echo "+++ (runtime-env) +++"
 APP_NAME="service-www"

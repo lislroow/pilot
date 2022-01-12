@@ -1,9 +1,10 @@
 #!/bin/bash
 
 ## env
-echo "+++ (env) +++"
+echo $'\n'"+++ (system-env) +++"
 SCRIPT_DIR="$( cd $( dirname "$0" ) && pwd -P)"
 BASEDIR="${SCRIPT_DIR}"
+
 ARCHIVE_DIR="${BASEDIR}/archive"
 
 printf '%s\n' $(cat << EOF
@@ -12,12 +13,11 @@ BASEDIR=${BASEDIR}
 ARCHIVE_DIR=${ARCHIVE_DIR}
 EOF
 )
-echo "--- (env) ---"
+echo "--- (system-env) ---"
 
 ## (backup) backup except for lastest jar
 function backup() {
   echo "+++ (backup) backup except for lastest jar +++"
-
   if [ ! -e ${ARCHIVE_DIR} ]; then
     mkdir -p ${ARCHIVE_DIR}
   fi

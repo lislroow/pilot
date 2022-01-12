@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ## env
-echo "+++ (system-env) +++"
+echo $'\n'"+++ (system-env) +++"
 SCRIPT_DIR="$( cd $( dirname "$0" ) && pwd -P)"
 BASEDIR="${SCRIPT_DIR}"
 
@@ -22,6 +22,9 @@ EOF
 )
 echo "--- (system-env) ---"
 
+
+
+## (deploy) deploy
 function deploy() {
   echo "+++ (deploy) deploy +++"
   case ${PROFILE_SYS} in

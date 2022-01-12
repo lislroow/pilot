@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ## env
-echo "+++ (system-env) +++"
+echo $'\n'"+++ (system-env) +++"
 UNAME=`uname -s`
 if [[ "${UNAME}" = "Linux"* ]]; then
   OS_NAME="linux"
@@ -129,13 +129,13 @@ echo "--- (runtime-env) ---"
 
 case $2 in
   build)
-    build
+    build;
     ;;
   deploy)
-    deploy
+    deploy;
     ;;
   *)
-    build
-    deploy
+    build;
+    deploy;
     ;;
 esac
