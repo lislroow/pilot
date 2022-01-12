@@ -1,20 +1,28 @@
 #!/bin/bash
 
 ## env
+echo "+++ (env) +++"
 SCRIPT_DIR="$( cd $( dirname "$0" ) && pwd -P)"
+BASEDIR="${SCRIPT_DIR}"
+
+printf '%s\n' $(cat << EOF
+SCRIPT_DIR=${SCRIPT_DIR}
+EOF
+)
+echo "--- (env) ---"
 
 ## (transfer) transfer *.sh files
 function transfer() {
   echo "+++ (transfer) transfer *.sh files +++"
   
-  DEPLOY_FILES=(
-    "${SCRIPT_DIR}/*.sh"
+  FILES=(
+    "${BASEDIR}/*.sh"
   )
-  echo "DEPLOY_FILES=${DEPLOY_FILES[*]}"
+  echo "FILES=${FILES[*]}"
   
   for SVR in ${SVR_LIST[*]}
   do
-    scp ${DEPLOY_FILES[*]} root@${SVR}:${APP_HOME}
+    scp ${FILES[*]} root@${SVR}:${APP_HOME}
     ssh root@${SVR} "chmod u+x ${APP_HOME}/*.sh;"
   done
   
@@ -42,4 +50,4 @@ esac
 echo "SVR_LIST=${SVR_LIST[*]}"
 echo "APP_HOME=${APP_HOME}"
 
-transfer "${PROFILE_SYS}"
+transfer "${PROFILE_SYS}";
