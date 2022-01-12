@@ -4,6 +4,9 @@ echo $'\n'"### [execute] ${0##*/} ${@} ###"
 
 ## env
 echo "+++ (system-env) +++"
+SCRIPT_DIR="$( cd $( dirname "$0" ) && pwd -P)"
+BASEDIR="$( cd ${SCRIPT_DIR}/.. && pwd -P)"
+
 UNAME=`uname -s`
 if [[ "${UNAME}" = "Linux"* ]]; then
   OS_NAME="linux"
@@ -27,9 +30,6 @@ case ${OS_NAME} in
     exit -1
     ;;
 esac
-
-SCRIPT_DIR="$( cd $( dirname "$0" ) && pwd -P)"
-BASEDIR="$( cd ${SCRIPT_DIR}/.. && pwd -P)"
 
 printf '%s\n' $(cat << EOF
 SCRIPT_DIR=${SCRIPT_DIR}
