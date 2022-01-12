@@ -1,7 +1,9 @@
 #!/bin/bash
 
+echo $'\n'"### [execute] ${0##*/} ${@} ###"
+
 ## env
-echo $'\n'"+++ (system-env) +++"
+echo "+++ (system-env) +++"
 UNAME=`uname -s`
 if [[ "${UNAME}" = "Linux"* ]]; then
   OS_NAME="linux"

@@ -1,6 +1,8 @@
 #!/bin/bash
 
-echo $'\n'"+++ (system-env) +++"
+echo $'\n'"### [execute] ${0##*/} ${@} ###"
+
+echo "+++ (system-env) +++"
 SCRIPT_DIR="$( cd $( dirname "$0" ) && pwd -P)"
 BASEDIR="${SCRIPT_DIR}"
 
