@@ -1,6 +1,7 @@
 #!/bin/bash
 
 ## env
+echo "+++ (env) +++"
 UNAME=`uname -s`
 if [[ "${UNAME}" = "Linux"* ]]; then
   OS_NAME="linux"
@@ -37,6 +38,8 @@ SCRIPT_DIR=${SCRIPT_DIR}
 BASEDIR=${BASEDIR}
 EOF
 )
+echo "--- (env) ---"
+
 
 ## (build) build maven project
 function build() {
