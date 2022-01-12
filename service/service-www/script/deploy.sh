@@ -1,7 +1,10 @@
 #!/bin/bash
 
 ## env
-echo "+++ (env) +++"
+echo "+++ (system-env) +++"
+SCRIPT_DIR="$( cd $( dirname "$0" ) && pwd -P)"
+BASEDIR="${SCRIPT_DIR}"
+
 UNAME=`uname -s`
 if [[ "${UNAME}" = "Linux"* ]]; then
   OS_NAME="linux"
@@ -9,19 +12,15 @@ elif [[ "${UNAME}" = "CYGWIN"* || "${UNAME}" = "MINGW"* ]]; then
   OS_NAME="win"
 fi
 
-SCRIPT_DIR="$( cd $( dirname "$0" ) && pwd -P)"
-BASEDIR="${SCRIPT_DIR}"
-APP_NAME="service-www"
 
 printf '%s\n' $(cat << EOF
-UNAME=${UNAME}
-OS_NAME=${OS_NAME}
 SCRIPT_DIR=${SCRIPT_DIR}
 BASEDIR=${BASEDIR}
-APP_NAME=${APP_NAME}
+UNAME=${UNAME}
+OS_NAME=${OS_NAME}
 EOF
 )
-echo "--- (env) ---"
+echo "--- (system-env) ---"
 
 function deploy() {
   echo "+++ (deploy) deploy +++"
@@ -65,10 +64,20 @@ function deploy() {
   echo "--- (deploy) deploy ---"
 }
 
+echo "+++ (runtime-env) +++"
+APP_NAME="service-www"
 PROFILE_SYS=$1
 
 if [ "$1" == "" ]; then
-  PROFILE_SYS=dev
+  PROFILE_SYS="dev"
 fi
+
+printf '%s\n' $(cat << EOF
+APP_NAME=${APP_NAME}
+PROFILE_SYS=${PROFILE_SYS}
+EOF
+)
+echo "--- (runtime-env) ---"
+
 
 deploy;

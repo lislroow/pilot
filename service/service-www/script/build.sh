@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ## env
-echo "+++ (env) +++"
+echo "+++ (system-env) +++"
 UNAME=`uname -s`
 if [[ "${UNAME}" = "Linux"* ]]; then
   OS_NAME="linux"
@@ -30,15 +30,15 @@ SCRIPT_DIR="$( cd $( dirname "$0" ) && pwd -P)"
 BASEDIR="$( cd ${SCRIPT_DIR}/.. && pwd -P)"
 
 printf '%s\n' $(cat << EOF
+SCRIPT_DIR=${SCRIPT_DIR}
+BASEDIR=${BASEDIR}
 UNAME=${UNAME}
 OS_NAME=${OS_NAME}
 JAVA_HOME=${JAVA_HOME}
 M2_HOME=${M2_HOME}
-SCRIPT_DIR=${SCRIPT_DIR}
-BASEDIR=${BASEDIR}
 EOF
 )
-echo "--- (env) ---"
+echo "--- (system-env) ---"
 
 
 ## (build) build maven project
@@ -97,13 +97,15 @@ function deploy() {
   echo "--- (deploy) deploying trigger ---"$'\n'
 }
 
+
+echo "+++ (runtime-env) +++"
 PROFILE_SYS=$1
 
 if [ "$1" == "" ]; then
-  PROFILE_SYS=dev
+  PROFILE_SYS="dev"
 fi
 
-case $PROFILE_SYS in
+case ${PROFILE_SYS} in
   dev)
     SVR_LIST=('172.28.200.30')
     APP_HOME="/app/WAS/pilot"
@@ -115,8 +117,15 @@ case $PROFILE_SYS in
     exit -1
     ;;
 esac
-echo "SVR_LIST=${SVR_LIST[*]}"
-echo "APP_HOME=${APP_HOME}"
+
+
+printf '%s\n' $(cat << EOF
+PROFILE_SYS=${PROFILE_SYS}
+SVR_LIST=${SVR_LIST}
+APP_HOME=${APP_HOME}
+EOF
+)
+echo "--- (runtime-env) ---"
 
 case $2 in
   build)

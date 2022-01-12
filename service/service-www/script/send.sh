@@ -32,7 +32,7 @@ function transfer() {
 PROFILE_SYS=$1
 
 if [ "$1" == "" ]; then
-  PROFILE_SYS=dev
+  PROFILE_SYS="dev"
 fi
 
 case $PROFILE_SYS in
