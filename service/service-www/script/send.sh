@@ -29,9 +29,7 @@ fi
 
 case $PROFILE_SYS in
   dev)
-    SVR_LIST=(
-      '172.28.200.30'
-    )
+    SVR_LIST=('172.28.200.30')
     APP_HOME="/app/WAS/pilot"
   ;;
   sta*)

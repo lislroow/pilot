@@ -86,20 +86,6 @@ function build() {
 ## (deploy) deploying trigger
 function deploy() {
   echo "+++ (deploy) deploying trigger +++"
-  PROFILE_SYS=dev
-  case ${PROFILE_SYS} in
-    dev)
-      SVR_LIST=(
-        '172.28.200.30'
-      )
-      APP_HOME=/app/WAS/pilot
-    ;;
-    sta*)
-    ;;
-  esac
-  echo "SVR_LIST=${SVR_LIST[*]}"
-  echo "APP_HOME=${APP_HOME}"
-  
   for SVR in ${SVR_LIST[*]}
   do
     ssh root@${SVR} "${APP_HOME}/deploy.sh dev"
@@ -108,7 +94,25 @@ function deploy() {
   echo "--- (deploy) deploying trigger ---"$'\n'
 }
 
-case $1 in
+PROFILE_SYS=$1
+
+if [ "$1" == "" ]; then
+  PROFILE_SYS=dev
+fi
+
+case $PROFILE_SYS in
+  dev)
+    SVR_LIST=('172.28.200.30')
+    APP_HOME="/app/WAS/pilot"
+  ;;
+  sta*)
+    exit -1
+  ;;
+esac
+echo "SVR_LIST=${SVR_LIST[*]}"
+echo "APP_HOME=${APP_HOME}"
+
+case $2 in
   build)
     build
     ;;
