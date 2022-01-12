@@ -1,73 +1,74 @@
 #!/bin/bash
 
+## env
+echo "+++ (env) +++"
 UNAME=`uname -s`
-#echo "UNAME=${UNAME}"
 if [[ "${UNAME}" = "Linux"* ]]; then
   OS_NAME="linux"
 elif [[ "${UNAME}" = "CYGWIN"* || "${UNAME}" = "MINGW"* ]]; then
   OS_NAME="win"
 fi
 
-#echo "OS_NAME=${OS_NAME}"
+SCRIPT_DIR="$( cd $( dirname "$0" ) && pwd -P)"
+BASEDIR="${SCRIPT_DIR}"
+APP_NAME="service-www"
 
-case ${OS_NAME} in
-  linux)
-    M2_HOME=/prod/maven/maven
-    JAVA_HOME=/prod/java/openjdk-11.0.13.8-temurin
-    PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
-    MD5SUM_CMD=md5sum
-    DIRNAME_CMD=dirname
-    ;;
-  win)
-    M2_HOME=/z/develop/build/maven-3.6.3
-    JAVA_HOME=/z/develop/java/openjdk-11.0.13.8-temurin
-    PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
-    MD5SUM_CMD=md5sum.exe
-    DIRNAME_CMD=dirname.exe
-    ;;
-  *)
-    echo "invalid os"
-    exit -1
-    ;;
-esac
+printf '%s\n' $(cat << EOF
+UNAME=${UNAME}
+OS_NAME=${OS_NAME}
+SCRIPT_DIR=${SCRIPT_DIR}
+BASEDIR=${BASEDIR}
+APP_NAME=${APP_NAME}
+EOF
+)
+echo "--- (env) ---"
 
+function deploy() {
+  echo "+++ (deploy) deploy +++"
+  case ${PROFILE_SYS} in
+    dev)
+      nexus_url="https://nexus/repository/maven-snapshot"
+      metadata_url="${nexus_url}/mgkim/service/${APP_NAME}/maven-metadata.xml"
+      
+      app_ver=$(curl -s ${metadata_url} | xmllint --xpath "//version[last()]/text()" -)
+      echo "app_ver=${app_ver}"
+      
+      metadata_url="${nexus_url}/mgkim/service/${APP_NAME}/${app_ver}/maven-metadata.xml"
+      app_snap_ver=$(curl -s ${metadata_url} | xmllint --xpath "//snapshotVersion[1]/value/text()" -)
+      echo "app_snap_ver=${app_snap_ver}"
+      
+      DOWNLOAD_URL="${nexus_url}/mgkim/service/${APP_NAME}/${app_ver}/${APP_NAME}-${app_snap_ver}.jar"
+      jar_file="${APP_NAME}-${app_snap_ver}.jar"
+      echo "DOWNLOAD_URL=${DOWNLOAD_URL}"
+      curl --silent --output ${BASEDIR}/${jar_file} ${DOWNLOAD_URL}
+      
+      md5str=$(md5sum ${BASEDIR}/${jar_file} | awk '{ print substr($1, 1, 4) }')
+      FINAL_NAME=${jar_file%.*}_${md5str}.${jar_file##*.}
+      mv ${BASEDIR}/${jar_file} ${BASEDIR}/${FINAL_NAME}
+      
+      # result
+      echo "FINAL_NAME=${FINAL_NAME}"
+      
+      ${BASEDIR}/stop.sh dwww11
+      ${BASEDIR}/start.sh dwww11 ${FINAL_NAME}
+      
+      ${BASEDIR}/stop.sh dwww12
+      ${BASEDIR}/start.sh dwww12 ${FINAL_NAME}
+      ;;
+    sta*)
+      exit -1
+      ;;
+    *)
+      exit -1
+      ;;
+  esac
+  echo "--- (deploy) deploy ---"
+}
 
-APP_NAME=service-www
 PROFILE_SYS=$1
-case ${PROFILE_SYS} in
-  dev)
-    APP_HOME=/app/WAS/pilot
-    
-    NX_URL="https://nexus/repository/maven-snapshot"
-    XML_URL="${NX_URL}/mgkim/service/${APP_NAME}/maven-metadata.xml"
-    
-    app_version=$(curl -s ${XML_URL} | xmllint --xpath "//version[last()]/text()" -)
-    echo "app_version=${app_version}"
-    
-    XML_URL="${NX_URL}/mgkim/service/${APP_NAME}/${app_version}/maven-metadata.xml"
-    app_snap_version=$(curl -s ${XML_URL} | xmllint --xpath "//snapshotVersion[1]/value/text()" -)
-    echo "app_snap_version=${app_snap_version}"
-    
-    JAR_URL="${NX_URL}/mgkim/service/${APP_NAME}/${app_version}/${APP_NAME}-${app_snap_version}.jar"
-    JAR_FILE="${APP_NAME}-${app_snap_version}.jar"
-    #JAR_URL="${NX_URL}/mgkim/service/service-www/2.0-SNAPSHOT/service-www-2.0-20220112.031025-3.jar"
-    echo "JAR_URL=${JAR_URL}"
-    curl --silent --output ${APP_HOME}/${JAR_FILE} ${JAR_URL}
-    
-    CHECKSUM=$(${MD5SUM_CMD} ${APP_HOME}/${JAR_FILE} | awk '{ print substr($1, 1, 4) }')
-    JAR_MD5_FILE=${JAR_FILE%.*}_${CHECKSUM}.${JAR_FILE##*.}
-    mv ${APP_HOME}/${JAR_FILE} ${APP_HOME}/${JAR_MD5_FILE}
-    
-    # result
-    echo "${JAR_MD5_FILE}"
-    
-    ${APP_HOME}/stop.sh dwww11
-    ${APP_HOME}/start.sh dwww11 ${JAR_MD5_FILE}
-    
-    ${APP_HOME}/stop.sh dwww12
-    ${APP_HOME}/start.sh dwww12 ${JAR_MD5_FILE}
-    ;;
-  sta*)
-    ;;
-esac
 
+if [ "$1" == "" ]; then
+  PROFILE_SYS=dev
+fi
+
+deploy;
