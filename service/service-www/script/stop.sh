@@ -60,12 +60,16 @@ EXEC_USER="tomcat"
 APP_ID=$1
 case ${APP_ID} in
   dw*11)
+    APP_ID=dwww11
     ;;
   dw*12)
+    APP_ID=dwww12
     ;;
   sw*11)
+    APP_ID=swww11
     ;;
   sw*12)
+    APP_ID=swww12
     ;;
   *)
     exit -1
