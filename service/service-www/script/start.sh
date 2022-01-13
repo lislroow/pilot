@@ -55,6 +55,7 @@ function start() {
   
   JAVA_OPTS=""
   JAVA_OPTS="${JAVA_OPTS} -Dspring.profiles.active=${PROFILE_SYS}"
+  JAVA_OPTS="${JAVA_OPTS} -Dapp.name=${APP_NAME}"
   JAVA_OPTS="${JAVA_OPTS} -Dapp.id=${APP_ID}"
   JAVA_OPTS="${JAVA_OPTS} -Dserver.port=${SERVER_PORT}"
   

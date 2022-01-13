@@ -15,7 +15,7 @@ public class Main extends SpringBootServletInitializer {
 	private static final Logger log = LoggerFactory.getLogger(Main.class);
 
 	static {
-		CmmProfile.init("lwww11");
+		CmmProfile.init("service.www", "lwww11");
 	}
 
 	public static void main(String[] args) {

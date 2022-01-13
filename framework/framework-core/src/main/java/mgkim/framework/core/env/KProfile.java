@@ -67,6 +67,7 @@ public class KProfile {
 				KProfile.SYS = TSysType.LOC;
 				KProfile.profiles.add(KProfile.SYS.toString());
 			}
+			addProfile(KProfile.SYS.code());
 			log.warn("{} KProfile.SYS={}", KConstant.LT_PROFILE, KProfile.SYS.toString());
 		}
 	}

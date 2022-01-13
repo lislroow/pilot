@@ -90,7 +90,7 @@ public class CmmApiTxLogScheduler extends KScheduler {
 		vo.setTxid(KContext.getT(AttrKey.TXID));
 		vo.setUriVal(KContext.getT(AttrKey.URI));
 		vo.setHostname(KProfile.HOSTNAME);
-		vo.setWasId(KProfile.APP_NAME);
+		vo.setWasId(KProfile.APP_ID);
 		vo.setRsltcd(KContext.getT(AttrKey.RESULT_CODE));
 		vo.setRsltmsg(KContext.getT(AttrKey.RESULT_MESSAGE));
 		vo.setErrtxt(KContext.getT(AttrKey.RESULT_TEXT));
