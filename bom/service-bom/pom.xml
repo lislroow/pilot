@@ -61,7 +61,7 @@
     <framework-daemon.version>[,4.0)</framework-daemon.version>
     
     <!-- for release
-    <service-lib.version>1.0</service-lib.version>
+    <service-lib.version>3.0</service-lib.version>
     -->
     <!-- for snapshot
     -->
