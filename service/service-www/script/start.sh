@@ -107,11 +107,11 @@ case ${APP_ID} in
     ;;
   swww11)
     SERVER_PORT="9100"
-    PROFILE_SYS="sta"
+    PROFILE_SYS="staging"
     ;;
   swww12)
     SERVER_PORT="9101"
-    PROFILE_SYS="sta"
+    PROFILE_SYS="staging"
     ;;
   *)
     exit -1
