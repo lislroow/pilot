@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>mgkim.bom</groupId>
   <artifactId>service-bom</artifactId>
-  <version>2</version><!-- -SNAPSHOT -->
+  <version>3-SNAPSHOT</version><!-- -SNAPSHOT -->
   <packaging>pom</packaging>
   <name>${project.groupId}:${project.artifactId}</name>
   <url>https://github.com/lislroow/pilot.git</url>
@@ -41,31 +41,31 @@
     <java.version>11</java.version>
     
     <!-- for release
+    <framework-bom.version>3.0</framework-bom.version>
     -->
-    <framework-bom.version>2.0</framework-bom.version>
     <!-- for snapshot
-    <framework-bom.version>[,3.0)</framework-bom.version>
     -->
+    <framework-bom.version>[,4.0)</framework-bom.version>
     
     <!-- for release
+    <framework-core.version>3.0</framework-core.version>
+    <framework-online.version>3.0</framework-online.version>
+    <framework-batch.version>3.0</framework-batch.version>
+    <framework-daemon.version>3.0</framework-daemon.version>
     -->
-    <framework-core.version>2.0</framework-core.version>
-    <framework-online.version>2.0</framework-online.version>
-    <framework-batch.version>2.0</framework-batch.version>
-    <framework-daemon.version>2.0</framework-daemon.version>
     <!-- for snapshot
-    <framework-core.version>[,3.0)</framework-core.version>
-    <framework-online.version>[,3.0)</framework-online.version>
-    <framework-batch.version>[,3.0)</framework-batch.version>
-    <framework-daemon.version>[,3.0)</framework-daemon.version>
     -->
+    <framework-core.version>[,4.0)</framework-core.version>
+    <framework-online.version>[,4.0)</framework-online.version>
+    <framework-batch.version>[,4.0)</framework-batch.version>
+    <framework-daemon.version>[,4.0)</framework-daemon.version>
     
     <!-- for release
-    -->
     <service-lib.version>1.0</service-lib.version>
-    <!-- for snapshot
-    <service-lib.version>[,2.0)</service-lib.version>
     -->
+    <!-- for snapshot
+    -->
+    <service-lib.version>[,2.0)</service-lib.version>
   </properties>
   
   <dependencyManagement>
