@@ -50,7 +50,7 @@ public class KLogLayout extends LayoutBase<ILoggingEvent> {
 			dateFormatSimple = new SimpleDateFormat(KConstant.FMT_HH_MM_SS_SSS);
 			break;
 		case DEV:
-		case STAGING:
+		case STA:
 		case PROD:
 			dateFormatSimple = new SimpleDateFormat(KConstant.FMT_YYYY_MM_DD_HH_MM_SS_SSS);
 			break;
@@ -263,7 +263,7 @@ public class KLogLayout extends LayoutBase<ILoggingEvent> {
 				result = String.format("[%s|%s]", KAnsi.magenta(MDC.get(GUID)), KAnsi.green(MDC.get(TXID)));
 				break;
 			case DEV:
-			case STAGING:
+			case STA:
 				result = KAnsi.green(String.format("[%s|%s|%s]",
 						MDC.get(IP),
 						MDC.get(GUID), MDC.get(TXID)));

@@ -111,12 +111,12 @@ case ${APP_ID} in
   sw*1)
     APP_ID=swww11
     SERVER_PORT="9100"
-    PROFILE_SYS="staging"
+    PROFILE_SYS="sta"
     ;;
   sw*2)
     APP_ID=swww12
     SERVER_PORT="9101"
-    PROFILE_SYS="staging"
+    PROFILE_SYS="sta"
     ;;
   *)
     exit -1
