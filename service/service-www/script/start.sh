@@ -105,6 +105,14 @@ case ${APP_ID} in
     SERVER_PORT="7101"
     PROFILE_SYS="dev"
     ;;
+  swww11)
+    SERVER_PORT="9100"
+    PROFILE_SYS="sta"
+    ;;
+  swww12)
+    SERVER_PORT="9101"
+    PROFILE_SYS="sta"
+    ;;
   *)
     exit -1
     ;;
@@ -117,7 +125,7 @@ if [ "$2" != "" ]; then
     exit -1
   fi
 else
-  find_cmd="ls -rt  ${BASEDIR}/${APP_NAME}*.jar | sort -V | tail -n 1"
+  find_cmd="ls -rt ${BASEDIR}/${APP_NAME}*.jar | sort -V | tail -n 1"
   echo "${find_cmd}"
   JAR_FILE=$(eval "${find_cmd}")
 fi
