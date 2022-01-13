@@ -1,0 +1,19 @@
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    jndi-name: jdbc/space-app
+
+logging:
+  level:
+    root: info
+
+server:
+  shutdown: graceful
+  port: 7200
+  tomcat:
+    threads:
+      max: 20
+    max-swallow-size: 2MB
+  max-http-header-size: 8KB

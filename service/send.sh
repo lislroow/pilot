@@ -5,11 +5,9 @@ echo "### [start] ${0##*/} ${@} ###"
 ## env
 echo "+++ (system-env) +++"
 SCRIPT_DIR="$( cd $( dirname "$0" ) && pwd -P)"
-BASEDIR="${SCRIPT_DIR}"
 
 printf '%s\n' $(cat << EOF
 SCRIPT_DIR=${SCRIPT_DIR}
-BASEDIR=${BASEDIR}
 EOF
 )
 
@@ -52,6 +50,7 @@ case ${PROFILE_SYS} in
     exit -1
     ;;
 esac
+BASEDIR="$( cd ${SCRIPT_DIR} && pwd -P)"
 
 
 printf '%s\n' $(cat << EOF
@@ -59,6 +58,7 @@ EXEC_USER=${EXEC_USER}
 PROFILE_SYS=${PROFILE_SYS}
 SVR_LIST=${SVR_LIST[*]}
 APP_HOME=${APP_HOME}
+BASEDIR=${BASEDIR}
 EOF
 )
 

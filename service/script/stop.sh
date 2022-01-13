@@ -5,7 +5,6 @@ echo "### [start] ${0##*/} ${@} ###"
 ## env
 echo "+++ (system-env) +++"
 SCRIPT_DIR="$( cd $( dirname "$0" ) && pwd -P)"
-BASEDIR="${SCRIPT_DIR}"
 
 UNAME=`uname -s`
 if [[ "${UNAME}" = "Linux"* ]]; then
@@ -16,13 +15,10 @@ fi
 
 printf '%s\n' $(cat << EOF
 SCRIPT_DIR=${SCRIPT_DIR}
-BASEDIR=${BASEDIR}
 UNAME=${UNAME}
 OS_NAME=${OS_NAME}
 EOF
 )
-
-
 
 
 ## (stop) stop
@@ -60,16 +56,28 @@ EXEC_USER="tomcat"
 APP_ID=$1
 case ${APP_ID} in
   dw*1)
-    APP_ID=dwww11
+    APP_ID="dwww11"
     ;;
   dw*2)
-    APP_ID=dwww12
+    APP_ID="dwww12"
     ;;
   sw*1)
-    APP_ID=swww11
+    APP_ID="swww11"
     ;;
   sw*2)
-    APP_ID=swww12
+    APP_ID="swww12"
+    ;;
+  da*1)
+    APP_ID="dadm11"
+    ;;
+  da*2)
+    APP_ID="dadm12"
+    ;;
+  sa*1)
+    APP_ID="sadm11"
+    ;;
+  sa*2)
+    APP_ID="sadm12"
     ;;
   *)
     exit -1

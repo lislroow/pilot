@@ -5,11 +5,9 @@ echo "### [start] ${0##*/} ${@} ###"
 ## env
 echo $"+++ (system-env) +++"
 SCRIPT_DIR="$( cd $( dirname "$0" ) && pwd -P)"
-BASEDIR="${SCRIPT_DIR}"
 
 printf '%s\n' $(cat << EOF
 SCRIPT_DIR=${SCRIPT_DIR}
-BASEDIR=${BASEDIR}
 EOF
 )
 
@@ -29,11 +27,11 @@ function backup() {
     fi
   fi
   
-  LATEST_CMD="ls -rt ${BASEDIR}/*.jar | tail -n 1"
+  LATEST_CMD="ls -rt ${BASEDIR}/${APP_NAME}*.jar | tail -n 1"
   #echo ${LATEST_CMD}
   LATEST_JAR=$(eval ${LATEST_CMD})
   
-  OLD_CMD="find ${BASEDIR} -maxdepth 1 -type f ! -newer ${LATEST_JAR} -name '*.jar' ! -samefile ${LATEST_JAR}"
+  OLD_CMD="find ${BASEDIR} -maxdepth 1 -type f ! -newer ${LATEST_JAR} -name '${APP_NAME}*.jar' ! -samefile ${LATEST_JAR}"
   #echo ${OLD_CMD}
   OLD_JAR=$(eval ${OLD_CMD})
   
@@ -58,10 +56,25 @@ function backup() {
 
 echo "+++ (runtime-env) +++"
 EXEC_USER="tomcat"
+BASEDIR="$( cd ${SCRIPT_DIR} && pwd -P)"
 ARCHIVE_DIR="${BASEDIR}/archive"
+APP_NAME=$1
+case ${APP_NAME} in
+  *www)
+    APP_NAME="service-www"
+    ;;
+  *adm)
+    APP_NAME="service-adm"
+    ;;
+  *)
+    exit -1
+    ;;
+esac
+
 
 printf '%s\n' $(cat << EOF
 EXEC_USER=${EXEC_USER}
+BASEDIR=${BASEDIR}
 ARCHIVE_DIR=${ARCHIVE_DIR}
 EOF
 )

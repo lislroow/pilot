@@ -4,15 +4,11 @@ echo "### [start] ${0##*/} ${@} ###"
 
 echo "+++ (system-env) +++"
 SCRIPT_DIR="$( cd $( dirname "$0" ) && pwd -P)"
-BASEDIR="${SCRIPT_DIR}"
 
 printf '%s\n' $(cat << EOF
 SCRIPT_DIR=${SCRIPT_DIR}
-BASEDIR=${BASEDIR}
 EOF
 )
-
-
 
 
 ## (status) status
@@ -53,6 +49,10 @@ APP_ID_LIST=(
   "dwww12"
   "swww11"
   "swww12"
+  "dadm11"
+  "dadm12"
+  "sadm11"
+  "sadm12"
 )
 printf '%s\n' $(cat << EOF
 APP_ID_LIST=${APP_ID_LIST[*]}

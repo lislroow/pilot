@@ -5,7 +5,6 @@ echo "### [start] ${0##*/} ${@} ###"
 ## env
 echo "+++ (system-env) +++"
 SCRIPT_DIR="$( cd $( dirname "$0" ) && pwd -P)"
-BASEDIR="$( cd ${SCRIPT_DIR} && pwd -P)"
 
 UNAME=`uname -s`
 if [[ "${UNAME}" = "Linux"* ]]; then
@@ -33,7 +32,6 @@ esac
 
 printf '%s\n' $(cat << EOF
 SCRIPT_DIR=${SCRIPT_DIR}
-BASEDIR=${BASEDIR}
 UNAME=${UNAME}
 OS_NAME=${OS_NAME}
 JAVA_HOME=${JAVA_HOME}
@@ -86,6 +84,29 @@ function build() {
   
   echo "--- //(build) build maven project ---"
 }
+
+
+echo "+++ (runtime-env) +++"
+APP_NAME=$1
+case ${APP_NAME} in
+  w*)
+    APP_NAME="service-www"
+    ;;
+  a*)
+    APP_NAME="service-adm"
+    ;;
+  *)
+    exit -1
+    ;;
+esac
+BASEDIR="$( cd ${SCRIPT_DIR}/${APP_NAME} && pwd -P)"
+
+
+printf '%s\n' $(cat << EOF
+APP_NAME=${APP_NAME}
+BASEDIR=${BASEDIR}
+EOF
+)
 
 
 build;

@@ -5,7 +5,6 @@ echo "### [start] ${0##*/} ${@} ###"
 ## env
 echo "+++ (system-env) +++"
 SCRIPT_DIR="$( cd $( dirname "$0" ) && pwd -P)"
-BASEDIR="${SCRIPT_DIR}"
 
 UNAME=`uname -s`
 if [[ "${UNAME}" = "Linux"* ]]; then
@@ -31,14 +30,11 @@ esac
 
 printf '%s\n' $(cat << EOF
 SCRIPT_DIR=${SCRIPT_DIR}
-BASEDIR=${BASEDIR}
 UNAME=${UNAME}
 OS_NAME=${OS_NAME}
 JAVA_HOME=${JAVA_HOME}
 EOF
 )
-
-
 
 
 ## (start) start
@@ -73,7 +69,10 @@ function start() {
   echo "${PS_CMD}"
   _PID=$(eval "${PS_CMD}")
   
-  if [ "${_PID}" != "" ]; then
+  if [ "${_PID}" == "" ]; then
+    echo "${APP_ID} is not started"
+    exit -1
+  else
     echo "${APP_ID}(pid:'${_PID}') starting ..."
   fi
   
@@ -95,27 +94,55 @@ function start() {
 
 echo "+++ (runtime-env) +++"
 EXEC_USER="tomcat"
-APP_NAME="service-www"
+BASEDIR="$( cd ${SCRIPT_DIR} && pwd -P)"
 APP_ID=$1
 case ${APP_ID} in
   dw*1)
-    APP_ID=dwww11
+    APP_NAME="service-www"
+    APP_ID="dwww11"
     SERVER_PORT="7100"
     PROFILE_SYS="dev"
     ;;
   dw*2)
-    APP_ID=dwww12
+    APP_NAME="service-www"
+    APP_ID="dwww12"
     SERVER_PORT="7101"
     PROFILE_SYS="dev"
     ;;
   sw*1)
-    APP_ID=swww11
+    APP_NAME="service-www"
+    APP_ID="swww11"
     SERVER_PORT="9100"
     PROFILE_SYS="sta"
     ;;
   sw*2)
-    APP_ID=swww12
+    APP_NAME="service-www"
+    APP_ID="swww12"
     SERVER_PORT="9101"
+    PROFILE_SYS="sta"
+    ;;
+  da*1)
+    APP_NAME="service-adm"
+    APP_ID="dadm11"
+    SERVER_PORT="7200"
+    PROFILE_SYS="dev"
+    ;;
+  da*2)
+    APP_NAME="service-adm"
+    APP_ID="dadm12"
+    SERVER_PORT="7201"
+    PROFILE_SYS="dev"
+    ;;
+  sa*1)
+    APP_NAME="service-adm"
+    APP_ID="sadm11"
+    SERVER_PORT="9200"
+    PROFILE_SYS="sta"
+    ;;
+  sa*2)
+    APP_NAME="service-adm"
+    APP_ID="sadm12"
+    SERVER_PORT="9201"
     PROFILE_SYS="sta"
     ;;
   *)
@@ -138,6 +165,7 @@ fi
 
 printf '%s\n' $(cat << EOF
 EXEC_USER=${EXEC_USER}
+BASEDIR=${BASEDIR}
 APP_NAME=${APP_NAME}
 APP_ID=${APP_ID}
 SERVER_PORT=${SERVER_PORT}
