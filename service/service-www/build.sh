@@ -84,7 +84,7 @@ function build() {
   echo "${MVN_CMD}"
   eval "${MVN_CMD}"
   
-  echo "--- (build) build maven project ---"$'\n'
+  echo "--- (build) build maven project ---"
 }
 
 echo "+++ (runtime-env) +++"

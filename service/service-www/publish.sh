@@ -33,7 +33,7 @@ function deploy() {
     ssh ${EXEC_USER}@${SVR} "${APP_HOME}/deploy.sh ${PROFILE_SYS}"
   done
   
-  echo "--- (deploy) deploying trigger ---"$'\n'
+  echo "--- (deploy) deploying trigger ---"$
 }
 
 
