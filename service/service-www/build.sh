@@ -139,11 +139,14 @@ case ${PROFILE_SYS}:$2 in
   dev:deploy)
     deploy;
     ;;
+  dev:*)
+    build;
+    deploy;
+    ;;
   sta*:)
     deploy;
     ;;
 esac
-
 
 
 echo "### [finish] ${0##*/} ${@} ###"$'\n'
