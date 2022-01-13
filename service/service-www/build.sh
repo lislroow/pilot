@@ -114,7 +114,8 @@ case ${PROFILE_SYS} in
     APP_HOME="/app/pilot-dev"
     ;;
   sta*)
-    exit -1
+    SVR_LIST=('172.28.200.30')
+    APP_HOME="/app/pilot-sta"
     ;;
   *)
     exit -1
@@ -131,18 +132,18 @@ EOF
 )
 echo "--- (runtime-env) ---"
 
-case $2 in
-  build)
+case ${PROFILE_SYS}:$2 in
+  dev:build)
     build;
     ;;
-  deploy)
+  dev:deploy)
     deploy;
     ;;
-  *)
-    build;
+  sta*:)
     deploy;
     ;;
 esac
+
 
 
 echo "### [finish] ${0##*/} ${@} ###"$'\n'
