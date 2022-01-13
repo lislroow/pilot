@@ -40,11 +40,14 @@ function deploy() {
       metadata_url="${nexus_url}/mgkim/service/${APP_NAME}/${app_ver}/maven-metadata.xml"
       echo "metadata_url=${metadata_url}"
       app_snap_ver=$(curl -s ${metadata_url} | xmllint --xpath "//snapshotVersion[1]/value/text()" -)
+      snap_timestamp=$(curl -s ${metadata_url} | xmllint --xpath "//timestamp/value/text()" -)
+      snap_buildNumber=$(curl -s ${metadata_url} | xmllint --xpath "//buildNumber/value/text()" -)
       echo "app_snap_ver=${app_snap_ver}"
+      echo "snap_timestamp=${snap_timestamp},snap_buildNumber=${snap_buildNumber}"
       
       DOWNLOAD_URL="${nexus_url}/mgkim/service/${APP_NAME}/${app_ver}/${APP_NAME}-${app_snap_ver}.jar"
-      jar_file="${APP_NAME}-${app_snap_ver}.jar"
-      echo "DOWNLOAD_URL=${DOWNLOAD_URL}"
+      jar_file="${APP_NAME}-${app_ver}-${snap_timestamp}-${snap_buildNumber}.jar"
+      echo "DOWNLOAD_URL=${DOWNLOAD_URL} to jar_file=${jar_file}"
       
       DOWNLOAD_CMD="curl --silent --output ${BASEDIR}/${jar_file} ${DOWNLOAD_URL}"
       echo "DOWNLOAD_CMD=${DOWNLOAD_CMD}"

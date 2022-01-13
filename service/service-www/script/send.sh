@@ -26,7 +26,7 @@ function transfer() {
   
   for SVR in ${SVR_LIST[*]}
   do
-    scp ${FILES[*]} root@${SVR}:${APP_HOME}
+    scp ${FILES[*]} ${EXEC_USER}@${SVR}:${APP_HOME}
     ssh ${EXEC_USER}@${SVR} "chmod u+x ${APP_HOME}/*.sh;"
   done
   echo "--- (transfer) transfer *.sh files ---"$'\n'
