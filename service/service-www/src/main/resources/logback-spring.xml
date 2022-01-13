@@ -4,7 +4,7 @@
   <property name="LEVEL-root" value="info" />
   <property name="LEVEL-framework" value="info" />
   <property name="LOG_PATH" value="/outlog/pilot" />
-  <property name="PATTERN-root" value="[${spring.profiles.active}][${app.name}][${app.id}] %d{yyyy-MM-dd HH:mm:ss} [%-5level][%thread]%boldRed(%marker)[%logger:%line] ### %msg%n"/>
+  <property name="PATTERN-root" value="[${app.id}] %d{yyyy-MM-dd HH:mm:ss} [%-5level][%thread]%boldRed(%marker)[%logger:%line] ### %msg%n"/>
   
   <appender name="CONSOLE-root" class="ch.qos.logback.core.ConsoleAppender">
     <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
