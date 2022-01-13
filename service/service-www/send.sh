@@ -20,7 +20,7 @@ echo "--- (system-env) ---"
 function transfer() {
   echo "+++ (transfer) transfer *.sh files +++"
   FILES=(
-    "${BASEDIR}/*.sh"
+    "${BASEDIR}/script/*.sh"
   )
   echo "FILES=${FILES[*]}"
   

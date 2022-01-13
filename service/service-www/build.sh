@@ -5,7 +5,7 @@ echo "### [start] ${0##*/} ${@} ###"
 ## env
 echo "+++ (system-env) +++"
 SCRIPT_DIR="$( cd $( dirname "$0" ) && pwd -P)"
-BASEDIR="$( cd ${SCRIPT_DIR}/.. && pwd -P)"
+BASEDIR="$( cd ${SCRIPT_DIR} && pwd -P)"
 
 UNAME=`uname -s`
 if [[ "${UNAME}" = "Linux"* ]]; then
