@@ -40,8 +40,8 @@ function deploy() {
       metadata_url="${nexus_url}/mgkim/service/${APP_NAME}/${app_ver}/maven-metadata.xml"
       echo "metadata_url=${metadata_url}"
       app_snap_ver=$(curl -s ${metadata_url} | xmllint --xpath "//snapshotVersion[1]/value/text()" -)
-      snap_timestamp=$(curl -s ${metadata_url} | xmllint --xpath "//timestamp/value/text()" -)
-      snap_buildNumber=$(curl -s ${metadata_url} | xmllint --xpath "//buildNumber/value/text()" -)
+      snap_timestamp=$(curl -s ${metadata_url} | xmllint --xpath "//timestamp/text()" -)
+      snap_buildNumber=$(curl -s ${metadata_url} | xmllint --xpath "//buildNumber/text()" -)
       echo "app_snap_ver=${app_snap_ver}"
       echo "snap_timestamp=${snap_timestamp},snap_buildNumber=${snap_buildNumber}"
       
