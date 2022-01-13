@@ -12,7 +12,7 @@ SCRIPT_DIR=${SCRIPT_DIR}
 BASEDIR=${BASEDIR}
 EOF
 )
-echo "--- (system-env) ---"
+
 
 ## (backup) backup except for lastest jar
 function backup() {
@@ -52,7 +52,7 @@ function backup() {
       exit -1
     fi
   fi
-  echo "--- (backup) backup except for lastest jar ---"
+  echo "--- //(backup) backup except for lastest jar ---"
 }
 
 
@@ -65,8 +65,8 @@ EXEC_USER=${EXEC_USER}
 ARCHIVE_DIR=${ARCHIVE_DIR}
 EOF
 )
-echo "--- (runtime-env) ---"
+
 
 backup;
 
-echo "### [finish] ${0##*/} ${@} ###"$'\n'
+echo "### [finish] ${0##*/} ${@} ###"$'\n'$'\n'

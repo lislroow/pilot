@@ -40,7 +40,7 @@ JAVA_HOME=${JAVA_HOME}
 M2_HOME=${M2_HOME}
 EOF
 )
-echo "--- (system-env) ---"
+
 
 
 ## (build) build maven project
@@ -84,7 +84,7 @@ function build() {
   echo "${MVN_CMD}"
   eval "${MVN_CMD}"
   
-  echo "--- (build) build maven project ---"
+  echo "--- //(build) build maven project ---"
 }
 
 echo "+++ (runtime-env) +++"
@@ -93,10 +93,10 @@ echo "+++ (runtime-env) +++"
 printf '%s\n' $(cat << EOF
 EOF
 )
-echo "--- (runtime-env) ---"
+
 
 
 build;
 
 
-echo "### [finish] ${0##*/} ${@} ###"$'\n'
+echo "### [finish] ${0##*/} ${@} ###"$'\n'$'\n'

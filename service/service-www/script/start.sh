@@ -37,7 +37,7 @@ OS_NAME=${OS_NAME}
 JAVA_HOME=${JAVA_HOME}
 EOF
 )
-echo "--- (system-env) ---"
+
 
 
 
@@ -89,7 +89,7 @@ function start() {
     i=$(( $i + 1 ))
     sleep 3
   done
-  echo "--- (start) start ---"
+  echo "--- //(start) start ---"
 }
 
 
@@ -145,8 +145,8 @@ PROFILE_SYS=${PROFILE_SYS}
 JAR_FILE=${JAR_FILE}
 EOF
 )
-echo "--- (runtime-env) ---"
+
 
 start;
 
-echo "### [finish] ${0##*/} ${@} ###"$'\n'
+echo "### [finish] ${0##*/} ${@} ###"$'\n'$'\n'

@@ -22,7 +22,7 @@ UNAME=${UNAME}
 OS_NAME=${OS_NAME}
 EOF
 )
-echo "--- (system-env) ---"
+
 
 
 
@@ -149,7 +149,7 @@ function deploy() {
       exit -1
       ;;
   esac
-  echo "--- (deploy) deploy ---"
+  echo "--- //(deploy) deploy ---"
 }
 
 echo "+++ (runtime-env) +++"
@@ -167,9 +167,9 @@ APP_NAME=${APP_NAME}
 PROFILE_SYS=${PROFILE_SYS}
 EOF
 )
-echo "--- (runtime-env) ---"
+
 
 
 deploy;
 
-echo "### [finish] ${0##*/} ${@} ###"$'\n'
+echo "### [finish] ${0##*/} ${@} ###"$'\n'$'\n'

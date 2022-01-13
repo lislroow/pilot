@@ -21,7 +21,7 @@ UNAME=${UNAME}
 OS_NAME=${OS_NAME}
 EOF
 )
-echo "--- (system-env) ---"
+
 
 
 
@@ -51,7 +51,7 @@ function stop() {
   else
     echo "${APP_ID} is not started"
   fi
-echo "--- (stop) stop ---"
+echo "--- //(stop) stop ---"
 }
 
 
@@ -81,8 +81,8 @@ EXEC_USER=${EXEC_USER}
 APP_ID=${APP_ID}
 EOF
 )
-echo "--- (runtime-env) ---"
+
 
 stop;
 
-echo "### [finish] ${0##*/} ${@} ###"$'\n'
+echo "### [finish] ${0##*/} ${@} ###"$'\n'$'\n'

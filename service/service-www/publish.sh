@@ -21,7 +21,7 @@ UNAME=${UNAME}
 OS_NAME=${OS_NAME}
 EOF
 )
-echo "--- (system-env) ---"
+
 
 
 
@@ -33,7 +33,7 @@ function deploy() {
     ssh ${EXEC_USER}@${SVR} "${APP_HOME}/deploy.sh ${PROFILE_SYS}"
   done
   
-  echo "--- (deploy) deploying trigger ---"$
+  echo "--- //(deploy) deploying trigger ---"
 }
 
 
@@ -67,10 +67,10 @@ SVR_LIST=${SVR_LIST}
 APP_HOME=${APP_HOME}
 EOF
 )
-echo "--- (runtime-env) ---"
+
 
 
 deploy;
 
 
-echo "### [finish] ${0##*/} ${@} ###"$'\n'
+echo "### [finish] ${0##*/} ${@} ###"$'\n'$'\n'

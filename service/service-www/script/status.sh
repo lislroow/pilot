@@ -11,7 +11,7 @@ SCRIPT_DIR=${SCRIPT_DIR}
 BASEDIR=${BASEDIR}
 EOF
 )
-echo "--- (system-env) ---"
+
 
 
 
@@ -42,7 +42,7 @@ function status() {
     fi
     echo ""
   done
-  echo "--- (status) status ---"
+  echo "--- //(status) status ---"
 }
 
 
@@ -58,10 +58,10 @@ printf '%s\n' $(cat << EOF
 APP_ID_LIST=${APP_ID_LIST[*]}
 EOF
 )
-echo "--- (runtime-env) ---"
+
 
 
 status;
 
 
-echo "### [finish] ${0##*/} ${@} ###"$'\n'
+echo "### [finish] ${0##*/} ${@} ###"$'\n'$'\n'

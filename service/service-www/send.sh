@@ -12,7 +12,7 @@ SCRIPT_DIR=${SCRIPT_DIR}
 BASEDIR=${BASEDIR}
 EOF
 )
-echo "--- (system-env) ---"
+
 
 
 
@@ -29,7 +29,7 @@ function transfer() {
     scp ${FILES[*]} ${EXEC_USER}@${SVR}:${APP_HOME}
     ssh ${EXEC_USER}@${SVR} "chmod u+x ${APP_HOME}/*.sh;"
   done
-  echo "--- (transfer) transfer *.sh files ---"
+  echo "--- //(transfer) transfer *.sh files ---"
 }
 
 
@@ -61,8 +61,8 @@ SVR_LIST=${SVR_LIST[*]}
 APP_HOME=${APP_HOME}
 EOF
 )
-echo "--- (runtime-env) ---"
+
 
 transfer "${PROFILE_SYS}";
 
-echo "### [finish] ${0##*/} ${@} ###"$'\n'
+echo "### [finish] ${0##*/} ${@} ###"$'\n'$'\n'
