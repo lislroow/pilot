@@ -45,7 +45,8 @@ case ${PROFILE_SYS} in
     APP_HOME="/app/pilot-dev"
     ;;
   sta*)
-    exit -1
+    SVR_LIST=('172.28.200.30')
+    APP_HOME="/app/pilot-sta"
     ;;
   *)
     exit -1
