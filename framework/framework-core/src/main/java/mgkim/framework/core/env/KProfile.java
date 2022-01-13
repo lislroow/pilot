@@ -17,7 +17,7 @@ public class KProfile {
 
 
 	public static final String GROUP = "mgkim";
-	public static final String DOMAIN = "proto";
+	public static final String DOMAIN = "pilot";
 	public static final String HOSTNAME;
 	public static String APP_ID;
 	public static String APP_NAME;
@@ -66,8 +66,8 @@ public class KProfile {
 			if (KProfile.SYS == null) {
 				KProfile.SYS = TSysType.LOC;
 				KProfile.profiles.add(KProfile.SYS.toString());
+				addProfile(KProfile.SYS.code());
 			}
-			addProfile(KProfile.SYS.code());
 			log.warn("{} KProfile.SYS={}", KConstant.LT_PROFILE, KProfile.SYS.toString());
 		}
 	}
