@@ -65,7 +65,7 @@
     -->
     <!-- for snapshot
     -->
-    <service-lib.version>[,2.0)</service-lib.version>
+    <service-lib.version>[,4.0)</service-lib.version>
   </properties>
   
   <dependencyManagement>
