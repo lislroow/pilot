@@ -87,66 +87,16 @@ function build() {
   echo "--- (build) build maven project ---"$'\n'
 }
 
-
-## (deploy) deploying trigger
-function deploy() {
-  echo "+++ (deploy) deploying trigger +++"
-  for SVR in ${SVR_LIST[*]}
-  do
-    ssh ${EXEC_USER}@${SVR} "${APP_HOME}/deploy.sh ${PROFILE_SYS}"
-  done
-  
-  echo "--- (deploy) deploying trigger ---"$'\n'
-}
-
-
 echo "+++ (runtime-env) +++"
-EXEC_USER="tomcat"
-PROFILE_SYS=$1
-
-if [ "$1" == "" ]; then
-  PROFILE_SYS="dev"
-fi
-
-case ${PROFILE_SYS} in
-  dev)
-    SVR_LIST=('172.28.200.30')
-    APP_HOME="/app/pilot-dev"
-    ;;
-  sta*)
-    SVR_LIST=('172.28.200.30')
-    APP_HOME="/app/pilot-sta"
-    ;;
-  *)
-    exit -1
-    ;;
-esac
 
 
 printf '%s\n' $(cat << EOF
-EXEC_USER=${EXEC_USER}
-PROFILE_SYS=${PROFILE_SYS}
-SVR_LIST=${SVR_LIST}
-APP_HOME=${APP_HOME}
 EOF
 )
 echo "--- (runtime-env) ---"
 
-case ${PROFILE_SYS}:$2 in
-  dev:build)
-    build;
-    ;;
-  dev:deploy)
-    deploy;
-    ;;
-  dev:*)
-    build;
-    deploy;
-    ;;
-  sta*:)
-    deploy;
-    ;;
-esac
+
+build;
 
 
 echo "### [finish] ${0##*/} ${@} ###"$'\n'
