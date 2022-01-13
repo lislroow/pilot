@@ -196,8 +196,10 @@ public class KOutDTOHandler extends AbstractMappingJacksonResponseBodyAdvice imp
 			{
 				// header.sys
 				headerMap.put(KConstant.SYS, KProfile.SYS.code());
-				// header.appid
-				headerMap.put(KConstant.APPID, KProfile.APP_ID);
+				// header.app_name
+				headerMap.put(KConstant.APP_NAME, KProfile.APP_NAME);
+				// header.app_id
+				headerMap.put(KConstant.APP_ID, KProfile.APP_ID);
 				
 				// header.txid
 				headerMap.put(KConstant.TXID, txid);
