@@ -13,7 +13,7 @@ elif [[ "${UNAME}" = "CYGWIN"* || "${UNAME}" = "MINGW"* ]]; then
   OS_NAME="win"
 fi
 
-case ${OS_NAME} in
+case "${OS_NAME}" in
   linux)
     JAVA_HOME=/prod/java/openjdk-11.0.13.8-temurin
     PATH=$JAVA_HOME/bin:$PATH
@@ -96,7 +96,7 @@ echo "+++ (runtime-env) +++"
 EXEC_USER="tomcat"
 BASEDIR="$( cd ${SCRIPT_DIR} && pwd -P)"
 APP_ID=$1
-case ${APP_ID} in
+case "${APP_ID}" in
   dw*1)
     APP_NAME="service-www"
     APP_ID="dwww11"

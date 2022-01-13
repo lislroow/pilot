@@ -54,7 +54,7 @@ echo "--- //(stop) stop ---"
 echo "+++ (runtime-env) +++"
 EXEC_USER="tomcat"
 APP_ID=$1
-case ${APP_ID} in
+case "${APP_ID}" in
   dw*1)
     APP_ID="dwww11"
     ;;

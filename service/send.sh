@@ -34,15 +34,12 @@ function transfer() {
 echo "+++ (runtime-env) +++"
 EXEC_USER="tomcat"
 PROFILE_SYS=$1
-if [ "$1" == "" ]; then
-  PROFILE_SYS="dev"
-fi
-case ${PROFILE_SYS} in
+case "${PROFILE_SYS}" in
   dev)
     SVR_LIST=('172.28.200.30')
     APP_HOME="/app/pilot-dev"
     ;;
-  sta*)
+  sta)
     SVR_LIST=('172.28.200.30')
     APP_HOME="/app/pilot-sta"
     ;;

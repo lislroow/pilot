@@ -38,7 +38,7 @@ function deploy() {
 echo "+++ (runtime-env) +++"
 EXEC_USER="tomcat"
 PROFILE_SYS=$1
-case ${PROFILE_SYS} in
+case "${PROFILE_SYS}" in
   dev)
     SVR_LIST=('172.28.200.30')
     APP_HOME="/app/pilot-dev"
@@ -52,7 +52,7 @@ case ${PROFILE_SYS} in
     ;;
 esac
 APP_NAME=$2
-case ${APP_NAME} in
+case "${APP_NAME}" in
   w*)
     APP_NAME="service-www"
     ;;

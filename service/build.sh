@@ -13,7 +13,7 @@ elif [[ "${UNAME}" = "CYGWIN"* || "${UNAME}" = "MINGW"* ]]; then
   OS_NAME="win"
 fi
 
-case ${OS_NAME} in
+case "${OS_NAME}" in
   linux)
     JAVA_HOME=/prod/java/openjdk-11.0.13.8-temurin
     M2_HOME=/prod/maven/maven
@@ -88,7 +88,7 @@ function build() {
 
 echo "+++ (runtime-env) +++"
 APP_NAME=$1
-case ${APP_NAME} in
+case "${APP_NAME}" in
   w*)
     APP_NAME="service-www"
     ;;

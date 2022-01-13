@@ -59,11 +59,11 @@ EXEC_USER="tomcat"
 BASEDIR="$( cd ${SCRIPT_DIR} && pwd -P)"
 ARCHIVE_DIR="${BASEDIR}/archive"
 APP_NAME=$1
-case ${APP_NAME} in
-  *www)
+case "${APP_NAME}" in
+  w*)
     APP_NAME="service-www"
     ;;
-  *adm)
+  a*)
     APP_NAME="service-adm"
     ;;
   *)

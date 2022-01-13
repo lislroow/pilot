@@ -112,7 +112,7 @@ EXEC_USER="tomcat"
 BASEDIR="$( cd ${SCRIPT_DIR} && pwd -P)"
 PROFILE_SYS=$1
 APP_NAME=$2
-case ${PROFILE_SYS}:${APP_NAME} in
+case "${PROFILE_SYS}:${APP_NAME}" in
   dev:*w*)
     APP_NAME="service-www"
     APP_ID_LIST=("dwww11" "dwww12")
