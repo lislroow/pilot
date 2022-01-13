@@ -18,7 +18,15 @@ echo "--- (system-env) ---"
 function backup() {
   echo "+++ (backup) backup except for lastest jar +++"
   if [ ! -e ${ARCHIVE_DIR} ]; then
-    mkdir -p ${ARCHIVE_DIR}
+    MKDIR_CMD="mkdir -p ${ARCHIVE_DIR}"
+    if [ $(whoami) == "root" ]; then
+      su ${EXEC_USER} -c "${MKDIR_CMD}"
+    elif [ $(whoami) == ${EXEC_USER} ]; then
+      eval "${MKDIR_CMD}"
+    else
+      echo "current user "$(whoami)
+      exit -1
+    fi
   fi
   
   LATEST_CMD="ls -rt ${BASEDIR}/*.jar | tail -n 1"
@@ -33,7 +41,8 @@ function backup() {
   echo "OLD_JAR=${OLD_JAR[*]}"
   
   if [ "${OLD_JAR[*]}" != "" ]; then
-    MV_CMD="mv ${OLD_JAR[*]} ${ARCHIVE_DIR}"
+    MV_CMD="mv $(echo ${OLD_JAR[*]} | tr -d '\n') ${ARCHIVE_DIR}"
+    echo "MV_CMD=${MV_CMD}"
     if [ $(whoami) == "root" ]; then
       su ${EXEC_USER} -c "${MV_CMD}"
     elif [ $(whoami) == ${EXEC_USER} ]; then
