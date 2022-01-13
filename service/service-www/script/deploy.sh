@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo $'\n'"### [execute] ${0##*/} ${@} ###"
+echo "### [start] ${0##*/} ${@} ###"
 
 ## env
 echo "+++ (system-env) +++"
@@ -116,3 +116,5 @@ echo "--- (runtime-env) ---"
 
 
 deploy;
+
+echo "### [finish] ${0##*/} ${@} ###"$'\n'

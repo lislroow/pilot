@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo $'\n'"### (file) ${0##*/} ${@} ###"
+echo "### [start] ${0##*/} ${@} ###"
 
 ## env
 echo $"+++ (system-env) +++"
@@ -59,3 +59,5 @@ EOF
 echo "--- (runtime-env) ---"
 
 backup;
+
+echo "### [finish] ${0##*/} ${@} ###"$'\n'

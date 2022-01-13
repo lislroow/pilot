@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo $'\n'"### [execute] ${0##*/} ${@} ###"
+echo "### [start] ${0##*/} ${@} ###"
 
 echo "+++ (system-env) +++"
 SCRIPT_DIR="$( cd $( dirname "$0" ) && pwd -P)"
@@ -63,3 +63,5 @@ echo "--- (runtime-env) ---"
 
 status;
 
+
+echo "### [finish] ${0##*/} ${@} ###"$'\n'

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo $'\n'"### [execute] ${0##*/} ${@} ###"
+echo "### [start] ${0##*/} ${@} ###"
 
 ## env
 echo "+++ (system-env) +++"
@@ -143,3 +143,6 @@ case $2 in
     deploy;
     ;;
 esac
+
+
+echo "### [finish] ${0##*/} ${@} ###"$'\n'
