@@ -89,10 +89,10 @@ function build() {
 echo "+++ (runtime-env) +++"
 APP_NAME=$1
 case "${APP_NAME}" in
-  w*)
+  *w*)
     APP_NAME="service-www"
     ;;
-  a*)
+  *a*)
     APP_NAME="service-adm"
     ;;
   *)

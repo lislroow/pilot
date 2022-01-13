@@ -53,10 +53,10 @@ case "${PROFILE_SYS}" in
 esac
 APP_NAME=$2
 case "${APP_NAME}" in
-  w*)
+  *w*)
     APP_NAME="service-www"
     ;;
-  a*)
+  *a*)
     APP_NAME="service-adm"
     ;;
   *)
