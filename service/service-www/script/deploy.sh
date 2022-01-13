@@ -33,11 +33,12 @@ function deploy() {
     dev)
       nexus_url="https://nexus/repository/maven-snapshot"
       metadata_url="${nexus_url}/mgkim/service/${APP_NAME}/maven-metadata.xml"
-      
+      echo "metadata_url=${metadata_url}"
       app_ver=$(curl -s ${metadata_url} | xmllint --xpath "//version[last()]/text()" -)
       echo "app_ver=${app_ver}"
       
       metadata_url="${nexus_url}/mgkim/service/${APP_NAME}/${app_ver}/maven-metadata.xml"
+      echo "metadata_url=${metadata_url}"
       app_snap_ver=$(curl -s ${metadata_url} | xmllint --xpath "//snapshotVersion[1]/value/text()" -)
       echo "app_snap_ver=${app_snap_ver}"
       
