@@ -19,6 +19,7 @@ public class KProfile {
 	public static final String GROUP = "mgkim";
 	public static final String DOMAIN = "proto";
 	public static final String HOSTNAME;
+	public static String APP_ID;
 	public static String APP_NAME;
 	public static String SITE_TPCD;
 	public static TSysType SYS;

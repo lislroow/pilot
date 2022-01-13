@@ -14,6 +14,8 @@ public class KConstant {
 	
 	public static final String JANSI = "jansi";
 	
+	public static final String SYS = "sys";
+	public static final String APPID = "appid";
 	public static final String SSID = "ssid";
 	public static final String GUID = "guid";
 	public static final String TXID = "txid";

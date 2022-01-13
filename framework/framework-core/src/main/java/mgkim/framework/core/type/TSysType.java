@@ -2,7 +2,7 @@ package mgkim.framework.core.type;
 
 public enum TSysType {
 
-	LOC(""), DEV("dev"), STAGING("staging"), PROD("prod");
+	LOC("loc"), DEV("dev"), STAGING("staging"), PROD("prod");
 
 	private final String code;
 

@@ -194,6 +194,11 @@ public class KOutDTOHandler extends AbstractMappingJacksonResponseBodyAdvice imp
 
 			// headerVO 필드값 설정: 페이징 여부에 따른 headerVO 객체 생성 및 처리 결과 정보 설정
 			{
+				// header.sys
+				headerMap.put(KConstant.SYS, KProfile.SYS.code());
+				// header.appid
+				headerMap.put(KConstant.APPID, KProfile.APP_ID);
+				
 				// header.txid
 				headerMap.put(KConstant.TXID, txid);
 
