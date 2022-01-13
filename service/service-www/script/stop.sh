@@ -59,16 +59,16 @@ echo "+++ (runtime-env) +++"
 EXEC_USER="tomcat"
 APP_ID=$1
 case ${APP_ID} in
-  dw*11)
+  dw*1)
     APP_ID=dwww11
     ;;
-  dw*12)
+  dw*2)
     APP_ID=dwww12
     ;;
-  sw*11)
+  sw*1)
     APP_ID=swww11
     ;;
-  sw*12)
+  sw*2)
     APP_ID=swww12
     ;;
   *)

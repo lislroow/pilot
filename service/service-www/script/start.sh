@@ -97,22 +97,22 @@ EXEC_USER="tomcat"
 APP_NAME="service-www"
 APP_ID=$1
 case ${APP_ID} in
-  dw*11)
+  dw*1)
     APP_ID=dwww11
     SERVER_PORT="7100"
     PROFILE_SYS="dev"
     ;;
-  dw*12)
+  dw*2)
     APP_ID=dwww12
     SERVER_PORT="7101"
     PROFILE_SYS="dev"
     ;;
-  sw*11)
+  sw*1)
     APP_ID=swww11
     SERVER_PORT="9100"
     PROFILE_SYS="staging"
     ;;
-  sw*12)
+  sw*2)
     APP_ID=swww12
     SERVER_PORT="9101"
     PROFILE_SYS="staging"
