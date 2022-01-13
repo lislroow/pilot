@@ -87,14 +87,6 @@ function build() {
   echo "--- //(build) build maven project ---"
 }
 
-echo "+++ (runtime-env) +++"
-
-
-printf '%s\n' $(cat << EOF
-EOF
-)
-
-
 
 build;
 
