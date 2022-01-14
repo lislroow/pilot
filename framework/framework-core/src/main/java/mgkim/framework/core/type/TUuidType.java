@@ -2,8 +2,8 @@ package mgkim.framework.core.type;
 
 public enum TUuidType {
 
-	GUID("G-", 13), SSID("S-", 13), TXID("T-", 13), APIKEY("AK-", 13),
-	FILEID("F", 13), FGRPID("FG", 13);
+	GUID("g", 13), SSID("s", 13), TXID("t", 13), APIKEY("ak", 13),
+	FILEID("f", 13), FGRPID("fg", 13);
 
 	private final String prefix;
 	private final int length;

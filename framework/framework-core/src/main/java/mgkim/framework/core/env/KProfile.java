@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
 import mgkim.framework.core.type.TSysType;
 
@@ -79,9 +78,6 @@ public class KProfile {
 		} else {
 			System.setProperty(KConstant.VM_SPRING_PROFILES_ACTIVE, val + "," + addVal);
 		}
-		
-		// PROFILES_STR (시스템로깅에서 사용할 문자열 생성)
-		MDC.put("profiles", System.getProperty(KConstant.VM_SPRING_PROFILES_ACTIVE));
 	}
 
 	public static boolean isLocal() {

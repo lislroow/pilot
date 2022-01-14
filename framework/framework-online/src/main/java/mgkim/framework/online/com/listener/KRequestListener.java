@@ -35,7 +35,7 @@ public class KRequestListener extends RequestContextListener {
 			ComDebugScheduler.check();
 			boolean loggable = KContext.getT(AttrKey.LOGGABLE);
 			String referer = KContext.getT(AttrKey.REFERER);
-			log.info(KLogMarker.REQUEST, "referer={}", referer);
+			log.debug(KLogMarker.REQUEST, "referer={}", referer);
 			/*if (false) {
 				String reqHeader = KStringUtil.toJson(KHttpUtil.getHeaders());
 				log.info("[ *** req-header *** ]\nheader = {}", reqHeader);
@@ -51,7 +51,7 @@ public class KRequestListener extends RequestContextListener {
 		try {
 			long reqTime = KContext.getT(AttrKey.REQ_TIME);
 			String elapsed = String.format("%.3f", (System.currentTimeMillis() - reqTime) / 1000.0);
-			log.info(KLogMarker.RESPONSE, "(elapsed={})", elapsed);
+			log.debug(KLogMarker.RESPONSE, "(elapsed={})", elapsed);
 			SecurityContextHolder.clearContext();
 			HttpSession session = request.getSession(false);
 			if (session != null) {

@@ -1,8 +1,5 @@
 package mgkim.framework.online.com.scheduler;
 
-import static mgkim.framework.core.env.KConstant.MDC_DEBUG_FILENAME;
-import static mgkim.framework.core.env.KConstant.MDC_DEBUG_MODE_YN;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -10,7 +7,6 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import mgkim.framework.core.annotation.KTaskSchedule;
@@ -20,6 +16,7 @@ import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
+import mgkim.framework.core.logging.KLogMDC;
 import mgkim.framework.core.stereo.KScheduler;
 import mgkim.framework.core.stereo.KTask;
 import mgkim.framework.core.util.KDateUtil;
@@ -152,8 +149,8 @@ public class ComDebugScheduler extends KScheduler {
 			log.info("ssid={}", item.ssid);
 			if (ssid.equals(item.ssid)) {
 				log.warn("***** 디버그 상태입니다. *****");
-				MDC.put(MDC_DEBUG_MODE_YN, "Y");
-				MDC.put(MDC_DEBUG_FILENAME, item.debugFilePath);
+				KLogMDC.put(AttrKey.DEBUG, "Y");
+				//KLogMDC.put(KConstant.MDC_DEBUG_FILENAME, item.debugFilePath);
 			}
 		}
 	}

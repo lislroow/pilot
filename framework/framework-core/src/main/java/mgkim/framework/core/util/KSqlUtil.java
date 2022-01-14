@@ -130,7 +130,6 @@ public class KSqlUtil {
 		BoundSql boundSql = (BoundSql) sHandlerMetaObject.getValue("delegate.boundSql");
 		String sql = boundSql.getSql();
 		String sqlId = mappedStatement.getId();
-		String sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
 		
 		// param-sql 생성
 		{

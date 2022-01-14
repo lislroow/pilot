@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.env.KSqlContext;
+import mgkim.framework.core.logging.KLogMarker;
 import mgkim.framework.core.type.TSqlType;
 import mgkim.framework.core.util.KSqlUtil;
 
@@ -201,10 +202,9 @@ public class ComSqlPagingCount {
 						count = rs.getInt(1);
 					}
 				} catch(Exception ex) {
-					throw ex;
-				} finally {
 					String countSql = KSqlUtil.createParamSql(parameterObject, statementHandler, TSqlType.COUNT_SQL2);
-					log.error("{}", countSql);
+					log.error(KLogMarker.getSqlMarker(sqlFile), "\n{}", countSql);
+					throw ex;
 				}
 			}
 		} catch (Exception e) {

@@ -26,7 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
 import mgkim.framework.core.annotation.KBean;
-import mgkim.framework.core.env.KConfig;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.exception.KExceptionHandler;
@@ -75,8 +74,8 @@ public class KFilterAccessLog  extends KFilter {
 				String body = requestWrapper.getBodyString();
 				String header = KStringUtil.toJson(KHttpUtil.getHeaders());
 				if (KStringUtil.isJson(body)) {
-					//log.info(KLogMarker.request, "\nrequest-header = {}\nrequest-body = {}", header, body);
-					log.info(KLogMarker.request, "\nrequest-body = {}", body);
+					//boolean debug = KContext.getT(AttrKey.DEBUG);
+					log.trace(KLogMarker.request, "\nrequest-header = {}\nrequest-body = {}", header, body);
 				} else {
 					log.warn(KLogMarker.request, "request-body 가 json 형식이 아닙니다. request-body={}", body);
 				}
@@ -125,24 +124,24 @@ public class KFilterAccessLog  extends KFilter {
 			if (responseType == TResponseType.JSON) {
 				String resultCode = KContext.getT(AttrKey.RESULT_CODE);
 				String resultMessage = KContext.getT(AttrKey.RESULT_MESSAGE);
-				boolean isVerboss = KConfig.VERBOSS_ALL || KConfig.VERBOSS_REQ;
-				if (isVerboss) {
-					BufferedReader br = null;
-					try {
+				BufferedReader br = null;
+				try {
+					boolean debug = KContext.getT(AttrKey.DEBUG);
+					if (debug) {
 						br = new BufferedReader(new InputStreamReader(responseWrapper.getContentInputStream()));
 						String readLine = null;
 						StringBuffer buf = new StringBuffer();
 						while ((readLine = br.readLine()) != null) {
 							buf.append(readLine);
 						}
-						log.info(KLogMarker.response, "[{}] {} (bytes={})\nrequest-body = {}", resultCode, resultMessage, contentSize, buf.toString());
-					} finally {
-						if (br != null) {
-							br.close();
-						}
+						log.trace(KLogMarker.response, "[{}] {} (bytes={})\nresponse-body = {}", resultCode, resultMessage, contentSize, buf.toString());
+					} else {
+						log.info(KLogMarker.response, "[{}] {} (bytes={})", resultCode, resultMessage, contentSize);
 					}
-				} else {
-					log.info(KLogMarker.response, "[{}] {} (bytes={})", resultCode, resultMessage, contentSize);
+				} finally {
+					if (br != null) {
+						br.close();
+					}
 				}
 			} else if (responseType == TResponseType.FILE) {
 				String filename = KContext.getT(AttrKey.DOWN_FILE);

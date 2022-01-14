@@ -26,9 +26,7 @@ import mgkim.framework.online.api.adm.runtime.vo.SpringUriVO;
 @Api( tags = { KConstant.SWG_SYSTEM_MANAGEMENT } )
 @RestController
 public class RuntimeController {
-	public RuntimeController() {
-		System.out.println("asaaa");
-	}
+	
 	@Autowired
 	private RuntimeService runtimeService;
 

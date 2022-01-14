@@ -67,7 +67,8 @@ public class ComSqlPagingList {
 		MappedStatement mappedStatement = (MappedStatement) proxyMappedStatement.get(pstmtHandler);
 		BoundSql boundSql = statementHandler.getBoundSql();
 		String sqlId = mappedStatement.getId();
-		String sqlFile = KSqlUtil.getRelativePath(mappedStatement.getResource());
+		String sqlFile = mappedStatement.getResource();
+		sqlFile = sqlFile.substring(sqlFile.lastIndexOf(java.io.File.separator)+1, sqlFile.length()-1);
 		KInPageVO inPageVO = KContext.getT(AttrKey.IN_PAGE);
 
 		// closable 객체

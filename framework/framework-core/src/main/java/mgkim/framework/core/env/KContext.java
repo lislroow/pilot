@@ -1,11 +1,6 @@
 package mgkim.framework.core.env;
 
-import static mgkim.framework.core.env.KConstant.GUID;
-import static mgkim.framework.core.env.KConstant.IP;
 import static mgkim.framework.core.env.KConstant.MDC_DEBUG_MODE_YN;
-import static mgkim.framework.core.env.KConstant.REFERER;
-import static mgkim.framework.core.env.KConstant.TXID;
-import static mgkim.framework.core.env.KConstant.URI;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,11 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 import org.springframework.http.HttpHeaders;
 
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
+import mgkim.framework.core.logging.KLogMDC;
 import mgkim.framework.core.logging.KLogMarker;
 import mgkim.framework.core.type.TApiType;
 import mgkim.framework.core.type.TAuthType;
@@ -49,7 +44,7 @@ public class KContext {
 	}
 
 	public static boolean isDebugMode() {
-		return "Y".equals(MDC.get(MDC_DEBUG_MODE_YN));
+		return "Y".equals(KLogMDC.get(MDC_DEBUG_MODE_YN));
 	}
 
 	public static void initSystem() {
@@ -61,6 +56,7 @@ public class KContext {
 
 		TExecType execType = TExecType.SYSTEM;
 		KContext.set(AttrKey.EXEC_TYPE, execType);
+		KLogMDC.put(AttrKey.EXEC_TYPE, execType.name());
 
 		KContext.set(AttrKey.LOGGABLE, true);
 	}
@@ -74,13 +70,13 @@ public class KContext {
 
 		TExecType execType = TExecType.SCHEDULE;
 		KContext.set(AttrKey.EXEC_TYPE, execType);
+		KLogMDC.put(AttrKey.EXEC_TYPE, execType.name());
 
 		KContext.set(AttrKey.LOGGABLE, KConfig.VERBOSS_SCHEDULE);
 
 		String txid = KStringUtil.createUuid(true, TUuidType.TXID);
 		KContext.set(AttrKey.TXID, txid);
-
-		MDC.put(TXID, txid);
+		KLogMDC.put(AttrKey.TXID, txid);
 	}
 
 	public static void initRequest(HttpServletRequest request) throws KSysException {
@@ -92,6 +88,7 @@ public class KContext {
 
 		TExecType execType = TExecType.REQUEST;
 		KContext.set(AttrKey.EXEC_TYPE, execType);
+		KLogMDC.put(AttrKey.EXEC_TYPE, execType.name());
 
 		String uri = request.getRequestURI();
 		KContext.set(AttrKey.URI, uri);
@@ -102,6 +99,7 @@ public class KContext {
 
 		boolean debug = KStringUtil.toBoolean(KHttpUtil.getHeader(KConstant.HK_DEBUG));
 		KContext.set(AttrKey.DEBUG, debug);
+		KLogMDC.put(AttrKey.DEBUG, Boolean.toString(debug));
 
 		String ip = KHttpUtil.getIp();
 		KContext.set(AttrKey.IP, ip);
@@ -174,11 +172,11 @@ public class KContext {
 		KContext.set(AttrKey.API_TYPE, apiType);
 
 
-		MDC.put(URI, uri);
-		MDC.put(IP, ip);
-		MDC.put(GUID, guid);
-		MDC.put(TXID, txid);
-		MDC.put(REFERER, referer);
+		KLogMDC.put(AttrKey.URI, uri);
+		KLogMDC.put(AttrKey.IP, ip);
+		KLogMDC.put(AttrKey.GUID, guid);
+		KLogMDC.put(AttrKey.TXID, txid);
+		KLogMDC.put(AttrKey.REFERER, referer);
 	}
 	
 	public static void initToken(io.jsonwebtoken.Jwt token) throws KSysException {
@@ -194,14 +192,14 @@ public class KContext {
 		if (debug) {
 			log.debug(KLogMarker.security, "{}", KMessage.get(KMessage.E6023, KContext.get(AttrKey.SSID), ssid));
 			KContext.set(AttrKey.SSID, ssid);
-			MDC.put(KConstant.SSID, ssid);
+			KLogMDC.put(AttrKey.SSID, ssid);
 		}
 		
 		KContext.set(AttrKey.TOKEN, token);
 		KContext.set(AttrKey.SSID, ssid);
-		MDC.put(KConstant.SSID, ssid);
+		KLogMDC.put(AttrKey.SSID, ssid);
 		KContext.set(AttrKey.USER_ID, userId);
-		MDC.put(KConstant.USER_ID, userId);
+		KLogMDC.put(AttrKey.USER_ID, userId);
 	}
 
 

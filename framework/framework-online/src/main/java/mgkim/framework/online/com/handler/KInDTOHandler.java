@@ -23,8 +23,10 @@ import mgkim.framework.core.exception.KException;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
+import mgkim.framework.core.logging.KLogMarker;
 import mgkim.framework.core.type.TApiType;
 import mgkim.framework.core.util.KObjectUtil;
+import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.cmm.CmmDtoLog;
 import mgkim.framework.online.cmm.dtohandler.CmmDtoHandler;
 import mgkim.framework.online.com.mgr.ComFieldCryptorMgr;
@@ -66,6 +68,7 @@ public class KInDTOHandler extends RequestBodyAdviceAdapter implements Initializ
 	public Object afterBodyRead(Object body, HttpInputMessage inputMessage, MethodParameter parameter, Type targetType,
 			Class<? extends HttpMessageConverter<?>> converterType) {
 		if (body instanceof KInDTO) {
+			log.info(KLogMarker.request, "\ninDTO = {}", KStringUtil.toJson(body));
 			KInDTO<?> inDTO = (KInDTO<?>)body;
 
 			// `page` 입력값 저장

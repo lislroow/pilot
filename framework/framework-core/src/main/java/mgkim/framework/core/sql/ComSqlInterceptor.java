@@ -232,9 +232,9 @@ public class ComSqlInterceptor implements Interceptor {
 					resultCount = 1;
 				}
 				if (isVerboss) {
-					log.info(KLogMarker.SQL, "\nparam = {}\n{}\n(rows={}, elapsed={})\nresult = {}", KStringUtil.toJson(parameterObject), paramSql, resultCount, elapsed, KStringUtil.toJson(resultObject));
+					log.info(KLogMarker.getSqlMarker(sqlFile), "\nparam = {}\n{}\n(rows={}, elapsed={})\nresult = {}", KStringUtil.toJson(parameterObject), paramSql, resultCount, elapsed, KStringUtil.toJson(resultObject));
 				} else {
-					log.info(KLogMarker.SQL, "\n{}\n(rows={}, elapsed={})", paramSql, resultCount, elapsed);
+					log.info(KLogMarker.getSqlMarker(sqlFile), "\n{}\n(rows={}, elapsed={})", paramSql, resultCount, elapsed);
 				}
 				// sql 실행 테이블 분석
 				if (false && KProfile.SYS == TSysType.LOC) {
@@ -245,7 +245,7 @@ public class ComSqlInterceptor implements Interceptor {
 			case SYSTEM:
 				if (isOnError) {
 					paramSql = KSqlUtil.createParamSql(parameterObject, statementHandler, sqlType);
-					log.info(KLogMarker.SQL, "\nparam = {}\n{}", KStringUtil.toJson(parameterObject), paramSql);
+					log.info(KLogMarker.getSqlMarker(sqlFile), "\nparam = {}\n{}", KStringUtil.toJson(parameterObject), paramSql);
 				}
 			default:
 				break;
