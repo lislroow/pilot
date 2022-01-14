@@ -43,6 +43,10 @@ case "${PROFILE_SYS}" in
     SVR_LIST=('172.28.200.30')
     APP_HOME="/app/pilot-sta"
     ;;
+  -h)
+    echo "Usage: ${0##*/} [dev|sta]"
+    exit 0;
+    ;;
   *)
     exit -1
     ;;

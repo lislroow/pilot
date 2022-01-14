@@ -47,7 +47,12 @@ case "${PROFILE_SYS}" in
     SVR_LIST=('172.28.200.30')
     APP_HOME="/app/pilot-sta"
     ;;
+  -h)
+    echo "Usage: ${0##*/} [dev|sta] [w|a]"
+    exit 0;
+    ;;
   *)
+    echo "Usage: ${0##*/} [dev|sta] [w|a]"
     exit -1
     ;;
 esac
@@ -60,7 +65,7 @@ case "${APP_NAME}" in
     APP_NAME="service-adm"
     ;;
   *)
-    exit -1
+    exit -1;
     ;;
 esac
 

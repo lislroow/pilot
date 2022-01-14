@@ -20,7 +20,7 @@ public class CmmProfile {
 					System.setProperty(KConstant.VM_APP_ID, appId);
 				}
 				String[] arr = java.util.Arrays.stream(TSiteType.values()).map(item -> item.label()).toArray(String[]::new);
-				Matcher matcher = Pattern.compile("[ds]*("+String.join("|", arr)+")[0-9]{1,2}").matcher(appId);
+				Matcher matcher = Pattern.compile("[lds]*("+String.join("|", arr)+")[0-9]*").matcher(appId);
 				if (matcher.find()) {
 					KProfile.APP_ID = appId;
 					TSiteType site = TSiteType.get(matcher.group(1));

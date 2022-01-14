@@ -95,8 +95,12 @@ case "${APP_NAME}" in
   *a*)
     APP_NAME="service-adm"
     ;;
+  -h)
+    echo "Usage: ${0##*/} [w|a]"
+    exit 0;
+    ;;
   *)
-    exit -1
+    exit -1;
     ;;
 esac
 BASEDIR="$( cd ${SCRIPT_DIR}/${APP_NAME} && pwd -P)"

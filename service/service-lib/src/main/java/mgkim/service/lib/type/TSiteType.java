@@ -3,27 +3,27 @@ package mgkim.service.lib.type;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum TSiteType {
-
+	
 	WWW("10"), ADM("20"), BAT("30");
-
+	
 	private final String code;
-
+	
 	@JsonValue
 	private final String label;
-
+	
 	public String code() {
 		return code;
 	}
-
+	
 	public String label() {
-		return label;
+		return label.toLowerCase();
 	}
-
+	
 	private TSiteType(String code) {
 		this.code = code;
 		this.label = this.name().toLowerCase();
 	}
-
+	
 	public static TSiteType get(String val) {
 		TSiteType[] list = TSiteType.values();
 		for (TSiteType item : list) {
@@ -33,7 +33,7 @@ public enum TSiteType {
 		}
 		return null;
 	}
-
+	
 	@Override
 	public String toString() {
 		return this.code;
