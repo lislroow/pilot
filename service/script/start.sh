@@ -49,6 +49,35 @@ function start() {
     ${BASEDIR}/stop.sh ${APP_ID}
   fi
   
+  # console-logfile
+  LOG_FILEPATH="${LOGBASE}/${APP_ID}-console.log"
+  if [ -e ${LOG_FILEPATH} ]; then
+    curr_ts=`date +'%Y%m%d_%H%M%S'`
+    LOG_BACKUP="${LOGBASE}/${APP_ID}-console-${curr_ts}.log"
+    if [ ! -e "${LOGBASE}/backup" ]; then
+      MKDIR_CMD="mkdir -p ${LOGBASE}/backup"
+      echo "${MKDIR_CMD}"
+      if [ $(whoami) == "root" ]; then
+        su ${EXEC_USER} -c "${MKDIR_CMD}"
+      elif [ $(whoami) == ${EXEC_USER} ]; then
+        eval "${MKDIR_CMD}"
+      else
+        echo "current user "$(whoami)
+        exit -1
+      fi
+    fi
+    MV_CMD="mv ${LOG_FILEPATH} ${LOG_BACKUP}"
+    echo "${MV_CMD}"
+    if [ $(whoami) == "root" ]; then
+      su ${EXEC_USER} -c "${MV_CMD}"
+    elif [ $(whoami) == ${EXEC_USER} ]; then
+      eval "${MV_CMD}"
+    else
+      echo "current user "$(whoami)
+      exit -1
+    fi
+  fi
+  
   JAVA_OPTS=""
   JAVA_OPTS="${JAVA_OPTS} -Dspring.profiles.active=${PROFILE_SYS}"
   JAVA_OPTS="${JAVA_OPTS} -Dspring.output.ansi.enabled=always"
@@ -56,7 +85,7 @@ function start() {
   JAVA_OPTS="${JAVA_OPTS} -Dapp.id=${APP_ID}"
   JAVA_OPTS="${JAVA_OPTS} -Dserver.port=${SERVER_PORT}"
   
-  JAVA_CMD="nohup $JAVA_HOME/bin/java ${JAVA_OPTS} -jar ${JAR_FILE} > /dev/null 2>&1 &"
+  JAVA_CMD="nohup $JAVA_HOME/bin/java ${JAVA_OPTS} -jar ${JAR_FILE} > ${LOG_FILEPATH} 2>&1 &"
   echo "${JAVA_CMD}"
   if [ $(whoami) == "root" ]; then
     su ${EXEC_USER} -c "${JAVA_CMD}"
@@ -96,6 +125,7 @@ function start() {
 echo "+++ (runtime-env) +++"
 EXEC_USER="tomcat"
 BASEDIR="$( cd ${SCRIPT_DIR} && pwd -P)"
+LOGBASE="/outlog/pilot"
 APP_ID=$1
 case "${APP_ID}" in
   dw*1)

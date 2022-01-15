@@ -10,15 +10,16 @@
   <property name="LEVEL-root" value="info" />
   <property name="LEVEL-framework" value="info" />
   <property name="LOG_PATH" value="/outlog/pilot" />
-  <property name="PATTERN-root" value="[${app.id}][%d{HH:mm:ss}][%-5level][%logger:%line] ### %msg%n"/>
-  <property name="PATTERN-fw"   value="[${app.id}][%d{HH:mm:ss}][%-5level]%clr([fw]%X{ip}%X{ssid}%X{txid}%marker){highlight} ### %msg%n"/>
+  <property name="PATTERN-root"       value="[${app.id}][%d{HH:mm:ss}][%-5level][%logger:%line] ### %msg%n"/>
+  <property name="PATTERN-fw-console" value="[${app.id}][%d{HH:mm:ss}][%-5level]%clr([fw]%X{ip}%X{ssid}%X{txid}%marker){highlight} ### %msg%n"/>
+  <property name="PATTERN-fw-file"    value="[${app.id}][%d{HH:mm:ss}][%-5level][fw]%X{ip}%X{ssid}%X{txid}%marker ### %msg%n"/>
   
   <appender name="APPENDER-console" class="ch.qos.logback.core.ConsoleAppender">
     <encoder class="mgkim.framework.core.logging.KLayoutMultiPattern">
       <pattern>${PATTERN-root}</pattern>
       <rule>
         <logger>mgkim.framework</logger>
-        <pattern>${PATTERN-fw}</pattern>
+        <pattern>${PATTERN-fw-console}</pattern>
       </rule>
     </encoder>
   </appender>
@@ -29,7 +30,7 @@
       <pattern>${PATTERN-root}</pattern>
       <rule>
         <logger>mgkim.framework</logger>
-        <pattern>${PATTERN-fw}</pattern>
+        <pattern>${PATTERN-fw-file}</pattern>
       </rule>
     </encoder>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">

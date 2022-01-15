@@ -39,7 +39,6 @@ public class KProfile {
 				}
 			}
 			HOSTNAME = hostname;
-			log.warn("{} KProfile.HOSTNAME={}", KConstant.LT_PROFILE, HOSTNAME);
 		}
 
 		String val = null;
@@ -67,7 +66,6 @@ public class KProfile {
 				KProfile.profiles.add(KProfile.SYS.toString());
 				addProfile(KProfile.SYS.code());
 			}
-			log.warn("{} KProfile.SYS={}", KConstant.LT_PROFILE, KProfile.SYS.toString());
 		}
 	}
 	
