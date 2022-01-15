@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="1 seconds" packagingData="true">
+  
+  <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
+  
+  <property name="A" value="ACCEPT" />
+  <property name="D" value="DENY" />
+  <property name="N" value="NEUTRAL" />
+  
+  <property name="LEVEL-root" value="info" />
+  <property name="LEVEL-framework" value="info" />
+  <property name="LOG_PATH" value="/outlog/pilot" />
+  <property name="PATTERN-root" value="[${app.id}][%d{yyyy-MM-dd HH:mm:ss}][%-5level][%logger:%line] ### %msg%n"/>
+  <property name="PATTERN-fw"   value="[${app.id}][%d{yyyy-MM-dd HH:mm:ss}][%-5level]%clr([fw]%X{ip}%X{ssid}%X{txid}%marker){highlight} ### %msg%n"/>
+  
+  <appender name="APPENDER-console" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="mgkim.framework.core.logging.KLayoutMultiPattern">
+      <pattern>${PATTERN-root}</pattern>
+      <rule>
+        <logger>mgkim.framework</logger>
+        <pattern>${PATTERN-fw}</pattern>
+      </rule>
+    </encoder>
+  </appender>
+  
+  <appender name="APPENDER-file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${LOG_PATH}/${app.id}.log</file>
+    <encoder class="mgkim.framework.core.logging.KLayoutMultiPattern">
+      <pattern>${PATTERN-root}</pattern>
+      <rule>
+        <logger>mgkim.framework</logger>
+        <pattern>${PATTERN-fw}</pattern>
+      </rule>
+    </encoder>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>${LOG_PATH}/${app.id}-%d{yyyyMMdd}.log</fileNamePattern>
+    </rollingPolicy>
+  </appender>
+  
+  <!-- marker 필터 -->
+  <turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
+    <Marker>[sql-cmm]</Marker>
+    <OnMatch>${D}</OnMatch>
+  </turboFilter>
+  
+  <!-- MDC 필터 -->
+  <turboFilter class="ch.qos.logback.classic.turbo.MDCFilter">
+    <MDCKey>exec_type</MDCKey>
+    <value>[SCHEDULE]</value>
+    <OnMatch>${D}</OnMatch>
+  </turboFilter>
+  <turboFilter class="ch.qos.logback.classic.turbo.MDCFilter">
+    <MDCKey>debug</MDCKey>
+    <value>[true]</value>
+    <OnMatch>${A}</OnMatch>
+  </turboFilter>
+  
+  <root level="${LEVEL-root}">
+    <appender-ref ref="APPENDER-file" />
+  </root>
+  
+</configuration>

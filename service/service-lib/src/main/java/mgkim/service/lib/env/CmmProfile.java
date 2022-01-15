@@ -36,7 +36,16 @@ public class CmmProfile {
 				appName = defAppName;
 				System.setProperty(KConstant.VM_APP_NAME, appName);
 			}
+			
 			KProfile.APP_NAME = appName;
+			switch (KProfile.SYS) {
+			case DEV:
+			case STA:
+			case PROD:
+				String a3 = appName.substring(appName.indexOf("-")+1, appName.length());
+				System.setProperty("logging.config", "/app/pilot-"+KProfile.SYS.code()+"/.logback-"+a3+"-"+KProfile.SYS.code()+".xml");
+				break;
+			}
 		}
 	}
 }
