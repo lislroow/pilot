@@ -131,49 +131,49 @@ LOGBASE="/outlog/pilot"
 APP_ID=$1
 case "${APP_ID}" in
   dw*1)
-    APP_NAME="service-www"
+    APP_NAME="pilot-www"
     APP_ID="dwww11"
     SERVER_PORT="7100"
     PROFILE_SYS="dev"
     ;;
   dw*2)
-    APP_NAME="service-www"
+    APP_NAME="pilot-www"
     APP_ID="dwww12"
     SERVER_PORT="7101"
     PROFILE_SYS="dev"
     ;;
   sw*1)
-    APP_NAME="service-www"
+    APP_NAME="pilot-www"
     APP_ID="swww11"
     SERVER_PORT="9100"
     PROFILE_SYS="sta"
     ;;
   sw*2)
-    APP_NAME="service-www"
+    APP_NAME="pilot-www"
     APP_ID="swww12"
     SERVER_PORT="9101"
     PROFILE_SYS="sta"
     ;;
   da*1)
-    APP_NAME="service-adm"
+    APP_NAME="pilot-adm"
     APP_ID="dadm11"
     SERVER_PORT="7200"
     PROFILE_SYS="dev"
     ;;
   da*2)
-    APP_NAME="service-adm"
+    APP_NAME="pilot-adm"
     APP_ID="dadm12"
     SERVER_PORT="7201"
     PROFILE_SYS="dev"
     ;;
   sa*1)
-    APP_NAME="service-adm"
+    APP_NAME="pilot-adm"
     APP_ID="sadm11"
     SERVER_PORT="9200"
     PROFILE_SYS="sta"
     ;;
   sa*2)
-    APP_NAME="service-adm"
+    APP_NAME="pilot-adm"
     APP_ID="sadm12"
     SERVER_PORT="9201"
     PROFILE_SYS="sta"

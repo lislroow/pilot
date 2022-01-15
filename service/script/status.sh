@@ -44,6 +44,7 @@ function status() {
 
 
 echo "+++ (runtime-env) +++"
+PROFILE_SYS=$1
 case "${PROFILE_SYS}" in
   d*)
     APP_ID_LIST=(

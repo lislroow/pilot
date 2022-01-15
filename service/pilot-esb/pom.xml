@@ -7,7 +7,7 @@
     <version>0.1</version>
   </parent>
   <groupId>mgkim.service</groupId>
-  <artifactId>service-esb</artifactId>
+  <artifactId>pilot-esb</artifactId>
   <version>0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>${project.groupId}:${project.artifactId}</name>

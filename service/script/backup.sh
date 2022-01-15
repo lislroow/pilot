@@ -61,10 +61,10 @@ ARCHIVE_DIR="${BASEDIR}/archive"
 APP_NAME=$1
 case "${APP_NAME}" in
   w*)
-    APP_NAME="service-www"
+    APP_NAME="pilot-www"
     ;;
   a*)
-    APP_NAME="service-adm"
+    APP_NAME="pilot-adm"
     ;;
   *)
     echo "Usage: ${0##*/} [w|a]"

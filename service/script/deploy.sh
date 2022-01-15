@@ -113,19 +113,19 @@ PROFILE_SYS=$1
 APP_NAME=$2
 case "${PROFILE_SYS}:${APP_NAME}" in
   dev:*w*)
-    APP_NAME="service-www"
+    APP_NAME="pilot-www"
     APP_ID_LIST=("dwww11" "dwww12")
     ;;
   sta:*w*)
-    APP_NAME="service-www"
+    APP_NAME="pilot-www"
     APP_ID_LIST=("swww11" "swww12")
     ;;
   dev:*a*)
-    APP_NAME="service-adm"
+    APP_NAME="pilot-adm"
     APP_ID_LIST=("dadm11" "dadm12")
     ;;
   sta:*a*)
-    APP_NAME="service-adm"
+    APP_NAME="pilot-adm"
     APP_ID_LIST=("sadm11" "sadm12")
     ;;
   *)

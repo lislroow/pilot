@@ -59,10 +59,10 @@ esac
 APP_NAME=$2
 case "${APP_NAME}" in
   *w*)
-    APP_NAME="service-www"
+    APP_NAME="pilot-www"
     ;;
   *a*)
-    APP_NAME="service-adm"
+    APP_NAME="pilot-adm"
     ;;
   *)
     exit -1;

@@ -7,7 +7,7 @@
     <version>0.1</version>
   </parent>
   <groupId>mgkim.service</groupId>
-  <artifactId>service-fep</artifactId>
+  <artifactId>pilot-bat</artifactId>
   <version>0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>${project.groupId}:${project.artifactId}</name>
@@ -28,7 +28,7 @@
     <!-- framework -->
     <dependency>
       <groupId>mgkim.framework</groupId>
-      <artifactId>framework-daemon</artifactId>
+      <artifactId>framework-batch</artifactId>
     </dependency>
     <!-- //framework -->
   </dependencies>
