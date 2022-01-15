@@ -9,7 +9,7 @@
   
   <property name="LEVEL-root" value="info" />
   <property name="LEVEL-framework" value="info" />
-  <property name="LOG_PATH" value="/outlog/pilot" />
+  <property name="LOGBASE" value="/outlog/pilot/file" />
   <property name="PATTERN-root"       value="[${app.id}][%d{yyyy-MM-dd HH:mm:ss}][%-5level][%logger:%line] ### %msg%n"/>
   <property name="PATTERN-fw-console" value="[${app.id}][%d{yyyy-MM-dd HH:mm:ss}][%-5level]%clr([fw]%X{ip}%X{ssid}%X{txid}%marker){highlight} ### %msg%n"/>
   <property name="PATTERN-fw-file"    value="[${app.id}][%d{yyyy-MM-dd HH:mm:ss}][%-5level][fw]%X{ip}%X{ssid}%X{txid}%marker ### %msg%n"/>
@@ -25,7 +25,7 @@
   </appender>
   
   <appender name="APPENDER-file" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>${LOG_PATH}/${app.id}.log</file>
+    <file>${LOGBASE}/${app.id}.log</file>
     <encoder class="mgkim.framework.core.logging.KLayoutMultiPattern">
       <pattern>${PATTERN-root}</pattern>
       <rule>
@@ -34,7 +34,7 @@
       </rule>
     </encoder>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <fileNamePattern>${LOG_PATH}/${app.id}-%d{yyyyMMdd}.log</fileNamePattern>
+      <fileNamePattern>${LOGBASE}/${app.id}-%d{yyyyMMdd}.log</fileNamePattern>
     </rollingPolicy>
   </appender>
   

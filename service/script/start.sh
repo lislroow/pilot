@@ -53,7 +53,7 @@ function start() {
   LOG_FILEPATH="${LOGBASE}/${APP_ID}-console.log"
   if [ -e ${LOG_FILEPATH} ]; then
     curr_ts=`date +'%Y%m%d_%H%M%S'`
-    LOG_BACKUP="${LOGBASE}/${APP_ID}-console-${curr_ts}.log"
+    LOG_BACKUP="${LOGBASE}/backup/${APP_ID}-console-${curr_ts}.log"
     if [ ! -e "${LOGBASE}/backup" ]; then
       MKDIR_CMD="mkdir -p ${LOGBASE}/backup"
       echo "${MKDIR_CMD}"
