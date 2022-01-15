@@ -4,7 +4,7 @@ echo "### [start] ${0##*/} ${@} ###"
 
 ## env
 echo "+++ (system-env) +++"
-SCRIPT_DIR="$( cd $( dirname "$0" ) && pwd -P)"
+BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 
 UNAME=`uname -s`
 if [[ "${UNAME}" = "Linux"* ]]; then
@@ -31,7 +31,7 @@ case "${OS_NAME}" in
 esac
 
 printf '%s\n' $(cat << EOF
-SCRIPT_DIR=${SCRIPT_DIR}
+BASEDIR=${BASEDIR}
 UNAME=${UNAME}
 OS_NAME=${OS_NAME}
 JAVA_HOME=${JAVA_HOME}
@@ -46,7 +46,7 @@ function build() {
   echo "+++ (build) build maven project +++"
   
   local mvn_args=""
-  mvn_args="${mvn_args} --file ${BASEDIR}/pom.xml"
+  mvn_args="${mvn_args} --file ${BASEDIR}/${APP_NAME}/pom.xml"
   mvn_args="${mvn_args} -Dfile.encoding=utf-8"
   mvn_args="${mvn_args} -Dmaven.test.skip=true"
   mvn_args="${mvn_args} --update-snapshots"
@@ -60,7 +60,7 @@ function build() {
   local jar_file=$(xmlstarlet sel -N x="http://maven.apache.org/POM/4.0.0" \
     -t -v \
     "concat(x:project/x:artifactId, '-', x:project/x:version, '.', x:project/x:packaging)" \
-    ${BASEDIR}/pom.xml)
+    ${BASEDIR}/${APP_NAME}/pom.xml)
   echo "jar_file=${jar_file}"
   
   # jar 파일명에 "-SNAPSHOT" 이 있으면 snapshot 저장소에 deploy 되어야 합니다.
@@ -73,8 +73,8 @@ function build() {
   
   ## deploy-nexus
   mvn_args=""
-  mvn_args="${mvn_args} -DpomFile=${BASEDIR}/pom.xml"
-  mvn_args="${mvn_args} -Dfile=${BASEDIR}/target/${jar_file}"
+  mvn_args="${mvn_args} -DpomFile=${BASEDIR}/${APP_NAME}/pom.xml"
+  mvn_args="${mvn_args} -Dfile=${BASEDIR}/${APP_NAME}/target/${jar_file}"
   mvn_args="${mvn_args} --quiet"
   mvn_args="${mvn_args} -DrepositoryId=maven-${nx_repo}"
   mvn_args="${mvn_args} -Durl=https://nexus/repository/maven-${nx_repo}/"
@@ -104,12 +104,10 @@ case "${APP_NAME}" in
     exit -1;
     ;;
 esac
-BASEDIR="$( cd ${SCRIPT_DIR}/${APP_NAME} && pwd -P)"
 
 
 printf '%s\n' $(cat << EOF
 APP_NAME=${APP_NAME}
-BASEDIR=${BASEDIR}
 EOF
 )
 

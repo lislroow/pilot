@@ -4,10 +4,10 @@ echo "### [start] ${0##*/} ${@} ###"
 
 ## env
 echo "+++ (system-env) +++"
-SCRIPT_DIR="$( cd $( dirname "$0" ) && pwd -P)"
+BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 
 printf '%s\n' $(cat << EOF
-SCRIPT_DIR=${SCRIPT_DIR}
+BASEDIR=${BASEDIR}
 EOF
 )
 
@@ -35,7 +35,6 @@ function send_script() {
 
 
 echo "+++ (runtime-env) +++"
-BASEDIR="$( cd ${SCRIPT_DIR} && pwd -P)"
 EXEC_USER="tomcat"
 PROFILE_SYS=$1
 case "${PROFILE_SYS}" in
@@ -59,7 +58,6 @@ esac
 
 
 printf '%s\n' $(cat << EOF
-BASEDIR=${BASEDIR}
 EXEC_USER=${EXEC_USER}
 PROFILE_SYS=${PROFILE_SYS}
 SVR_LIST=${SVR_LIST[*]}
