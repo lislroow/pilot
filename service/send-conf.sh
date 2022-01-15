@@ -18,31 +18,31 @@ function send_conf() {
   echo "+++ (send_conf) transfer logback.xml, application.yaml ] +++"
   
   if [ "${PROFILE_SYS}" == "loc" ]; then
-    for APP_HOME in ${APP_HOME_LIST[*]}
+    for app_home in ${APP_HOME_LIST[*]}
     do
-      FILES=(
-        "${BASEDIR}/${APP_NAME}/src/main/resources/.logback-${APP_NAME##*-}-${APP_HOME##*-}.xml"
+      local files=(
+        "${BASEDIR}/${APP_NAME}/src/main/resources/.logback-${APP_NAME##*-}-${app_home##*-}.xml"
       )
-      echo "FILES=${FILES[*]}"
-      if [ ! -e ${APP_HOME} ]; then
-        MKDIR_CMD="mkdir -p ${APP_HOME}"
-        echo "${MKDIR_CMD}"
-        eval "${MKDIR_CMD}"
+      echo "files=${files[*]}"
+      if [ ! -e ${app_home} ]; then
+        local mkdir_cmd="mkdir -p ${app_home}"
+        echo "mkdir_cmd=${mkdir_cmd}"
+        eval "${mkdir_cmd}"
       fi
-      CP_CMD="cp ${FILES[*]} ${APP_HOME}"
-      echo "${CP_CMD}"
-      eval "${CP_CMD}"
+      local cp_cmd="cp ${files[*]} ${app_home}"
+      echo "cp_cmd=${cp_cmd}"
+      eval "${cp_cmd}"
     done
   else
-    for SVR in ${SVR_LIST[*]}
+    for svr in ${SVR_LIST[*]}
     do
-      for APP_HOME in ${APP_HOME_LIST[*]}
+      for app_home in ${APP_HOME_LIST[*]}
       do
-        FILES=(
-          "${BASEDIR}/${APP_NAME}/src/main/resources/.logback-${APP_NAME##*-}-${APP_HOME##*-}.xml"
+        local files=(
+          "${BASEDIR}/${APP_NAME}/src/main/resources/.logback-${APP_NAME##*-}-${app_home##*-}.xml"
         )
-        echo "FILES=${FILES[*]}"
-        scp ${FILES[*]} ${EXEC_USER}@${SVR}:${APP_HOME}
+        echo "files=${files[*]}"
+        scp ${files[*]} ${EXEC_USER}@${svr}:${app_home}
       done
     done
   fi
@@ -95,7 +95,7 @@ BASEDIR=${BASEDIR}
 EXEC_USER=${EXEC_USER}
 PROFILE_SYS=${PROFILE_SYS}
 SVR_LIST=${SVR_LIST[*]}
-APP_HOME=${APP_HOME}
+APP_HOME_LIST=${APP_HOME_LIST[*]}
 EOF
 )
 

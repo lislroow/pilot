@@ -45,42 +45,43 @@ EOF
 function build() {
   echo "+++ (build) build maven project +++"
   
-  MVN_ARGS=""
-  MVN_ARGS="${MVN_ARGS} --file ${BASEDIR}/pom.xml"
-  MVN_ARGS="${MVN_ARGS} -Dfile.encoding=utf-8"
-  MVN_ARGS="${MVN_ARGS} -Dmaven.test.skip=true"
-  MVN_ARGS="${MVN_ARGS} --update-snapshots"
-  MVN_ARGS="${MVN_ARGS} --batch-mode"
-  MVN_ARGS="${MVN_ARGS} --quiet"
+  local mvn_args=""
+  mvn_args="${mvn_args} --file ${BASEDIR}/pom.xml"
+  mvn_args="${mvn_args} -Dfile.encoding=utf-8"
+  mvn_args="${mvn_args} -Dmaven.test.skip=true"
+  mvn_args="${mvn_args} --update-snapshots"
+  mvn_args="${mvn_args} --batch-mode"
+  mvn_args="${mvn_args} --quiet"
   
-  MVN_CMD="mvn ${MVN_ARGS} clean package spring-boot:repackage"
-  echo "${MVN_CMD}"
-  eval "${MVN_CMD}"
+  local mvn_cmd="mvn ${mvn_args} clean package spring-boot:repackage"
+  echo "mvn_cmd=${mvn_cmd}"
+  eval "${mvn_cmd}"
   
-  JAR_FILE=$(xmlstarlet sel -N x="http://maven.apache.org/POM/4.0.0" \
+  local jar_file=$(xmlstarlet sel -N x="http://maven.apache.org/POM/4.0.0" \
     -t -v \
     "concat(x:project/x:artifactId, '-', x:project/x:version, '.', x:project/x:packaging)" \
     ${BASEDIR}/pom.xml)
-  echo "JAR_FILE=${JAR_FILE}"
+  echo "jar_file=${jar_file}"
   
-  # jar 파일명에 "-SNAPSHOT" 이 있으면 snapshot 저장소에 deploy 되어야 합니다. 
-  if [[ "${JAR_FILE}" = *"-SNAPSHOT"* ]]; then
-    NX_REPO=snapshot
+  # jar 파일명에 "-SNAPSHOT" 이 있으면 snapshot 저장소에 deploy 되어야 합니다.
+  local nx_repo 
+  if [[ "${jar_file}" = *"-SNAPSHOT"* ]]; then
+    nx_repo="snapshot"
   else
-    NX_REPO=release
+    nx_repo="release"
   fi
   
   ## deploy-nexus
-  MVN_ARGS=""
-  MVN_ARGS="${MVN_ARGS} -DpomFile=${BASEDIR}/pom.xml"
-  MVN_ARGS="${MVN_ARGS} -Dfile=${BASEDIR}/target/${JAR_FILE}"
-  MVN_ARGS="${MVN_ARGS} --quiet"
-  MVN_ARGS="${MVN_ARGS} -DrepositoryId=maven-${NX_REPO}"
-  MVN_ARGS="${MVN_ARGS} -Durl=https://nexus/repository/maven-${NX_REPO}/"
+  mvn_args=""
+  mvn_args="${mvn_args} -DpomFile=${BASEDIR}/pom.xml"
+  mvn_args="${mvn_args} -Dfile=${BASEDIR}/target/${jar_file}"
+  mvn_args="${mvn_args} --quiet"
+  mvn_args="${mvn_args} -DrepositoryId=maven-${nx_repo}"
+  mvn_args="${mvn_args} -Durl=https://nexus/repository/maven-${nx_repo}/"
   
-  MVN_CMD="mvn deploy:deploy-file ${MVN_ARGS}"
-  echo "${MVN_CMD}"
-  eval "${MVN_CMD}"
+  mvn_cmd="mvn deploy:deploy-file ${mvn_args}"
+  echo "mvn_cmd=${mvn_cmd}"
+  eval "${mvn_cmd}"
   
   echo "--- //(build) build maven project ---"
 }

@@ -26,9 +26,9 @@ EOF
 ## (deploy) deploying trigger
 function deploy() {
   echo "+++ (deploy) deploying trigger +++"
-  for SVR in ${SVR_LIST[*]}
+  for svr in ${SVR_LIST[*]}
   do
-    ssh ${EXEC_USER}@${SVR} "${APP_HOME}/deploy.sh ${PROFILE_SYS} ${APP_NAME}"
+    ssh ${EXEC_USER}@${svr} "${APP_HOME}/deploy.sh ${PROFILE_SYS} ${APP_NAME}"
   done
   
   echo "--- //(deploy) deploying trigger ---"

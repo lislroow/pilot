@@ -17,17 +17,17 @@ EOF
 ## (send_script) transfer *.sh files
 function send_script() {
   echo "+++ (send_script) transfer *.sh files +++"
-  FILES=(
+  files=(
     "${BASEDIR}/script/*.sh"
   )
-  echo "FILES=${FILES[*]}"
+  echo "files=${files[*]}"
   
-  for SVR in ${SVR_LIST[*]}
+  for svr in ${SVR_LIST[*]}
   do
-    for APP_HOME in ${APP_HOME_LIST[*]}
+    for app_home in ${APP_HOME_LIST[*]}
     do
-      scp ${FILES[*]} ${EXEC_USER}@${SVR}:${APP_HOME}
-      ssh ${EXEC_USER}@${SVR} "chmod u+x ${APP_HOME}/*.sh;"
+      scp ${files[*]} ${EXEC_USER}@${svr}:${app_home}
+      ssh ${EXEC_USER}@${svr} "chmod u+x ${app_home}/*.sh;"
     done
   done
   echo "--- //(send_script) transfer *.sh files ---"
@@ -63,7 +63,7 @@ BASEDIR=${BASEDIR}
 EXEC_USER=${EXEC_USER}
 PROFILE_SYS=${PROFILE_SYS}
 SVR_LIST=${SVR_LIST[*]}
-APP_HOME=${APP_HOME}
+APP_HOME_LIST=${APP_HOME_LIST[*]}
 EOF
 )
 
