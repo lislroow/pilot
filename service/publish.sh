@@ -28,7 +28,10 @@ function deploy() {
   echo "+++ (deploy) deploying trigger +++"
   for svr in ${SVR_LIST[*]}
   do
-    ssh ${EXEC_USER}@${svr} "${APP_HOME}/deploy.sh ${PROFILE_SYS} ${APP_NAME}"
+    for app_name in ${APP_NAME_LIST[*]}
+    do
+      ssh ${EXEC_USER}@${svr} "${APP_HOME}/deploy.sh ${PROFILE_SYS} ${app_name}"
+    done
   done
   
   echo "--- //(deploy) deploying trigger ---"
@@ -37,7 +40,7 @@ function deploy() {
 
 echo "+++ (runtime-env) +++"
 EXEC_USER="tomcat"
-PROFILE_SYS=$1
+PROFILE_SYS="$1"
 case "${PROFILE_SYS}" in
   dev)
     SVR_LIST=("172.28.200.30")
@@ -56,16 +59,19 @@ case "${PROFILE_SYS}" in
     exit -1
     ;;
 esac
-APP_NAME=$2
-case "${APP_NAME}" in
+APP_NAME_LIST=()
+case "$2" in
   *w*)
-    APP_NAME="pilot-www"
+    APP_NAME_LIST+=("pilot-www")
     ;;
   *a*)
-    APP_NAME="pilot-adm"
+    APP_NAME_LIST+=("pilot-adm")
     ;;
   *)
-    exit -1;
+    APP_NAME_LIST+=(
+      "pilot-www"
+      "pilot-adm"
+    )
     ;;
 esac
 
