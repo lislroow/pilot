@@ -14,27 +14,27 @@ EOF
 ## (status) status
 function status() {
   echo "+++ (status) status +++"
-  for APP_ID in ${APP_ID_LIST[*]}
+  for app_id in ${APP_ID_LIST[*]}
   do
-    echo "--- ${APP_ID} ---"
-    PS_CMD="ps aux | grep -v grep | grep -v tail |  grep -v .sh | grep ${APP_ID}"
-    eval "${PS_CMD}"
-    _PID=$(eval "${PS_CMD} | awk '{ print \$2}'")
-    if [ "${_PID}" != "" ]; then
-      netstat -ntplu | grep ${_PID}
-      SERVER_PORT=$(netstat -tnplu | grep ${_PID} | awk '{ if (match($4, /([0-9]*)$/, m)) print m[0] }')
-      if [ "${SERVER_PORT}" != "" ]; then
-        HTTP_CODE=$(curl --write-out "%{http_code}" --silent --output /dev/null "http://localhost:${SERVER_PORT}/")
-        if [ "${HTTP_CODE}" == "200" ]; then
-          echo "${APP_ID} is avaiable. (SERVER_PORT=${SERVER_PORT})"
+    echo "--- ${app_id} ---"
+    local ps_cmd="ps aux | grep -v grep | grep -v tail |  grep -v .sh | grep ${app_id}"
+    eval "${ps_cmd}"
+    local _pid=$(eval "${ps_cmd} | awk '{ print \$2}'")
+    if [ "${_pid}" != "" ]; then
+      netstat -ntplu | grep ${_pid}
+      local server_port=$(netstat -tnplu | grep ${_pid} | awk '{ if (match($4, /([0-9]*)$/, m)) print m[0] }')
+      if [ "${server_port}" != "" ]; then
+        local http_code=$(curl --write-out "%{http_code}" --silent --output /dev/null "http://localhost:${server_port}/")
+        if [ "${http_code}" == "200" ]; then
+          echo "${app_id} is avaiable. (server_port=${server_port})"
         else
-          echo "${APP_ID} is not avaiable. (SERVER_PORT=${SERVER_PORT})"
+          echo "${app_id} is not avaiable. (server_port=${server_port})"
         fi
       else
-        echo "${APP_ID} is not avaiable."
+        echo "${app_id} is not avaiable."
       fi
     else
-      echo "${APP_ID} is not running"
+      echo "${app_id} is not running"
     fi
     echo ""
   done
@@ -44,16 +44,30 @@ function status() {
 
 
 echo "+++ (runtime-env) +++"
-APP_ID_LIST=(
-  "dwww11"
-  "dwww12"
-  "swww11"
-  "swww12"
-  "dadm11"
-  "dadm12"
-  "sadm11"
-  "sadm12"
-)
+case "${PROFILE_SYS}" in
+  d*)
+    APP_ID_LIST=(
+      "dwww11"
+      "dwww12"
+      "dadm11"
+      "dadm12"
+    )
+    ;;
+  s*)
+    APP_ID_LIST=(
+      "swww11"
+      "swww12"
+      "sadm11"
+      "sadm12"
+    )
+    ;;
+  *)
+    echo "Usage: ${0##*/} [dev|sta]"
+    exit -1
+    ;;
+esac
+
+
 printf '%s\n' $(cat << EOF
 APP_ID_LIST=${APP_ID_LIST[*]}
 EOF

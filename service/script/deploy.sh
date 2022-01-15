@@ -27,35 +27,35 @@ function deploy() {
   case ${PROFILE_SYS} in
     dev)
       # lastest artifact (maven-snapshot)
-      nexus_url="https://nexus/repository/maven-snapshot"
-      metadata_url="${nexus_url}/mgkim/service/${APP_NAME}/maven-metadata.xml"
+      local nexus_url="https://nexus/repository/maven-snapshot"
+      local metadata_url="${nexus_url}/mgkim/service/${APP_NAME}/maven-metadata.xml"
       echo "metadata_url=${metadata_url}"
-      app_ver=$(curl -s ${metadata_url} | xmllint --xpath "//version[last()]/text()" -)
+      local app_ver=$(curl -s ${metadata_url} | xmllint --xpath "//version[last()]/text()" -)
       echo "app_ver=${app_ver}"
       
-      metadata_url="${nexus_url}/mgkim/service/${APP_NAME}/${app_ver}/maven-metadata.xml"
+      local metadata_url="${nexus_url}/mgkim/service/${APP_NAME}/${app_ver}/maven-metadata.xml"
       echo "metadata_url=${metadata_url}"
-      app_snap_ver=$(curl -s ${metadata_url} | xmllint --xpath "//snapshotVersion[1]/value/text()" -)
-      snap_timestamp=$(curl -s ${metadata_url} | xmllint --xpath "//timestamp/text()" -)
-      snap_buildNumber=$(curl -s ${metadata_url} | xmllint --xpath "//buildNumber/text()" -)
+      local app_snap_ver=$(curl -s ${metadata_url} | xmllint --xpath "//snapshotVersion[1]/value/text()" -)
+      local snap_timestamp=$(curl -s ${metadata_url} | xmllint --xpath "//timestamp/text()" -)
+      local snap_buildNumber=$(curl -s ${metadata_url} | xmllint --xpath "//buildNumber/text()" -)
       echo "app_snap_ver=${app_snap_ver}"
       echo "snap_timestamp=${snap_timestamp},snap_buildNumber=${snap_buildNumber}"
       
-      DOWNLOAD_URL="${nexus_url}/mgkim/service/${APP_NAME}/${app_ver}/${APP_NAME}-${app_snap_ver}.jar"
+      local download_url="${nexus_url}/mgkim/service/${APP_NAME}/${app_ver}/${APP_NAME}-${app_snap_ver}.jar"
       jar_file="${APP_NAME}-${app_ver}-${snap_timestamp}-${snap_buildNumber}.jar"
-      echo "DOWNLOAD_URL=${DOWNLOAD_URL} to jar_file=${jar_file}"
+      echo "download_url=${download_url} to jar_file=${jar_file}"
       ;;
     sta)
       # lastest artifact (maven-release)
-      nexus_url="https://nexus/repository/maven-release"
+      local nexus_url="https://nexus/repository/maven-release"
       metadata_url="${nexus_url}/mgkim/service/${APP_NAME}/maven-metadata.xml"
       echo "metadata_url=${metadata_url}"
       app_ver=$(curl -s ${metadata_url} | xmllint --xpath "//version[last()]/text()" -)
       echo "app_ver=${app_ver}"
       
-      DOWNLOAD_URL="${nexus_url}/mgkim/service/${APP_NAME}/${app_ver}/${APP_NAME}-${app_ver}.jar"
+      local download_url="${nexus_url}/mgkim/service/${APP_NAME}/${app_ver}/${APP_NAME}-${app_ver}.jar"
       jar_file="${APP_NAME}-${app_ver}.jar"
-      echo "DOWNLOAD_URL=${DOWNLOAD_URL} to jar_file=${jar_file}"
+      echo "download_url=${download_url} to jar_file=${jar_file}"
       ;;
     *)
       exit -1
@@ -63,41 +63,41 @@ function deploy() {
   esac
   
   # DOWNLOAD
-  DOWNLOAD_CMD="curl --silent --output ${BASEDIR}/${jar_file} ${DOWNLOAD_URL}"
-  echo "DOWNLOAD_CMD=${DOWNLOAD_CMD}"
+  download_cmd="curl --silent --output ${BASEDIR}/${jar_file} ${download_url}"
+  echo "download_cmd=${download_cmd}"
   if [ $(whoami) == "root" ]; then
-    su ${EXEC_USER} -c "${DOWNLOAD_CMD}"
+    su ${EXEC_USER} -c "${download_cmd}"
   elif [ $(whoami) == ${EXEC_USER} ]; then
-    eval "${DOWNLOAD_CMD}"
+    eval "${download_cmd}"
   else
     echo "current user "$(whoami)
     exit -1
   fi
   
-  # FINAL_NAME
-  md5str=$(md5sum ${BASEDIR}/${jar_file} | awk '{ print substr($1, 1, 4) }')
-  FINAL_NAME=${jar_file%.*}_${md5str}.${jar_file##*.}
-  MV_CMD="mv ${BASEDIR}/${jar_file} ${BASEDIR}/${FINAL_NAME}"
-  echo "MV_CMD=${MV_CMD}"
+  # final_name
+  local md5str=$(md5sum ${BASEDIR}/${jar_file} | awk '{ print substr($1, 1, 4) }')
+  local final_name=${jar_file%.*}_${md5str}.${jar_file##*.}
+  local mv_cmd="mv ${BASEDIR}/${jar_file} ${BASEDIR}/${final_name}"
+  echo "mv_cmd=${mv_cmd}"
   if [ $(whoami) == "root" ]; then
-    su ${EXEC_USER} -c "${MV_CMD}"
+    su ${EXEC_USER} -c "${mv_cmd}"
   elif [ $(whoami) == ${EXEC_USER} ]; then
-    eval "${MV_CMD}"
+    eval "${mv_cmd}"
   else
     echo "current user "$(whoami)
     exit -1
   fi
-  echo "FINAL_NAME=${FINAL_NAME}"
+  echo "final_name=${final_name}"
   
   # stop / start
-  for APP_ID in ${APP_ID_LIST[*]}
+  for app_id in ${APP_ID_LIST[*]}
   do
     if [ $(whoami) == "root" ]; then
-      su ${EXEC_USER} -c "${BASEDIR}/stop.sh ${APP_ID}"
-      su ${EXEC_USER} -c "${BASEDIR}/start.sh ${APP_ID} ${FINAL_NAME}"
+      su ${EXEC_USER} -c "${BASEDIR}/stop.sh ${app_id}"
+      su ${EXEC_USER} -c "${BASEDIR}/start.sh ${app_id} ${final_name}"
     elif [ $(whoami) == ${EXEC_USER} ]; then
-      ${BASEDIR}/stop.sh ${APP_ID}
-      ${BASEDIR}/start.sh ${APP_ID} ${FINAL_NAME}
+      ${BASEDIR}/stop.sh ${app_id}
+      ${BASEDIR}/start.sh ${app_id} ${final_name}
     else
       echo "current user "$(whoami)
       exit -1
@@ -130,6 +130,7 @@ case "${PROFILE_SYS}:${APP_NAME}" in
     APP_ID_LIST=("sadm11" "sadm12")
     ;;
   *)
+    echo "Usage: ${0##*/} [dev|sta] [w|a]"
     exit -1
     ;;
 esac

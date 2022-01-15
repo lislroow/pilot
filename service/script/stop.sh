@@ -24,23 +24,26 @@ EOF
 ## (stop) stop
 function stop() {
   echo "+++ (stop) stop +++"
-  PS_CMD="ps -ef | grep -v grep | grep -v tail |  grep -v .sh | grep ${APP_ID} | awk '{ print \$2 }'"
-  echo "${PS_CMD}"
-  _PID=$(eval "${PS_CMD}")
+  local ps_cmd="ps -ef | grep -v grep | grep -v tail |  grep -v .sh | grep ${APP_ID} | awk '{ print \$2 }'"
+  echo "ps_cmd=${ps_cmd}"
+  local _pid=$(eval "${ps_cmd}")
   
-  if [ "${_PID}" != "" ]; then
-    echo "stopping ${APP_ID}(pid:'${_PID}')"
-    kill -15 ${_PID}
+  if [ "${_pid}" != "" ]; then
+    echo "stopping ${APP_ID}(pid:'${_pid}')"
+    local kill_cmd="kill -15 ${_pid}"
+    echo "kill_cmd=${kill_cmd}"
+    eval "${kill_cmd}"
     
     i=1
     while [ $i -lt 600 ];
     do
-      _CHECK_PID=$(eval "${PS_CMD}")
-      if [ "${_CHECK_PID}" == "" ]; then
-        echo "${APP_ID}(pid:'${_PID}') killed"
+      local _check_pid=$(eval "${ps_cmd}")
+      echo "_check_pid=${_check_pid}"
+      if [ "${_check_pid}" == "" ]; then
+        echo "${APP_ID}(pid:'${_pid}') killed"
         break
       fi
-      echo "wait for ${APP_ID}(pid:'${_PID}') killing"
+      echo "wait for ${APP_ID}(pid:'${_pid}') killing"
       i=$(( $i + 1 ))
       sleep 1
     done

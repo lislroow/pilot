@@ -16,35 +16,36 @@ EOF
 function backup() {
   echo "+++ (backup) backup except for lastest jar +++"
   if [ ! -e ${ARCHIVE_DIR} ]; then
-    MKDIR_CMD="mkdir -p ${ARCHIVE_DIR}"
+    local mkdir_cmd="mkdir -p ${ARCHIVE_DIR}"
+    echo "mkdir_cmd=${mkdir_cmd}"
     if [ $(whoami) == "root" ]; then
-      su ${EXEC_USER} -c "${MKDIR_CMD}"
+      su ${EXEC_USER} -c "${mkdir_cmd}"
     elif [ $(whoami) == ${EXEC_USER} ]; then
-      eval "${MKDIR_CMD}"
+      eval "${mkdir_cmd}"
     else
       echo "current user "$(whoami)
       exit -1
     fi
   fi
   
-  LATEST_CMD="ls -rt ${BASEDIR}/${APP_NAME}*.jar | tail -n 1"
-  #echo ${LATEST_CMD}
-  LATEST_JAR=$(eval ${LATEST_CMD})
+  local latest_cmd="ls -rt ${BASEDIR}/${APP_NAME}*.jar | tail -n 1"
+  echo "latest_cmd=${latest_cmd}"
+  latest_jar=$(eval "${latest_cmd}")
   
-  OLD_CMD="find ${BASEDIR} -maxdepth 1 -type f ! -newer ${LATEST_JAR} -name '${APP_NAME}*.jar' ! -samefile ${LATEST_JAR}"
-  #echo ${OLD_CMD}
-  OLD_JAR=$(eval ${OLD_CMD})
+  old_cmd="find ${BASEDIR} -maxdepth 1 -type f ! -newer ${latest_jar} -name '${APP_NAME}*.jar' ! -samefile ${latest_jar}"
+  echo "old_cmd=${old_cmd}"
+  old_jar=$(eval "${old_cmd}")
   
-  echo "LATEST_JAR=${LATEST_JAR}"
-  echo "OLD_JAR=${OLD_JAR[*]}"
+  echo "latest_jar=${latest_jar}"
+  echo "old_jar=${old_jar[*]}"
   
-  if [ "${OLD_JAR[*]}" != "" ]; then
-    MV_CMD="mv $(echo ${OLD_JAR[*]} | tr -d '\n') ${ARCHIVE_DIR}"
-    echo "MV_CMD=${MV_CMD}"
+  if [ "${old_jar[*]}" != "" ]; then
+    mv_cmd="mv $(echo ${old_jar[*]} | tr -d '\n') ${ARCHIVE_DIR}"
+    echo "mv_cmd=${mv_cmd}"
     if [ $(whoami) == "root" ]; then
-      su ${EXEC_USER} -c "${MV_CMD}"
+      su ${EXEC_USER} -c "${mv_cmd}"
     elif [ $(whoami) == ${EXEC_USER} ]; then
-      eval "${MV_CMD}"
+      eval "${mv_cmd}"
     else
       echo "current user "$(whoami)
       exit -1
@@ -67,6 +68,7 @@ case "${APP_NAME}" in
     APP_NAME="service-adm"
     ;;
   *)
+    echo "Usage: ${0##*/} [w|a]"
     exit -1
     ;;
 esac

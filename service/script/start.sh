@@ -40,81 +40,84 @@ EOF
 ## (start) start
 function start() {
   echo "+++ (start) start +++"
-  PS_CMD="ps -ef | grep -v grep | grep -v tail |  grep -v .sh | grep ${APP_ID} | awk '{ print \$2 }'"
-  echo "${PS_CMD}"
-  _PID=$(eval "${PS_CMD}")
+  local ps_cmd="ps -ef | grep -v grep | grep -v tail |  grep -v .sh | grep ${APP_ID} | awk '{ print \$2 }'"
+  echo "ps_cmd=${ps_cmd}"
+  local _pid=$(eval "${ps_cmd}")
   
-  if [ "${_PID}" != "" ]; then
+  if [ "${_pid}" != "" ]; then
     echo "execute ${BASEDIR}/stop.sh ${APP_ID}"
     ${BASEDIR}/stop.sh ${APP_ID}
   fi
   
   # console-logfile
-  LOG_FILEPATH="${LOGBASE}/${APP_ID}-console.log"
-  if [ -e ${LOG_FILEPATH} ]; then
-    curr_ts=`date +'%Y%m%d_%H%M%S'`
-    LOG_BACKUP="${LOGBASE}/backup/${APP_ID}-console-${curr_ts}.log"
+  local log_filepath="${LOGBASE}/${APP_ID}-console.log"
+  echo "log_filepath=${log_filepath}"
+  if [ -e ${log_filepath} ]; then
+    local curr_ts=`date +'%Y%m%d_%H%M%S'`
+    local bak_filepath="${LOGBASE}/backup/${APP_ID}-console-${curr_ts}.log"
+    echo "bak_filepath=${bak_filepath}"
     if [ ! -e "${LOGBASE}/backup" ]; then
-      MKDIR_CMD="mkdir -p ${LOGBASE}/backup"
-      echo "${MKDIR_CMD}"
+      local mkdir_cmd="mkdir -p ${LOGBASE}/backup"
+      echo "mkdir_cmd=${mkdir_cmd}"
       if [ $(whoami) == "root" ]; then
-        su ${EXEC_USER} -c "${MKDIR_CMD}"
+        su ${EXEC_USER} -c "${mkdir_cmd}"
       elif [ $(whoami) == ${EXEC_USER} ]; then
-        eval "${MKDIR_CMD}"
+        eval "${mkdir_cmd}"
       else
         echo "current user "$(whoami)
         exit -1
       fi
     fi
-    MV_CMD="mv ${LOG_FILEPATH} ${LOG_BACKUP}"
-    echo "${MV_CMD}"
+    local mv_cmd="mv ${log_filepath} ${bak_filepath}"
+    echo "mv_cmd=${mv_cmd}"
     if [ $(whoami) == "root" ]; then
-      su ${EXEC_USER} -c "${MV_CMD}"
+      su ${EXEC_USER} -c "${mv_cmd}"
     elif [ $(whoami) == ${EXEC_USER} ]; then
-      eval "${MV_CMD}"
+      eval "${mv_cmd}"
     else
       echo "current user "$(whoami)
       exit -1
     fi
   fi
   
-  JAVA_OPTS=""
-  JAVA_OPTS="${JAVA_OPTS} -Dspring.profiles.active=${PROFILE_SYS}"
-  JAVA_OPTS="${JAVA_OPTS} -Dspring.output.ansi.enabled=always"
-  JAVA_OPTS="${JAVA_OPTS} -Dapp.name=${APP_NAME}"
-  JAVA_OPTS="${JAVA_OPTS} -Dapp.id=${APP_ID}"
-  JAVA_OPTS="${JAVA_OPTS} -Dserver.port=${SERVER_PORT}"
+  local java_opts=""
+  java_opts="${java_opts} -Dspring.profiles.active=${PROFILE_SYS}"
+  java_opts="${java_opts} -Dspring.output.ansi.enabled=always"
+  java_opts="${java_opts} -Dapp.name=${APP_NAME}"
+  java_opts="${java_opts} -Dapp.id=${APP_ID}"
+  java_opts="${java_opts} -Dserver.port=${SERVER_PORT}"
   
-  JAVA_CMD="nohup $JAVA_HOME/bin/java ${JAVA_OPTS} -jar ${JAR_FILE} > ${LOG_FILEPATH} 2>&1 &"
-  echo "${JAVA_CMD}"
+  local java_cmd="nohup $JAVA_HOME/bin/java ${java_opts} -jar ${JAR_FILE} > ${log_filepath} 2>&1 &"
+  echo "java_cmd=${java_cmd}"
   if [ $(whoami) == "root" ]; then
-    su ${EXEC_USER} -c "${JAVA_CMD}"
+    su ${EXEC_USER} -c "${java_cmd}"
   elif [ $(whoami) == ${EXEC_USER} ]; then
-    eval "${JAVA_CMD}"
+    eval "${java_cmd}"
   else
     echo "current user "$(whoami)
     exit -1
   fi
   
-  echo "${PS_CMD}"
-  _PID=$(eval "${PS_CMD}")
+  echo "ps_cmd=${ps_cmd}"
+  local _pid=$(eval "${ps_cmd}")
+  echo "_pid=${_pid}"
   
-  if [ "${_PID}" == "" ]; then
+  if [ "${_pid}" == "" ]; then
     echo "${APP_ID} is not started"
     exit -1
   else
-    echo "${APP_ID}(pid:'${_PID}') starting ..."
+    echo "${APP_ID}(pid:'${_pid}') starting ..."
   fi
   
   i=1
   while [ $i -lt 600 ];
   do
-    HTTP_CODE=$(curl --write-out "%{http_code}" --silent --output /dev/null "http://localhost:${SERVER_PORT}/")
-    if [ "${HTTP_CODE}" == "200" ]; then
-      echo "${APP_ID}(pid:'${_PID}') started"
+    local http_code=$(curl --write-out "%{http_code}" --silent --output /dev/null "http://localhost:${SERVER_PORT}/")
+    if [ "${http_code}" == "200" ]; then
+      echo "${APP_ID}(pid:'${_pid}') started"
       break
     fi
-    echo "${APP_ID}(pid:'${_PID}') booting ..."
+    echo "${APP_ID}(pid:'${_pid}') booting ..."
     i=$(( $i + 1 ))
     sleep 3
   done
@@ -177,6 +180,7 @@ case "${APP_ID}" in
     PROFILE_SYS="sta"
     ;;
   *)
+    echo "Usage: ${0##*/} [dw1|dw2|da1|da2|sw1|sw2|sa1|sa2]"
     exit -1
     ;;
 esac
