@@ -4,10 +4,10 @@ echo "### [start] ${0##*/} ${@} ###"
 
 ## env
 echo $"+++ (system-env) +++"
-SCRIPT_DIR="$( cd $( dirname "$0" ) && pwd -P)"
+BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 
 printf '%s\n' $(cat << EOF
-SCRIPT_DIR=${SCRIPT_DIR}
+BASEDIR=${BASEDIR}
 EOF
 )
 
@@ -57,7 +57,6 @@ function backup() {
 
 echo "+++ (runtime-env) +++"
 EXEC_USER="tomcat"
-BASEDIR="$( cd ${SCRIPT_DIR} && pwd -P)"
 ARCHIVE_DIR="${BASEDIR}/archive"
 APP_NAME=$1
 case "${APP_NAME}" in
@@ -76,7 +75,6 @@ esac
 
 printf '%s\n' $(cat << EOF
 EXEC_USER=${EXEC_USER}
-BASEDIR=${BASEDIR}
 ARCHIVE_DIR=${ARCHIVE_DIR}
 EOF
 )

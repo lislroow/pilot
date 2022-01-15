@@ -4,7 +4,7 @@ echo "### [start] ${0##*/} ${@} ###"
 
 ## env
 echo "+++ (system-env) +++"
-SCRIPT_DIR="$( cd $( dirname "$0" ) && pwd -P)"
+BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 
 UNAME=`uname -s`
 if [[ "${UNAME}" = "Linux"* ]]; then
@@ -14,7 +14,7 @@ elif [[ "${UNAME}" = "CYGWIN"* || "${UNAME}" = "MINGW"* ]]; then
 fi
 
 printf '%s\n' $(cat << EOF
-SCRIPT_DIR=${SCRIPT_DIR}
+BASEDIR=${BASEDIR}
 UNAME=${UNAME}
 OS_NAME=${OS_NAME}
 EOF
@@ -109,7 +109,6 @@ function deploy() {
 
 echo "+++ (runtime-env) +++"
 EXEC_USER="tomcat"
-BASEDIR="$( cd ${SCRIPT_DIR} && pwd -P)"
 PROFILE_SYS=$1
 APP_NAME=$2
 case "${PROFILE_SYS}:${APP_NAME}" in
@@ -137,7 +136,6 @@ esac
 
 printf '%s\n' $(cat << EOF
 EXEC_USER=${EXEC_USER}
-BASEDIR=${BASEDIR}
 PROFILE_SYS=${PROFILE_SYS}
 APP_NAME=${APP_NAME}
 APP_ID_LIST=${APP_ID_LIST}

@@ -3,10 +3,10 @@
 echo "### [start] ${0##*/} ${@} ###"
 
 echo "+++ (system-env) +++"
-SCRIPT_DIR="$( cd $( dirname "$0" ) && pwd -P)"
+BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 
 printf '%s\n' $(cat << EOF
-SCRIPT_DIR=${SCRIPT_DIR}
+BASEDIR=${BASEDIR}
 EOF
 )
 

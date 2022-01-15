@@ -4,7 +4,7 @@ echo "### [start] ${0##*/} ${@} ###"
 
 ## env
 echo "+++ (system-env) +++"
-SCRIPT_DIR="$( cd $( dirname "$0" ) && pwd -P)"
+BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 
 UNAME=`uname -s`
 if [[ "${UNAME}" = "Linux"* ]]; then
@@ -29,7 +29,7 @@ case "${OS_NAME}" in
 esac
 
 printf '%s\n' $(cat << EOF
-SCRIPT_DIR=${SCRIPT_DIR}
+BASEDIR=${BASEDIR}
 UNAME=${UNAME}
 OS_NAME=${OS_NAME}
 JAVA_HOME=${JAVA_HOME}
@@ -127,7 +127,6 @@ function start() {
 
 echo "+++ (runtime-env) +++"
 EXEC_USER="tomcat"
-BASEDIR="$( cd ${SCRIPT_DIR} && pwd -P)"
 LOGBASE="/outlog/pilot"
 APP_ID=$1
 case "${APP_ID}" in
@@ -200,7 +199,6 @@ fi
 
 printf '%s\n' $(cat << EOF
 EXEC_USER=${EXEC_USER}
-BASEDIR=${BASEDIR}
 APP_NAME=${APP_NAME}
 APP_ID=${APP_ID}
 SERVER_PORT=${SERVER_PORT}
