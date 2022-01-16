@@ -68,12 +68,22 @@ function start() {
         exit -1
       fi
     fi
-    local mv_cmd="mv ${log_filepath} ${bak_filepath}"
-    echo "mv_cmd=${mv_cmd}"
+    local cp_cmd="cp ${log_filepath} ${bak_filepath}"
+    echo "cp_cmd=${cp_cmd}"
     if [ $(whoami) == "root" ]; then
-      su ${EXEC_USER} -c "${mv_cmd}"
+      su ${EXEC_USER} -c "${cp_cmd}"
     elif [ $(whoami) == ${EXEC_USER} ]; then
-      eval "${mv_cmd}"
+      eval "${cp_cmd}"
+    else
+      echo "current user "$(whoami)
+      exit -1
+    fi
+    local cat_cmd="cat /dev/null > ${log_filepath}"
+    echo "cat_cmd=${cat_cmd}"
+    if [ $(whoami) == "root" ]; then
+      su ${EXEC_USER} -c "${cat_cmd}"
+    elif [ $(whoami) == ${EXEC_USER} ]; then
+      eval "${cat_cmd}"
     else
       echo "current user "$(whoami)
       exit -1
