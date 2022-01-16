@@ -13,87 +13,118 @@ BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 function send_conf() {
   echo "+++ (send_conf) transfer logback.xml, application.yaml ] +++"
   
-  if [ "${PROFILE_SYS}" == "loc" ]; then
-    for app_home in ${APP_HOME_LIST[@]}
-    do
-      local files=(
-        "${BASEDIR}/${APP_NAME}/src/main/resources/.logback-${APP_NAME##*-}-${app_home##*-}.xml"
-      )
-      echo "files=${files[@]}"
-      if [ ! -e ${app_home} ]; then
-        local mkdir_cmd="mkdir -p ${app_home}"
-        echo "mkdir_cmd=${mkdir_cmd}"
-        eval "${mkdir_cmd}"
-      fi
-      local cp_cmd="cp ${files[@]} ${app_home}"
-      echo "cp_cmd=${cp_cmd}"
-      eval "${cp_cmd}"
-    done
-  else
-    for svr in ${SVR_LIST[@]}
-    do
-      for app_home in ${APP_HOME_LIST[@]}
+  case "$1" in
+    all)
+      # sd , aw > ip
+      read -ra app_name_arr <<< $(GetSvrInfo "app_name" "ALL")
+      read -ra profile_sys_arr <<< $(GetSvrInfo "profile_sys" "ALL")
+      
+      for profile_sys in ${profile_sys_arr[@]}
       do
-        local files=(
-          "${BASEDIR}/${APP_NAME}/src/main/resources/.logback-${APP_NAME##*-}-${app_home##*-}.xml"
-        )
-        echo "files=${files[@]}"
-        scp ${files[@]} ${EXEC_USER}@${svr}:${app_home}
+        for app_name in ${app_name_arr[@]}
+        do
+          read -r  app_home <<< $(GetSvrInfo "app_home" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
+          read -ra ip_arr <<< $(GetSvrInfo "ip" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
+          echo "ip_arr=${ip_arr[@]}, cnt=${#ip_arr[@]}"
+          
+          for ip in ${ip_arr[@]}
+          do
+            ## [actual-code]
+            local files=("${BASEDIR}/${app_name}/src/main/resources/.logback-${app_name##*-}-${app_home##*-}.xml")
+            echo "files=${files[@]}"
+            local scp_cmd="scp ${files[@]} ${EXEC_USER}@${ip}:${app_home}"
+            echo "scp_cmd=${scp_cmd}"
+            eval "${scp_cmd}"
+            ## //[actual-code]
+          done
+        done
       done
-    done
-  fi
+      ;;
+    d|s)
+      # s > aw > ip
+      read -r  profile_sys <<< $(GetSvrInfo "profile_sys" "profile_sys" "$1")
+      read -ra app_name_arr <<< $(GetSvrInfo "app_name" "profile_sys" "$1")
+      for app_name in ${app_name_arr[@]}
+      do
+        read -r  app_home <<< $(GetSvrInfo "app_home" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
+        read -ra ip_arr <<< $(GetSvrInfo "ip" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
+        echo "ip_arr=${ip_arr[@]}, cnt=${#ip_arr[@]}"
+        
+        for ip in ${ip_arr[@]}
+        do
+          ## [actual-code]
+          local files=("${BASEDIR}/${app_name}/src/main/resources/.logback-${app_name##*-}-${app_home##*-}.xml")
+          echo "files=${files[@]}"
+          local scp_cmd="scp ${files[@]} ${EXEC_USER}@${ip}:${app_home}"
+          echo "scp_cmd=${scp_cmd}"
+          eval "${scp_cmd}"
+          ## //[actual-code]
+        done
+      done
+      ;;
+    w|a)
+      # w > ds > ip
+      read -r  app_name <<< $(GetSvrInfo "app_name" "app_name" "$1")
+      read -ra profile_sys_arr <<< $(GetSvrInfo "profile_sys" "app_name" "$1")
+      for profile_sys in ${profile_sys_arr[@]}
+      do
+        read -r  app_home <<< $(GetSvrInfo "app_home" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
+        read -ra ip_arr <<< $(GetSvrInfo "ip" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
+        echo "ip_arr=${ip_arr[@]}, cnt=${#ip_arr[@]}"
+        
+        for ip in ${ip_arr[@]}
+        do
+          ## [actual-code]
+          local files=("${BASEDIR}/${app_name}/src/main/resources/.logback-${app_name##*-}-${app_home##*-}.xml")
+          echo "files=${files[@]}"
+          local scp_cmd="scp ${files[@]} ${EXEC_USER}@${ip}:${app_home}"
+          echo "scp_cmd=${scp_cmd}"
+          eval "${scp_cmd}"
+          ## //[actual-code]
+        done
+      done
+      ;;
+    dw*|sw*|da*|sa*)
+      # dw > d, w > ip
+      read -r  app_name <<< $(GetSvrInfo "app_name" "app_id" "$1")
+      read -r  profile_sys <<< $(GetSvrInfo "profile_sys" "app_id" "$1")
+      read -r  app_home <<< $(GetSvrInfo "app_home" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
+      read -ra ip_arr <<< $(GetSvrInfo "ip" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
+      echo "ip_arr=${ip_arr[@]}, cnt=${#ip_arr[@]}"
+      
+      for ip in ${ip_arr[@]}
+      do
+        ## [actual-code]
+        local files=("${BASEDIR}/${app_name}/src/main/resources/.logback-${app_name##*-}-${app_home##*-}.xml")
+        echo "files=${files[@]}"
+        local scp_cmd="scp ${files[@]} ${EXEC_USER}@${ip}:${app_home}"
+        echo "scp_cmd=${scp_cmd}"
+        eval "${scp_cmd}"
+        ## //[actual-code]
+      done
+      ;;
+  esac
   
   echo "--- //(send_conf) transfer logback.xml, application.yaml ---"
 }
 
 
 echo "+++ (runtime-env) +++"
-EXEC_USER="tomcat"
-PROFILE_SYS=$1
-case "${PROFILE_SYS}" in
-  loc)
-    APP_HOME_LIST=("/z/app/pilot-dev" "/z/app/pilot-sta")
+case "$1" in
+  all)
     ;;
-  dev)
-    SVR_LIST=("172.28.200.30")
-    APP_HOME_LIST=("/app/pilot-dev")
+  d|s)
     ;;
-  sta)
-    SVR_LIST=("172.28.200.30")
-    APP_HOME_LIST=("/app/pilot-sta")
+  w|a)
     ;;
-  -h)
-    echo "Usage: ${0##*/} [dev|sta] [w|a]"
+  dw|sw|da|sa)
+    ;;
+  *)
+    echo "Usage: ${0##*/} [all|d|s|w|a|dw|da|sw|sa]"
     exit 0;
     ;;
-  *)
-    echo "Usage: ${0##*/} [dev|sta] [w|a]"
-    exit -1
-    ;;
-esac
-APP_NAME=$2
-case "${APP_NAME}" in
-  *w*)
-    APP_NAME="pilot-www"
-    ;;
-  *a*)
-    APP_NAME="pilot-adm"
-    ;;
-  *)
-    exit -1;
-    ;;
 esac
 
-
-printf '%s\n' $(cat << EOF
-EXEC_USER=${EXEC_USER}
-PROFILE_SYS=${PROFILE_SYS}
-SVR_LIST=${SVR_LIST[@]}
-APP_HOME_LIST=${APP_HOME_LIST[@]}
-EOF
-)
-
-
-send_conf;
+send_conf "$1";
 
 echo "### [finish] ${0##*/} ${@} ###"$'\n'$'\n'

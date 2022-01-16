@@ -17,50 +17,65 @@ function send_script() {
   )
   echo "files=${files[@]}"
   
-  for svr in ${SVR_LIST[@]}
-  do
-    for app_home in ${APP_HOME_LIST[@]}
-    do
-      scp ${files[@]} ${EXEC_USER}@${svr}:${app_home}
-      ssh ${EXEC_USER}@${svr} "chmod u+x ${app_home}/*.sh;"
-    done
-  done
+  case "$1" in
+    all)
+      read -ra profile_sys_arr <<< $(GetSvrInfo "profile_sys" "ALL")
+      
+      for profile_sys in ${profile_sys_arr[@]}
+      do
+        read -r  app_home <<< $(GetSvrInfo "app_home" "profile_sys" "${profile_sys}")
+        read -ra ip_arr <<< $(GetSvrInfo "ip" "profile_sys" "${profile_sys}")
+        echo "ip_arr=${ip_arr[@]}, cnt=${#ip_arr[@]}"
+        
+        for ip in ${ip_arr[@]}
+        do
+          ## [actual-code]
+          local scp_cmd="scp ${files[@]} ${EXEC_USER}@${ip}:${app_home}"
+          echo "scp_cmd=${scp_cmd}"
+          eval "${scp_cmd}"
+          local ssh_cmd="ssh ${EXEC_USER}@${ip} 'chmod u+x ${app_home}/*.sh'"
+          echo "ssh_cmd=${ssh_cmd}"
+          eval "${ssh_cmd}"
+          ## //[actual-code]
+        done
+      done
+      ;;
+    d|s)
+      read -r  profile_sys <<< $(GetSvrInfo "profile_sys" "profile_sys" "$1")
+      read -r  app_home <<< $(GetSvrInfo "app_home" "profile_sys" "${profile_sys}")
+      read -ra ip_arr <<< $(GetSvrInfo "ip" "profile_sys" "${profile_sys}")
+      echo "ip_arr=${ip_arr[@]}, cnt=${#ip_arr[@]}"
+      
+      for ip in ${ip_arr[@]}
+      do
+        ## [actual-code]
+        local scp_cmd="scp ${files[@]} ${EXEC_USER}@${ip}:${app_home}"
+        echo "scp_cmd=${scp_cmd}"
+        eval "${scp_cmd}"
+        local ssh_cmd="ssh ${EXEC_USER}@${ip} 'chmod u+x ${app_home}/*.sh'"
+        echo "ssh_cmd=${ssh_cmd}"
+        eval "${ssh_cmd}"
+        ## //[actual-code]
+      done
+      ;;
+  esac
+  
   echo "--- //(send_script) transfer *.sh files ---"
 }
 
 
 echo "+++ (runtime-env) +++"
-EXEC_USER="tomcat"
-PROFILE_SYS=$1
-case "${PROFILE_SYS}" in
-  dev)
-    SVR_LIST=("172.28.200.30")
-    APP_HOME_LIST=("/app/pilot-dev")
+case "$1" in
+  all)
     ;;
-  sta)
-    SVR_LIST=("172.28.200.30")
-    APP_HOME_LIST=("/app/pilot-sta")
-    ;;
-  -h)
-    echo "Usage: ${0##*/} [dev|sta]"
-    exit 0;
+  d|s)
     ;;
   *)
-    echo "Usage: ${0##*/} [dev|sta]"
-    exit -1
+    echo "Usage: ${0##*/} [all|d|s]"
+    exit 0;
     ;;
 esac
 
-
-printf '%s\n' $(cat << EOF
-EXEC_USER=${EXEC_USER}
-PROFILE_SYS=${PROFILE_SYS}
-SVR_LIST=${SVR_LIST[@]}
-APP_HOME_LIST=${APP_HOME_LIST[@]}
-EOF
-)
-
-
-send_script;
+send_script "$1";
 
 echo "### [finish] ${0##*/} ${@} ###"$'\n'$'\n'

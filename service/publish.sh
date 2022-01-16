@@ -30,7 +30,11 @@ function publish() {
           
           for ip in ${ip_arr[@]}
           do
-            ssh ${EXEC_USER}@${ip} "${app_home}/deploy.sh" ${profile_sys} ${app_name}
+            ## [actual-code]
+            local ssh_cmd="ssh ${EXEC_USER}@${ip} '${app_home}/deploy.sh' ${profile_sys} ${app_name}"
+            echo "ssh_cmd=${ssh_cmd}"
+            eval "${ssh_cmd}"
+            ## [actual-code]
           done
         done
       done
@@ -47,7 +51,11 @@ function publish() {
         
         for ip in ${ip_arr[@]}
         do
-          ssh ${EXEC_USER}@${ip} "${app_home}/deploy.sh" ${profile_sys} ${app_name}
+          ## [actual-code]
+          local ssh_cmd="ssh ${EXEC_USER}@${ip} '${app_home}/deploy.sh' ${profile_sys} ${app_name}"
+          echo "ssh_cmd=${ssh_cmd}"
+          eval "${ssh_cmd}"
+          ## [actual-code]
         done
       done
       ;;
@@ -63,7 +71,11 @@ function publish() {
         
         for ip in ${ip_arr[@]}
         do
-          ssh ${EXEC_USER}@${ip} "${app_home}/deploy.sh" ${profile_sys} ${app_name}
+          ## [actual-code]
+          local ssh_cmd="ssh ${EXEC_USER}@${ip} '${app_home}/deploy.sh' ${profile_sys} ${app_name}"
+          echo "ssh_cmd=${ssh_cmd}"
+          eval "${ssh_cmd}"
+          ## [actual-code]
         done
       done
       ;;
@@ -77,7 +89,11 @@ function publish() {
       
       for ip in ${ip_arr[@]}
       do
-        ssh ${EXEC_USER}@${ip} "${app_home}/deploy.sh" ${profile_sys} ${app_name}
+        ## [actual-code]
+        local ssh_cmd="ssh ${EXEC_USER}@${ip} '${app_home}/deploy.sh' ${profile_sys} ${app_name}"
+        echo "ssh_cmd=${ssh_cmd}"
+        eval "${ssh_cmd}"
+        ## [actual-code]
       done
       ;;
   esac
