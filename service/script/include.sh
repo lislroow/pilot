@@ -8,6 +8,7 @@ readonly SVR_INFO=(
   'pilot-adm|sadm11|/app/pilot-sta|sta|172.28.200.30|9200'
   'pilot-adm|sadm12|/app/pilot-sta|sta|172.28.200.30|9201'
 )
+EXEC_USER="tomcat"
 
 function GetSvrInfo() {
   local field=$1

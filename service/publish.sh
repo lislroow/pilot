@@ -103,7 +103,6 @@ function publish() {
 
 
 echo "+++ (runtime-env) +++"
-EXEC_USER="tomcat"
 case "$1" in
   all)
     ;;
