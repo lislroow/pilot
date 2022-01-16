@@ -2,6 +2,9 @@
 
 echo "### [start] ${0##*/} ${@} ###"
 
+## include
+. ./script/include.sh
+
 ## env
 echo "+++ (system-env) +++"
 BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
@@ -45,7 +48,16 @@ EOF
 function build() {
   echo "+++ (build) build maven project +++"
   
-  for app_name in ${APP_NAME_LIST[*]}
+  case "$1" in
+    all)
+      read -ra app_name_arr <<< $(GetSvrInfo "app_name" "ALL")
+      ;;
+    w*|a*)
+      read -ra app_name_arr <<< $(GetSvrInfo "app_name" "app_name" "$1")
+      ;;
+  esac
+  
+  for app_name in ${app_name_arr[*]}
   do
     local mvn_args=""
     mvn_args="${mvn_args} --file ${BASEDIR}/${app_name}/pom.xml"
@@ -81,7 +93,7 @@ function build() {
     mvn_args="${mvn_args} -DrepositoryId=maven-${nx_repo}"
     mvn_args="${mvn_args} -Durl=https://nexus/repository/maven-${nx_repo}/"
     
-    mvn_cmd="mvn deploy:deploy-file ${mvn_args}"
+    mvn_cmd="mvn ${mvn_args} deploy:deploy-file"
     echo "mvn_cmd=${mvn_cmd}"
     eval "${mvn_cmd}"
   done
@@ -91,34 +103,20 @@ function build() {
 
 
 echo "+++ (runtime-env) +++"
-APP_NAME_LIST=()
 case "$1" in
-  *w*)
-    APP_NAME_LIST+=("pilot-www")
+  all)
     ;;
-  *a*)
-    APP_NAME_LIST+=("pilot-adm")
-    ;;
-  -h)
-    echo "Usage: ${0##*/} [w|a]"
-    exit 0;
+  w|a)
     ;;
   *)
-    APP_NAME_LIST+=(
-      "pilot-www"
-      "pilot-adm"
-    )
+    echo "Usage: ${0##*/} [all|w|a]"
+    exit 0;
     ;;
 esac
 
 
-printf '%s\n' $(cat << EOF
-APP_NAME_LIST=${APP_NAME_LIST[*]}
-EOF
-)
 
-
-build;
+build "$1";
 
 
 echo "### [finish] ${0##*/} ${@} ###"$'\n'$'\n'

@@ -2,6 +2,9 @@
 
 echo "### [start] ${0##*/} ${@} ###"
 
+## include
+. ./script/include.sh
+
 ## env
 echo "+++ (system-env) +++"
 BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
@@ -23,71 +26,102 @@ EOF
 
 
 
-## (deploy) deploying trigger
-function deploy() {
-  echo "+++ (deploy) deploying trigger +++"
-  for svr in ${SVR_LIST[*]}
-  do
-    for app_name in ${APP_NAME_LIST[*]}
-    do
-      ssh ${EXEC_USER}@${svr} "${APP_HOME}/deploy.sh ${PROFILE_SYS} ${app_name}"
-    done
-  done
+## (publish) deploying trigger
+function publish() {
+  echo "+++ (publish) deploying trigger +++"
   
-  echo "--- //(deploy) deploying trigger ---"
+  case "$1" in
+    all)
+      # sd , aw > ip
+      read -ra app_name_arr <<< $(GetSvrInfo "app_name" "ALL")
+      read -ra profile_sys_arr <<< $(GetSvrInfo "profile_sys" "ALL")
+      
+      for profile_sys in ${profile_sys_arr[@]}
+      do
+        for app_name in ${app_name_arr[@]}
+        do
+          read -r  app_home <<< $(GetSvrInfo "app_home" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
+          read -ra ip_arr <<< $(GetSvrInfo "ip" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
+          echo "ip_arr=${ip_arr[@]}, cnt=${#ip_arr[@]}"
+          
+          for ip in ${ip_arr[@]}
+          do
+            ssh ${EXEC_USER}@${ip} "${app_home}/deploy.sh" ${profile_sys} ${app_name}
+          done
+        done
+      done
+      ;;
+    d|s)
+      # s > aw > ip
+      read -r  profile_sys <<< $(GetSvrInfo "profile_sys" "profile_sys" "$1")
+      read -ra app_name_arr <<< $(GetSvrInfo "app_name" "profile_sys" "$1")
+      for app_name in ${app_name_arr[@]}
+      do
+        read -r  app_home <<< $(GetSvrInfo "app_home" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
+        read -ra ip_arr <<< $(GetSvrInfo "ip" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
+        echo "ip_arr=${ip_arr[@]}, cnt=${#ip_arr[@]}"
+        
+        for ip in ${ip_arr[@]}
+        do
+          ssh ${EXEC_USER}@${ip} "${app_home}/deploy.sh" ${profile_sys} ${app_name}
+        done
+      done
+      ;;
+    w|a)
+      # w > ds > ip
+      read -r  app_name <<< $(GetSvrInfo "app_name" "app_name" "$1")
+      read -ra profile_sys_arr <<< $(GetSvrInfo "profile_sys" "app_name" "$1")
+      for profile_sys in ${profile_sys_arr[@]}
+      do
+        read -r  app_home <<< $(GetSvrInfo "app_home" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
+        read -ra ip_arr <<< $(GetSvrInfo "ip" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
+        echo "ip_arr=${ip_arr[@]}, cnt=${#ip_arr[@]}"
+        
+        for ip in ${ip_arr[@]}
+        do
+          ssh ${EXEC_USER}@${ip} "${app_home}/deploy.sh" ${profile_sys} ${app_name}
+        done
+      done
+      ;;
+    dw*|sw*|da*|sa*)
+      # dw > d, w > ip
+      read -r  app_name <<< $(GetSvrInfo "app_name" "app_id" "$1")
+      read -r  profile_sys <<< $(GetSvrInfo "profile_sys" "app_id" "$1")
+      read -r  app_home <<< $(GetSvrInfo "app_home" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
+      read -ra ip_arr <<< $(GetSvrInfo "ip" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
+      echo "ip_arr=${ip_arr[@]}, cnt=${#ip_arr[@]}"
+      
+      for ip in ${ip_arr[@]}
+      do
+        ssh ${EXEC_USER}@${ip} "${app_home}/deploy.sh" ${profile_sys} ${app_name}
+      done
+      ;;
+  esac
+  
+  echo "--- //(publish) deploying trigger ---"
 }
 
 
 echo "+++ (runtime-env) +++"
 EXEC_USER="tomcat"
-PROFILE_SYS="$1"
-case "${PROFILE_SYS}" in
-  dev)
-    SVR_LIST=("172.28.200.30")
-    APP_HOME="/app/pilot-dev"
+case "$1" in
+  all)
     ;;
-  sta)
-    SVR_LIST=("172.28.200.30")
-    APP_HOME="/app/pilot-sta"
+  d|s)
     ;;
-  -h)
-    echo "Usage: ${0##*/} [dev|sta] [w|a]"
+  w|a)
+    ;;
+  dw|sw|da|sa)
+    ;;
+  *)
+    echo "Usage: ${0##*/} [all|d|s|w|a|dw|da|sw|sa]"
     exit 0;
     ;;
-  *)
-    echo "Usage: ${0##*/} [dev|sta] [w|a]"
-    exit -1
-    ;;
-esac
-APP_NAME_LIST=()
-case "$2" in
-  *w*)
-    APP_NAME_LIST+=("pilot-www")
-    ;;
-  *a*)
-    APP_NAME_LIST+=("pilot-adm")
-    ;;
-  *)
-    APP_NAME_LIST+=(
-      "pilot-www"
-      "pilot-adm"
-    )
-    ;;
 esac
 
 
-printf '%s\n' $(cat << EOF
-EXEC_USER=${EXEC_USER}
-PROFILE_SYS=${PROFILE_SYS}
-SVR_LIST=${SVR_LIST}
-APP_HOME=${APP_HOME}
-APP_NAME=${APP_NAME}
-EOF
-)
 
-
-
-deploy;
+publish "$1";
 
 
 echo "### [finish] ${0##*/} ${@} ###"$'\n'$'\n'
