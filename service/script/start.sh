@@ -5,219 +5,176 @@ echo "### [start] ${0##*/} ${@} ###"
 ## env
 echo "+++ (system-env) +++"
 BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
+LOG_BASEDIR="/outlog/pilot"
 
-UNAME=`uname -s`
-if [[ "${UNAME}" = "Linux"* ]]; then
-  OS_NAME="linux"
-elif [[ "${UNAME}" = "CYGWIN"* || "${UNAME}" = "MINGW"* ]]; then
-  OS_NAME="win"
-fi
-
-case "${OS_NAME}" in
-  linux)
-    JAVA_HOME=/prod/java/openjdk-11.0.13.8-temurin
-    PATH=$JAVA_HOME/bin:$PATH
-    ;;
-  win)
-    JAVA_HOME=/z/develop/java/openjdk-11.0.13.8-temurin
-    PATH=$JAVA_HOME/bin:$PATH
-    ;;
-  *)
-    echo "invalid os"
-    exit -1
-    ;;
-esac
-
-printf '%s\n' $(cat << EOF
-BASEDIR=${BASEDIR}
-UNAME=${UNAME}
-OS_NAME=${OS_NAME}
-JAVA_HOME=${JAVA_HOME}
-EOF
-)
+## include
+. ${BASEDIR}/include.sh
 
 
 ## (start) start
 function start() {
   echo "+++ (start) start +++"
-  local ps_cmd="ps -ef | grep -v grep | grep -v tail |  grep -v .sh | grep ${APP_ID} | awk '{ print \$2 }'"
-  echo "ps_cmd=${ps_cmd}"
-  local _pid=$(eval "${ps_cmd}")
   
-  if [ "${_pid}" != "" ]; then
-    echo "execute ${BASEDIR}/stop.sh ${APP_ID}"
-    ${BASEDIR}/stop.sh ${APP_ID}
-  fi
+  local app_id_arr
+  case "$1" in
+    all)
+      read -ra app_id_arr <<< $(GetSvrInfo "app_id" "ALL")
+      ;;
+    @(d|s)?(ev|ta))
+      read -ra app_id_arr <<< $(GetSvrInfo "app_id" "profile_sys" "$1")
+      ;;
+    @(w|a)?(ww|dm))
+      read -ra app_id_arr <<< $(GetSvrInfo "app_id" "app_name" "$1")
+      ;;
+    @(d|s)@(w|a)?(ww|dm)@(1|2)@(1|2))
+      read -ra app_id_arr <<< $(GetSvrInfo "app_id" "app_id" "$1")
+      ;;
+  esac
+  echo "app_id_arr=${app_id_arr[@]}"
   
-  # console-logfile
-  local log_filepath="${LOGBASE}/${APP_ID}-console.log"
-  echo "log_filepath=${log_filepath}"
-  if [ -e ${log_filepath} ]; then
-    local curr_ts=`date +'%Y%m%d_%H%M%S'`
-    local bak_filepath="${LOGBASE}/backup/${APP_ID}-console-${curr_ts}.log"
-    echo "bak_filepath=${bak_filepath}"
-    if [ ! -e "${LOGBASE}/backup" ]; then
-      local mkdir_cmd="mkdir -p ${LOGBASE}/backup"
-      echo "mkdir_cmd=${mkdir_cmd}"
+  
+  for app_id in ${app_id_arr[@]}
+  do
+    local ps_cmd="ps -ef | grep -v grep | grep -v tail |  grep -v .sh | grep ${app_id} | awk '{ print \$2 }'"
+    echo "ps_cmd=${ps_cmd}"
+    local _pid=$(eval "${ps_cmd}")
+    
+    if [ "${_pid}" != "" ]; then
+      stop_cmd="${BASEDIR}/stop.sh ${app_id}"
+      echo "stop_cmd=${stop_cmd}"
       if [ $(whoami) == "root" ]; then
-        su ${EXEC_USER} -c "${mkdir_cmd}"
+        su ${EXEC_USER} -c "${stop_cmd}"
       elif [ $(whoami) == ${EXEC_USER} ]; then
-        eval "${mkdir_cmd}"
+        eval "${stop_cmd}"
       else
         echo "current user "$(whoami)
         exit -1
       fi
     fi
-    local cp_cmd="cp ${log_filepath} ${bak_filepath}"
-    echo "cp_cmd=${cp_cmd}"
+    
+    # console-logfile
+    local log_filepath="${LOG_BASEDIR}/${app_id}-console.log"
+    echo "log_filepath=${log_filepath}"
+    if [ -e ${log_filepath} ]; then
+      local curr_ts=`date +'%Y%m%d_%H%M%S'`
+      local bak_filepath="${LOG_BASEDIR}/backup/${app_id}-console-${curr_ts}.log"
+      echo "bak_filepath=${bak_filepath}"
+      if [ ! -e "${LOG_BASEDIR}/backup" ]; then
+        local mkdir_cmd="mkdir -p ${LOG_BASEDIR}/backup"
+        echo "mkdir_cmd=${mkdir_cmd}"
+        if [ $(whoami) == "root" ]; then
+          su ${EXEC_USER} -c "${mkdir_cmd}"
+        elif [ $(whoami) == ${EXEC_USER} ]; then
+          eval "${mkdir_cmd}"
+        else
+          echo "current user "$(whoami)
+          exit -1
+        fi
+      fi
+      local cp_cmd="cp ${log_filepath} ${bak_filepath}"
+      echo "cp_cmd=${cp_cmd}"
+      if [ $(whoami) == "root" ]; then
+        su ${EXEC_USER} -c "${cp_cmd}"
+      elif [ $(whoami) == ${EXEC_USER} ]; then
+        eval "${cp_cmd}"
+      else
+        echo "current user "$(whoami)
+        exit -1
+      fi
+      local cat_cmd="cat /dev/null > ${log_filepath}"
+      echo "cat_cmd=${cat_cmd}"
+      if [ $(whoami) == "root" ]; then
+        su ${EXEC_USER} -c "${cat_cmd}"
+      elif [ $(whoami) == ${EXEC_USER} ]; then
+        eval "${cat_cmd}"
+      else
+        echo "current user "$(whoami)
+        exit -1
+      fi
+    fi
+    
+    local profile_sys app_name port
+    read -r  profile_sys <<< $(GetSvrInfo "profile_sys" "app_id" "${app_id}")
+    read -r  app_name <<< $(GetSvrInfo "app_name" "app_id" "${app_id}")
+    read -r  port <<< $(GetSvrInfo "port" "app_id" "${app_id}")
+    
+    local jar_file
+    if [ "$1" != "all" ] && [ "$2" != "" ]; then
+      jar_file=${BASEDIR}/$2
+      if [ ! -e ${jar_file} ]; then
+        echo "jar_file(${jar_file}) does not exist"
+        exit -1
+      fi
+    else
+      find_cmd="ls -rt ${BASEDIR}/${app_name}*.jar | sort -V | tail -n 1"
+      echo "find_cmd=${find_cmd}"
+      jar_file=$(eval "${find_cmd}")
+    fi
+    
+    local java_opts=""
+    java_opts="${java_opts} -Dspring.profiles.active=${profile_sys}"
+    java_opts="${java_opts} -Dspring.output.ansi.enabled=always"
+    java_opts="${java_opts} -Dapp.name=${app_name}"
+    java_opts="${java_opts} -Dapp.id=${app_id}"
+    java_opts="${java_opts} -Dserver.port=${port}"
+    
+    local java_cmd="nohup $JAVA_HOME/bin/java ${java_opts} -jar ${jar_file} > ${log_filepath} 2>&1 &"
+    echo "java_cmd=${java_cmd}"
     if [ $(whoami) == "root" ]; then
-      su ${EXEC_USER} -c "${cp_cmd}"
+      su ${EXEC_USER} -c "${java_cmd}"
     elif [ $(whoami) == ${EXEC_USER} ]; then
-      eval "${cp_cmd}"
+      eval "${java_cmd}"
     else
       echo "current user "$(whoami)
       exit -1
     fi
-    local cat_cmd="cat /dev/null > ${log_filepath}"
-    echo "cat_cmd=${cat_cmd}"
-    if [ $(whoami) == "root" ]; then
-      su ${EXEC_USER} -c "${cat_cmd}"
-    elif [ $(whoami) == ${EXEC_USER} ]; then
-      eval "${cat_cmd}"
+    
+    echo "ps_cmd=${ps_cmd}"
+    local _pid=$(eval "${ps_cmd}")
+    echo "_pid=${_pid}"
+    
+    if [ "${_pid}" == "" ]; then
+      echo "${app_id} is not started"
     else
-      echo "current user "$(whoami)
-      exit -1
+      echo "${app_id}(pid:'${_pid}') starting ..."
     fi
-  fi
-  
-  local java_opts=""
-  java_opts="${java_opts} -Dspring.profiles.active=${PROFILE_SYS}"
-  java_opts="${java_opts} -Dspring.output.ansi.enabled=always"
-  java_opts="${java_opts} -Dapp.name=${APP_NAME}"
-  java_opts="${java_opts} -Dapp.id=${APP_ID}"
-  java_opts="${java_opts} -Dserver.port=${SERVER_PORT}"
-  
-  local java_cmd="nohup $JAVA_HOME/bin/java ${java_opts} -jar ${JAR_FILE} > ${log_filepath} 2>&1 &"
-  echo "java_cmd=${java_cmd}"
-  if [ $(whoami) == "root" ]; then
-    su ${EXEC_USER} -c "${java_cmd}"
-  elif [ $(whoami) == ${EXEC_USER} ]; then
-    eval "${java_cmd}"
-  else
-    echo "current user "$(whoami)
-    exit -1
-  fi
-  
-  echo "ps_cmd=${ps_cmd}"
-  local _pid=$(eval "${ps_cmd}")
-  echo "_pid=${_pid}"
-  
-  if [ "${_pid}" == "" ]; then
-    echo "${APP_ID} is not started"
-    exit -1
-  else
-    echo "${APP_ID}(pid:'${_pid}') starting ..."
-  fi
-  
-  i=1
-  while [ $i -lt 600 ];
-  do
-    local http_code=$(curl --write-out "%{http_code}" --silent --output /dev/null "http://localhost:${SERVER_PORT}/")
-    if [ "${http_code}" == "200" ]; then
-      echo "${APP_ID}(pid:'${_pid}') started"
-      break
-    fi
-    echo "${APP_ID}(pid:'${_pid}') booting ..."
-    i=$(( $i + 1 ))
-    sleep 3
+    
+    i=1
+    while [ $i -lt 600 ];
+    do
+      local http_code=$(curl --write-out "%{http_code}" --silent --output /dev/null "http://localhost:${port}/")
+      if [ "${http_code}" == "200" ]; then
+        echo "${app_id}(pid:'${_pid}') started"
+        break
+      fi
+      echo "${app_id}(pid:'${_pid}') booting ..."
+      i=$(( $i + 1 ))
+      sleep 3
+    done
   done
+  
   echo "--- //(start) start ---"
 }
 
 
 echo "+++ (runtime-env) +++"
-EXEC_USER="tomcat"
-LOGBASE="/outlog/pilot"
-APP_ID=$1
-case "${APP_ID}" in
-  dw*1)
-    APP_NAME="pilot-www"
-    APP_ID="dwww11"
-    SERVER_PORT="7100"
-    PROFILE_SYS="dev"
+case "$1" in
+  all)
     ;;
-  dw*2)
-    APP_NAME="pilot-www"
-    APP_ID="dwww12"
-    SERVER_PORT="7101"
-    PROFILE_SYS="dev"
+  @(d|s)?(ev|ta))
     ;;
-  sw*1)
-    APP_NAME="pilot-www"
-    APP_ID="swww11"
-    SERVER_PORT="9100"
-    PROFILE_SYS="sta"
+  @(w|a)?(ww|dm))
     ;;
-  sw*2)
-    APP_NAME="pilot-www"
-    APP_ID="swww12"
-    SERVER_PORT="9101"
-    PROFILE_SYS="sta"
-    ;;
-  da*1)
-    APP_NAME="pilot-adm"
-    APP_ID="dadm11"
-    SERVER_PORT="7200"
-    PROFILE_SYS="dev"
-    ;;
-  da*2)
-    APP_NAME="pilot-adm"
-    APP_ID="dadm12"
-    SERVER_PORT="7201"
-    PROFILE_SYS="dev"
-    ;;
-  sa*1)
-    APP_NAME="pilot-adm"
-    APP_ID="sadm11"
-    SERVER_PORT="9200"
-    PROFILE_SYS="sta"
-    ;;
-  sa*2)
-    APP_NAME="pilot-adm"
-    APP_ID="sadm12"
-    SERVER_PORT="9201"
-    PROFILE_SYS="sta"
+  @(d|s)@(w|a)?(ww|dm)@(1|2)@(1|2))
     ;;
   *)
-    echo "Usage: ${0##*/} [dw1|dw2|da1|da2|sw1|sw2|sa1|sa2]"
+    echo "Usage: ${0##*/} [all|\${profile_sys}|\${app_name_c3}|\${app_id}]"
     exit -1
     ;;
 esac
 
-if [ "$2" != "" ]; then
-  JAR_FILE=${BASEDIR}/$2
-  if [ ! -e ${JAR_FILE} ]; then
-    echo "JAR_FILE(${JAR_FILE}) does not exist"
-    exit -1
-  fi
-else
-  find_cmd="ls -rt ${BASEDIR}/${APP_NAME}*.jar | sort -V | tail -n 1"
-  echo "${find_cmd}"
-  JAR_FILE=$(eval "${find_cmd}")
-fi
 
 
-printf '%s\n' $(cat << EOF
-EXEC_USER=${EXEC_USER}
-APP_NAME=${APP_NAME}
-APP_ID=${APP_ID}
-SERVER_PORT=${SERVER_PORT}
-PROFILE_SYS=${PROFILE_SYS}
-JAR_FILE=${JAR_FILE}
-EOF
-)
-
-
-start;
+start "$1" "$2";
 
 echo "### [finish] ${0##*/} ${@} ###"$'\n'$'\n'

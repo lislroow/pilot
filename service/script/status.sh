@@ -5,16 +5,25 @@ echo "### [start] ${0##*/} ${@} ###"
 echo "+++ (system-env) +++"
 BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 
-printf '%s\n' $(cat << EOF
-BASEDIR=${BASEDIR}
-EOF
-)
+## include
+. ${BASEDIR}/include.sh
 
 
 ## (status) status
 function status() {
   echo "+++ (status) status +++"
-  for app_id in ${APP_ID_LIST[@]}
+  
+  local app_id_arr
+  case "$1" in
+    all)
+      read -ra app_id_arr <<< $(GetSvrInfo "app_id" "ALL")
+      ;;
+    @(d|s)?(ev|ta))
+      read -ra app_id_arr <<< $(GetSvrInfo "app_id" "profile_sys" "$1")
+      ;;
+  esac
+  
+  for app_id in ${app_id_arr[@]}
   do
     echo "--- ${app_id} ---"
     local ps_cmd="ps aux | grep -v grep | grep -v tail |  grep -v .sh | grep ${app_id}"
@@ -44,39 +53,18 @@ function status() {
 
 
 echo "+++ (runtime-env) +++"
-PROFILE_SYS=$1
-case "${PROFILE_SYS}" in
-  d*)
-    APP_ID_LIST=(
-      "dwww11"
-      "dwww12"
-      "dadm11"
-      "dadm12"
-    )
+case "$1" in
+  all)
     ;;
-  s*)
-    APP_ID_LIST=(
-      "swww11"
-      "swww12"
-      "sadm11"
-      "sadm12"
-    )
+  @(d|s)?(ev|ta))
     ;;
   *)
-    echo "Usage: ${0##*/} [dev|sta]"
+    echo "Usage: ${0##*/} [all|\${profile_sys}]"
     exit -1
     ;;
 esac
 
-
-printf '%s\n' $(cat << EOF
-APP_ID_LIST=${APP_ID_LIST[@]}
-EOF
-)
-
-
-
-status;
+status "$1";
 
 
 echo "### [finish] ${0##*/} ${@} ###"$'\n'$'\n'

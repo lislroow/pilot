@@ -17,7 +17,7 @@ function build() {
     all)
       read -ra app_name_arr <<< $(GetSvrInfo "app_name" "ALL")
       ;;
-    w*|a*)
+    @(w|a)?(ww|dm))
       read -ra app_name_arr <<< $(GetSvrInfo "app_name" "app_name" "$1")
       ;;
   esac
@@ -71,7 +71,7 @@ echo "+++ (runtime-env) +++"
 case "$1" in
   all)
     ;;
-  w|a)
+  @(w|a)?(ww|dm))
     ;;
   *)
     echo "Usage: ${0##*/} [all|w|a]"

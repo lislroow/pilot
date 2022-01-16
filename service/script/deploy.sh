@@ -6,144 +6,126 @@ echo "### [start] ${0##*/} ${@} ###"
 echo "+++ (system-env) +++"
 BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 
-UNAME=`uname -s`
-if [[ "${UNAME}" = "Linux"* ]]; then
-  OS_NAME="linux"
-elif [[ "${UNAME}" = "CYGWIN"* || "${UNAME}" = "MINGW"* ]]; then
-  OS_NAME="win"
-fi
-
-printf '%s\n' $(cat << EOF
-BASEDIR=${BASEDIR}
-UNAME=${UNAME}
-OS_NAME=${OS_NAME}
-EOF
-)
+## include
+. ${BASEDIR}/include.sh
 
 
 ## (deploy) deploy
 function deploy() {
   echo "+++ (deploy) deploy +++"
-  case ${PROFILE_SYS} in
-    dev)
-      # lastest artifact (maven-snapshot)
-      local nexus_url="https://nexus/repository/maven-snapshot"
-      local metadata_url="${nexus_url}/mgkim/service/${APP_NAME}/maven-metadata.xml"
-      echo "metadata_url=${metadata_url}"
-      local app_ver=$(curl -s ${metadata_url} | xmllint --xpath "//version[last()]/text()" -)
-      echo "app_ver=${app_ver}"
-      
-      local metadata_url="${nexus_url}/mgkim/service/${APP_NAME}/${app_ver}/maven-metadata.xml"
-      echo "metadata_url=${metadata_url}"
-      local app_snap_ver=$(curl -s ${metadata_url} | xmllint --xpath "//snapshotVersion[1]/value/text()" -)
-      local snap_timestamp=$(curl -s ${metadata_url} | xmllint --xpath "//timestamp/text()" -)
-      local snap_buildNumber=$(curl -s ${metadata_url} | xmllint --xpath "//buildNumber/text()" -)
-      echo "app_snap_ver=${app_snap_ver}"
-      echo "snap_timestamp=${snap_timestamp},snap_buildNumber=${snap_buildNumber}"
-      
-      local download_url="${nexus_url}/mgkim/service/${APP_NAME}/${app_ver}/${APP_NAME}-${app_snap_ver}.jar"
-      jar_file="${APP_NAME}-${app_ver}-${snap_timestamp}-${snap_buildNumber}.jar"
-      echo "download_url=${download_url} to jar_file=${jar_file}"
+  
+  local app_name_arr
+  case "$1" in
+    @(d|s)?(ev|ta))
+      read -ra app_name_arr <<< $(GetSvrInfo "app_name" "profile_sys" "$1")
       ;;
-    sta)
-      # lastest artifact (maven-release)
-      local nexus_url="https://nexus/repository/maven-release"
-      metadata_url="${nexus_url}/mgkim/service/${APP_NAME}/maven-metadata.xml"
-      echo "metadata_url=${metadata_url}"
-      app_ver=$(curl -s ${metadata_url} | xmllint --xpath "//version[last()]/text()" -)
-      echo "app_ver=${app_ver}"
-      
-      local download_url="${nexus_url}/mgkim/service/${APP_NAME}/${app_ver}/${APP_NAME}-${app_ver}.jar"
-      jar_file="${APP_NAME}-${app_ver}.jar"
-      echo "download_url=${download_url} to jar_file=${jar_file}"
-      ;;
-    *)
-      exit -1
+    @(d|s)@(w|a)?(ww|dm))
+      read -ra app_name_arr <<< $(GetSvrInfo "app_name" "app_id" "$1")
       ;;
   esac
+  echo "app_name_arr=${app_name_arr[@]}"
   
-  # DOWNLOAD
-  download_cmd="curl --silent --output ${BASEDIR}/${jar_file} ${download_url}"
-  echo "download_cmd=${download_cmd}"
-  if [ $(whoami) == "root" ]; then
-    su ${EXEC_USER} -c "${download_cmd}"
-  elif [ $(whoami) == ${EXEC_USER} ]; then
-    eval "${download_cmd}"
-  else
-    echo "current user "$(whoami)
-    exit -1
-  fi
-  
-  # final_name
-  local md5str=$(md5sum ${BASEDIR}/${jar_file} | awk '{ print substr($1, 1, 4) }')
-  local final_name=${jar_file%.*}_${md5str}.${jar_file##*.}
-  local mv_cmd="mv ${BASEDIR}/${jar_file} ${BASEDIR}/${final_name}"
-  echo "mv_cmd=${mv_cmd}"
-  if [ $(whoami) == "root" ]; then
-    su ${EXEC_USER} -c "${mv_cmd}"
-  elif [ $(whoami) == ${EXEC_USER} ]; then
-    eval "${mv_cmd}"
-  else
-    echo "current user "$(whoami)
-    exit -1
-  fi
-  echo "final_name=${final_name}"
-  
-  # stop / start
-  for app_id in ${APP_ID_LIST[@]}
+  # nexus-metadata
+  for app_name in ${app_name_arr[@]}
   do
+    case "$1" in
+      @(d)*)
+        # lastest artifact (maven-snapshot)
+        local nexus_url="https://nexus/repository/maven-snapshot"
+        local metadata_url="${nexus_url}/mgkim/service/${app_name}/maven-metadata.xml"
+        echo "metadata_url=${metadata_url}"
+        local app_ver=$(curl -s ${metadata_url} | xmllint --xpath "//version[last()]/text()" -)
+        echo "app_ver=${app_ver}"
+        
+        local metadata_url="${nexus_url}/mgkim/service/${app_name}/${app_ver}/maven-metadata.xml"
+        echo "metadata_url=${metadata_url}"
+        local app_snap_ver=$(curl -s ${metadata_url} | xmllint --xpath "//snapshotVersion[1]/value/text()" -)
+        local snap_timestamp=$(curl -s ${metadata_url} | xmllint --xpath "//timestamp/text()" -)
+        local snap_buildNumber=$(curl -s ${metadata_url} | xmllint --xpath "//buildNumber/text()" -)
+        echo "app_snap_ver=${app_snap_ver}"
+        echo "snap_timestamp=${snap_timestamp},snap_buildNumber=${snap_buildNumber}"
+        
+        local download_url="${nexus_url}/mgkim/service/${app_name}/${app_ver}/${app_name}-${app_snap_ver}.jar"
+        jar_file="${app_name}-${app_ver}-${snap_timestamp}-${snap_buildNumber}.jar"
+        echo "download_url=${download_url} to jar_file=${jar_file}"
+        ;;
+      @(s)*)
+        # lastest artifact (maven-release)
+        local nexus_url="https://nexus/repository/maven-release"
+        metadata_url="${nexus_url}/mgkim/service/${app_name}/maven-metadata.xml"
+        echo "metadata_url=${metadata_url}"
+        app_ver=$(curl -s ${metadata_url} | xmllint --xpath "//version[last()]/text()" -)
+        echo "app_ver=${app_ver}"
+        
+        local download_url="${nexus_url}/mgkim/service/${app_name}/${app_ver}/${app_name}-${app_ver}.jar"
+        jar_file="${app_name}-${app_ver}.jar"
+        echo "download_url=${download_url} to jar_file=${jar_file}"
+        ;;
+    esac
+    
+    # download
+    download_cmd="curl --silent --output ${BASEDIR}/${jar_file} ${download_url}"
+    echo "download_cmd=${download_cmd}"
     if [ $(whoami) == "root" ]; then
-      su ${EXEC_USER} -c "${BASEDIR}/stop.sh ${app_id}"
-      su ${EXEC_USER} -c "${BASEDIR}/start.sh ${app_id} ${final_name}"
+      su ${EXEC_USER} -c "${download_cmd}"
     elif [ $(whoami) == ${EXEC_USER} ]; then
-      ${BASEDIR}/stop.sh ${app_id}
-      ${BASEDIR}/start.sh ${app_id} ${final_name}
+      eval "${download_cmd}"
     else
       echo "current user "$(whoami)
       exit -1
     fi
+    
+    # final_name
+    local md5str=$(md5sum ${BASEDIR}/${jar_file} | awk '{ print substr($1, 1, 4) }')
+    local final_name=${jar_file%.*}_${md5str}.${jar_file##*.}
+    local mv_cmd="mv ${BASEDIR}/${jar_file} ${BASEDIR}/${final_name}"
+    echo "mv_cmd=${mv_cmd}"
+    if [ $(whoami) == "root" ]; then
+      su ${EXEC_USER} -c "${mv_cmd}"
+    elif [ $(whoami) == ${EXEC_USER} ]; then
+      eval "${mv_cmd}"
+    else
+      echo "current user "$(whoami)
+      exit -1
+    fi
+    echo "final_name=${final_name}"
+    
+    
+    # stop / start
+    local app_id_arr
+    read -ra app_id_arr <<< $(GetSvrInfo "app_id" "profile_sys" "${1:0:1}" "app_name" "${app_name}")
+    
+    for app_id in ${app_id_arr[@]}
+    do
+      if [ $(whoami) == "root" ]; then
+        su ${EXEC_USER} -c "${BASEDIR}/stop.sh ${app_id}"
+        su ${EXEC_USER} -c "${BASEDIR}/start.sh ${app_id} ${final_name}"
+      elif [ $(whoami) == ${EXEC_USER} ]; then
+        ${BASEDIR}/stop.sh ${app_id}
+        ${BASEDIR}/start.sh ${app_id} ${final_name}
+      else
+        echo "current user "$(whoami)
+        exit -1
+      fi
+    done
   done
   
   echo "--- //(deploy) deploy ---"
 }
 
 echo "+++ (runtime-env) +++"
-EXEC_USER="tomcat"
-PROFILE_SYS=$1
-APP_NAME=$2
-case "${PROFILE_SYS}:${APP_NAME}" in
-  dev:*w*)
-    APP_NAME="pilot-www"
-    APP_ID_LIST=("dwww11" "dwww12")
+
+case "$1" in
+  @(d|s)?(ev|ta))
     ;;
-  sta:*w*)
-    APP_NAME="pilot-www"
-    APP_ID_LIST=("swww11" "swww12")
-    ;;
-  dev:*a*)
-    APP_NAME="pilot-adm"
-    APP_ID_LIST=("dadm11" "dadm12")
-    ;;
-  sta:*a*)
-    APP_NAME="pilot-adm"
-    APP_ID_LIST=("sadm11" "sadm12")
+  @(d|s)@(w|a)?(ww|dm))
     ;;
   *)
-    echo "Usage: ${0##*/} [dev|sta] [w|a]"
-    exit -1
+    echo "Usage: ${0##*/} [all|d|s|w|a|dw|da|sw|sa]"
+    exit 0;
     ;;
 esac
 
-printf '%s\n' $(cat << EOF
-EXEC_USER=${EXEC_USER}
-PROFILE_SYS=${PROFILE_SYS}
-APP_NAME=${APP_NAME}
-APP_ID_LIST=${APP_ID_LIST}
-EOF
-)
-
-
-
-deploy;
+deploy "$1";
 
 echo "### [finish] ${0##*/} ${@} ###"$'\n'$'\n'

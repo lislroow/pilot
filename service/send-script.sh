@@ -40,7 +40,7 @@ function send_script() {
         done
       done
       ;;
-    d|s)
+    d?(ev)|s?(ta))
       read -r  profile_sys <<< $(GetSvrInfo "profile_sys" "profile_sys" "$1")
       read -r  app_home <<< $(GetSvrInfo "app_home" "profile_sys" "${profile_sys}")
       read -ra ip_arr <<< $(GetSvrInfo "ip" "profile_sys" "${profile_sys}")
@@ -68,7 +68,7 @@ echo "+++ (runtime-env) +++"
 case "$1" in
   all)
     ;;
-  d|s)
+  d?(ev)|s?(ta))
     ;;
   *)
     echo "Usage: ${0##*/} [all|d|s]"

@@ -31,7 +31,7 @@ function publish() {
           for ip in ${ip_arr[@]}
           do
             ## [actual-code]
-            local ssh_cmd="ssh ${EXEC_USER}@${ip} '${app_home}/deploy.sh' ${profile_sys} ${app_name}"
+            local ssh_cmd="ssh ${EXEC_USER}@${ip} '${app_home}/deploy.sh' ${profile_sys:0:1}${app_name:(${#DOMAIN}+1):1}"
             echo "ssh_cmd=${ssh_cmd}"
             eval "${ssh_cmd}"
             ## [actual-code]
@@ -39,7 +39,7 @@ function publish() {
         done
       done
       ;;
-    d|s)
+    @(d|s)?(ev|ta))
       # s > aw > ip
       read -r  profile_sys <<< $(GetSvrInfo "profile_sys" "profile_sys" "$1")
       read -ra app_name_arr <<< $(GetSvrInfo "app_name" "profile_sys" "$1")
@@ -52,14 +52,14 @@ function publish() {
         for ip in ${ip_arr[@]}
         do
           ## [actual-code]
-          local ssh_cmd="ssh ${EXEC_USER}@${ip} '${app_home}/deploy.sh' ${profile_sys} ${app_name}"
+          local ssh_cmd="ssh ${EXEC_USER}@${ip} '${app_home}/deploy.sh' ${profile_sys:0:1}${app_name:(${#DOMAIN}+1):1}"
           echo "ssh_cmd=${ssh_cmd}"
           eval "${ssh_cmd}"
           ## [actual-code]
         done
       done
       ;;
-    w|a)
+    @(w|a)?(ww|dm))
       # w > ds > ip
       read -r  app_name <<< $(GetSvrInfo "app_name" "app_name" "$1")
       read -ra profile_sys_arr <<< $(GetSvrInfo "profile_sys" "app_name" "$1")
@@ -72,14 +72,14 @@ function publish() {
         for ip in ${ip_arr[@]}
         do
           ## [actual-code]
-          local ssh_cmd="ssh ${EXEC_USER}@${ip} '${app_home}/deploy.sh' ${profile_sys} ${app_name}"
+          local ssh_cmd="ssh ${EXEC_USER}@${ip} '${app_home}/deploy.sh' ${profile_sys:0:1}${app_name:(${#DOMAIN}+1):1}"
           echo "ssh_cmd=${ssh_cmd}"
           eval "${ssh_cmd}"
           ## [actual-code]
         done
       done
       ;;
-    dw*|sw*|da*|sa*)
+    @(d|s)@(w|a)?(ww|dm))
       # dw > d, w > ip
       read -r  app_name <<< $(GetSvrInfo "app_name" "app_id" "$1")
       read -r  profile_sys <<< $(GetSvrInfo "profile_sys" "app_id" "$1")
@@ -90,7 +90,7 @@ function publish() {
       for ip in ${ip_arr[@]}
       do
         ## [actual-code]
-        local ssh_cmd="ssh ${EXEC_USER}@${ip} '${app_home}/deploy.sh' ${profile_sys} ${app_name}"
+        local ssh_cmd="ssh ${EXEC_USER}@${ip} '${app_home}/deploy.sh' ${profile_sys:0:1}${app_name:(${#DOMAIN}+1):1}"
         echo "ssh_cmd=${ssh_cmd}"
         eval "${ssh_cmd}"
         ## [actual-code]
@@ -106,11 +106,11 @@ echo "+++ (runtime-env) +++"
 case "$1" in
   all)
     ;;
-  d|s)
+  @(d|s)?(ev|ta))
     ;;
-  w|a)
+  @(w|a)?(ww|dm))
     ;;
-  dw|sw|da|sa)
+  @(d|s)@(w|a)?(ww|dm))
     ;;
   *)
     echo "Usage: ${0##*/} [all|d|s|w|a|dw|da|sw|sa]"

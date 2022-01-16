@@ -1,3 +1,6 @@
+
+shopt -s extglob
+
 UNAME=`uname -s`
 if [[ "${UNAME}" = "Linux"* ]]; then
   OS_NAME="linux"
@@ -10,11 +13,13 @@ case "${OS_NAME}" in
     JAVA_HOME=/prod/java/openjdk-11.0.13.8-temurin
     M2_HOME=/prod/maven/maven
     PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
+    LOCAL_IP=$(ip -4 addr show ens33 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
     ;;
   win)
     JAVA_HOME=/z/develop/java/openjdk-11.0.13.8-temurin
     M2_HOME=/z/develop/build/maven-3.6.3
     PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
+    LOCAL_IP="172.28.200.30"
     ;;
   *)
     echo "invalid os"
@@ -29,6 +34,7 @@ M2_HOME=${M2_HOME}
 EOF
 )
 
+DOMAIN="pilot"
 
 EXEC_USER="tomcat"
 
@@ -55,14 +61,16 @@ function GetSvrInfo() {
     local app_name app_id app_home profile_sys ip port
     IFS=$'|'; read -r app_name app_id app_home profile_sys ip port <<< "$row"
     if [ "${key2}" == "" ]; then
-      if [[ "${key1}" == "ALL"  ||  "${!key1}" == *"${val1}"* ]]; then
+      if [[ "${key1}" == "ALL" || "${!key1}" == *"${val1}"* ]]; then
         list+=("${!field}")
       else
         continue
       fi
     else
-      if [[ "${key1}" == "ALL"  || ( "${!key1}" == *"${val1}"* && "${!key2}" == *"${val2}"* ) ]]; then
-        list+=("${!field}")
+      if [[ "${key1}" == "ALL" || ( "${!key1}" == *"${val1}"* && "${!key2}" == *"${val2}"* ) ]]; then
+        if [ "${LOCAL_IP}" == "${ip}" ]; then
+          list+=("${!field}")
+        fi
       else
         continue
       fi

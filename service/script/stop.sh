@@ -6,25 +6,33 @@ echo "### [start] ${0##*/} ${@} ###"
 echo "+++ (system-env) +++"
 BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 
-UNAME=`uname -s`
-if [[ "${UNAME}" = "Linux"* ]]; then
-  OS_NAME="linux"
-elif [[ "${UNAME}" = "CYGWIN"* || "${UNAME}" = "MINGW"* ]]; then
-  OS_NAME="win"
-fi
-
-printf '%s\n' $(cat << EOF
-BASEDIR=${BASEDIR}
-UNAME=${UNAME}
-OS_NAME=${OS_NAME}
-EOF
-)
+## include
+. ${BASEDIR}/include.sh
 
 
 ## (stop) stop
 function stop() {
   echo "+++ (stop) stop +++"
-  for app_id in ${APP_ID_LIST[@]}
+  
+  local app_id_arr
+  case "$1" in
+    all)
+      read -ra app_id_arr <<< $(GetSvrInfo "app_id" "ALL")
+      ;;
+    @(d|s)?(ev|ta))
+      read -ra app_id_arr <<< $(GetSvrInfo "app_id" "profile_sys" "$1")
+      ;;
+    @(w|a)?(ww|dm))
+      read -ra app_id_arr <<< $(GetSvrInfo "app_id" "app_name" "$1")
+      ;;
+    @(d|s)@(w|a)?(ww|dm)@(1|2)@(1|2))
+      read -ra app_id_arr <<< $(GetSvrInfo "app_id" "app_id" "$1")
+      ;;
+  esac
+  echo "app_id_arr=${app_id_arr[@]}"
+  
+  
+  for app_id in ${app_id_arr[@]}
   do
     local ps_cmd="ps -ef | grep -v grep | grep -v tail |  grep -v .sh | grep ${app_id} | awk '{ print \$2 }'"
     echo "ps_cmd=${ps_cmd}"
@@ -58,77 +66,22 @@ echo "--- //(stop) stop ---"
 
 
 echo "+++ (runtime-env) +++"
-EXEC_USER="tomcat"
-APP_ID_LIST=()
 case "$1" in
-  dev)
-    APP_ID_LIST+=(
-      "dwww11"
-      "dwww12"
-      "dadm11"
-      "dadm12"
-    )
+  all)
     ;;
-  sta)
-    APP_ID_LIST+=(
-      "swww11"
-      "swww12"
-      "sadm11"
-      "sadm12"
-    )
+  @(d|s)?(ev|ta))
     ;;
-  www)
-    APP_ID_LIST+=(
-      "dwww11"
-      "dwww12"
-      "swww11"
-      "swww12"
-    )
+  @(w|a)?(ww|dm))
     ;;
-  adm)
-    APP_ID_LIST+=(
-      "dadm11"
-      "dadm12"
-      "sadm11"
-      "sadm12"
-    )
-    ;;
-  dw*1)
-    APP_ID_LIST+=("dwww11")
-    ;;
-  dw*2)
-    APP_ID_LIST+=("dwww12")
-    ;;
-  sw*1)
-    APP_ID_LIST+=("swww11")
-    ;;
-  sw*2)
-    APP_ID_LIST+=("swww12")
-    ;;
-  da*1)
-    APP_ID_LIST+=("dadm11")
-    ;;
-  da*2)
-    APP_ID_LIST+=("dadm12")
-    ;;
-  sa*1)
-    APP_ID_LIST+=("sadm11")
-    ;;
-  sa*2)
-    APP_ID_LIST+=("sadm12")
+  @(d|s)@(w|a)?(ww|dm)@(1|2)@(1|2))
     ;;
   *)
+    echo "Usage: ${0##*/} [all|\${profile_sys}|\${app_name_c3}|\${app_id}]"
     exit -1
     ;;
 esac
 
-printf '%s\n' $(cat << EOF
-EXEC_USER=${EXEC_USER}
-APP_ID=${APP_ID}
-EOF
-)
 
-
-stop;
+stop "$1" "$2";
 
 echo "### [finish] ${0##*/} ${@} ###"$'\n'$'\n'

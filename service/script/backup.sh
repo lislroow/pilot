@@ -5,7 +5,7 @@ echo "### [start] ${0##*/} ${@} ###"
 ## env
 echo $"+++ (system-env) +++"
 BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
-
+ARCHIVE_DIR="${BASEDIR}/archive"
 
 ## include
 . ${BASEDIR}/include.sh
@@ -19,7 +19,7 @@ function backup() {
     all)
       read -ra app_name_arr <<< $(GetSvrInfo "app_name" "ALL")
       ;;
-    w|a)
+    @(w|a)?(ww|dm))
       read -ra app_name_arr <<< $(GetSvrInfo "app_name" "app_name" "$1")
       ;;
   esac
@@ -69,24 +69,16 @@ function backup() {
 
 
 echo "+++ (runtime-env) +++"
-ARCHIVE_DIR="${BASEDIR}/archive"
 case "$1" in
   all)
     ;;
-  w|a)
+  @(w|a)?(ww|dm))
     ;;
   *)
     echo "Usage: ${0##*/} [all|w|a]"
     exit 0;
     ;;
 esac
-
-
-printf '%s\n' $(cat << EOF
-ARCHIVE_DIR=${ARCHIVE_DIR}
-EOF
-)
-
 
 backup "$1";
 
