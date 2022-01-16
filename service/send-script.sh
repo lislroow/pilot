@@ -6,13 +6,8 @@ echo "### [start] ${0##*/} ${@} ###"
 echo "+++ (system-env) +++"
 BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 
-printf '%s\n' $(cat << EOF
-BASEDIR=${BASEDIR}
-EOF
-)
-
-
-
+## include
+. ${BASEDIR}/script/include.sh
 
 ## (send_script) transfer *.sh files
 function send_script() {

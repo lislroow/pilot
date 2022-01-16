@@ -1,3 +1,37 @@
+UNAME=`uname -s`
+if [[ "${UNAME}" = "Linux"* ]]; then
+  OS_NAME="linux"
+elif [[ "${UNAME}" = "CYGWIN"* || "${UNAME}" = "MINGW"* ]]; then
+  OS_NAME="win"
+fi
+
+case "${OS_NAME}" in
+  linux)
+    JAVA_HOME=/prod/java/openjdk-11.0.13.8-temurin
+    M2_HOME=/prod/maven/maven
+    PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
+    ;;
+  win)
+    JAVA_HOME=/z/develop/java/openjdk-11.0.13.8-temurin
+    M2_HOME=/z/develop/build/maven-3.6.3
+    PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
+    ;;
+  *)
+    echo "invalid os"
+    exit -1
+    ;;
+esac
+
+printf '%s\n' $(cat << EOF
+UNAME=${UNAME}
+JAVA_HOME=${JAVA_HOME}
+M2_HOME=${M2_HOME}
+EOF
+)
+
+
+EXEC_USER="tomcat"
+
 readonly SVR_INFO=(
   'pilot-www|dwww11|/app/pilot-dev|dev|172.28.200.30|7100'
   'pilot-www|dwww12|/app/pilot-dev|dev|172.28.200.30|7101'
@@ -8,7 +42,6 @@ readonly SVR_INFO=(
   'pilot-adm|sadm11|/app/pilot-sta|sta|172.28.200.30|9200'
   'pilot-adm|sadm12|/app/pilot-sta|sta|172.28.200.30|9201'
 )
-EXEC_USER="tomcat"
 
 function GetSvrInfo() {
   local field=$1

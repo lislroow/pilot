@@ -2,28 +2,12 @@
 
 echo "### [start] ${0##*/} ${@} ###"
 
-## include
-. ./script/include.sh
-
 ## env
 echo "+++ (system-env) +++"
 BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 
-UNAME=`uname -s`
-if [[ "${UNAME}" = "Linux"* ]]; then
-  OS_NAME="linux"
-elif [[ "${UNAME}" = "CYGWIN"* || "${UNAME}" = "MINGW"* ]]; then
-  OS_NAME="win"
-fi
-
-printf '%s\n' $(cat << EOF
-BASEDIR=${BASEDIR}
-UNAME=${UNAME}
-OS_NAME=${OS_NAME}
-EOF
-)
-
-
+## include
+. ${BASEDIR}/script/include.sh
 
 
 ## (publish) deploying trigger

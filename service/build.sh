@@ -2,47 +2,12 @@
 
 echo "### [start] ${0##*/} ${@} ###"
 
-## include
-. ./script/include.sh
-
 ## env
 echo "+++ (system-env) +++"
 BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 
-UNAME=`uname -s`
-if [[ "${UNAME}" = "Linux"* ]]; then
-  OS_NAME="linux"
-elif [[ "${UNAME}" = "CYGWIN"* || "${UNAME}" = "MINGW"* ]]; then
-  OS_NAME="win"
-fi
-
-case "${OS_NAME}" in
-  linux)
-    JAVA_HOME=/prod/java/openjdk-11.0.13.8-temurin
-    M2_HOME=/prod/maven/maven
-    PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
-    ;;
-  win)
-    JAVA_HOME=/z/develop/java/openjdk-11.0.13.8-temurin
-    M2_HOME=/z/develop/build/maven-3.6.3
-    PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
-    ;;
-  *)
-    echo "invalid os"
-    exit -1
-    ;;
-esac
-
-printf '%s\n' $(cat << EOF
-BASEDIR=${BASEDIR}
-UNAME=${UNAME}
-OS_NAME=${OS_NAME}
-JAVA_HOME=${JAVA_HOME}
-M2_HOME=${M2_HOME}
-EOF
-)
-
-
+## include
+. ${BASEDIR}/script/include.sh
 
 ## (build) build maven project
 function build() {
