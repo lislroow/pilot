@@ -14,7 +14,7 @@ EOF
 ## (status) status
 function status() {
   echo "+++ (status) status +++"
-  for app_id in ${APP_ID_LIST[*]}
+  for app_id in ${APP_ID_LIST[@]}
   do
     echo "--- ${app_id} ---"
     local ps_cmd="ps aux | grep -v grep | grep -v tail |  grep -v .sh | grep ${app_id}"
@@ -70,7 +70,7 @@ esac
 
 
 printf '%s\n' $(cat << EOF
-APP_ID_LIST=${APP_ID_LIST[*]}
+APP_ID_LIST=${APP_ID_LIST[@]}
 EOF
 )
 

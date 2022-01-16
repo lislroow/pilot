@@ -48,10 +48,10 @@ function backup() {
     old_jar=$(eval "${old_cmd}")
     
     echo "latest_jar=${latest_jar}"
-    echo "old_jar=${old_jar[*]}"
+    echo "old_jar=${old_jar[@]}"
     
-    if [ "${old_jar[*]}" != "" ]; then
-      mv_cmd="mv $(echo ${old_jar[*]} | tr -d '\n') ${ARCHIVE_DIR}"
+    if [ "${old_jar[@]}" != "" ]; then
+      mv_cmd="mv $(echo ${old_jar[@]} | tr -d '\n') ${ARCHIVE_DIR}"
       echo "mv_cmd=${mv_cmd}"
       if [ $(whoami) == "root" ]; then
         su ${EXEC_USER} -c "${mv_cmd}"

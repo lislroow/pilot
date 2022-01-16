@@ -90,7 +90,7 @@ function deploy() {
   echo "final_name=${final_name}"
   
   # stop / start
-  for app_id in ${APP_ID_LIST[*]}
+  for app_id in ${APP_ID_LIST[@]}
   do
     if [ $(whoami) == "root" ]; then
       su ${EXEC_USER} -c "${BASEDIR}/stop.sh ${app_id}"

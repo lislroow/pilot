@@ -24,7 +24,7 @@ EOF
 ## (stop) stop
 function stop() {
   echo "+++ (stop) stop +++"
-  for app_id in ${APP_ID_LIST[*]}
+  for app_id in ${APP_ID_LIST[@]}
   do
     local ps_cmd="ps -ef | grep -v grep | grep -v tail |  grep -v .sh | grep ${app_id} | awk '{ print \$2 }'"
     echo "ps_cmd=${ps_cmd}"

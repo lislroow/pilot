@@ -15,13 +15,13 @@ function send_script() {
   files=(
     "${BASEDIR}/script/*.sh"
   )
-  echo "files=${files[*]}"
+  echo "files=${files[@]}"
   
-  for svr in ${SVR_LIST[*]}
+  for svr in ${SVR_LIST[@]}
   do
-    for app_home in ${APP_HOME_LIST[*]}
+    for app_home in ${APP_HOME_LIST[@]}
     do
-      scp ${files[*]} ${EXEC_USER}@${svr}:${app_home}
+      scp ${files[@]} ${EXEC_USER}@${svr}:${app_home}
       ssh ${EXEC_USER}@${svr} "chmod u+x ${app_home}/*.sh;"
     done
   done
@@ -55,8 +55,8 @@ esac
 printf '%s\n' $(cat << EOF
 EXEC_USER=${EXEC_USER}
 PROFILE_SYS=${PROFILE_SYS}
-SVR_LIST=${SVR_LIST[*]}
-APP_HOME_LIST=${APP_HOME_LIST[*]}
+SVR_LIST=${SVR_LIST[@]}
+APP_HOME_LIST=${APP_HOME_LIST[@]}
 EOF
 )
 

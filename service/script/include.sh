@@ -50,7 +50,7 @@ function GetSvrInfo() {
   local key2=$4
   local val2=$5
   local list=()
-  for row in ${SVR_INFO[*]}
+  for row in ${SVR_INFO[@]}
   do
     local app_name app_id app_home profile_sys ip port
     IFS=$'|'; read -r app_name app_id app_home profile_sys ip port <<< "$row"

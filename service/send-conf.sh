@@ -14,31 +14,31 @@ function send_conf() {
   echo "+++ (send_conf) transfer logback.xml, application.yaml ] +++"
   
   if [ "${PROFILE_SYS}" == "loc" ]; then
-    for app_home in ${APP_HOME_LIST[*]}
+    for app_home in ${APP_HOME_LIST[@]}
     do
       local files=(
         "${BASEDIR}/${APP_NAME}/src/main/resources/.logback-${APP_NAME##*-}-${app_home##*-}.xml"
       )
-      echo "files=${files[*]}"
+      echo "files=${files[@]}"
       if [ ! -e ${app_home} ]; then
         local mkdir_cmd="mkdir -p ${app_home}"
         echo "mkdir_cmd=${mkdir_cmd}"
         eval "${mkdir_cmd}"
       fi
-      local cp_cmd="cp ${files[*]} ${app_home}"
+      local cp_cmd="cp ${files[@]} ${app_home}"
       echo "cp_cmd=${cp_cmd}"
       eval "${cp_cmd}"
     done
   else
-    for svr in ${SVR_LIST[*]}
+    for svr in ${SVR_LIST[@]}
     do
-      for app_home in ${APP_HOME_LIST[*]}
+      for app_home in ${APP_HOME_LIST[@]}
       do
         local files=(
           "${BASEDIR}/${APP_NAME}/src/main/resources/.logback-${APP_NAME##*-}-${app_home##*-}.xml"
         )
-        echo "files=${files[*]}"
-        scp ${files[*]} ${EXEC_USER}@${svr}:${app_home}
+        echo "files=${files[@]}"
+        scp ${files[@]} ${EXEC_USER}@${svr}:${app_home}
       done
     done
   fi
@@ -88,8 +88,8 @@ esac
 printf '%s\n' $(cat << EOF
 EXEC_USER=${EXEC_USER}
 PROFILE_SYS=${PROFILE_SYS}
-SVR_LIST=${SVR_LIST[*]}
-APP_HOME_LIST=${APP_HOME_LIST[*]}
+SVR_LIST=${SVR_LIST[@]}
+APP_HOME_LIST=${APP_HOME_LIST[@]}
 EOF
 )
 

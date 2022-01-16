@@ -22,7 +22,7 @@ function build() {
       ;;
   esac
   
-  for app_name in ${app_name_arr[*]}
+  for app_name in ${app_name_arr[@]}
   do
     local mvn_args=""
     mvn_args="${mvn_args} --file ${BASEDIR}/${app_name}/pom.xml"
