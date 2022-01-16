@@ -65,7 +65,7 @@ echo "--- //(stop) stop ---"
 }
 
 
-echo "+++ (runtime-env) +++"
+
 case "$1" in
   all)
     ;;

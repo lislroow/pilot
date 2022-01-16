@@ -113,7 +113,7 @@ function deploy() {
   echo "--- //(deploy) deploy ---"
 }
 
-echo "+++ (runtime-env) +++"
+
 
 case "$1" in
   @(d|s)?(ev|ta))

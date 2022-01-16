@@ -68,7 +68,7 @@ function backup() {
 }
 
 
-echo "+++ (runtime-env) +++"
+
 case "$1" in
   all)
     ;;

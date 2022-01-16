@@ -64,7 +64,7 @@ function send_script() {
 }
 
 
-echo "+++ (runtime-env) +++"
+
 case "$1" in
   all)
     ;;

@@ -109,7 +109,7 @@ function send_conf() {
 }
 
 
-echo "+++ (runtime-env) +++"
+
 case "$1" in
   all)
     ;;
