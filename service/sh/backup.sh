@@ -22,7 +22,7 @@ function backup() {
   for app_name in ${app_name_arr[@]}
   do
     read -r  app_home <<< $(GetSvrInfo "app_home" "profile_sys" "${PROFILE_SYS}" "app_name" "${app_name}")
-    local backup_dir="${app_home}/bak"
+    local backup_dir="${app_home}/old"
     if [ ! -e "${backup_dir}" ]; then
       local mkdir_cmd="mkdir -p ${backup_dir}"
       echo "mkdir_cmd=${mkdir_cmd}"

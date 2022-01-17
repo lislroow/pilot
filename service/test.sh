@@ -3,7 +3,7 @@
 echo "### [file] ${0##*/} ${@} ###"
 
 ## include
-. ./script/include.sh
+. ./sh/include.sh
 
 DOMAIN="pilot"
 profile_sys="dev"

@@ -6,6 +6,7 @@ echo "### [file] ${0##*/} ${@} ###"
 BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 . ${BASEDIR}/include.sh
 
+CURL_OPTS="--connect-timeout 10 --silent"
 
 function execute() {
   echo "+++ [func] ${BASEDIR}/${0##*/}:$FUNCNAME +++"
@@ -44,9 +45,9 @@ function curl_template() {
     response=$("paste here")
     # (example) instruction !!
     #   1) paste here
-    #   2) add option: --silent
+    #   2) add option: ${CURL_OPTS}
     #   3) replace url: http://'${ip}':'${port}'
-    #response=$(curl --location --request POST --silent 'http://'${ip}':'${port}'/public/cmm/user/idlogin' \
+    #response=$(curl --location --request POST ${CURL_OPTS} 'http://'${ip}':'${port}'/public/cmm/user/idlogin' \
     ## //[actual-code]
     echo "response=${response}"
     idx=$(( $idx + 1 ))
@@ -64,7 +65,7 @@ function curl_user_idlogin() {
     read -r  ip <<< $(GetSvrInfo "ip" "app_id" "${app_id}")
     echo "[${idx}/${tot}] app_id=${app_id} port=${port}"
     ## [actual-code]
-    response=$(curl --location --request POST --silent 'http://'${ip}':'${port}'/public/cmm/user/idlogin' \
+    response=$(curl --location --request POST ${CURL_OPTS} 'http://'${ip}':'${port}'/public/cmm/user/idlogin' \
     --header 'debug: Y' \
     --header 'Content-Type: application/json' \
     --data-raw '{
@@ -89,7 +90,7 @@ function curl_apitxlog_selectLogList() {
     read -r  port <<< $(GetSvrInfo "port" "app_id" "${app_id}")
     echo "[${idx}/${tot}] app_id=${app_id} port=${port}"
     ## [actual-code]
-    response=$(curl --location --request POST --silent 'http://'${ip}':'${port}'/api/adm/apitxlog/selectLogList' \
+    response=$(curl --location --request POST ${CURL_OPTS} 'http://'${ip}':'${port}'/api/adm/apitxlog/selectLogList' \
     --header 'Authorization: Bearer eyJ0eXAiOiJhY2Nlc3NUb2tlbiIsImV4cCI6MTY0MDIzMDQ4MDg1MywiYWxnIjoiSFMyNTYifQ.eyJ1c2VyVHBjZCI6ImFwaSIsInNzdmFsZFNlYyI6MTAwMDAwMDAsImF1bXRoVHBjZCI6IjAxIiwic2l0ZVRwY2QiOiIxMCIsInVzZXJJZCI6IjEwMDAwMDAwMDEiLCJzc2lkIjoidG9nNXdmYjR4azUwMCJ9.craIp4TKqIXR9EsppMPL6sAQz8JmvA17KFf0b0QDsAo' \
     --header 'Content-Type: application/json' \
     --data-raw '{
