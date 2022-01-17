@@ -5,6 +5,7 @@ BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 echo -e "\e[35m### [file] ${BASEDIR}/${0##*/} ${@} ###\e[m"
 . ${BASEDIR}/sh/include.sh
 
+verboss="false"
 
 function publish() {
   echo "+++ [func] ${BASEDIR}/${0##*/}:$FUNCNAME: deploying trigger +++"
@@ -21,13 +22,14 @@ function publish() {
         do
           read -r  app_home <<< $(GetSvrInfo "app_home" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
           read -ra ip_arr <<< $(GetSvrInfo "ip" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
-          echo "ip_arr=${ip_arr[@]}, cnt=${#ip_arr[@]}"
+          Log $verboss "ip_arr=${ip_arr[@]}, cnt=${#ip_arr[@]}"
           
           for ip in ${ip_arr[@]}
           do
             ## [actual-code]
             local ssh_cmd="ssh ${EXEC_USER}@${ip} '${app_home}/deploy.sh' ${profile_sys:0:1}${app_name:(${#DOMAIN}+1):1}"
-            echo "ssh_cmd=${ssh_cmd}"
+            Log $verboss "ssh_cmd=${ssh_cmd}"
+            echo -e "## \e[36mssh:\e[m ${ssh_cmd}"
             eval "${ssh_cmd}"
             ## //[actual-code]
           done
@@ -42,13 +44,14 @@ function publish() {
       do
         read -r  app_home <<< $(GetSvrInfo "app_home" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
         read -ra ip_arr <<< $(GetSvrInfo "ip" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
-        echo "ip_arr=${ip_arr[@]}, cnt=${#ip_arr[@]}"
+        Log $verboss "ip_arr=${ip_arr[@]}, cnt=${#ip_arr[@]}"
         
         for ip in ${ip_arr[@]}
         do
           ## [actual-code]
           local ssh_cmd="ssh ${EXEC_USER}@${ip} '${app_home}/deploy.sh' ${profile_sys:0:1}${app_name:(${#DOMAIN}+1):1}"
-          echo "ssh_cmd=${ssh_cmd}"
+          Log $verboss "ssh_cmd=${ssh_cmd}"
+          echo -e "## \e[36mssh:\e[m ${ssh_cmd}"
           eval "${ssh_cmd}"
           ## //[actual-code]
         done
@@ -62,13 +65,14 @@ function publish() {
       do
         read -r  app_home <<< $(GetSvrInfo "app_home" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
         read -ra ip_arr <<< $(GetSvrInfo "ip" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
-        echo "ip_arr=${ip_arr[@]}, cnt=${#ip_arr[@]}"
+        Log $verboss "ip_arr=${ip_arr[@]}, cnt=${#ip_arr[@]}"
         
         for ip in ${ip_arr[@]}
         do
           ## [actual-code]
           local ssh_cmd="ssh ${EXEC_USER}@${ip} '${app_home}/deploy.sh' ${profile_sys:0:1}${app_name:(${#DOMAIN}+1):1}"
-          echo "ssh_cmd=${ssh_cmd}"
+          Log $verboss "ssh_cmd=${ssh_cmd}"
+          echo -e "## \e[36mssh:\e[m ${ssh_cmd}"
           eval "${ssh_cmd}"
           ## //[actual-code]
         done
@@ -80,13 +84,14 @@ function publish() {
       read -r  profile_sys <<< $(GetSvrInfo "profile_sys" "app_id" "$1")
       read -r  app_home <<< $(GetSvrInfo "app_home" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
       read -ra ip_arr <<< $(GetSvrInfo "ip" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
-      echo "ip_arr=${ip_arr[@]}, cnt=${#ip_arr[@]}"
+      Log $verboss "ip_arr=${ip_arr[@]}, cnt=${#ip_arr[@]}"
       
       for ip in ${ip_arr[@]}
       do
         ## [actual-code]
         local ssh_cmd="ssh ${EXEC_USER}@${ip} '${app_home}/deploy.sh' ${profile_sys:0:1}${app_name:(${#DOMAIN}+1):1}"
-        echo "ssh_cmd=${ssh_cmd}"
+        Log $verboss "ssh_cmd=${ssh_cmd}"
+        echo -e "## \e[36mssh:\e[m ${ssh_cmd}"
         eval "${ssh_cmd}"
         ## //[actual-code]
       done

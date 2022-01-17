@@ -5,6 +5,7 @@ BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 echo -e "\e[35m### [file] ${BASEDIR}/${0##*/} ${@} ###\e[m"
 . ${BASEDIR}/include.sh
 
+verboss="false"
 
 function deploy() {
   echo "+++ [func] ${BASEDIR}/${0##*/}:$FUNCNAME: backup except for lastest jar"
@@ -18,7 +19,7 @@ function deploy() {
       read -ra app_name_arr <<< $(GetSvrInfo "app_name" "app_id" "$1")
       ;;
   esac
-  echo "app_name_arr=${app_name_arr[@]}"
+  Log $verboss "app_name_arr=${app_name_arr[@]}"
   
   
   # nexus-metadata
@@ -36,42 +37,47 @@ function deploy() {
     esac
     
     read -ra nx_info <<< $(GetLatestArtifact "${nx_repo_id}" "${nx_group_id}" "${nx_artifact_id}")
-    echo "nx_info=${nx_info[@]}"
+    Log $verboss "nx_info=${nx_info[@]}"
     local download_url="${nx_info[0]}"
     local jar_file="${nx_info[1]}"
+    echo -e "## \e[36mchecked from nexus:\e[m download_url=${download_url}"
     
     # download
     download_cmd="curl --silent --output ${BASEDIR}/${jar_file} ${download_url}"
-    echo "download_cmd=${download_cmd}"
+    Log $verboss "download_cmd=${download_cmd}"
     ExecCmd ${download_cmd}
+    echo -e "## \e[36mdownloaded from nexus:\e[m jar_file=${BASEDIR}/${jar_file}"
     
     # final_name
     #local md5str=$(md5sum ${BASEDIR}/${jar_file} | awk '{ print substr($1, 1, 4) }')
     #local final_name=${jar_file%.*}_${md5str}.${jar_file##*.}
     #echo "final_name=${final_name}"
     local final_name=${jar_file}
-    echo "final_name=${final_name}"
-    local mv_cmd="mv ${BASEDIR}/${jar_file} ${BASEDIR}/${final_name}"
-    echo "mv_cmd=${mv_cmd}"
-    ExecCmd ${mv_cmd}
+    Log $verboss "final_name=${final_name}"
+    #local mv_cmd="mv ${BASEDIR}/${jar_file} ${BASEDIR}/${final_name}"
+    #echo "mv_cmd=${mv_cmd}"
+    #ExecCmd ${mv_cmd}
     
     
     # stop / start
     local app_id_arr
     read -ra app_id_arr <<< $(GetSvrInfo "app_id" "profile_sys" "${1:0:1}" "app_name" "${app_name}")
     
+    echo -e "## \e[36mdeploy target:\e[m app_id=[${app_id_arr[@]}]"
     for app_id in ${app_id_arr[@]}
     do
       read -r  app_home <<< $(GetSvrInfo "app_home" "app_id" "${app_id}")
       
       # stop
+      echo -e "## \e[36mstop to:\e[m ${app_id}"
       local stop_cmd="${app_home}/stop.sh ${app_id}"
-      echo "stop_cmd=${stop_cmd[*]}"
+      Log $verboss "stop_cmd=${stop_cmd[*]}"
       ExecCmd ${stop_cmd}
       
       # start
+      echo -e "## \e[36mstart to:\e[m ${app_id}"
       local start_cmd="${app_home}/start.sh ${app_id} ${final_name}"
-      echo "start_cmd=${start_cmd[@]}"
+      Log $verboss "start_cmd=${start_cmd[@]}"
       ExecCmd ${start_cmd}
     done
   done

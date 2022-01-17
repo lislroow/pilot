@@ -5,6 +5,7 @@ BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 echo -e "\e[35m### [file] ${BASEDIR}/${0##*/} ${@} ###\e[m"
 . ${BASEDIR}/include.sh
 
+verboss="false"
 
 function stop() {
   echo "+++ [func] ${BASEDIR}/${0##*/}:$FUNCNAME +++"
@@ -24,35 +25,35 @@ function stop() {
       read -ra app_id_arr <<< $(GetSvrInfo "app_id" "app_id" "$1")
       ;;
   esac
-  echo "app_id_arr=${app_id_arr[@]}"
+  echo -e "## \e[36mtarget:\e[m ${app_id_arr[@]}"
   
   
   for app_id in ${app_id_arr[@]}
   do
     local ps_cmd="ps -ef | grep -v grep | grep -v tail |  grep -v .sh | grep ${app_id} | awk '{ print \$2 }'"
-    echo "ps_cmd=${ps_cmd}"
+    Log $verboss "ps_cmd=${ps_cmd}"
     local _pid=$(eval "${ps_cmd}")
     
     if [ "${_pid}" != "" ]; then
-      echo "stopping ${app_id}(pid:'${_pid}')"
+      echo -e "## \e[36mstop:\e[m ${app_id}(${_pid})"
       local kill_cmd="kill -15 ${_pid}"
-      echo "kill_cmd=${kill_cmd}"
+      Log $verboss "kill_cmd=${kill_cmd}"
       ExecCmd ${kill_cmd}
       
-      i=1
+      local i=1
       while [ $i -lt 600 ];
       do
         local _check_pid=$(eval "${ps_cmd}")
         if [ "${_check_pid}" == "" ]; then
-          echo "${app_id}(pid:'${_pid}') killed"
+          echo -e "## \e[36mstopped:\e[m ${app_id}(${_pid})"
           break
         fi
-        echo "wait for ${app_id}(pid:'${_pid}') killing"
+        echo "## stopping: ${app_id}(${_pid})"
         i=$(( $i + 1 ))
-        sleep 1
+        sleep 2
       done
     else
-      echo "${app_id} is not started"
+      echo "## ${app_id}: not started"
     fi
   done
 }

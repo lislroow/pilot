@@ -39,6 +39,7 @@ PARENT_DIR=${BASEDIR##*/}
 PROFILE_SYS=${PARENT_DIR:(${#DOMAIN}+1):1}
 
 EXEC_USER="tomcat"
+LOG_BASEDIR="/outlog/pilot"
 
 NX_REPO_URL="https://nexus/repository"
 

@@ -5,16 +5,10 @@ BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 echo -e "\e[35m### [file] ${BASEDIR}/${0##*/} ${@} ###\e[m"
 . ${BASEDIR}/include.sh
 
+verboss="false"
 
 function artifact() {
   echo "+++ [func] $FUNCNAME +++"
-  
-  verboss="false"
-  case "$1" in
-    @(v)?(erboss))
-      verboss="true"
-      ;;
-  esac
   
   local app_name_arr
   read -ra app_name_arr <<< $(GetSvrInfo "app_name" "ALL")
@@ -30,9 +24,9 @@ function artifact() {
       read -ra nx_info <<< $(GetLatestArtifact "${nx_repo_id}" "${nx_group_id}" "${nx_artifact_id}")
       local download_url="${nx_info[0]}"
       local jar_file="${nx_info[1]}"
-      if [ "${verboss}" == "true" ]; then echo "nx_info=${nx_info[@]}" fi
+      Log $verboss "nx_info=${nx_info[@]}"
       
-      echo "(${nx_repo_id}) ${nx_artifact_id}: ${jar_file}"
+      echo -e "## \e[32m${nx_repo_id}\e[m ${nx_artifact_id} \e[36m${jar_file}\e[m"
     done
   done
 }
@@ -41,16 +35,12 @@ function artifact() {
 
 
 case "$1" in
-  @(v)?(erboss))
-    artifact "$1"
-    ;;
   -h)
     echo "Usage: ${0##*/} [verboss]"
     exit 0;
     ;;
   *)
-    artifact "$1"
     ;;
 esac
 
-
+artifact "$1"

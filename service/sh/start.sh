@@ -5,8 +5,7 @@ BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 echo -e "\e[35m### [file] ${BASEDIR}/${0##*/} ${@} ###\e[m"
 . ${BASEDIR}/include.sh
 
-
-LOG_BASEDIR="/outlog/pilot"
+verboss="false"
 
 function start() {
   echo "+++ [func] ${BASEDIR}/${0##*/}:$FUNCNAME +++"
@@ -26,40 +25,41 @@ function start() {
       read -ra app_id_arr <<< $(GetSvrInfo "app_id" "app_id" "$1")
       ;;
   esac
-  echo "app_id_arr=${app_id_arr[@]}"
+  echo -e "## \e[36mtarget:\e[m ${app_id_arr[@]}"
   
   
   for app_id in ${app_id_arr[@]}
   do
     local ps_cmd="ps -ef | grep -v grep | grep -v tail |  grep -v .sh | grep ${app_id} | awk '{ print \$2 }'"
-    echo "ps_cmd=${ps_cmd}"
+    Log $verboss "ps_cmd=${ps_cmd}"
     local _pid=$(eval "${ps_cmd}")
     
     if [ "${_pid}" != "" ]; then
       stop_cmd="${BASEDIR}/stop.sh ${app_id}"
-      echo "stop_cmd=${stop_cmd}"
+      Log $verboss "stop_cmd=${stop_cmd}"
       ExecCmd ${stop_cmd}
     fi
     
     # console-logfile
     local log_filepath="${LOG_BASEDIR}/${app_id}-console.log"
-    echo "log_filepath=${log_filepath}"
+    Log $verboss "log_filepath=${log_filepath}"
     if [ -e ${log_filepath} ]; then
       local curr_ts=`date +'%Y%m%d_%H%M%S'`
       local bak_filepath="${LOG_BASEDIR}/backup/${app_id}-console-${curr_ts}.log"
-      echo "bak_filepath=${bak_filepath}"
+      Log $verboss "bak_filepath=${bak_filepath}"
       if [ ! -e "${LOG_BASEDIR}/backup" ]; then
         local mkdir_cmd="mkdir -p ${LOG_BASEDIR}/backup"
-        echo "mkdir_cmd=${mkdir_cmd}"
+        Log $verboss "mkdir_cmd=${mkdir_cmd}"
         ExecCmd ${mkdir_cmd}
       fi
       
       local cp_cmd="cp ${log_filepath} ${bak_filepath}"
-      echo "cp_cmd=${cp_cmd}"
+      Log $verboss "cp_cmd=${cp_cmd}"
       ExecCmd ${cp_cmd}
+      echo -e "## move: ${bak_filepath}"
       
       local cat_cmd="cat /dev/null > ${log_filepath}"
-      echo "cat_cmd=${cat_cmd}"
+      Log $verboss "cat_cmd=${cat_cmd}"
       ExecCmd ${cat_cmd}
     fi
     
@@ -72,13 +72,14 @@ function start() {
     if [ "$1" != "all" ] && [ "$2" != "" ]; then
       jar_file=${BASEDIR}/$2
       if [ ! -e ${jar_file} ]; then
-        echo "jar_file(${jar_file}) does not exist"
+        echo -e "\e[31m${jar_file} does not exist\e[m"
         exit -1
       fi
     else
       find_cmd="ls -rt ${BASEDIR}/${app_name}*.jar | sort -V | tail -n 1"
-      echo "find_cmd=${find_cmd}"
+      Log $verboss "find_cmd=${find_cmd}"
       jar_file=$(eval "${find_cmd}")
+      echo -e "## \e[36mtarget jar:\e[m ${jar_file}"
     fi
     
     local java_opts=""
@@ -88,31 +89,33 @@ function start() {
     java_opts="${java_opts} -Dapp.id=${app_id}"
     java_opts="${java_opts} -Dserver.port=${port}"
     
+    echo -e "## \e[36mstart:\e[m ${app_id}"
     local java_cmd="nohup $JAVA_HOME/bin/java ${java_opts} -jar ${jar_file} > ${log_filepath} 2>&1 &"
-    echo "java_cmd=${java_cmd}"
+    echo -e "## \e[36mjava:\e[m ${java_cmd}"
+    Log $verboss "java_cmd=${java_cmd}"
     ExecCmd ${java_cmd}
     
-    echo "ps_cmd=${ps_cmd}"
+    Log $verboss "ps_cmd=${ps_cmd}"
     local _pid=$(eval "${ps_cmd}")
-    echo "_pid=${_pid}"
+    Log $verboss "_pid=${_pid}"
     
     if [ "${_pid}" == "" ]; then
-      echo "${app_id} is not started"
+      echo "## ${app_id}: not started"
     else
-      echo "${app_id}(pid:'${_pid}') starting ..."
+      echo -e "## \e[36mstarting: \e[m${app_id}(${_pid})"
     fi
     
-    i=1
+    local i=1
     while [ $i -lt 600 ];
     do
       local http_code=$(curl --write-out "%{http_code}" --silent --output /dev/null "http://localhost:${port}/")
       if [ "${http_code}" == "200" ]; then
-        echo "${app_id}(pid:'${_pid}') started"
+        echo -e "## \e[36mstarted: \e[m ${app_id}(${_pid})"
         break
       fi
-      echo "${app_id}(pid:'${_pid}') booting ..."
+      echo "## booting: ${app_id}(${_pid}) "
       i=$(( $i + 1 ))
-      sleep 3
+      sleep 4
     done
   done
 }

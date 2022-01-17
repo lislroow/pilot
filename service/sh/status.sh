@@ -21,25 +21,27 @@ function status() {
   
   for app_id in ${app_id_arr[@]}
   do
-    echo "--- ${app_id} ---"
     local ps_cmd="ps aux | grep -v grep | grep -v tail |  grep -v .sh | grep ${app_id}"
-    eval "${ps_cmd}"
+    local ps_result=$(eval "${ps_cmd}")
+    echo -e "\e[36m[${app_id}]\e[m  ${ps_result}"
     local _pid=$(eval "${ps_cmd} | awk '{ print \$2}'")
     if [ "${_pid}" != "" ]; then
-      netstat -ntplu | grep ${_pid}
+      local netstat_cmd="netstat -ntplu | grep ${_pid}"
+      local netstat_result=$(eval "${netstat_cmd}")
+      echo -e "\e[36m[${app_id}]\e[m  ${netstat_result}"
       local server_port=$(netstat -tnplu | grep ${_pid} | awk '{ if (match($4, /([0-9]*)$/, m)) print m[0] }')
       if [ "${server_port}" != "" ]; then
         local http_code=$(curl --write-out "%{http_code}" --silent --output /dev/null "http://localhost:${server_port}/")
         if [ "${http_code}" == "200" ]; then
-          echo "${app_id} is avaiable. (server_port=${server_port})"
+          echo -e "\e[36m[${app_id}]\e[m  OK: curl test (http_code=${http_code})"
         else
-          echo "${app_id} is not avaiable. (server_port=${server_port})"
+          echo -e "\e[31m[${app_id}]\e[m  fail: curl test (http_code=${http_code})"
         fi
       else
-        echo "${app_id} is not avaiable."
+        echo -e "\e[31m[${app_id}]\e[m  listen port is not found"
       fi
     else
-      echo "${app_id} is not running"
+      echo -e "\e[31m[${app_id}]\e[m  isn't running"
     fi
     echo ""
   done

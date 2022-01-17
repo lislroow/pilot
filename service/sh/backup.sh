@@ -20,6 +20,7 @@ function backup() {
   
   for app_name in ${app_name_arr[@]}
   do
+    echo -e "\e[36m--- ${app_name} ---\e[m"
     read -r  app_home <<< $(GetSvrInfo "app_home" "profile_sys" "${PROFILE_SYS}" "app_name" "${app_name}")
     local backup_dir="${app_home}/old"
     if [ ! -e "${backup_dir}" ]; then
@@ -46,11 +47,11 @@ function backup() {
       for file in ${old_jar[@]}
       do
         if [ -e "${backup_dir}/${file##*/}" ]; then
-          echo "[${app_name}] ${file##*/} moved to ${backup_dir}/${file##*/}"
+          echo "${file##*/} moved to ${backup_dir}/${file##*/}"
         fi
       done
     else
-      echo "[${app_name}] nothing has moved"
+      echo "nothing has moved"
     fi
   done
 }
