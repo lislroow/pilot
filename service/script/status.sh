@@ -9,9 +9,8 @@ BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 . ${BASEDIR}/include.sh
 
 
-## (status) status
 function status() {
-  echo "+++ (status) status +++"
+  echo "+++ ($FUNCNAME) +++"
   
   local app_id_arr
   case "$1" in
@@ -47,7 +46,6 @@ function status() {
     fi
     echo ""
   done
-  echo "--- //(status) status ---"
 }
 
 

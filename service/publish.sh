@@ -10,9 +10,8 @@ BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 . ${BASEDIR}/script/include.sh
 
 
-## (publish) deploying trigger
 function publish() {
-  echo "+++ (publish) deploying trigger +++"
+  echo "+++ ($FUNCNAME) deploying trigger +++"
   
   case "$1" in
     all)
@@ -97,8 +96,6 @@ function publish() {
       done
       ;;
   esac
-  
-  echo "--- //(publish) deploying trigger ---"
 }
 
 

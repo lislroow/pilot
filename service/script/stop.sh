@@ -10,9 +10,8 @@ BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 . ${BASEDIR}/include.sh
 
 
-## (stop) stop
 function stop() {
-  echo "+++ (stop) stop +++"
+  echo "+++ ($FUNCNAME) +++"
   
   local app_id_arr
   case "$1" in
@@ -61,7 +60,6 @@ function stop() {
       echo "${app_id} is not started"
     fi
   done
-  echo "--- //(stop) stop ---"
 }
 
 

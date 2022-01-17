@@ -5,15 +5,13 @@ echo "### [start] ${0##*/} ${@} ###"
 ## env
 echo $"+++ (system-env) +++"
 BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
-ARCHIVE_DIR="${BASEDIR}/archive"
 
 ## include
 . ${BASEDIR}/include.sh
 
 
-## (backup) backup except for lastest jar
 function backup() {
-  echo "+++ (backup) backup except for lastest jar +++"
+  echo "+++ ($FUNCNAME) backup except for lastest jar"
   
   case "$1" in
     all)
@@ -26,8 +24,10 @@ function backup() {
   
   for app_name in ${app_name_arr[@]}
   do
-    if [ ! -e ${ARCHIVE_DIR} ]; then
-      local mkdir_cmd="mkdir -p ${ARCHIVE_DIR}"
+    read -r  app_home <<< $(GetSvrInfo "app_home" "app_name" "${app_name}")
+    local backup_dir="${app_home}/backup"
+    if [ ! -e  ]; then
+      local mkdir_cmd="mkdir -p ${backup_dir}"
       echo "mkdir_cmd=${mkdir_cmd}"
       ExecCmd ${mkdir_cmd}
     fi
@@ -44,13 +44,11 @@ function backup() {
     echo "old_jar=${old_jar[@]}"
     
     if [ "${old_jar[@]}" != "" ]; then
-      mv_cmd="mv $(echo ${old_jar[@]} | tr -d '\n') ${ARCHIVE_DIR}"
+      mv_cmd="mv $(echo ${old_jar[@]} | tr -d '\n') ${backup_dir}"
       echo "mv_cmd=${mv_cmd}"
       ExecCmd ${mv_cmd}
     fi
   done
-  
-  echo "--- //(backup) backup except for lastest jar ---"
 }
 
 

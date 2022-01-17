@@ -10,9 +10,8 @@ BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 . ${BASEDIR}/include.sh
 
 
-## (deploy) deploy
 function deploy() {
-  echo "+++ (deploy) deploy +++"
+  echo "+++ ($FUNCNAME) backup except for lastest jar"
   
   local app_name_arr
   case "$1" in
@@ -78,8 +77,6 @@ function deploy() {
       ExecCmd ${start_cmd}
     done
   done
-  
-  echo "--- //(deploy) deploy ---"
 }
 
 

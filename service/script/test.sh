@@ -12,7 +12,7 @@ BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 
 
 function execute() {
-  echo "($FUNCNAME) begin"
+  echo "+++ ($FUNCNAME) +++"
   
   local app_id_arr
   case "$1" in
@@ -33,12 +33,10 @@ function execute() {
   
   curl_user_idlogin "${app_id_arr[@]}"
   curl_apitxlog_selectLogList "${app_id_arr[@]}"
-  
-  echo "//($FUNCNAME) end"
 }
 
 function curl_template() {
-  echo "($FUNCNAME) begin"
+  echo "+++ ($FUNCNAME) +++"
   local app_id_arr=($@)
   local tot=${#app_id_arr[@]}
   local idx=1
@@ -57,11 +55,10 @@ function curl_template() {
     echo "response=${response}"
     idx=$(( $idx + 1 ))
   done
-  echo "//($FUNCNAME) end"$'\n'
 }
 
 function curl_user_idlogin() {
-  echo "($FUNCNAME) begin"
+  echo "+++ ($FUNCNAME) +++"
   local app_id_arr=($@)
   local tot=${#app_id_arr[@]}
   local idx=1
@@ -83,11 +80,10 @@ function curl_user_idlogin() {
     echo "response=${response}"
     idx=$(( $idx + 1 ))
   done
-  echo "//($FUNCNAME) end"$'\n'
 }
 
 function curl_apitxlog_selectLogList() {
-  echo "($FUNCNAME) begin"
+  echo "+++ ($FUNCNAME) +++"
   local app_id_arr=($@)
   local tot=${#app_id_arr[@]}
   local idx=1
@@ -116,7 +112,6 @@ function curl_apitxlog_selectLogList() {
     echo "response=${response}"
     idx=$(( $idx + 1 ))
   done
-  echo "//($FUNCNAME) end"$'\n'
 }
 
 case "$1" in

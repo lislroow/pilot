@@ -9,9 +9,9 @@ BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 ## include
 . ${BASEDIR}/script/include.sh
 
-## (build) build maven project
+
 function build() {
-  echo "+++ (build) build maven project +++"
+  echo "+++ ($FUNCNAME) build maven project +++"
   
   case "$1" in
     all)
@@ -62,8 +62,6 @@ function build() {
     echo "mvn_cmd=${mvn_cmd}"
     eval "${mvn_cmd}"
   done
-  
-  echo "--- //(build) build maven project ---"
 }
 
 

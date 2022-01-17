@@ -9,9 +9,10 @@ BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 ## include
 . ${BASEDIR}/script/include.sh
 
-## (send_script) transfer *.sh files
+
 function send_script() {
-  echo "+++ (send_script) transfer *.sh files +++"
+  echo "+++ ($FUNCNAME) transfer *.sh files +++"
+  
   files=(
     "${BASEDIR}/script/*.sh"
   )
@@ -59,8 +60,6 @@ function send_script() {
       done
       ;;
   esac
-  
-  echo "--- //(send_script) transfer *.sh files ---"
 }
 
 

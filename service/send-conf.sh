@@ -9,9 +9,9 @@ BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 ## include
 . ${BASEDIR}/script/include.sh
 
-## (send_conf) transfer logback.xml, application.yaml
+
 function send_conf() {
-  echo "+++ (send_conf) transfer logback.xml, application.yaml ] +++"
+  echo "+++ ($FUNCNAME) transfer logback.xml, application.yaml +++"
   
   case "$1" in
     all)
@@ -104,8 +104,6 @@ function send_conf() {
       done
       ;;
   esac
-  
-  echo "--- //(send_conf) transfer logback.xml, application.yaml ---"
 }
 
 

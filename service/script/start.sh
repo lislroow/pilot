@@ -11,9 +11,8 @@ LOG_BASEDIR="/outlog/pilot"
 . ${BASEDIR}/include.sh
 
 
-## (start) start
 function start() {
-  echo "+++ (start) start +++"
+  echo "+++ ($FUNCNAME) +++"
   
   local app_id_arr
   case "$1" in
@@ -119,8 +118,6 @@ function start() {
       sleep 3
     done
   done
-  
-  echo "--- //(start) start ---"
 }
 
 
