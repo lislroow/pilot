@@ -34,11 +34,13 @@ function start() {
   
   for app_id in ${app_id_arr[@]}
   do
+    echo -e "## \e[36m[${idx}/${tot}] ${app_id}: start\e[m"
     local ps_cmd="ps -ef | grep -v grep | grep -v tail |  grep -v .sh | grep ${app_id} | awk '{ print \$2 }'"
     Log $verboss "ps_cmd=${ps_cmd}"
     local _pid=$(eval "${ps_cmd}")
     
     if [ "${_pid}" != "" ]; then
+      echo -e "   ${app_id}: is already running (${_pid})"
       stop_cmd="${BASEDIR}/stop.sh ${app_id}"
       Log $verboss "stop_cmd=${stop_cmd}"
       ExecCmd ${stop_cmd}
@@ -60,7 +62,7 @@ function start() {
       local cp_cmd="cp ${log_filepath} ${bak_filepath}"
       Log $verboss "cp_cmd=${cp_cmd}"
       ExecCmd ${cp_cmd}
-      echo -e "## move: ${bak_filepath}"
+      echo -e "   move console-log: ${bak_filepath}"
       
       local cat_cmd="cat /dev/null > ${log_filepath}"
       Log $verboss "cat_cmd=${cat_cmd}"
@@ -76,14 +78,15 @@ function start() {
     if [ "$1" != "all" ] && [ "$2" != "" ]; then
       jar_file=${BASEDIR}/$2
       if [ ! -e ${jar_file} ]; then
-        echo -e "\e[31m${jar_file} does not exist\e[m"
-        exit -1
+        echo -e "   \e[31m${app_id}: ${jar_file} does not exist\e[m"
+        idx=$(( $idx + 1 ))
+        continue;
       fi
     else
       find_cmd="ls -rt ${BASEDIR}/${app_name}*.jar | sort -V | tail -n 1"
       Log $verboss "find_cmd=${find_cmd}"
       jar_file=$(eval "${find_cmd}")
-      echo -e "## \e[36mtarget jar:\e[m ${jar_file}"
+      echo -e "   target jar: ${jar_file}"
     fi
     
     local java_opts=""
@@ -92,9 +95,8 @@ function start() {
     java_opts="${java_opts} -Dapp.id=${app_id}"
     java_opts="${java_opts} -Dserver.port=${port}"
     
-    echo -e "## \e[36mstart:\e[m ${app_id}"
     local java_cmd="nohup $JAVA_HOME/bin/java ${java_opts} -jar ${jar_file} > ${log_filepath} 2>&1 &"
-    echo -e "## \e[36mjava:\e[m ${java_cmd}"
+    echo -e "   java: \e[44m${java_cmd}\e[m"
     Log $verboss "java_cmd=${java_cmd}"
     ExecCmd ${java_cmd}
     
@@ -103,9 +105,9 @@ function start() {
     Log $verboss "_pid=${_pid}"
     
     if [ "${_pid}" == "" ]; then
-      echo "## ${app_id}: not started"
+      echo "   \e[31m${app_id}: not started\e[m"
     else
-      echo -e "## \e[36mstarting: \e[m${app_id}(${_pid})"
+      echo -e "   ${app_id}: starting (${_pid})"
     fi
     
     local i=1
@@ -113,13 +115,14 @@ function start() {
     do
       local http_code=$(curl --write-out "%{http_code}" --silent --output /dev/null "http://localhost:${port}/")
       if [ "${http_code}" == "200" ]; then
-        echo -e "## \e[36mstarted: \e[m ${app_id}(${_pid})"
+        echo -e "   ${app_id}: started (${_pid})"
         break
       fi
-      echo "## booting: ${app_id}(${_pid}) "
+      echo "   ${app_id}: booting (${_pid})"
       i=$(( $i + 1 ))
       sleep 4
     done
+    idx=$(( $idx + 1 ))
   done
 }
 

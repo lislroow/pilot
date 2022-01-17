@@ -15,7 +15,8 @@ function publish() {
       # sd , aw > ip
       read -ra app_name_arr <<< $(GetSvrInfo "app_name" "ALL")
       read -ra profile_sys_arr <<< $(GetSvrInfo "profile_sys" "ALL")
-      
+      tot=$((${#profile_sys_arr[@]} + ${#app_name_arr[@]}))
+      idx=1
       for profile_sys in ${profile_sys_arr[@]}
       do
         for app_name in ${app_name_arr[@]}
@@ -29,10 +30,11 @@ function publish() {
             ## [actual-code]
             local ssh_cmd="ssh ${EXEC_USER}@${ip} '${app_home}/deploy.sh' ${profile_sys:0:1}${app_name:(${#DOMAIN}+1):1}"
             Log $verboss "ssh_cmd=${ssh_cmd}"
-            echo -e "## \e[36mssh:\e[m ${ssh_cmd}"
+            echo -e "## \e[36m[${idx}/${tot}] ${profile_sys} ${app_name} ${ip}:\e[m \e[44m${ssh_cmd}\e[m"
             eval "${ssh_cmd}"
             ## //[actual-code]
           done
+          idx=$(( $idx + 1 ))
         done
       done
       ;;
@@ -40,6 +42,8 @@ function publish() {
       # s > aw > ip
       read -r  profile_sys <<< $(GetSvrInfo "profile_sys" "profile_sys" "$1")
       read -ra app_name_arr <<< $(GetSvrInfo "app_name" "profile_sys" "$1")
+      tot="${#app_name_arr[@]}"
+      idx=1
       for app_name in ${app_name_arr[@]}
       do
         read -r  app_home <<< $(GetSvrInfo "app_home" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
@@ -49,18 +53,22 @@ function publish() {
         for ip in ${ip_arr[@]}
         do
           ## [actual-code]
-          local ssh_cmd="ssh ${EXEC_USER}@${ip} '${app_home}/deploy.sh' ${profile_sys:0:1}${app_name:(${#DOMAIN}+1):1}"
+          local ssh_cmd="ssh ${EXEC_USER}@${ip} '${app_home}/deploy.sh ${profile_sys:0:1}${app_name:(${#DOMAIN}+1):1}'"
           Log $verboss "ssh_cmd=${ssh_cmd}"
           echo -e "## \e[36mssh:\e[m ${ssh_cmd}"
+          echo -e "## \e[36m[${idx}/${tot}] ${profile_sys} ${app_name} ${ip}:\e[m \e[44m${ssh_cmd}\e[m"
           eval "${ssh_cmd}"
           ## //[actual-code]
         done
+        idx=$(( $idx + 1 ))
       done
       ;;
     @(w|a)?(ww|dm))
       # w > ds > ip
       read -r  app_name <<< $(GetSvrInfo "app_name" "app_name" "$1")
       read -ra profile_sys_arr <<< $(GetSvrInfo "profile_sys" "app_name" "$1")
+      tot="${#profile_sys_arr[@]}"
+      idx=1
       for profile_sys in ${profile_sys_arr[@]}
       do
         read -r  app_home <<< $(GetSvrInfo "app_home" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
@@ -70,12 +78,13 @@ function publish() {
         for ip in ${ip_arr[@]}
         do
           ## [actual-code]
-          local ssh_cmd="ssh ${EXEC_USER}@${ip} '${app_home}/deploy.sh' ${profile_sys:0:1}${app_name:(${#DOMAIN}+1):1}"
+          local ssh_cmd="ssh ${EXEC_USER}@${ip} '${app_home}/deploy.sh ${profile_sys:0:1}${app_name:(${#DOMAIN}+1):1}'"
           Log $verboss "ssh_cmd=${ssh_cmd}"
-          echo -e "## \e[36mssh:\e[m ${ssh_cmd}"
+          echo -e "## \e[36m[${idx}/${tot}] ${profile_sys} ${app_name} ${ip}:\e[m \e[44m${ssh_cmd}\e[m"
           eval "${ssh_cmd}"
           ## //[actual-code]
         done
+        idx=$(( $idx + 1 ))
       done
       ;;
     @(d|s)@(w|a)?(ww|dm))
@@ -89,9 +98,9 @@ function publish() {
       for ip in ${ip_arr[@]}
       do
         ## [actual-code]
-        local ssh_cmd="ssh ${EXEC_USER}@${ip} '${app_home}/deploy.sh' ${profile_sys:0:1}${app_name:(${#DOMAIN}+1):1}"
+        local ssh_cmd="ssh ${EXEC_USER}@${ip} '${app_home}/deploy.sh ${profile_sys:0:1}${app_name:(${#DOMAIN}+1):1}'"
         Log $verboss "ssh_cmd=${ssh_cmd}"
-        echo -e "## \e[36mssh:\e[m ${ssh_cmd}"
+        echo -e "## \e[36m${profile_sys} ${app_name} ${ip}:\e[m \e[44m${ssh_cmd}\e[m"
         eval "${ssh_cmd}"
         ## //[actual-code]
       done
