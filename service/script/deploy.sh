@@ -25,43 +25,19 @@ function deploy() {
   esac
   echo "app_name_arr=${app_name_arr[@]}"
   
+  
   # nexus-metadata
   for app_name in ${app_name_arr[@]}
   do
-    case "$1" in
-      @(d)*)
-        # lastest artifact (maven-snapshot)
-        local nexus_url="https://nexus/repository/maven-snapshot"
-        local metadata_url="${nexus_url}/mgkim/service/${app_name}/maven-metadata.xml"
-        echo "metadata_url=${metadata_url}"
-        local app_ver=$(curl -s ${metadata_url} | xmllint --xpath "//version[last()]/text()" -)
-        echo "app_ver=${app_ver}"
-        
-        local metadata_url="${nexus_url}/mgkim/service/${app_name}/${app_ver}/maven-metadata.xml"
-        echo "metadata_url=${metadata_url}"
-        local app_snap_ver=$(curl -s ${metadata_url} | xmllint --xpath "//snapshotVersion[1]/value/text()" -)
-        local snap_timestamp=$(curl -s ${metadata_url} | xmllint --xpath "//timestamp/text()" -)
-        local snap_buildNumber=$(curl -s ${metadata_url} | xmllint --xpath "//buildNumber/text()" -)
-        echo "app_snap_ver=${app_snap_ver}"
-        echo "snap_timestamp=${snap_timestamp},snap_buildNumber=${snap_buildNumber}"
-        
-        local download_url="${nexus_url}/mgkim/service/${app_name}/${app_ver}/${app_name}-${app_snap_ver}.jar"
-        jar_file="${app_name}-${app_ver}-${snap_timestamp}-${snap_buildNumber}.jar"
-        echo "download_url=${download_url} to jar_file=${jar_file}"
-        ;;
-      @(s)*)
-        # lastest artifact (maven-release)
-        local nexus_url="https://nexus/repository/maven-release"
-        metadata_url="${nexus_url}/mgkim/service/${app_name}/maven-metadata.xml"
-        echo "metadata_url=${metadata_url}"
-        app_ver=$(curl -s ${metadata_url} | xmllint --xpath "//version[last()]/text()" -)
-        echo "app_ver=${app_ver}"
-        
-        local download_url="${nexus_url}/mgkim/service/${app_name}/${app_ver}/${app_name}-${app_ver}.jar"
-        jar_file="${app_name}-${app_ver}.jar"
-        echo "download_url=${download_url} to jar_file=${jar_file}"
-        ;;
-    esac
+    local profile_sys
+    read -r  profile_sys <<< $(GetSvrInfo "profile_sys" "app_id" "$1")
+    local nx_group_id="mgkim/service"
+    local nx_artifact_id="${app_name}"
+    
+    read -ra nx_info <<< $(GetLatestArtifact "${profile_sys}" "${nx_group_id}" "${nx_artifact_id}")
+    echo "nx_info=${nx_info[@]}"
+    local download_url="${nx_info[0]}"
+    local jar_file="${nx_info[1]}"
     
     # download
     download_cmd="curl --silent --output ${BASEDIR}/${jar_file} ${download_url}"
