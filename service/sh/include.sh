@@ -119,6 +119,7 @@ function GetLatestArtifact() {
   echo "${download_url} ${jar_file}"
 }
 
+
 function ExecCmd() {
   # parameter "./say.sh hello"        > $# : 2
   # parameter "./say.sh hello world " > $# : 3
