@@ -2,7 +2,7 @@
 
 ## env
 BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
-echo "### [file] ${BASEDIR}/${0##*/} ${@} ###"
+echo -e "\e[35m### [file] ${BASEDIR}/${0##*/} ${@} ###\e[m"
 . ${BASEDIR}/include.sh
 
 
