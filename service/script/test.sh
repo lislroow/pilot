@@ -25,7 +25,7 @@ function execute() {
     @(w|a)?(ww|dm))
       read -ra app_id_arr <<< $(GetSvrInfo "app_id" "app_name" "$1")
       ;;
-    @(d|s)@(w|a)?(ww|dm)@(1|2)@(1|2))
+    @(d|s)@(w|a)*)
       read -ra app_id_arr <<< $(GetSvrInfo "app_id" "app_id" "$1")
       ;;
   esac
@@ -126,7 +126,7 @@ case "$1" in
     ;;
   @(w|a)?(ww|dm))
     ;;
-  @(d|s)@(w|a)?(ww|dm)@(1|2)@(1|2))
+  @(d|s)@(w|a)*)
     ;;
   *)
     echo "Usage: ${0##*/} [all|\${profile_sys}|\${app_name_c3}|\${app_id}]"
