@@ -1,9 +1,8 @@
 #!/bin/bash
 
-echo "### [file] ${0##*/} ${@} ###"
-
 ## env
 BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
+echo "### [file] ${BASEDIR}/${0##*/} ${@} ###"
 . ${BASEDIR}/include.sh
 
 CURL_OPTS="--connect-timeout 10 --silent"

@@ -1,9 +1,9 @@
 #!/bin/bash
 
-echo "### [file] ${0##*/} ${@} ###"
-
-## include
-. ./sh/include.sh
+## env
+BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
+echo "### [file] ${BASEDIR}/${0##*/} ${@} ###"
+. ${BASEDIR}/sh/include.sh
 
 DOMAIN="pilot"
 profile_sys="dev"

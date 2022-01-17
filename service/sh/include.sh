@@ -124,8 +124,8 @@ function ExecCmd() {
   # parameter "./say.sh hello"        > $# : 2
   # parameter "./say.sh hello world " > $# : 3
   # execCmd is array
-  echo "$#"
-  echo "$@"
+  #echo "$#"
+  #echo "$@"
   local execCmd=$@
   if [ $(whoami) == "root" ]; then
     # execCmd[@]:   (X)
@@ -140,5 +140,12 @@ function ExecCmd() {
 }
 
 
-
+function Log() {
+  local verboss="$1"
+  local msg="$2"
+  
+  if [ "${verboss}" == "true" ]; then
+    echo "${msg}"
+  fi
+}
 

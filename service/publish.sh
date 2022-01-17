@@ -1,12 +1,8 @@
 #!/bin/bash
 
-echo "### [start] ${0##*/} ${@} ###"
-
 ## env
-
 BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
-
-## include
+echo "### [file] ${BASEDIR}/${0##*/} ${@} ###"
 . ${BASEDIR}/sh/include.sh
 
 

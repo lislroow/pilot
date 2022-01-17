@@ -1,9 +1,8 @@
 #!/bin/bash
 
-echo "### [file] ${0##*/} ${@} ###"
-
 ## env
 BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
+echo "### [file] ${BASEDIR}/${0##*/} ${@} ###"
 . ${BASEDIR}/include.sh
 
 
@@ -31,9 +30,7 @@ function artifact() {
       read -ra nx_info <<< $(GetLatestArtifact "${nx_repo_id}" "${nx_group_id}" "${nx_artifact_id}")
       local download_url="${nx_info[0]}"
       local jar_file="${nx_info[1]}"
-      if [ "${verboss}" == "true" ]; then
-        echo "nx_info=${nx_info[@]}"
-      fi
+      if [ "${verboss}" == "true" ]; then echo "nx_info=${nx_info[@]}" fi
       
       echo "(${nx_repo_id}) ${nx_artifact_id}: ${jar_file}"
     done
