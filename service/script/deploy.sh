@@ -31,10 +31,16 @@ function deploy() {
   do
     local profile_sys
     read -r  profile_sys <<< $(GetSvrInfo "profile_sys" "app_id" "$1")
+    local nx_repo_id
     local nx_group_id="mgkim/service"
     local nx_artifact_id="${app_name}"
     
-    read -ra nx_info <<< $(GetLatestArtifact "${profile_sys}" "${nx_group_id}" "${nx_artifact_id}")
+    case "$1" in
+      @(d)*) nx_repo_id="maven-snapshot";;
+      @(s)*) nx_repo_id="maven-release" ;;
+    esac
+    
+    read -ra nx_info <<< $(GetLatestArtifact "${nx_repo_id}" "${nx_group_id}" "${nx_artifact_id}")
     echo "nx_info=${nx_info[@]}"
     local download_url="${nx_info[0]}"
     local jar_file="${nx_info[1]}"

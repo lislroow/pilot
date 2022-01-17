@@ -40,9 +40,7 @@ PROFILE_SYS=${PARENT_DIR:(${#DOMAIN}+1):1}
 
 EXEC_USER="tomcat"
 
-NX_SNAPSHOT_URL="https://nexus/repository/maven-snapshot"
-NX_RELEASE_URL="https://nexus/repository/maven-release"
-
+NX_REPO_URL="https://nexus/repository"
 
 readonly SVR_INFO=(
   'pilot-www|dwww11|/app/pilot-dev|dev|172.28.200.30|7100'
@@ -89,39 +87,32 @@ function GetSvrInfo() {
 }
 
 function GetLatestArtifact() {
-  local profile_sys="$1"
+  local nx_repo_id="$1"
   local nx_group_id="$2"
   local nx_artifact_id="$3"
-  case "${profile_sys}" in
-    @(d)*)
-      # lastest artifact (maven-snapshot)
-      local nexus_url="${NX_SNAPSHOT_URL}/${nx_group_id}"
-      local metadata_url="${nexus_url}/${nx_artifact_id}/maven-metadata.xml"
-      #echo "metadata_url=${metadata_url}"
-      local app_ver=$(curl -s ${metadata_url} | xmllint --xpath "//version[last()]/text()" -)
-      #echo "app_ver=${app_ver}"
+  
+  local nexus_url="${NX_REPO_URL}/${nx_repo_id}/${nx_group_id}/${nx_artifact_id}"
+  
+  case "${nx_repo_id}" in
+    maven-snapshot)
+      local metadata_url="${nexus_url}/maven-metadata.xml"
+      local version=$(curl -s ${metadata_url} | xmllint --xpath "//version[last()]/text()" -)
+      local snap_metadata_url="${nexus_url}/${version}/maven-metadata.xml"
       
-      local metadata_url="${nexus_url}/${nx_artifact_id}/${app_ver}/maven-metadata.xml"
-      #echo "metadata_url=${metadata_url}"
-      local app_snap_ver=$(curl -s ${metadata_url} | xmllint --xpath "//snapshotVersion[1]/value/text()" -)
-      local snap_timestamp=$(curl -s ${metadata_url} | xmllint --xpath "//timestamp/text()" -)
-      local snap_buildNumber=$(curl -s ${metadata_url} | xmllint --xpath "//buildNumber/text()" -)
-      #echo "app_snap_ver=${app_snap_ver}"
-      #echo "snap_timestamp=${snap_timestamp},snap_buildNumber=${snap_buildNumber}"
+      local snap_ver=$(curl -s ${snap_metadata_url} | xmllint --xpath "//snapshotVersion[1]/value/text()" -)
+      local snap_timestamp=$(curl -s ${snap_metadata_url} | xmllint --xpath "//timestamp/text()" -)
+      local snap_buildNumber=$(curl -s ${snap_metadata_url} | xmllint --xpath "//buildNumber/text()" -)
       
-      local download_url="${nexus_url}/${nx_artifact_id}/${app_ver}/${nx_artifact_id}-${app_snap_ver}.jar"
-      local jar_file="${nx_artifact_id}-${app_ver}-${snap_timestamp}-${snap_buildNumber}.jar"
+      local download_url="${nexus_url}/${version}/${nx_artifact_id}-${snap_ver}.jar"
+      local jar_file="${nx_artifact_id}-${version}-${snap_timestamp}-${snap_buildNumber}.jar"
       ;;
-    @(s)*)
-      # lastest artifact (maven-release)
-      local nexus_url="${NX_RELEASE_URL}/${nx_group_id}"
-      local metadata_url="${nexus_url}/${nx_artifact_id}/maven-metadata.xml"
-      #echo "metadata_url=${metadata_url}"
-      local app_ver=$(curl -s ${metadata_url} | xmllint --xpath "//version[last()]/text()" -)
-      #echo "app_ver=${app_ver}"
+    maven-release)
+      local metadata_url="${nexus_url}/maven-metadata.xml"
       
-      local download_url="${nexus_url}/${nx_artifact_id}/${app_ver}/${nx_artifact_id}-${app_ver}.jar"
-      local jar_file="${nx_artifact_id}-${app_ver}.jar"
+      local version=$(curl -s ${metadata_url} | xmllint --xpath "//version[last()]/text()" -)
+      
+      local download_url="${nexus_url}/${version}/${nx_artifact_id}-${version}.jar"
+      local jar_file="${nx_artifact_id}-${version}.jar"
       ;;
   esac
   
