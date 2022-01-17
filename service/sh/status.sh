@@ -34,7 +34,7 @@ function status() {
     if [ "${_pid}" != "" ]; then
       local netstat_cmd="netstat -ntplu | grep ${_pid}"
       local netstat_result=$(eval "${netstat_cmd}")
-      echo -e "\e[36m[${app_id}]\e[m  ${netstat_result}"
+      #echo -e "\e[36m[${app_id}]\e[m  ${netstat_result}"
       local listen_port=$(netstat -tnplu | grep ${_pid} | awk '{ if (match($4, /([0-9]*)$/, m)) print m[0] }')
       
       if [ "${listen_port}" != "" ]; then
