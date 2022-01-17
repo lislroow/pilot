@@ -42,14 +42,7 @@ function start() {
     if [ "${_pid}" != "" ]; then
       stop_cmd="${BASEDIR}/stop.sh ${app_id}"
       echo "stop_cmd=${stop_cmd}"
-      if [ $(whoami) == "root" ]; then
-        su ${EXEC_USER} -c "${stop_cmd}"
-      elif [ $(whoami) == ${EXEC_USER} ]; then
-        eval "${stop_cmd}"
-      else
-        echo "current user "$(whoami)
-        exit -1
-      fi
+      ExecCmd ${stop_cmd}
     fi
     
     # console-logfile
@@ -62,35 +55,16 @@ function start() {
       if [ ! -e "${LOG_BASEDIR}/backup" ]; then
         local mkdir_cmd="mkdir -p ${LOG_BASEDIR}/backup"
         echo "mkdir_cmd=${mkdir_cmd}"
-        if [ $(whoami) == "root" ]; then
-          su ${EXEC_USER} -c "${mkdir_cmd}"
-        elif [ $(whoami) == ${EXEC_USER} ]; then
-          eval "${mkdir_cmd}"
-        else
-          echo "current user "$(whoami)
-          exit -1
-        fi
+        ExecCmd ${mkdir_cmd}
       fi
+      
       local cp_cmd="cp ${log_filepath} ${bak_filepath}"
       echo "cp_cmd=${cp_cmd}"
-      if [ $(whoami) == "root" ]; then
-        su ${EXEC_USER} -c "${cp_cmd}"
-      elif [ $(whoami) == ${EXEC_USER} ]; then
-        eval "${cp_cmd}"
-      else
-        echo "current user "$(whoami)
-        exit -1
-      fi
+      ExecCmd ${cp_cmd}
+      
       local cat_cmd="cat /dev/null > ${log_filepath}"
       echo "cat_cmd=${cat_cmd}"
-      if [ $(whoami) == "root" ]; then
-        su ${EXEC_USER} -c "${cat_cmd}"
-      elif [ $(whoami) == ${EXEC_USER} ]; then
-        eval "${cat_cmd}"
-      else
-        echo "current user "$(whoami)
-        exit -1
-      fi
+      ExecCmd ${cat_cmd}
     fi
     
     local profile_sys app_name port
@@ -120,14 +94,7 @@ function start() {
     
     local java_cmd="nohup $JAVA_HOME/bin/java ${java_opts} -jar ${jar_file} > ${log_filepath} 2>&1 &"
     echo "java_cmd=${java_cmd}"
-    if [ $(whoami) == "root" ]; then
-      su ${EXEC_USER} -c "${java_cmd}"
-    elif [ $(whoami) == ${EXEC_USER} ]; then
-      eval "${java_cmd}"
-    else
-      echo "current user "$(whoami)
-      exit -1
-    fi
+    ExecCmd ${java_cmd}
     
     echo "ps_cmd=${ps_cmd}"
     local _pid=$(eval "${ps_cmd}")

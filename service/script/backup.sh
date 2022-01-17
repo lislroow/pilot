@@ -29,7 +29,7 @@ function backup() {
     if [ ! -e ${ARCHIVE_DIR} ]; then
       local mkdir_cmd="mkdir -p ${ARCHIVE_DIR}"
       echo "mkdir_cmd=${mkdir_cmd}"
-      ExecCmd ${EXEC_USER} ${mkdir_cmd}
+      ExecCmd ${mkdir_cmd}
     fi
     
     local latest_cmd="ls -rt ${BASEDIR}/${app_name}*.jar | tail -n 1"
@@ -46,7 +46,7 @@ function backup() {
     if [ "${old_jar[@]}" != "" ]; then
       mv_cmd="mv $(echo ${old_jar[@]} | tr -d '\n') ${ARCHIVE_DIR}"
       echo "mv_cmd=${mv_cmd}"
-      ExecCmd ${EXEC_USER} ${mv_cmd}
+      ExecCmd ${mv_cmd}
     fi
   done
   

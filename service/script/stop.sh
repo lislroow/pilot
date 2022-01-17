@@ -42,7 +42,7 @@ function stop() {
       echo "stopping ${app_id}(pid:'${_pid}')"
       local kill_cmd="kill -15 ${_pid}"
       echo "kill_cmd=${kill_cmd}"
-      eval "${kill_cmd}"
+      ExecCmd ${kill_cmd}
       
       i=1
       while [ $i -lt 600 ];

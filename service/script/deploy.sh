@@ -66,29 +66,15 @@ function deploy() {
     # download
     download_cmd="curl --silent --output ${BASEDIR}/${jar_file} ${download_url}"
     echo "download_cmd=${download_cmd}"
-    if [ $(whoami) == "root" ]; then
-      su ${EXEC_USER} -c "${download_cmd}"
-    elif [ $(whoami) == ${EXEC_USER} ]; then
-      eval "${download_cmd}"
-    else
-      echo "current user "$(whoami)
-      exit -1
-    fi
+    ExecCmd ${download_cmd}
     
     # final_name
     local md5str=$(md5sum ${BASEDIR}/${jar_file} | awk '{ print substr($1, 1, 4) }')
     local final_name=${jar_file%.*}_${md5str}.${jar_file##*.}
+    echo "final_name=${final_name}"
     local mv_cmd="mv ${BASEDIR}/${jar_file} ${BASEDIR}/${final_name}"
     echo "mv_cmd=${mv_cmd}"
-    if [ $(whoami) == "root" ]; then
-      su ${EXEC_USER} -c "${mv_cmd}"
-    elif [ $(whoami) == ${EXEC_USER} ]; then
-      eval "${mv_cmd}"
-    else
-      echo "current user "$(whoami)
-      exit -1
-    fi
-    echo "final_name=${final_name}"
+    ExecCmd ${mv_cmd}
     
     
     # stop / start
@@ -97,16 +83,17 @@ function deploy() {
     
     for app_id in ${app_id_arr[@]}
     do
-      if [ $(whoami) == "root" ]; then
-        su ${EXEC_USER} -c "${BASEDIR}/stop.sh ${app_id}"
-        su ${EXEC_USER} -c "${BASEDIR}/start.sh ${app_id} ${final_name}"
-      elif [ $(whoami) == ${EXEC_USER} ]; then
-        ${BASEDIR}/stop.sh ${app_id}
-        ${BASEDIR}/start.sh ${app_id} ${final_name}
-      else
-        echo "current user "$(whoami)
-        exit -1
-      fi
+      read -r  app_home <<< $(GetSvrInfo "app_home" "app_id" "${app_id}")
+      
+      # stop
+      local stop_cmd="${app_home}/stop.sh ${app_id}"
+      echo "stop_cmd=${stop_cmd[*]}"
+      ExecCmd ${stop_cmd}
+      
+      # start
+      local start_cmd="${app_home}/start.sh ${app_id} ${final_name}"
+      echo "start_cmd=${start_cmd[@]}"
+      ExecCmd ${start_cmd}
     done
   done
   

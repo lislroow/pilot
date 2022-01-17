@@ -19,7 +19,7 @@ case "${OS_NAME}" in
     JAVA_HOME=/z/develop/java/openjdk-11.0.13.8-temurin
     M2_HOME=/z/develop/build/maven-3.6.3
     PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
-    LOCAL_IP="172.28.200.30"
+    LOCAL_IP="localhost"
     ;;
   *)
     echo "invalid os"
@@ -68,7 +68,7 @@ function GetSvrInfo() {
       fi
     else
       if [[ "${key1}" == "ALL" || ( "${!key1}" == *"${val1}"* && "${!key2}" == *"${val2}"* ) ]]; then
-        if [ "${LOCAL_IP}" == "${ip}" ]; then
+        if [[ "${OS_NAME}" == "win" || "${LOCAL_IP}" == "${ip}" ]]; then
           list+=("${!field}")
         fi
       else
@@ -83,11 +83,24 @@ function GetSvrInfo() {
 }
 
 function ExecCmd() {
-  local execUser=$1
-  local execCmd=$2
+  # parameter "./say.sh hello"        > $# : 2
+  # parameter "./say.sh hello world " > $# : 3
+  # execCmd is array
+  echo "$#"
+  echo "$@"
+  local execCmd=$@
   if [ $(whoami) == "root" ]; then
-    su ${execUser} -c "${execCmd}"
-  elif [ $(whoami) == ${execUser} ]; then
-    eval "${execCmd}"
+    # execCmd[@]:   (X)
+    # execCmd[*]:   (X)
+    # "execCmd[*]": (O)
+    su ${EXEC_USER} -c "${execCmd[*]}"
+  elif [ $(whoami) == ${EXEC_USER} ]; then
+    # ${execCmd[*]}:        (X)
+    # eval "${execCmd[*]}": (O)
+    eval "${execCmd[*]}"
   fi
 }
+
+
+
+
