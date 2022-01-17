@@ -81,3 +81,13 @@ function GetSvrInfo() {
   ulist=($(printf '%s\n' "${list[@]}" | sort -u))
   echo "${ulist[@]}"
 }
+
+function ExecCmd() {
+  local execUser=$1
+  local execCmd=$2
+  if [ $(whoami) == "root" ]; then
+    su ${execUser} -c "${execCmd}"
+  elif [ $(whoami) == ${execUser} ]; then
+    eval "${execCmd}"
+  fi
+}

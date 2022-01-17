@@ -29,14 +29,7 @@ function backup() {
     if [ ! -e ${ARCHIVE_DIR} ]; then
       local mkdir_cmd="mkdir -p ${ARCHIVE_DIR}"
       echo "mkdir_cmd=${mkdir_cmd}"
-      if [ $(whoami) == "root" ]; then
-        su ${EXEC_USER} -c "${mkdir_cmd}"
-      elif [ $(whoami) == ${EXEC_USER} ]; then
-        eval "${mkdir_cmd}"
-      else
-        echo "current user "$(whoami)
-        exit -1
-      fi
+      ExecCmd ${EXEC_USER} ${mkdir_cmd}
     fi
     
     local latest_cmd="ls -rt ${BASEDIR}/${app_name}*.jar | tail -n 1"
@@ -53,14 +46,7 @@ function backup() {
     if [ "${old_jar[@]}" != "" ]; then
       mv_cmd="mv $(echo ${old_jar[@]} | tr -d '\n') ${ARCHIVE_DIR}"
       echo "mv_cmd=${mv_cmd}"
-      if [ $(whoami) == "root" ]; then
-        su ${EXEC_USER} -c "${mv_cmd}"
-      elif [ $(whoami) == ${EXEC_USER} ]; then
-        eval "${mv_cmd}"
-      else
-        echo "current user "$(whoami)
-        exit -1
-      fi
+      ExecCmd ${EXEC_USER} ${mv_cmd}
     fi
   done
   
