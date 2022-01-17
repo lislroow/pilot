@@ -28,8 +28,9 @@ function start() {
       read -ra app_id_arr <<< $(GetSvrInfo "app_id" "app_id" "$1")
       ;;
   esac
-  echo -e "## \e[36mtarget:\e[m ${app_id_arr[@]}"
-  
+  local tot="${#app_id_arr[@]}"
+  local idx=1
+  echo -e "## \e[36mtarget(${tot}):\e[m ${app_id_arr[@]}"
   
   for app_id in ${app_id_arr[@]}
   do

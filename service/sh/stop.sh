@@ -28,8 +28,9 @@ function stop() {
       read -ra app_id_arr <<< $(GetSvrInfo "app_id" "app_id" "$1")
       ;;
   esac
-  echo -e "## \e[36mtarget:\e[m ${app_id_arr[@]}"
-  
+  local tot="${#app_id_arr[@]}"
+  local idx=1
+  echo -e "## \e[36mtarget(${tot}):\e[m ${app_id_arr[@]}"
   
   for app_id in ${app_id_arr[@]}
   do
@@ -38,26 +39,27 @@ function stop() {
     local _pid=$(eval "${ps_cmd}")
     
     if [ "${_pid}" != "" ]; then
-      echo -e "## \e[36mstop:\e[m ${app_id}(${_pid})"
+      echo -e "## \e[36m[${idx}/${tot}] ${app_id}: stop (${_pid})\e[m"
       local kill_cmd="kill -15 ${_pid}"
       Log $verboss "kill_cmd=${kill_cmd}"
       ExecCmd ${kill_cmd}
       
-      local i=1
-      while [ $i -lt 600 ];
+      local retry=1
+      while [ $retry -lt 600 ];
       do
         local _check_pid=$(eval "${ps_cmd}")
         if [ "${_check_pid}" == "" ]; then
-          echo -e "## \e[36mstopped:\e[m ${app_id}(${_pid})"
+          Log $verboss "## stopped: ${app_id}(${_pid})"
           break
         fi
-        echo "## stopping: ${app_id}(${_pid})"
-        i=$(( $i + 1 ))
+        Log $verboss "## stopping: ${app_id}(${_pid})"
+        retry=$(( $retry + 1 ))
         sleep 2
       done
     else
-      echo "## ${app_id}: not started"
+      echo "## [${idx}/${tot}] ${app_id}: not running"
     fi
+    idx=$(( $idx + 1 ))
   done
 }
 
