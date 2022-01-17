@@ -77,11 +77,12 @@ case "$1" in
     ;;
   *)
     echo "Usage: ${0##*/} [all|\${profile_sys}|\${app_name_c3}|\${app_id}]"
-    exit -1
+    stop "${PROFILE_SYS}";
+    exit 0;
     ;;
 esac
 
 
-stop "$1" "$2";
+stop "$1";
 
 echo "### [finish] ${0##*/} ${@} ###"$'\n'$'\n'

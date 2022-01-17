@@ -109,6 +109,7 @@ case "$1" in
     ;;
   *)
     echo "Usage: ${0##*/} [all|d|s|w|a|dw|da|sw|sa]"
+    deploy "${PROFILE_SYS}";
     exit 0;
     ;;
 esac

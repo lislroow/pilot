@@ -60,7 +60,8 @@ case "$1" in
     ;;
   *)
     echo "Usage: ${0##*/} [all|\${profile_sys}]"
-    exit -1
+    status "${PROFILE_SYS}";
+    exit 0;
     ;;
 esac
 

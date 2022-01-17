@@ -62,6 +62,7 @@ case "$1" in
     ;;
   *)
     echo "Usage: ${0##*/} [all|w|a]"
+    backup "all";
     exit 0;
     ;;
 esac

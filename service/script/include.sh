@@ -35,6 +35,8 @@ EOF
 )
 
 DOMAIN="pilot"
+PARENT_DIR=${BASEDIR##*/}
+PROFILE_SYS=${PARENT_DIR:(${#DOMAIN}+1):1}
 
 EXEC_USER="tomcat"
 
