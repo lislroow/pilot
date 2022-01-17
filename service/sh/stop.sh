@@ -43,7 +43,6 @@ function stop() {
       while [ $i -lt 600 ];
       do
         local _check_pid=$(eval "${ps_cmd}")
-        echo "_check_pid=${_check_pid}"
         if [ "${_check_pid}" == "" ]; then
           echo "${app_id}(pid:'${_pid}') killed"
           break
