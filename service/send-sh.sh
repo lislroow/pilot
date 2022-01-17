@@ -7,14 +7,14 @@ echo "### [start] ${0##*/} ${@} ###"
 BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 
 ## include
-. ${BASEDIR}/script/include.sh
+. ${BASEDIR}/sh/include.sh
 
 
-function send_script() {
+function send_sh() {
   echo "+++ [func] ${BASEDIR}/${0##*/}:$FUNCNAME: transfer *.sh files +++"
   
   files=(
-    "${BASEDIR}/script/*.sh"
+    "${BASEDIR}/sh/*.sh"
   )
   echo "files=${files[@]}"
   
@@ -71,9 +71,10 @@ case "$1" in
     ;;
   *)
     echo "Usage: ${0##*/} [all|d|s]"
+    send_sh "all";
     exit 0;
     ;;
 esac
 
-send_script "$1";
+send_sh "$1";
 

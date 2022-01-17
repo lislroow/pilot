@@ -7,7 +7,7 @@ echo "### [start] ${0##*/} ${@} ###"
 BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 
 ## include
-. ${BASEDIR}/script/include.sh
+. ${BASEDIR}/sh/include.sh
 
 
 function send_conf() {
@@ -119,6 +119,7 @@ case "$1" in
     ;;
   *)
     echo "Usage: ${0##*/} [all|d|s|w|a|dw|da|sw|sa]"
+    send_conf "all";
     exit 0;
     ;;
 esac

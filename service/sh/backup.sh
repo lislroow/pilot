@@ -21,9 +21,9 @@ function backup() {
   
   for app_name in ${app_name_arr[@]}
   do
-    read -r  app_home <<< $(GetSvrInfo "app_home" "app_name" "${app_name}")
-    local backup_dir="${app_home}/backup"
-    if [ ! -e  ]; then
+    read -r  app_home <<< $(GetSvrInfo "app_home" "profile_sys" "${PROFILE_SYS}" "app_name" "${app_name}")
+    local backup_dir="${app_home}/bak"
+    if [ ! -e "${backup_dir}" ]; then
       local mkdir_cmd="mkdir -p ${backup_dir}"
       echo "mkdir_cmd=${mkdir_cmd}"
       ExecCmd ${mkdir_cmd}
@@ -41,7 +41,7 @@ function backup() {
     echo "old_jar=${old_jar[@]}"
     
     if [ "${old_jar[@]}" != "" ]; then
-      mv_cmd="mv $(echo ${old_jar[@]} | tr -d '\n') ${backup_dir}"
+      mv_cmd="mv ${old_jar[*]} ${backup_dir}"
       echo "mv_cmd=${mv_cmd}"
       ExecCmd ${mv_cmd}
     fi

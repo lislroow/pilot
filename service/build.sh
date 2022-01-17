@@ -7,7 +7,7 @@ echo "### [start] ${0##*/} ${@} ###"
 BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 
 ## include
-. ${BASEDIR}/script/include.sh
+. ${BASEDIR}/sh/include.sh
 
 
 function build() {
