@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 echo "### [start] ${0##*/} ${@} ###"
 
 ## env
@@ -10,9 +11,8 @@ BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 . ${BASEDIR}/include.sh
 
 
-## (stop) stop
-function stop() {
-  echo "+++ (stop) stop +++"
+function curl_test() {
+  echo "+++ (curl_test) curl_test +++"
   
   local app_id_arr
   case "$1" in
@@ -31,37 +31,31 @@ function stop() {
   esac
   echo "app_id_arr=${app_id_arr[@]}"
   
-  
+  tot=${#app_id_arr[@]}
+  idx=1
   for app_id in ${app_id_arr[@]}
   do
-    local ps_cmd="ps -ef | grep -v grep | grep -v tail |  grep -v .sh | grep ${app_id} | awk '{ print \$2 }'"
-    echo "ps_cmd=${ps_cmd}"
-    local _pid=$(eval "${ps_cmd}")
+    read -r  port <<< $(GetSvrInfo "port" "app_id" "${app_id}")
+    echo "[${idx}/${tot}] app_id=${app_id} port=${port}"
     
-    if [ "${_pid}" != "" ]; then
-      echo "stopping ${app_id}(pid:'${_pid}')"
-      local kill_cmd="kill -15 ${_pid}"
-      echo "kill_cmd=${kill_cmd}"
-      ExecCmd ${kill_cmd}
-      
-      i=1
-      while [ $i -lt 600 ];
-      do
-        local _check_pid=$(eval "${ps_cmd}")
-        echo "_check_pid=${_check_pid}"
-        if [ "${_check_pid}" == "" ]; then
-          echo "${app_id}(pid:'${_pid}') killed"
-          break
-        fi
-        echo "wait for ${app_id}(pid:'${_pid}') killing"
-        i=$(( $i + 1 ))
-        sleep 1
-      done
-    else
-      echo "${app_id} is not started"
-    fi
+    ## [actual-code]
+    # login
+    response=$(curl --location --silent --request POST 'http://localhost:'${port}'/public/cmm/user/idlogin' \
+    --header 'debug: Y' \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+      "header": {},
+      "body": {
+        "userId": "1000000001"
+      }
+    }')
+    echo "response=${response}"$'\n'
+    ## //[actual-code]
+    
+    idx=$(( $idx + 1 ))
   done
-  echo "--- //(stop) stop ---"
+  
+  echo "--- //(curl_test) curl_test ---"
 }
 
 
@@ -77,12 +71,12 @@ case "$1" in
     ;;
   *)
     echo "Usage: ${0##*/} [all|\${profile_sys}|\${app_name_c3}|\${app_id}]"
-    stop "${PROFILE_SYS}";
+    curl_test "${PROFILE_SYS}";
     exit 0;
     ;;
 esac
 
 
-stop "$1";
+curl_test "$1";
 
 echo "### [finish] ${0##*/} ${@} ###"$'\n'$'\n'

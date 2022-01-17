@@ -34,7 +34,7 @@ function publish() {
             local ssh_cmd="ssh ${EXEC_USER}@${ip} '${app_home}/deploy.sh' ${profile_sys:0:1}${app_name:(${#DOMAIN}+1):1}"
             echo "ssh_cmd=${ssh_cmd}"
             eval "${ssh_cmd}"
-            ## [actual-code]
+            ## //[actual-code]
           done
         done
       done
@@ -55,7 +55,7 @@ function publish() {
           local ssh_cmd="ssh ${EXEC_USER}@${ip} '${app_home}/deploy.sh' ${profile_sys:0:1}${app_name:(${#DOMAIN}+1):1}"
           echo "ssh_cmd=${ssh_cmd}"
           eval "${ssh_cmd}"
-          ## [actual-code]
+          ## //[actual-code]
         done
       done
       ;;
@@ -75,7 +75,7 @@ function publish() {
           local ssh_cmd="ssh ${EXEC_USER}@${ip} '${app_home}/deploy.sh' ${profile_sys:0:1}${app_name:(${#DOMAIN}+1):1}"
           echo "ssh_cmd=${ssh_cmd}"
           eval "${ssh_cmd}"
-          ## [actual-code]
+          ## //[actual-code]
         done
       done
       ;;
@@ -93,7 +93,7 @@ function publish() {
         local ssh_cmd="ssh ${EXEC_USER}@${ip} '${app_home}/deploy.sh' ${profile_sys:0:1}${app_name:(${#DOMAIN}+1):1}"
         echo "ssh_cmd=${ssh_cmd}"
         eval "${ssh_cmd}"
-        ## [actual-code]
+        ## //[actual-code]
       done
       ;;
   esac
