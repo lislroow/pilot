@@ -23,14 +23,19 @@ function status() {
   do
     local ps_cmd="ps aux | grep -v grep | grep -v tail |  grep -v .sh | grep ${app_id}"
     local ps_result=$(eval "${ps_cmd}")
-    echo -e "\e[36m[${app_id}]\e[m  ${ps_result}"
-    local _pid=$(eval "${ps_cmd} | awk '{ print \$2}'")
+    if [ "${ps_result}" == "" ]; then
+      echo -e "\e[31m[${app_id}]\e[m  process [${app_id}] not running"
+    else
+      echo -e "\e[36m[${app_id}]\e[m  ${ps_result}"
+    fi
+    local _pid=$(eval "echo ${ps_result} | awk '{ print \$2}'")
+    local port
+    read -r  port <<< $(GetSvrInfo "port" "app_id" "${app_id}")
     if [ "${_pid}" != "" ]; then
       local netstat_cmd="netstat -ntplu | grep ${_pid}"
       local netstat_result=$(eval "${netstat_cmd}")
       echo -e "\e[36m[${app_id}]\e[m  ${netstat_result}"
       local listen_port=$(netstat -tnplu | grep ${_pid} | awk '{ if (match($4, /([0-9]*)$/, m)) print m[0] }')
-      read -r  port <<< $(GetSvrInfo "port" "app_id" "${app_id}")
       
       if [ "${listen_port}" != "" ]; then
         local http_code=$(curl --write-out "%{http_code}" --silent --output /dev/null "http://localhost:${listen_port}/")
@@ -43,7 +48,7 @@ function status() {
         echo -e "\e[31m[${app_id}]\e[m  port \e[32m[${port}]\e[m fail: undetect listen port"
       fi
     else
-      echo -e "\e[31m[${app_id}]\e[m  port \e[32m[${port}]\e[m fail: isn't running"
+      echo -e "\e[31m[${app_id}]\e[m  port \e[32m[${port}]\e[m fail: not running"
     fi
     echo ""
   done

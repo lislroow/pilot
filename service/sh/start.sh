@@ -21,6 +21,9 @@ function start() {
     @(w|a)?(ww|dm))
       read -ra app_id_arr <<< $(GetSvrInfo "app_id" "app_name" "$1")
       ;;
+    @(d|s)@(w|a)?(ww|dm))
+      read -ra app_id_arr <<< $(GetSvrInfo "app_id" "app_id" "$1")
+      ;;
     @(d|s)@(w|a)?(ww|dm)@(1|2)@(1|2))
       read -ra app_id_arr <<< $(GetSvrInfo "app_id" "app_id" "$1")
       ;;
@@ -128,6 +131,8 @@ case "$1" in
     ;;
   @(w|a)?(ww|dm))
     ;;
+  @(d|s)@(w|a)?(ww|dm))
+    ;;
   @(d|s)@(w|a)?(ww|dm)@(1|2)@(1|2))
     ;;
   *)
@@ -139,5 +144,5 @@ esac
 
 
 
-start "$1" "$2";
+start "$1";
 

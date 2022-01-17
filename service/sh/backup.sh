@@ -20,7 +20,6 @@ function backup() {
   
   for app_name in ${app_name_arr[@]}
   do
-    echo -e "\e[36m--- ${app_name} ---\e[m"
     read -r  app_home <<< $(GetSvrInfo "app_home" "profile_sys" "${PROFILE_SYS}" "app_name" "${app_name}")
     local backup_dir="${app_home}/old"
     if [ ! -e "${backup_dir}" ]; then
@@ -44,14 +43,17 @@ function backup() {
       Log $verboss "mv_cmd=${mv_cmd}"
       ExecCmd ${mv_cmd}
       
+      local tot=${#old_jar[@]}
+      local idx=1
       for file in ${old_jar[@]}
       do
         if [ -e "${backup_dir}/${file##*/}" ]; then
-          echo "${file##*/} moved to ${backup_dir}/${file##*/}"
+          echo -e "[${app_name}] [${idx}/${tot}] \e[36m${file##*/}\e[m moved to \e[36m${backup_dir##*/}/${file##*/}\e[m"
         fi
+        idx=$(( $idx + 1 ))
       done
     else
-      echo "nothing has moved"
+      echo -e "\e[31mnothing has moved\e[m"
     fi
   done
 }
