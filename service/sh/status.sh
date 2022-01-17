@@ -29,19 +29,21 @@ function status() {
       local netstat_cmd="netstat -ntplu | grep ${_pid}"
       local netstat_result=$(eval "${netstat_cmd}")
       echo -e "\e[36m[${app_id}]\e[m  ${netstat_result}"
-      local server_port=$(netstat -tnplu | grep ${_pid} | awk '{ if (match($4, /([0-9]*)$/, m)) print m[0] }')
-      if [ "${server_port}" != "" ]; then
-        local http_code=$(curl --write-out "%{http_code}" --silent --output /dev/null "http://localhost:${server_port}/")
+      local listen_port=$(netstat -tnplu | grep ${_pid} | awk '{ if (match($4, /([0-9]*)$/, m)) print m[0] }')
+      read -r  port <<< $(GetSvrInfo "port" "app_id" "${app_id}")
+      
+      if [ "${listen_port}" != "" ]; then
+        local http_code=$(curl --write-out "%{http_code}" --silent --output /dev/null "http://localhost:${listen_port}/")
         if [ "${http_code}" == "200" ]; then
-          echo -e "\e[36m[${app_id}]\e[m  OK: curl test (http_code=${http_code})"
+          echo -e "\e[36m[${app_id}]\e[m  port \e[32m[${port}]\e[m OK: curl (http_code=${http_code})"
         else
-          echo -e "\e[31m[${app_id}]\e[m  fail: curl test (http_code=${http_code})"
+          echo -e "\e[31m[${app_id}]\e[m  port \e[32m[${port}]\e[m fail: curl (http_code=${http_code})"
         fi
       else
-        echo -e "\e[31m[${app_id}]\e[m  listen port is not found"
+        echo -e "\e[31m[${app_id}]\e[m  port \e[32m[${port}]\e[m fail: undetect listen port"
       fi
     else
-      echo -e "\e[31m[${app_id}]\e[m  isn't running"
+      echo -e "\e[31m[${app_id}]\e[m  port \e[32m[${port}]\e[m fail: isn't running"
     fi
     echo ""
   done

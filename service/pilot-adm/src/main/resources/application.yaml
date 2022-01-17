@@ -4,6 +4,9 @@ spring:
     allow-bean-definition-overriding: true
   datasource:
     jndi-name: jdbc/space-app
+  output:
+    ansi:
+      enabled: always
 
 logging:
   level:
