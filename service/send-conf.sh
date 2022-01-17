@@ -3,7 +3,7 @@
 echo "### [start] ${0##*/} ${@} ###"
 
 ## env
-echo "+++ (system-env) +++"
+
 BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 
 ## include
@@ -11,7 +11,7 @@ BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 
 
 function send_conf() {
-  echo "+++ ($FUNCNAME) transfer logback.xml, application.yaml +++"
+  echo "+++ [func] ${BASEDIR}/${0##*/}:$FUNCNAME: transfer logback.xml, application.yaml +++"
   
   case "$1" in
     all)
@@ -125,4 +125,3 @@ esac
 
 send_conf "$1";
 
-echo "### [finish] ${0##*/} ${@} ###"$'\n'$'\n'

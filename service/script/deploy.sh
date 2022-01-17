@@ -1,17 +1,14 @@
 #!/bin/bash
 
-echo "### [start] ${0##*/} ${@} ###"
+echo "### [file] ${0##*/} ${@} ###"
 
 ## env
-echo "+++ (system-env) +++"
 BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
-
-## include
 . ${BASEDIR}/include.sh
 
 
 function deploy() {
-  echo "+++ ($FUNCNAME) backup except for lastest jar"
+  echo "+++ [func] ${BASEDIR}/${0##*/}:$FUNCNAME: backup except for lastest jar"
   
   local app_name_arr
   case "$1" in
@@ -95,4 +92,3 @@ esac
 
 deploy "$1";
 
-echo "### [finish] ${0##*/} ${@} ###"$'\n'$'\n'

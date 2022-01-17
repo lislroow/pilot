@@ -27,12 +27,12 @@ case "${OS_NAME}" in
     ;;
 esac
 
-printf '%s\n' $(cat << EOF
-UNAME=${UNAME}
-JAVA_HOME=${JAVA_HOME}
-M2_HOME=${M2_HOME}
-EOF
-)
+#printf '%s\n' $(cat << EOF
+#UNAME=${UNAME}
+#JAVA_HOME=${JAVA_HOME}
+#M2_HOME=${M2_HOME}
+#EOF
+#)
 
 DOMAIN="pilot"
 PARENT_DIR=${BASEDIR##*/}

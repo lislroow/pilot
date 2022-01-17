@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "### [start] ${0##*/} ${@} ###"
+echo "### [file] ${0##*/} ${@} ###"
 
 ## include
 . ./script/include.sh

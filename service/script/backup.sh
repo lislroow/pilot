@@ -1,17 +1,14 @@
 #!/bin/bash
 
-echo "### [start] ${0##*/} ${@} ###"
+echo "### [file] ${0##*/} ${@} ###"
 
 ## env
-echo $"+++ (system-env) +++"
 BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
-
-## include
 . ${BASEDIR}/include.sh
 
 
 function backup() {
-  echo "+++ ($FUNCNAME) backup except for lastest jar"
+  echo "+++ [func] ${BASEDIR}/${0##*/}:${FUNCNAME}: backup except for lastest jar"
   
   case "$1" in
     all)
@@ -67,4 +64,3 @@ esac
 
 backup "$1";
 
-echo "### [finish] ${0##*/} ${@} ###"$'\n'$'\n'

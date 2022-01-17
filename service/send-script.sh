@@ -3,7 +3,7 @@
 echo "### [start] ${0##*/} ${@} ###"
 
 ## env
-echo "+++ (system-env) +++"
+
 BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 
 ## include
@@ -11,7 +11,7 @@ BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 
 
 function send_script() {
-  echo "+++ ($FUNCNAME) transfer *.sh files +++"
+  echo "+++ [func] ${BASEDIR}/${0##*/}:$FUNCNAME: transfer *.sh files +++"
   
   files=(
     "${BASEDIR}/script/*.sh"
@@ -77,4 +77,3 @@ esac
 
 send_script "$1";
 
-echo "### [finish] ${0##*/} ${@} ###"$'\n'$'\n'

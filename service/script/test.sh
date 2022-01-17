@@ -1,18 +1,14 @@
 #!/bin/bash
 
-
-echo "### [start] ${0##*/} ${@} ###"
+echo "### [file] ${0##*/} ${@} ###"
 
 ## env
-echo "+++ (system-env) +++"
 BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
-
-## include
 . ${BASEDIR}/include.sh
 
 
 function execute() {
-  echo "+++ ($FUNCNAME) +++"
+  echo "+++ [func] ${BASEDIR}/${0##*/}:$FUNCNAME +++"
   
   local app_id_arr
   case "$1" in
@@ -36,7 +32,7 @@ function execute() {
 }
 
 function curl_template() {
-  echo "+++ ($FUNCNAME) +++"
+  echo "+++ [func] ${BASEDIR}/${0##*/}:$FUNCNAME +++"
   local app_id_arr=($@)
   local tot=${#app_id_arr[@]}
   local idx=1
@@ -58,7 +54,7 @@ function curl_template() {
 }
 
 function curl_user_idlogin() {
-  echo "+++ ($FUNCNAME) +++"
+  echo "+++ [func] ${BASEDIR}/${0##*/}:$FUNCNAME +++"
   local app_id_arr=($@)
   local tot=${#app_id_arr[@]}
   local idx=1
@@ -83,7 +79,7 @@ function curl_user_idlogin() {
 }
 
 function curl_apitxlog_selectLogList() {
-  echo "+++ ($FUNCNAME) +++"
+  echo "+++ [func] ${BASEDIR}/${0##*/}:$FUNCNAME +++"
   local app_id_arr=($@)
   local tot=${#app_id_arr[@]}
   local idx=1
@@ -133,4 +129,3 @@ esac
 
 execute "$1";
 
-echo "### [finish] ${0##*/} ${@} ###"$'\n'$'\n'

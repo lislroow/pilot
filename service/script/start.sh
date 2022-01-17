@@ -1,18 +1,16 @@
 #!/bin/bash
 
-echo "### [start] ${0##*/} ${@} ###"
+echo "### [file] ${0##*/} ${@} ###"
 
 ## env
-echo "+++ (system-env) +++"
 BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
-LOG_BASEDIR="/outlog/pilot"
-
-## include
 . ${BASEDIR}/include.sh
 
 
+LOG_BASEDIR="/outlog/pilot"
+
 function start() {
-  echo "+++ ($FUNCNAME) +++"
+  echo "+++ [func] ${BASEDIR}/${0##*/}:$FUNCNAME +++"
   
   local app_id_arr
   case "$1" in
@@ -142,4 +140,3 @@ esac
 
 start "$1" "$2";
 
-echo "### [finish] ${0##*/} ${@} ###"$'\n'$'\n'

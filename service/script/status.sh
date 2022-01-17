@@ -1,16 +1,14 @@
 #!/bin/bash
 
-echo "### [start] ${0##*/} ${@} ###"
+echo "### [file] ${0##*/} ${@} ###"
 
-echo "+++ (system-env) +++"
+## env
 BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
-
-## include
 . ${BASEDIR}/include.sh
 
 
 function status() {
-  echo "+++ ($FUNCNAME) +++"
+  echo "+++ [func] ${BASEDIR}/${0##*/}:$FUNCNAME +++"
   
   local app_id_arr
   case "$1" in
@@ -66,4 +64,3 @@ esac
 status "$1";
 
 
-echo "### [finish] ${0##*/} ${@} ###"$'\n'$'\n'

@@ -3,7 +3,7 @@
 echo "### [start] ${0##*/} ${@} ###"
 
 ## env
-echo "+++ (system-env) +++"
+
 BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 
 ## include
@@ -11,7 +11,7 @@ BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 
 
 function publish() {
-  echo "+++ ($FUNCNAME) deploying trigger +++"
+  echo "+++ [func] ${BASEDIR}/${0##*/}:$FUNCNAME: deploying trigger +++"
   
   case "$1" in
     all)
@@ -120,4 +120,3 @@ esac
 publish "$1";
 
 
-echo "### [finish] ${0##*/} ${@} ###"$'\n'$'\n'
