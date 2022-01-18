@@ -11,7 +11,7 @@ import mgkim.service.lib.type.TAppType;
 
 public class CmmProfile {
 	
-	public static void init(String defAppName, String defAppId) {
+	public static void init(String defAppId) {
 		// 사이트 구분 설정 (www, adm, bat)
 		{
 			// app.id 설정
