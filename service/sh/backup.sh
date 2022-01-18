@@ -43,14 +43,11 @@ function backup() {
       Log $verboss "mv_cmd=${mv_cmd}"
       ExecCmd ${mv_cmd}
       
-      local tot=${#old_jar[@]}
-      local idx=1
       for file in ${old_jar[@]}
       do
         if [ -e "${backup_dir}/${file##*/}" ]; then
-          echo -e "[${app_name}] [${idx}/${tot}] \e[36m${file##*/}\e[m moved to \e[36m${backup_dir##*/}/${file##*/}\e[m"
+          echo -e "[${app_name}] \e[36m${file##*/}\e[m moved to \e[36m${backup_dir##*/}/${file##*/}\e[m"
         fi
-        idx=$(( $idx + 1 ))
       done
     else
       echo -e "\e[31mnothing has moved\e[m"
