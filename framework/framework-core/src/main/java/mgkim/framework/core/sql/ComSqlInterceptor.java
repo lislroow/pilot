@@ -38,7 +38,6 @@ import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.logging.KLogMarker;
-import mgkim.framework.core.logging.KLogSql;
 import mgkim.framework.core.type.TExecType;
 import mgkim.framework.core.type.TSqlType;
 import mgkim.framework.core.type.TSysType;
@@ -101,8 +100,6 @@ public class ComSqlInterceptor implements Interceptor {
 		
 		// 로깅 준비
 		TExecType execType = KContext.getT(AttrKey.EXEC_TYPE);
-		boolean isLoggableSql = KLogSql.isLoggableSql(sqlId);
-		boolean isComSql = KLogSql.isCmmSql(sqlId);
 		boolean isVerboss = KConfig.VERBOSS_ALL || KConfig.VERBOSS_SQL;
 		{
 			KContext.set(AttrKey.SQL_ID, sqlId);
@@ -131,7 +128,7 @@ public class ComSqlInterceptor implements Interceptor {
 					// paging 여부 확인
 					{
 						KInPageVO inPageVO = KContext.getT(AttrKey.IN_PAGE);
-						if (inPageVO == null || isComSql) { // // com 패키지에 있는 sql 은 paging 처리 대상에서 제외함
+						if (inPageVO == null) { // // com 패키지에 있는 sql 은 paging 처리 대상에서 제외함
 							isPaging = false;
 						} else {
 							isPaging = inPageVO.getPaging() && mappedStatement.getSqlCommandType() == SqlCommandType.SELECT;

@@ -12,7 +12,7 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.Context;
 import ch.qos.logback.core.Layout;
 
-public class KLayoutMultiPattern extends PatternLayoutEncoder {
+public class KLogLayout extends PatternLayoutEncoder {
 	
 	private List<Rule> rules = new ArrayList<>();
 	private Map<String, Layout<ILoggingEvent>> layoutMap = new HashMap<>();
@@ -38,7 +38,6 @@ public class KLayoutMultiPattern extends PatternLayoutEncoder {
 	}
 	
 	private Layout<ILoggingEvent> getLayout(final String name) {
-	
 		if (name == null) {
 			throw new IllegalArgumentException("name argument cannot be null");
 		}

@@ -15,7 +15,7 @@
   <property name="PATTERN-fw-file"    value="[${app.id}][%d{yyyy-MM-dd HH:mm:ss}][%-5level][fw]%X{ip}%X{ssid}%X{txid}%marker ### %msg%n"/>
   
   <appender name="APPENDER-console" class="ch.qos.logback.core.ConsoleAppender">
-    <encoder class="mgkim.framework.core.logging.KLayoutMultiPattern">
+    <encoder class="mgkim.framework.core.logging.KLogLayout">
       <pattern>${PATTERN-root}</pattern>
       <rule>
         <logger>mgkim.framework</logger>
@@ -26,7 +26,7 @@
   
   <appender name="APPENDER-file" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <file>${LOGBASE}/${app.id}.log</file>
-    <encoder class="mgkim.framework.core.logging.KLayoutMultiPattern">
+    <encoder class="mgkim.framework.core.logging.KLogLayout">
       <pattern>${PATTERN-root}</pattern>
       <rule>
         <logger>mgkim.framework</logger>
@@ -44,8 +44,12 @@
     <OnMatch>${D}</OnMatch>
   </turboFilter>
   <turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
+    <Marker>[sql-table]</Marker>
+    <OnMatch>${N}</OnMatch>
+  </turboFilter>
+  <turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
     <Marker>[aop-filter]</Marker>
-    <OnMatch>${D}</OnMatch>
+    <OnMatch>${N}</OnMatch>
   </turboFilter>
   <turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
     <Marker>[aop-stereo]</Marker>

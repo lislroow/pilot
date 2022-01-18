@@ -35,7 +35,6 @@ import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
-import mgkim.framework.core.logging.KLogSql;
 import mgkim.framework.core.type.TSqlType;
 import mgkim.framework.core.util.KSqlUtil;
 import mgkim.framework.core.util.KStringUtil;
@@ -76,7 +75,6 @@ public class ComSqlPagingList {
 		java.sql.Connection connection = null;
 		
 		// 로깅 준비
-		boolean isLogExclude = KLogSql.isLoggableSql(sqlId);
 		boolean isVerboss = KConfig.VERBOSS_ALL || KConfig.VERBOSS_SQL;
 		double elapsedTime = -1;
 		{
