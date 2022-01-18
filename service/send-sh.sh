@@ -35,6 +35,7 @@ function send_sh() {
           echo -e "## \e[30;42m${ssh_cmd}\e[m"
           eval "${ssh_cmd}"
           ## //[actual-code]
+          echo "--------"$'\n'
         done
       done
       ;;
@@ -54,6 +55,7 @@ function send_sh() {
         echo -e "## \e[30;42m${ssh_cmd}\e[m"
         eval "${ssh_cmd}"
         ## //[actual-code]
+        echo $'\n'"--------"$'\n'
       done
       ;;
   esac
