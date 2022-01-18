@@ -40,13 +40,13 @@ function deploy() {
     Log $verboss "nx_info=${nx_info[@]}"
     local download_url="${nx_info[0]}"
     local jar_file="${nx_info[1]}"
-    echo -e "## \e[36mchecked from nexus:\e[m download_url=${download_url}"
+    echo -e "## \e[36mchecked from nexus:\e[m ${download_url}"
     
     # download
     download_cmd="curl --silent --output ${BASEDIR}/${jar_file} ${download_url}"
     Log $verboss "download_cmd=${download_cmd}"
     ExecCmd ${download_cmd}
-    echo -e "## \e[36mdownloaded from nexus:\e[m jar_file=${BASEDIR}/${jar_file}"
+    echo -e "## \e[36mdownloaded from nexus:\e[m ${BASEDIR}/${jar_file}"
     
     # final_name
     #local md5str=$(md5sum ${BASEDIR}/${jar_file} | awk '{ print substr($1, 1, 4) }')
