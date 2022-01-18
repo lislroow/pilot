@@ -8,7 +8,7 @@
   </parent>
   <groupId>mgkim.service</groupId>
   <artifactId>pilot-adm</artifactId>
-  <version>4.0</version><!-- -SNAPSHOT -->
+  <version>4.0-SNAPSHOT</version><!-- -SNAPSHOT -->
   <packaging>jar</packaging>
   <name>${project.groupId}:${project.artifactId}</name>
   <url>https://github.com/lislroow/pilot.git</url>
