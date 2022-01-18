@@ -5,6 +5,7 @@ BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 echo -e "\e[35m+++ [file] ${BASEDIR}/${0##*/} ${@} +++\e[m"
 . ${BASEDIR}/sh/include.sh
 
+verboss="false"
 
 function send_sh() {
   echo "+++ [func] ${BASEDIR}/${0##*/}:$FUNCNAME: transfer *.sh files +++"
@@ -12,7 +13,7 @@ function send_sh() {
   files=(
     "${BASEDIR}/sh/*.sh"
   )
-  echo "files=${files[@]}"
+  Log $verboss "files=${files[@]}"
   
   case "$1" in
     all)
@@ -22,16 +23,16 @@ function send_sh() {
       do
         read -r  app_home <<< $(GetSvrInfo "app_home" "profile_sys" "${profile_sys}")
         read -ra ip_arr <<< $(GetSvrInfo "ip" "profile_sys" "${profile_sys}")
-        echo "ip_arr=${ip_arr[@]}, cnt=${#ip_arr[@]}"
+        Log $verboss "ip_arr=${ip_arr[@]}, cnt=${#ip_arr[@]}"
         
         for ip in ${ip_arr[@]}
         do
           ## [actual-code]
           local scp_cmd="scp ${files[@]} ${EXEC_USER}@${ip}:${app_home}"
-          echo "scp_cmd=${scp_cmd}"
+          echo -e "## \e[44m${scp_cmd}\e[m"
           eval "${scp_cmd}"
           local ssh_cmd="ssh ${EXEC_USER}@${ip} 'chmod u+x ${app_home}/*.sh'"
-          echo "ssh_cmd=${ssh_cmd}"
+          echo -e "## \e[44m${ssh_cmd}\e[m"
           eval "${ssh_cmd}"
           ## //[actual-code]
         done
@@ -41,16 +42,16 @@ function send_sh() {
       read -r  profile_sys <<< $(GetSvrInfo "profile_sys" "profile_sys" "$1")
       read -r  app_home <<< $(GetSvrInfo "app_home" "profile_sys" "${profile_sys}")
       read -ra ip_arr <<< $(GetSvrInfo "ip" "profile_sys" "${profile_sys}")
-      echo "ip_arr=${ip_arr[@]}, cnt=${#ip_arr[@]}"
+      Log $verboss "ip_arr=${ip_arr[@]}, cnt=${#ip_arr[@]}"
       
       for ip in ${ip_arr[@]}
       do
         ## [actual-code]
         local scp_cmd="scp ${files[@]} ${EXEC_USER}@${ip}:${app_home}"
-        echo "scp_cmd=${scp_cmd}"
+        echo -e "## \e[44m${scp_cmd}\e[m"
         eval "${scp_cmd}"
         local ssh_cmd="ssh ${EXEC_USER}@${ip} 'chmod u+x ${app_home}/*.sh'"
-        echo "ssh_cmd=${ssh_cmd}"
+        echo -e "## \e[44m${ssh_cmd}\e[m"
         eval "${ssh_cmd}"
         ## //[actual-code]
       done
