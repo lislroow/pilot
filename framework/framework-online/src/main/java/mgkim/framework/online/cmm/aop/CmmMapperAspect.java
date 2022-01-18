@@ -5,7 +5,7 @@ import mgkim.framework.core.annotation.KModule;
 @KModule(name = "매퍼 AOP", required = true)
 public interface CmmMapperAspect {
 
-	public void preProcess(Object[] args) throws Throwable;
+	public void preProcess(String clazzName, String methodName, Object[] args) throws Throwable;
 
-	public void postProcess(Object ret) throws Throwable;
+	public void postProcess(String clazzName, String methodName, Object ret) throws Throwable;
 }

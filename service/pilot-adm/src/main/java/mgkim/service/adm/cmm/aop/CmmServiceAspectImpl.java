@@ -16,11 +16,11 @@ public class CmmServiceAspectImpl implements CmmServiceAspect {
 
 	@Override
 	@KAspect
-	public void preProcess(Object[] args) throws Throwable {
+	public void preProcess(String clazzName, String methodName, Object[] args) throws Throwable {
 		if (args == null) {
 			return;
 		}
-		log.debug(KLogMarker.aop_stereo, "sys-field 설정");
+		log.trace(KLogMarker.aop_stereo, "sys-field 설정 {}.{}()", clazzName, methodName);
 		for (Object obj : args) {
 			KDtoUtil.setSysValues(obj);
 		}
@@ -28,7 +28,7 @@ public class CmmServiceAspectImpl implements CmmServiceAspect {
 
 	@Override
 	@KAspect
-	public void postProcess(Object ret) throws Throwable {
+	public void postProcess(String clazzName, String methodName, Object ret) throws Throwable {
 	}
 
 }

@@ -48,14 +48,17 @@ public class KAspect implements InitializingBean {
 		Object[] args = joinPoint.getArgs();
 		Object result = null;
 		if (KContext.getT(AttrKey.EXEC_TYPE) == TExecType.REQUEST) {
+			String clazzName = joinPoint.getSignature().getDeclaringTypeName();
+			String methodName = joinPoint.getSignature().getName();
+			
 			// 전처리
 			if (cmmServiceAspect != null) {
-				cmmServiceAspect.preProcess(args);
+				cmmServiceAspect.preProcess(clazzName, methodName, args);
 			}
 			result = joinPoint.proceed();
 			// 후처리
 			if (cmmServiceAspect != null) {
-				cmmServiceAspect.postProcess(result);
+				cmmServiceAspect.postProcess(clazzName, methodName, result);
 			}
 		} else {
 			result = joinPoint.proceed();
@@ -69,21 +72,24 @@ public class KAspect implements InitializingBean {
 		Object[] args = joinPoint.getArgs();
 		Object result = null;
 		if (KContext.getT(AttrKey.EXEC_TYPE) == TExecType.REQUEST) {
+			String clazzName = joinPoint.getSignature().getDeclaringTypeName();
+			String methodName = joinPoint.getSignature().getName();
+			
 			// 전처리
 			// `full-package 명` == `SQL namespace`
 			// `method 명` == `SQL id`
 			{
-				KContext.resetSql();
-				String sqlId = String.format("%s.%s",
-						joinPoint.getSignature().getDeclaringTypeName()
-						, joinPoint.getSignature().getName());
-				KContext.set(AttrKey.SQL_ID, sqlId);
-				if (KContext.getT(AttrKey.EXEC_TYPE) == TExecType.REQUEST) {
-					KContext.set(AttrKey.SQL_ID, sqlId);
-
-				}
+				//KContext.resetSql();
+				//String sqlId = String.format("%s.%s",
+				//		joinPoint.getSignature().getDeclaringTypeName()
+				//		, joinPoint.getSignature().getName());
+				//KContext.set(AttrKey.SQL_ID, sqlId);
+				//if (KContext.getT(AttrKey.EXEC_TYPE) == TExecType.REQUEST) {
+				//	KContext.set(AttrKey.SQL_ID, sqlId);
+				//}
+				
 				if (cmmMapperAspect != null) {
-					cmmMapperAspect.preProcess(args);
+					cmmMapperAspect.preProcess(clazzName, methodName, args);
 				}
 			}
 
@@ -91,7 +97,7 @@ public class KAspect implements InitializingBean {
 
 			// 후처리
 			if (cmmMapperAspect != null) {
-				cmmMapperAspect.postProcess(result);
+				cmmMapperAspect.postProcess(clazzName, methodName, result);
 			}
 		} else {
 			result = joinPoint.proceed();

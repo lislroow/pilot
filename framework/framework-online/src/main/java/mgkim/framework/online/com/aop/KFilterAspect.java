@@ -27,7 +27,7 @@ public class KFilterAspect {
 		}
 		Object result = null;
 		try {
-			log.info(KLogMarker.aop_filter, "{}: {}", clazzStr, filterName);
+			log.debug(KLogMarker.aop_filter, "{}: {}", clazzStr, filterName);
 			result = joinPoint.proceed();
 		} finally {
 		}

@@ -24,25 +24,25 @@ public class CmmMapperAspectImpl implements CmmMapperAspect {
 	private ComPrivacyMgr comPrivacyMgr;
 
 	@Override
-	public void preProcess(Object[] args) throws Throwable {
+	public void preProcess(String clazzName, String methodName, Object[] args) throws Throwable {
 		if (args == null) {
 			return;
 		}
-		log.debug(KLogMarker.aop_stereo, "sys-field 설정");
+		log.trace(KLogMarker.aop_stereo, "sys-field 설정 {}.{}()", clazzName, methodName);
 		for (Object obj : args) {
 			KDtoUtil.setSysValues(obj);
 		}
 	}
 
 	@Override
-	public void postProcess(Object ret) throws Throwable {
+	public void postProcess(String clazzName, String methodName, Object ret) throws Throwable {
 		if (comPrivacyMgr == null) {
 			return;
 		}
 
 		// 개인정보접근 로그 (10: SQL)
 		{
-			log.debug(KLogMarker.aop_stereo, "개인정보접근 로그");
+			log.trace(KLogMarker.aop_stereo, "개인정보접근 로그 {}.{}()", clazzName, methodName);
 			CmmPrivacyLogVO vo = new CmmPrivacyLogVO();
 			vo.setAppCd(KProfile.APP_CD);
 			vo.setMngtgId(KContext.getT(AttrKey.SQL_ID));
