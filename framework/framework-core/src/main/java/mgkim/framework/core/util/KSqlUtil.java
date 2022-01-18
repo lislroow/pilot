@@ -259,7 +259,7 @@ public class KSqlUtil {
 		//	return;
 		//}
 		String sqlTables = null;
-		Matcher m = Pattern.compile("("+TABLE_PATTERN+")", Pattern.CASE_INSENSITIVE).matcher(sqlText);
+		Matcher m = Pattern.compile("("+TABLE_PATTERN+")").matcher(sqlText);
 		List<String> tableNames = new ArrayList<String>();
 		while (m.find()) {
 			String str = m.group(0);
