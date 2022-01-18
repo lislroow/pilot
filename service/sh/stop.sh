@@ -41,7 +41,7 @@ function stop() {
     if [ "${_pid}" != "" ]; then
       echo -e "## \e[36m[${idx}/${tot}] ${app_id}: stop (${_pid})\e[m"
       local kill_cmd="kill -15 ${_pid}"
-      Log $verboss "kill_cmd=${kill_cmd}"
+      echo -e "   kill(${app_id}): \e[30;42m${kill_cmd}\e[m"
       ExecCmd ${kill_cmd}
       
       local retry=1
