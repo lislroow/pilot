@@ -61,7 +61,7 @@ function build() {
     echo -e "## \e[36m[${idx}/${tot}] ${app_name}:\e[m \e[30;42m${mvn_cmd}\e[m"
     eval "${mvn_cmd}"
     idx=$(( $idx + 1 ))
-    echo "-----------"$'\n'
+    echo "-----------"
   done
 }
 
