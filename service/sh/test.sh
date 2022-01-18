@@ -26,9 +26,13 @@ function execute() {
       read -ra app_id_arr <<< $(GetSvrInfo "app_id" "app_id" "$1")
       ;;
   esac
-  echo "app_id_arr=${app_id_arr[@]}"
   
+  echo -e "## \e[36mtarget(${#app_id_arr[@]}):\e[m ${app_id_arr[@]}"
   curl_user_idlogin "${app_id_arr[@]}"
+  
+  echo $'\n-----------\n'
+  
+  echo -e "## \e[36mtarget(${#app_id_arr[@]}):\e[m ${app_id_arr[@]}"
   curl_apitxlog_selectLogList "${app_id_arr[@]}"
 }
 
@@ -40,7 +44,7 @@ function curl_template() {
   for app_id in ${app_id_arr[@]}
   do
     read -r  port <<< $(GetSvrInfo "port" "app_id" "${app_id}")
-    echo "[${idx}/${tot}] app_id=${app_id} port=${port}"
+    echo -e "## \e[36m[${idx}/${tot}] app_id=${app_id} port=${port}\e[m"
     ## [actual-code]
     response=$("paste here")
     # (example) instruction !!
@@ -51,7 +55,7 @@ function curl_template() {
     #   4) replace authorization: 
     #      --header 'Authorization: Bearer '${BEARER_TOKEN} \
     ## //[actual-code]
-    echo "response=${response}"
+    echo "   ${response}"
     idx=$(( $idx + 1 ))
   done
 }
@@ -65,7 +69,7 @@ function curl_user_idlogin() {
   do
     read -r  port <<< $(GetSvrInfo "port" "app_id" "${app_id}")
     read -r  ip <<< $(GetSvrInfo "ip" "app_id" "${app_id}")
-    echo "[${idx}/${tot}] app_id=${app_id} port=${port}"
+    echo -e "## \e[36m[${idx}/${tot}] app_id=${app_id} port=${port}\e[m"
     ## [actual-code]
     response=$(curl --location --request POST ${CURL_OPTS} 'http://'${ip}':'${port}'/public/cmm/user/idlogin' \
     --header 'debug: Y' \
@@ -77,7 +81,7 @@ function curl_user_idlogin() {
       }
     }')
     ## //[actual-code]
-    echo "response=${response}"
+    echo "   ${response}"
     idx=$(( $idx + 1 ))
   done
 }
@@ -90,7 +94,7 @@ function curl_apitxlog_selectLogList() {
   for app_id in ${app_id_arr[@]}
   do
     read -r  port <<< $(GetSvrInfo "port" "app_id" "${app_id}")
-    echo "[${idx}/${tot}] app_id=${app_id} port=${port}"
+    echo -e "## \e[36m[${idx}/${tot}] app_id=${app_id} port=${port}\e[m"
     ## [actual-code]
     response=$(curl --location --request POST ${CURL_OPTS} 'http://'${ip}':'${port}'/api/adm/apitxlog/selectLogList' \
     --header 'Authorization: Bearer '${BEARER_TOKEN} \
@@ -109,7 +113,7 @@ function curl_apitxlog_selectLogList() {
       }
     }')
     ## //[actual-code]
-    echo "response=${response}"
+    echo "   ${response}"
     idx=$(( $idx + 1 ))
   done
 }
