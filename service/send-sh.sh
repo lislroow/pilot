@@ -29,10 +29,10 @@ function send_sh() {
         do
           ## [actual-code]
           local scp_cmd="scp ${files[@]} ${EXEC_USER}@${ip}:${app_home}"
-          echo -e "## \e[30;42m${scp_cmd}\e[m"
+          echo -e "## scp(${profile_sys}): \e[30;42m${scp_cmd}\e[m"
           eval "${scp_cmd}"
           local ssh_cmd="ssh ${EXEC_USER}@${ip} 'chmod u+x ${app_home}/*.sh'"
-          echo -e "## \e[30;42m${ssh_cmd}\e[m"
+          echo -e "## ssh(${profile_sys}): \e[30;42m${ssh_cmd}\e[m"
           eval "${ssh_cmd}"
           ## //[actual-code]
           echo "--------"$'\n'
@@ -49,10 +49,10 @@ function send_sh() {
       do
         ## [actual-code]
         local scp_cmd="scp ${files[@]} ${EXEC_USER}@${ip}:${app_home}"
-        echo -e "## \e[30;42m${scp_cmd}\e[m"
+        echo -e "## scp(${profile_sys}): \e[30;42m${scp_cmd}\e[m"
         eval "${scp_cmd}"
         local ssh_cmd="ssh ${EXEC_USER}@${ip} 'chmod u+x ${app_home}/*.sh'"
-        echo -e "## \e[30;42m${ssh_cmd}\e[m"
+        echo -e "## ssh(${profile_sys}): \e[30;42m${ssh_cmd}\e[m"
         eval "${ssh_cmd}"
         ## //[actual-code]
         echo $'\n'"--------"$'\n'
