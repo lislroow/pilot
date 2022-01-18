@@ -56,7 +56,7 @@ public class ComUserTokenMgr {
 		long curr = System.currentTimeMillis();
 		
 		// 토큰ID(`jti`) 생성: access-token 과 refresh-token 의 jti 는 같도록 설정함
-		claims.put(KConstant.TOKEN_JTI, KStringUtil.createUuid(true, TUuidType.SSID));
+		claims.put(KConstant.SSID, KStringUtil.createUuid(true, TUuidType.SSID));
 		
 		// access-token 생성
 		header.put(JWT_HEADER_TYPE, FwJwtType.accessToken);

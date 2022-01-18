@@ -38,7 +38,7 @@
   
   <!-- FILTER-MARKER -->
   <property name="FILTER-MARKER-sql-cmm" value="${D}" />
-  <property name="FILTER-MARKER-sql-table" value="${A}" />
+  <property name="FILTER-MARKER-sql-table" value="${N}" />
   <property name="FILTER-MARKER-aop-filter" value="${N}" />
   <property name="FILTER-MARKER-aop-stereo" value="${N}" />
   <!-- FILTER-MDC -->

@@ -65,7 +65,7 @@ public class ComFieldCryptorMgr implements InitializingBean {
 		try {
 			CmmFieldCryptoVO vo = new CmmFieldCryptoVO();
 			vo.setAppCd(KStringUtil.nvl(claims.get("appCd")));
-			vo.setSsid(KStringUtil.nvl(claims.get(KConstant.TOKEN_JTI)));
+			vo.setSsid(KStringUtil.nvl(claims.get(KConstant.SSID)));
 			vo.setSsuserId(KStringUtil.nvl(claims.get("userId")));
 			vo.setAumthTpcd(KStringUtil.nvl(claims.get("aumthTpcd")));
 			vo.setPrivateKey(privateKey);

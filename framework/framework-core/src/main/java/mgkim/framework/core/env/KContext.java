@@ -1,7 +1,5 @@
 package mgkim.framework.core.env;
 
-import static mgkim.framework.core.env.KConstant.MDC_DEBUG_MODE_YN;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,10 +39,6 @@ public class KContext {
 		, RESULT_CODE, RESULT_MESSAGE, RESULT_TEXT
 		, RESULT_BCODE, RESULT_BMESSAGE
 		;
-	}
-
-	public static boolean isDebugMode() {
-		return "Y".equals(KLogMDC.get(MDC_DEBUG_MODE_YN));
 	}
 
 	public static void initSystem() {
