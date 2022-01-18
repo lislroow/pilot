@@ -48,7 +48,6 @@ public class KConstant {
 	public static final String TOKEN_ORG_CD = "orgCd";
 	public static final String TOKEN_ORG_NM = "orgNm";
 	
-	public static final String LT_FILTER = KAnsi.magenta("[ *** FILTER *** ]");
 	public static final String LT_CLASS = KAnsi.magenta("[ *** CLASS *** ]");
 	public static final String LT_EXCEPTION = KAnsi.magenta("[ *** EXCEPTION *** ]");
 	public static final String LT_PROFILE = KAnsi.magenta("[ *** PROFILE *** ]");

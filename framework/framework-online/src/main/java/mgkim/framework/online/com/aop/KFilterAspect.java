@@ -5,14 +5,11 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Profile;
 
 import mgkim.framework.core.annotation.KBean;
-import mgkim.framework.core.env.KConfig;
-import mgkim.framework.core.env.KConstant;
+import mgkim.framework.core.logging.KLogMarker;
 
 
-@Profile(value = "debug")
 @Aspect
 @KBean
 public class KFilterAspect {
@@ -21,9 +18,6 @@ public class KFilterAspect {
 
 	@Around(value="execution(protected * mgkim.framework.online..filter.*.doFilterInternal(..))")
 	public Object aroundFilter(ProceedingJoinPoint joinPoint) throws Throwable {
-		if (!KConfig.DEBUG_FILTER) {
-			return joinPoint.proceed();
-		}
 		String clazzStr = joinPoint.getSignature().getDeclaringType().getSimpleName();
 		String filterName = null;
 		@SuppressWarnings("unchecked")
@@ -33,7 +27,7 @@ public class KFilterAspect {
 		}
 		Object result = null;
 		try {
-			log.info(String.format("%s %s `%s`", KConstant.LT_FILTER, clazzStr, filterName));
+			log.info(KLogMarker.aop_filter, "{}: {}", clazzStr, filterName);
 			result = joinPoint.proceed();
 		} finally {
 		}

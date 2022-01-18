@@ -8,6 +8,7 @@ import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.env.KProfile;
+import mgkim.framework.core.logging.KLogMarker;
 import mgkim.framework.core.type.TPrivacyType;
 import mgkim.framework.core.util.KDtoUtil;
 import mgkim.framework.online.cmm.aop.CmmMapperAspect;
@@ -24,10 +25,11 @@ public class CmmMapperAspectImpl implements CmmMapperAspect {
 
 	@Override
 	public void preProcess(Object[] args) throws Throwable {
-		log.debug("업무서비스 `@Mapper` 메소드 전처리 (파라미터 전처리)");
 		if (args == null) {
 			return;
 		}
+		
+		log.debug(KLogMarker.aop_stereo, "sys-field 설정");
 		for (Object obj : args) {
 			KDtoUtil.setSysValues(obj);
 		}
@@ -35,14 +37,13 @@ public class CmmMapperAspectImpl implements CmmMapperAspect {
 
 	@Override
 	public void postProcess(Object ret) throws Throwable {
-		log.debug("업무서비스 `@Mapper` 메소드 후처리 (리턴 후처리)");
-
 		if (comPrivacyMgr == null) {
 			return;
 		}
 
 		// 개인정보접근 로그 (10: SQL)
 		{
+			log.debug(KLogMarker.aop_stereo, "개인정보접근 로그");
 			CmmPrivacyLogVO vo = new CmmPrivacyLogVO();
 			vo.setAppCd(KProfile.APP_CD);
 			vo.setMngtgId(KContext.getT(AttrKey.SQL_ID));

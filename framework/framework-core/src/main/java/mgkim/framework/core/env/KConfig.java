@@ -121,12 +121,6 @@ public class KConfig {
 			VERBOSS_CALLER = _verboss_caller;
 			isChanged = true;
 		}
-		boolean _debug_filter = KConfig.getConfigBoolean("debug.request.filter."+KProfile.SYS.label());
-		if (DEBUG_FILTER != _debug_filter) {
-			log.warn(KMessage.get(KMessage.E5007, "debug.filter."+KProfile.SYS.label(), DEBUG_FILTER, _debug_filter));
-			DEBUG_FILTER = _debug_filter;
-			isChanged = true;
-		}
 		boolean _debug_com = KConfig.getConfigBoolean("debug.request.com."+KProfile.SYS.label());
 		if (DEBUG_COM != _debug_com) {
 			log.warn(KMessage.get(KMessage.E5007, "debug.request.com."+KProfile.SYS.label(), DEBUG_COM, _debug_com));

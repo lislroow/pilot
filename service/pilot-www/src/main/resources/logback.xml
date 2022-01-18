@@ -43,6 +43,14 @@
     <Marker>[sql-cmm]</Marker>
     <OnMatch>${D}</OnMatch>
   </turboFilter>
+  <turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
+    <Marker>[aop-filter]</Marker>
+    <OnMatch>${D}</OnMatch>
+  </turboFilter>
+  <turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
+    <Marker>[aop-stereo]</Marker>
+    <OnMatch>${N}</OnMatch>
+  </turboFilter>
   
   <!-- MDC 필터 -->
   <turboFilter class="ch.qos.logback.classic.turbo.MDCFilter">

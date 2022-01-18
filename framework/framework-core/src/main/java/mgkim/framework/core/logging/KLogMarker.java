@@ -16,6 +16,9 @@ public class KLogMarker {
 	public static final Marker security = MarkerFactory.getMarker("[sec]");
 	public static final Marker common = MarkerFactory.getMarker("[com]");
 
+	public static final Marker aop_filter = MarkerFactory.getMarker("[aop-filter]");
+	public static final Marker aop_stereo = MarkerFactory.getMarker("[aop-stereo]");
+	
 	public static final Marker getSqlMarker(String sqlFile) {
 		if (KStringUtil.nvl(sqlFile).startsWith("Cmm")) {
 			return KLogMarker.SQL_CMM;
