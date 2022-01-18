@@ -90,8 +90,7 @@ function start() {
     fi
     
     local java_opts=""
-    java_opts="${java_opts} -Dspring.profiles.active=${profile_sys}"
-    java_opts="${java_opts} -Dapp.name=${app_name}"
+    #java_opts="${java_opts} -Dspring.profiles.active=${profile_sys}"
     java_opts="${java_opts} -Dapp.id=${app_id}"
     java_opts="${java_opts} -Dserver.port=${port}"
     

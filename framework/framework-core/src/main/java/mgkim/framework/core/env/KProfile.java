@@ -8,6 +8,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import mgkim.framework.core.type.TOsType;
 import mgkim.framework.core.type.TSysType;
 
 public class KProfile {
@@ -23,6 +24,7 @@ public class KProfile {
 	public static String APP_NM;
 	public static String APP_NAME;
 	public static TSysType SYS;
+	public static TOsType OS;
 	public static List<String> profiles = new ArrayList<String>();
 	public static String PROFILES_STR;
 
@@ -41,36 +43,20 @@ public class KProfile {
 			}
 			HOSTNAME = hostname;
 		}
-
-		String val = null;
-		if (System.getProperty(KConstant.VM_SPRING_PROFILES_ACTIVE) == null) {
-			val = "";
-		} else {
-			val = System.getProperty(KConstant.VM_SPRING_PROFILES_ACTIVE);
-		}
-		String[] arr = val.split(",");
+		String osName = System.getProperty(KConstant.VM_OS_NAME);
+		KProfile.OS = TOsType.get(osName);
 		
-		// 시스템구분 설정 (loc, dev, test, prod)
-		{
-			TSysType[] sysType = TSysType.values();
-			for (int i=0; i<sysType.length; i++) {
-				for (int j=0; j<arr.length; j++) {
-					if (arr[j].equalsIgnoreCase(sysType[i].name())) {
-						KProfile.SYS = sysType[i];
-						KProfile.profiles.add(KProfile.SYS.toString());
-						break;
-					}
-				}
-			}
-			if (KProfile.SYS == null) {
-				KProfile.SYS = TSysType.LOC;
-				KProfile.profiles.add(KProfile.SYS.toString());
-				addProfile(KProfile.SYS.label());
-			}
+		String appId = System.getProperty(KConstant.VM_APP_ID);
+		if (appId == null) {
+			KProfile.SYS = TSysType.LOC;
+		} else {
+			String appId_c1 = appId.substring(0, 1);
+			KProfile.SYS = TSysType.get(appId_c1);
 		}
+		KProfile.addProfile(KProfile.SYS.label());
 	}
 	
-	public static void addProfile(String addVal) {
+	private static void addProfile(String addVal) {
 		String val = System.getProperty(KConstant.VM_SPRING_PROFILES_ACTIVE);
 		if (val == null || "".equals(val)) {
 			System.setProperty(KConstant.VM_SPRING_PROFILES_ACTIVE, addVal);
