@@ -5,6 +5,7 @@ BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 echo -e "\e[35m+++ [file] ${BASEDIR}/${0##*/} ${@} +++\e[m"
 . ${BASEDIR}/sh/include.sh
 
+verboss="false"
 
 function send_conf() {
   echo "+++ [func] ${BASEDIR}/${0##*/}:$FUNCNAME: transfer logback.xml, application.yaml +++"
@@ -21,15 +22,15 @@ function send_conf() {
         do
           read -r  app_home <<< $(GetSvrInfo "app_home" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
           read -ra ip_arr <<< $(GetSvrInfo "ip" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
-          echo "ip_arr=${ip_arr[@]}, cnt=${#ip_arr[@]}"
+          Log $verboss "ip_arr=${ip_arr[@]}, cnt=${#ip_arr[@]}"
           
           for ip in ${ip_arr[@]}
           do
             ## [actual-code]
             local files=("${BASEDIR}/${app_name}/src/main/resources/.logback-${app_name##*-}-${app_home##*-}.xml")
-            echo "files=${files[@]}"
+            Log $verboss "files=${files[@]}"
             local scp_cmd="scp ${files[@]} ${EXEC_USER}@${ip}:${app_home}"
-            echo "scp_cmd=${scp_cmd}"
+            echo -e "## \e[44m${scp_cmd}\e[m"
             eval "${scp_cmd}"
             ## //[actual-code]
           done
@@ -44,15 +45,15 @@ function send_conf() {
       do
         read -r  app_home <<< $(GetSvrInfo "app_home" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
         read -ra ip_arr <<< $(GetSvrInfo "ip" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
-        echo "ip_arr=${ip_arr[@]}, cnt=${#ip_arr[@]}"
+        Log $verboss "ip_arr=${ip_arr[@]}, cnt=${#ip_arr[@]}"
         
         for ip in ${ip_arr[@]}
         do
           ## [actual-code]
           local files=("${BASEDIR}/${app_name}/src/main/resources/.logback-${app_name##*-}-${app_home##*-}.xml")
-          echo "files=${files[@]}"
+          Log $verboss "files=${files[@]}"
           local scp_cmd="scp ${files[@]} ${EXEC_USER}@${ip}:${app_home}"
-          echo "scp_cmd=${scp_cmd}"
+          echo -e "## \e[44m${scp_cmd}\e[m"
           eval "${scp_cmd}"
           ## //[actual-code]
         done
@@ -66,15 +67,15 @@ function send_conf() {
       do
         read -r  app_home <<< $(GetSvrInfo "app_home" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
         read -ra ip_arr <<< $(GetSvrInfo "ip" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
-        echo "ip_arr=${ip_arr[@]}, cnt=${#ip_arr[@]}"
+        Log $verboss "ip_arr=${ip_arr[@]}, cnt=${#ip_arr[@]}"
         
         for ip in ${ip_arr[@]}
         do
           ## [actual-code]
           local files=("${BASEDIR}/${app_name}/src/main/resources/.logback-${app_name##*-}-${app_home##*-}.xml")
-          echo "files=${files[@]}"
+          Log $verboss "files=${files[@]}"
           local scp_cmd="scp ${files[@]} ${EXEC_USER}@${ip}:${app_home}"
-          echo "scp_cmd=${scp_cmd}"
+          echo -e "## \e[44m${scp_cmd}\e[m"
           eval "${scp_cmd}"
           ## //[actual-code]
         done
@@ -86,15 +87,15 @@ function send_conf() {
       read -r  profile_sys <<< $(GetSvrInfo "profile_sys" "app_id" "$1")
       read -r  app_home <<< $(GetSvrInfo "app_home" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
       read -ra ip_arr <<< $(GetSvrInfo "ip" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
-      echo "ip_arr=${ip_arr[@]}, cnt=${#ip_arr[@]}"
+      Log $verboss "ip_arr=${ip_arr[@]}, cnt=${#ip_arr[@]}"
       
       for ip in ${ip_arr[@]}
       do
         ## [actual-code]
         local files=("${BASEDIR}/${app_name}/src/main/resources/.logback-${app_name##*-}-${app_home##*-}.xml")
-        echo "files=${files[@]}"
+        Log $verboss "files=${files[@]}"
         local scp_cmd="scp ${files[@]} ${EXEC_USER}@${ip}:${app_home}"
-        echo "scp_cmd=${scp_cmd}"
+        echo -e "## \e[44m${scp_cmd}\e[m"
         eval "${scp_cmd}"
         ## //[actual-code]
       done
