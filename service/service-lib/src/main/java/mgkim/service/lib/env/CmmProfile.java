@@ -20,30 +20,30 @@ public class CmmProfile {
 					System.setProperty(KConstant.VM_APP_ID, appId);
 				}
 				String[] arr = java.util.Arrays.stream(TAppType.values()).map(item -> item.label()).toArray(String[]::new);
-				Matcher matcher = Pattern.compile("[lds]*("+String.join("|", arr)+")[0-9]*").matcher(appId);
-				if (matcher.find()) {
+				Matcher appMatcher = Pattern.compile("[lds]*("+String.join("|", arr)+")[0-9]*").matcher(appId);
+				if (appMatcher.find()) {
+					TAppType app = TAppType.get(appMatcher.group(1));
 					KProfile.APP_ID = appId;
-					TAppType appType = TAppType.get(matcher.group(1));
-					KProfile.APP_CD = appType.code();
+					KProfile.APP_CD = app.code();
+					KProfile.APP_NM = app.label();
+					KProfile.APP_NAME = String.format("%s-%s", KProfile.DOMAIN, app.label());
+					System.setProperty(KConstant.VM_APP_NAME, KProfile.APP_NAME);
 				} else {
 					System.exit(-1);
 				}
 			}
 			
-			// app.name 설정
-			String appName = System.getProperty(KConstant.VM_APP_NAME);
-			if (appName == null) {
-				appName = defAppName;
-				System.setProperty(KConstant.VM_APP_NAME, appName);
-			}
-			
-			KProfile.APP_NAME = appName;
 			switch (KProfile.SYS) {
+			case LOC:
+				break;
 			case DEV:
 			case STA:
 			case PROD:
-				String a3 = appName.substring(appName.indexOf("-")+1, appName.length());
-				System.setProperty("logging.config", "/app/pilot-"+KProfile.SYS.code()+"/.logback-"+a3+"-"+KProfile.SYS.code()+".xml");
+				String configXml = String.format("/app/pilot-%s/.logback-%s-%s.xml"
+						, KProfile.SYS.label()
+						, KProfile.APP_NM
+						, KProfile.SYS.label());
+				System.setProperty("logging.config", configXml);
 				break;
 			}
 		}

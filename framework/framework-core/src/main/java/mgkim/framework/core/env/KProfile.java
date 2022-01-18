@@ -15,11 +15,12 @@ public class KProfile {
 	private static final Logger log = LoggerFactory.getLogger(KProfile.class);
 
 
-	public static final String GROUP = "mgkim";
+	public static final String BASE_PACKAGE = "mgkim";
 	public static final String DOMAIN = "pilot";
 	public static final String HOSTNAME;
 	public static String APP_ID;
 	public static String APP_CD;
+	public static String APP_NM;
 	public static String APP_NAME;
 	public static TSysType SYS;
 	public static List<String> profiles = new ArrayList<String>();
@@ -64,7 +65,7 @@ public class KProfile {
 			if (KProfile.SYS == null) {
 				KProfile.SYS = TSysType.LOC;
 				KProfile.profiles.add(KProfile.SYS.toString());
-				addProfile(KProfile.SYS.code());
+				addProfile(KProfile.SYS.label());
 			}
 		}
 	}

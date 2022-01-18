@@ -31,7 +31,7 @@ import mgkim.framework.online.cmm.CmmDtoLog;
 import mgkim.framework.online.cmm.dtohandler.CmmDtoHandler;
 import mgkim.framework.online.com.mgr.ComFieldCryptorMgr;
 
-@RestControllerAdvice(basePackages=KProfile.GROUP)
+@RestControllerAdvice(basePackages=KProfile.BASE_PACKAGE)
 public class KInDTOHandler extends RequestBodyAdviceAdapter implements InitializingBean {
 	
 	private static final Logger log = LoggerFactory.getLogger(KInDTOHandler.class);

@@ -26,7 +26,7 @@ public class KExceptionUtil {
 			throwable = t;
 		}
 		if (isFilter) {
-			Stream<StackTraceElement> stream = Arrays.stream(throwable.getStackTrace()).filter(se -> se.getClassName().startsWith(KProfile.GROUP+"."));
+			Stream<StackTraceElement> stream = Arrays.stream(throwable.getStackTrace()).filter(se -> se.getClassName().startsWith(KProfile.BASE_PACKAGE+"."));
 			StackTraceElement[] trace = stream.collect(java.util.stream.Collectors.toList()).toArray(new StackTraceElement[0]);
 			throwable.setStackTrace(trace);
 			throwable.printStackTrace(pw);

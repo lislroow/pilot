@@ -2,18 +2,12 @@ package mgkim.framework.core.type;
 
 public enum TSysType {
 
-	LOC("loc"), DEV("dev"), STA("sta"), PROD("prod");
+	LOC, DEV, STA, PROD;
 
-	private final String code;
-
-	public String code() {
-		return code;
+	public String label() {
+		return this.name().toLowerCase();
 	}
-
-	private TSysType(String code) {
-		this.code = code;
-	}
-
+	
 	@Override
 	public String toString() {
 		return name().toLowerCase();

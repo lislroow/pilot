@@ -65,7 +65,7 @@ import mgkim.framework.online.com.mybatis.ComSqlSessionFactory;
 @Configuration
 @EnableAsync
 @EnableAspectJAutoProxy(proxyTargetClass = true)
-@ComponentScan(basePackages = {KProfile.GROUP},
+@ComponentScan(basePackages = {KProfile.BASE_PACKAGE},
 	useDefaultFilters = false,
 	includeFilters = {
 		@ComponentScan.Filter(type = FilterType.ANNOTATION, value = org.springframework.stereotype.Service.class),
@@ -273,7 +273,7 @@ public class KInit implements ServletContextInitializer, BeanFactoryPostProcesso
 		bean.setDataSource(dataSource);
 		bean.setConfigLocation(mybatisConfigLocation);
 		bean.setMapperLocations(mapperLocations);
-		bean.setTypeAliasesPackage(KProfile.GROUP);
+		bean.setTypeAliasesPackage(KProfile.BASE_PACKAGE);
 		return bean;
 	}
 

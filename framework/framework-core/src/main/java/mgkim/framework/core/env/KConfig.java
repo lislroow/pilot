@@ -97,51 +97,51 @@ public class KConfig {
 
 	public static boolean refreshable() {
 		boolean isChanged = false;
-		boolean _verboss_all = KConfig.getConfigBoolean("debug.verboss.all."+KProfile.SYS.code());
+		boolean _verboss_all = KConfig.getConfigBoolean("debug.verboss.all."+KProfile.SYS.label());
 		if (VERBOSS_ALL != _verboss_all) {
-			log.warn(KMessage.get(KMessage.E5007, "debug.verboss.all."+KProfile.SYS.code(), VERBOSS_ALL, _verboss_all));
+			log.warn(KMessage.get(KMessage.E5007, "debug.verboss.all."+KProfile.SYS.label(), VERBOSS_ALL, _verboss_all));
 			VERBOSS_ALL = _verboss_all;
 			isChanged = true;
 		}
-		boolean _verboss_sql = KConfig.getConfigBoolean("debug.verboss.sql."+KProfile.SYS.code());
+		boolean _verboss_sql = KConfig.getConfigBoolean("debug.verboss.sql."+KProfile.SYS.label());
 		if (VERBOSS_SQL != _verboss_sql) {
-			log.warn(KMessage.get(KMessage.E5007, "debug.verboss.sql."+KProfile.SYS.code(), VERBOSS_SQL, _verboss_sql));
+			log.warn(KMessage.get(KMessage.E5007, "debug.verboss.sql."+KProfile.SYS.label(), VERBOSS_SQL, _verboss_sql));
 			VERBOSS_SQL = _verboss_sql;
 			isChanged = true;
 		}
-		boolean _verboss_req = KConfig.getConfigBoolean("debug.verboss.req."+KProfile.SYS.code());
+		boolean _verboss_req = KConfig.getConfigBoolean("debug.verboss.req."+KProfile.SYS.label());
 		if (VERBOSS_REQ != _verboss_req) {
-			log.warn(KMessage.get(KMessage.E5007, "debug.verboss.req."+KProfile.SYS.code(), VERBOSS_REQ, _verboss_req));
+			log.warn(KMessage.get(KMessage.E5007, "debug.verboss.req."+KProfile.SYS.label(), VERBOSS_REQ, _verboss_req));
 			VERBOSS_REQ = _verboss_req;
 			isChanged = true;
 		}
-		boolean _verboss_caller = KConfig.getConfigBoolean("debug.verboss.caller."+KProfile.SYS.code());
+		boolean _verboss_caller = KConfig.getConfigBoolean("debug.verboss.caller."+KProfile.SYS.label());
 		if (VERBOSS_CALLER != _verboss_caller) {
-			log.warn(KMessage.get(KMessage.E5007, "debug.verboss.caller."+KProfile.SYS.code(), VERBOSS_CALLER, _verboss_caller));
+			log.warn(KMessage.get(KMessage.E5007, "debug.verboss.caller."+KProfile.SYS.label(), VERBOSS_CALLER, _verboss_caller));
 			VERBOSS_CALLER = _verboss_caller;
 			isChanged = true;
 		}
-		boolean _debug_filter = KConfig.getConfigBoolean("debug.request.filter."+KProfile.SYS.code());
+		boolean _debug_filter = KConfig.getConfigBoolean("debug.request.filter."+KProfile.SYS.label());
 		if (DEBUG_FILTER != _debug_filter) {
-			log.warn(KMessage.get(KMessage.E5007, "debug.filter."+KProfile.SYS.code(), DEBUG_FILTER, _debug_filter));
+			log.warn(KMessage.get(KMessage.E5007, "debug.filter."+KProfile.SYS.label(), DEBUG_FILTER, _debug_filter));
 			DEBUG_FILTER = _debug_filter;
 			isChanged = true;
 		}
-		boolean _debug_com = KConfig.getConfigBoolean("debug.request.com."+KProfile.SYS.code());
+		boolean _debug_com = KConfig.getConfigBoolean("debug.request.com."+KProfile.SYS.label());
 		if (DEBUG_COM != _debug_com) {
-			log.warn(KMessage.get(KMessage.E5007, "debug.request.com."+KProfile.SYS.code(), DEBUG_COM, _debug_com));
+			log.warn(KMessage.get(KMessage.E5007, "debug.request.com."+KProfile.SYS.label(), DEBUG_COM, _debug_com));
 			DEBUG_COM = _debug_com;
 			isChanged = true;
 		}
-		boolean _verboss_schedule = KConfig.getConfigBoolean("debug.verboss.schedule."+KProfile.SYS.code());
+		boolean _verboss_schedule = KConfig.getConfigBoolean("debug.verboss.schedule."+KProfile.SYS.label());
 		if (VERBOSS_SCHEDULE != _verboss_schedule) {
-			log.warn(KMessage.get(KMessage.E5007, "debug.verboss.schedule."+KProfile.SYS.code(), VERBOSS_SCHEDULE, _verboss_schedule));
+			log.warn(KMessage.get(KMessage.E5007, "debug.verboss.schedule."+KProfile.SYS.label(), VERBOSS_SCHEDULE, _verboss_schedule));
 			VERBOSS_SCHEDULE = _verboss_schedule;
 			isChanged = true;
 		}
-		boolean _schedule_enable = KConfig.getConfigBoolean("schedule.enable."+KProfile.SYS.code());
+		boolean _schedule_enable = KConfig.getConfigBoolean("schedule.enable."+KProfile.SYS.label());
 		if (SCHEDULE_ENABLE != _schedule_enable) {
-			log.warn(KMessage.get(KMessage.E5007, "schedule.enable."+KProfile.SYS.code(), SCHEDULE_ENABLE, _schedule_enable));
+			log.warn(KMessage.get(KMessage.E5007, "schedule.enable."+KProfile.SYS.label(), SCHEDULE_ENABLE, _schedule_enable));
 			SCHEDULE_ENABLE = _schedule_enable;
 			isChanged = true;
 		}

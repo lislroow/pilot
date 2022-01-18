@@ -16,7 +16,7 @@ public enum TAppType {
 	}
 	
 	public String label() {
-		return label.toLowerCase();
+		return label;
 	}
 	
 	private TAppType(String code) {

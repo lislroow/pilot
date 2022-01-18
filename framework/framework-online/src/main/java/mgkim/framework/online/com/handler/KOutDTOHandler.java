@@ -42,7 +42,7 @@ import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.cmm.dtohandler.CmmDtoHandler;
 import mgkim.framework.online.com.mgr.ComFieldCryptorMgr;
 
-@RestControllerAdvice(basePackages=KProfile.GROUP)
+@RestControllerAdvice(basePackages=KProfile.BASE_PACKAGE)
 public class KOutDTOHandler extends AbstractMappingJacksonResponseBodyAdvice implements InitializingBean {
 	
 	private static final Logger log = LoggerFactory.getLogger(KOutDTOHandler.class);
@@ -195,7 +195,7 @@ public class KOutDTOHandler extends AbstractMappingJacksonResponseBodyAdvice imp
 			// headerVO 필드값 설정: 페이징 여부에 따른 headerVO 객체 생성 및 처리 결과 정보 설정
 			{
 				// header.sys
-				headerMap.put(KConstant.SYS, KProfile.SYS.code());
+				headerMap.put(KConstant.SYS, KProfile.SYS.label());
 				// header.app_name
 				headerMap.put(KConstant.APP_NAME, KProfile.APP_NAME);
 				// header.app_id

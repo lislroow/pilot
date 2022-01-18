@@ -107,7 +107,7 @@ public class KInitMvc implements WebMvcConfigurer {
 				.securitySchemes(Arrays.asList(apiKey()))
 				.apiInfo(apiInfo())
 				.select()
-				.apis(RequestHandlerSelectors.basePackage(KProfile.GROUP))
+				.apis(RequestHandlerSelectors.basePackage(KProfile.BASE_PACKAGE))
 				.paths(PathSelectors.regex("/api/.*|/public/.*|/interapi/.*|/openapi/.*|/orgapi/.*")).build();
 		return docket;
 	}
