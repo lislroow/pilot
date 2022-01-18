@@ -33,7 +33,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.StopWatch;
 
 import mgkim.framework.core.dto.KInPageVO;
-import mgkim.framework.core.env.KConfig;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.env.KProfile;
@@ -100,11 +99,8 @@ public class ComSqlInterceptor implements Interceptor {
 		
 		// 로깅 준비
 		TExecType execType = KContext.getT(AttrKey.EXEC_TYPE);
-		boolean isVerboss = KConfig.VERBOSS_ALL || KConfig.VERBOSS_SQL;
-		{
-			KContext.set(AttrKey.SQL_ID, sqlId);
-			KContext.set(AttrKey.SQL_FILE, sqlFile);
-		}
+		KContext.set(AttrKey.SQL_ID, sqlId);
+		KContext.set(AttrKey.SQL_FILE, sqlFile);
 		
 		// paging 처리 및 sql 로깅
 		String paramSql = null;
@@ -228,11 +224,10 @@ public class ComSqlInterceptor implements Interceptor {
 				} else {
 					resultCount = 1;
 				}
-				if (isVerboss) {
-					log.info(KLogMarker.getSqlMarker(sqlFile), "\nparam = {}\n{}\n(rows={}, elapsed={})\nresult = {}", KStringUtil.toJson(parameterObject), paramSql, resultCount, elapsed, KStringUtil.toJson(resultObject));
-				} else {
-					log.info(KLogMarker.getSqlMarker(sqlFile), "\n{}\n(rows={}, elapsed={})", paramSql, resultCount, elapsed);
-				}
+				
+				//log.trace(KLogMarker.getSqlMarker(sqlFile), "\nparam = {}\n{}\n(rows={}, elapsed={})\nresult = {}", KStringUtil.toJson(parameterObject), paramSql, resultCount, elapsed, KStringUtil.toJson(resultObject));
+				log.info(KLogMarker.getSqlMarker(sqlFile), "\n{}\n(rows={}, elapsed={})", paramSql, resultCount, elapsed);
+				
 				// sql 실행 테이블 분석
 				if (true && KProfile.SYS == TSysType.LOC) {
 					KSqlUtil.resolveTables(sqlFile, sqlId, paramSql);

@@ -11,12 +11,8 @@
     <OnMatch>${FILTER-MARKER-sql-table}</OnMatch>
   </turboFilter>
   <turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
-    <Marker>[aop-filter]</Marker>
-    <OnMatch>${FILTER-MARKER-aop-filter}</OnMatch>
-  </turboFilter>
-  <turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
-    <Marker>[aop-stereo]</Marker>
-    <OnMatch>${FILTER-MARKER-aop-stereo}</OnMatch>
+    <Marker>[aop]</Marker>
+    <OnMatch>${FILTER-MARKER-aop}</OnMatch>
   </turboFilter>
   
   <!-- FILTER-MDC -->

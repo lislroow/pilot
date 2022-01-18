@@ -2,7 +2,7 @@ package mgkim.framework.core.type;
 
 public enum TApiType {
 
-	API("api"), OPENAPI("openapi"), INTERAPI("interapi"), PUBLIC("public"), API2("api-2"), API3("api-3"), UNKNOWN("unknown");
+	API("api"), PUBLIC("public"), UNKNOWN("unknown");
 
 	private final String code;
 

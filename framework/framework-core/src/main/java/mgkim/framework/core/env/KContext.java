@@ -18,7 +18,6 @@ import mgkim.framework.core.type.TAuthType;
 import mgkim.framework.core.type.TExecType;
 import mgkim.framework.core.type.TUuidType;
 import mgkim.framework.core.util.KHttpUtil;
-import mgkim.framework.core.util.KMatcherUtil;
 import mgkim.framework.core.util.KStringUtil;
 
 public class KContext {
@@ -29,7 +28,7 @@ public class KContext {
 	
 	public enum AttrKey {
 		  REQ_TIME
-		, LOGGABLE, DEBUG
+		, DEBUG
 		, URI, IP, REFERER
 		, REQUEST_TYPE, RESPONSE_TYPE, API_TYPE, AUTH_TYPE, EXEC_TYPE
 		, GUID, SSID, TXID
@@ -51,8 +50,6 @@ public class KContext {
 		TExecType execType = TExecType.SYSTEM;
 		KContext.set(AttrKey.EXEC_TYPE, execType);
 		KLogMDC.put(AttrKey.EXEC_TYPE, execType.name());
-
-		KContext.set(AttrKey.LOGGABLE, true);
 	}
 
 	public static void initSchedule() {
@@ -61,13 +58,11 @@ public class KContext {
 			KContext.reset();
 			map = attr.get();
 		}
-
+		
 		TExecType execType = TExecType.SCHEDULE;
 		KContext.set(AttrKey.EXEC_TYPE, execType);
 		KLogMDC.put(AttrKey.EXEC_TYPE, execType.name());
-
-		KContext.set(AttrKey.LOGGABLE, KConfig.VERBOSS_SCHEDULE);
-
+		
 		String txid = KStringUtil.createUuid(true, TUuidType.TXID);
 		KContext.set(AttrKey.TXID, txid);
 		KLogMDC.put(AttrKey.TXID, txid);
@@ -79,31 +74,27 @@ public class KContext {
 			KContext.reset();
 			map = attr.get();
 		}
-
+		
 		TExecType execType = TExecType.REQUEST;
 		KContext.set(AttrKey.EXEC_TYPE, execType);
 		KLogMDC.put(AttrKey.EXEC_TYPE, execType.name());
-
+		
 		String uri = request.getRequestURI();
 		KContext.set(AttrKey.URI, uri);
-
-		boolean loggable = ! (KMatcherUtil.matchesByAnt(request, KConfig.CMM_URI)
-				|| KMatcherUtil.matchesByAnt(request, KConfig.FILTER_HIDDENAPI));
-		KContext.set(AttrKey.LOGGABLE, loggable);
-
+		
 		boolean debug = KStringUtil.toBoolean(KHttpUtil.getHeader(KConstant.HK_DEBUG));
 		KContext.set(AttrKey.DEBUG, debug);
 		KLogMDC.put(AttrKey.DEBUG, Boolean.toString(debug));
-
+		
 		String ip = KHttpUtil.getIp();
 		KContext.set(AttrKey.IP, ip);
-
+		
 		String referer = KStringUtil.nvl(request.getHeader(HttpHeaders.REFERER));
 		KContext.set(AttrKey.REFERER, referer);
-
+		
 		String authorization = KStringUtil.nvl(request.getHeader(KConstant.HK_AUTHORIZATION));
 		KContext.set(AttrKey.AUTHORIZATION, authorization);
-
+		
 		TAuthType authType = null;
 		if (KStringUtil.isEmpty(authorization)) {
 			authType = TAuthType.NOAUTH;
@@ -117,7 +108,7 @@ public class KContext {
 			}
 		}
 		KContext.set(AttrKey.AUTH_TYPE, authType);
-
+		
 		String bearer = null;
 		String apikey = null;
 		String guid = null;
@@ -160,12 +151,11 @@ public class KContext {
 		KContext.set(AttrKey.APIKEY, apikey);
 		KContext.set(AttrKey.GUID, guid);
 		KContext.set(AttrKey.TXID, txid);
-
+		
 		// apiType 확인
 		TApiType apiType = KHttpUtil.resolveApiType();
 		KContext.set(AttrKey.API_TYPE, apiType);
-
-
+		
 		KLogMDC.put(AttrKey.URI, uri);
 		KLogMDC.put(AttrKey.IP, ip);
 		KLogMDC.put(AttrKey.GUID, guid);

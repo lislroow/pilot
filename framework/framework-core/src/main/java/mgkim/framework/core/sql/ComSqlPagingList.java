@@ -30,7 +30,6 @@ import org.springframework.util.StopWatch;
 import mgkim.framework.core.dto.KCmmVO;
 import mgkim.framework.core.dto.KInPageVO;
 import mgkim.framework.core.dto.KOutPageVO;
-import mgkim.framework.core.env.KConfig;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.exception.KMessage;
@@ -75,13 +74,9 @@ public class ComSqlPagingList {
 		java.sql.Connection connection = null;
 		
 		// 로깅 준비
-		boolean isVerboss = KConfig.VERBOSS_ALL || KConfig.VERBOSS_SQL;
 		double elapsedTime = -1;
-		{
-			KContext.set(AttrKey.SQL_ID, sqlId);
-			KContext.set(AttrKey.SQL_FILE, sqlFile);
-		}
-		
+		KContext.set(AttrKey.SQL_ID, sqlId);
+		KContext.set(AttrKey.SQL_FILE, sqlFile);
 		
 		// count-sql 실행
 		KOutPageVO outPageVO = null;

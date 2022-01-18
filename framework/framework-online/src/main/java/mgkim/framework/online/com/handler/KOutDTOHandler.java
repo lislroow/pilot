@@ -128,9 +128,6 @@ public class KOutDTOHandler extends AbstractMappingJacksonResponseBodyAdvice imp
 						TApiType apiType = KContext.getT(AttrKey.API_TYPE);
 						switch(apiType) {
 						case API:
-						case INTERAPI:
-						case OPENAPI:
-						case API2:
 							comFieldCryptorMgr.encrypt(outDTO);
 							break;
 						case PUBLIC:

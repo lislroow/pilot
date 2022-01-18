@@ -14,7 +14,6 @@ import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import mgkim.framework.core.annotation.KBean;
-import mgkim.framework.core.env.KConfig;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.stereo.KScheduler;
@@ -121,13 +120,10 @@ public class ComScheduleMgr implements InitializingBean, DisposableBean {
 
 			// 관리 대상 scheduler 실행
 			{
-				startable = KConfig.SCHEDULE_ENABLE;
+				startable = true;
 				scheduleList.forEach(item -> {
 					boolean managed = KObjectUtil.manage(item.getClass());
-					if (!managed && item.enabled) {
-						// 관리 대상이 아니고 활성화일 경우 실행
-						item.start();
-					} else if (managed && KConfig.SCHEDULE_ENABLE) {
+					if (managed) {
 						// 관리 대상이고 스케줄 활성화일 경우 실행
 						item.start();
 					}
@@ -146,21 +142,13 @@ public class ComScheduleMgr implements InitializingBean, DisposableBean {
 					if (scheduleList == null) {
 						return;
 					}
-					KConfig.refreshable();
-					if (startable != KConfig.SCHEDULE_ENABLE) {
-						scheduleList.forEach(item -> {
-							if (!KObjectUtil.manage(item.getClass())) {
-								// 관리 대상이 아니면 start/stop 을 하지 않음
-								return;
-							}
-							if (KConfig.SCHEDULE_ENABLE) {
-								item.start();
-							} else {
-								item.stop();
-							}
-						});
-						startable = KConfig.SCHEDULE_ENABLE;
-					}
+					scheduleList.forEach(item -> {
+						if (!KObjectUtil.manage(item.getClass())) {
+							// 관리 대상이 아니면 start/stop 을 하지 않음
+							return;
+						}
+						item.start();
+					});
 				} catch(Exception e) {
 					KExceptionHandler.resolve(e);
 				}

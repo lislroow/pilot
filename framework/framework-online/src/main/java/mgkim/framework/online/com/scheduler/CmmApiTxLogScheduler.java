@@ -38,16 +38,14 @@ public class CmmApiTxLogScheduler extends KScheduler {
 	@Override
 	protected void init() throws Exception {
 		// enabled 설정
-		{
-			if (cmmApiTxLog == null) {
-				enabled = false;
-				if (KObjectUtil.required(CmmApiTxLog.class)) {
-					throw new KSysException(KMessage.E5001, KObjectUtil.name(CmmApiTxLog.class));
-				} else {
-					log.warn(KMessage.get(KMessage.E5003, KObjectUtil.name(CmmApiTxLogScheduler.class), KObjectUtil.name(CmmApiTxLog.class)));
-				}
-				return;
+		if (cmmApiTxLog == null) {
+			enabled = false;
+			if (KObjectUtil.required(CmmApiTxLog.class)) {
+				throw new KSysException(KMessage.E5001, KObjectUtil.name(CmmApiTxLog.class));
+			} else {
+				log.warn(KMessage.get(KMessage.E5003, KObjectUtil.name(CmmApiTxLogScheduler.class), KObjectUtil.name(CmmApiTxLog.class)));
 			}
+			return;
 		}
 	}
 

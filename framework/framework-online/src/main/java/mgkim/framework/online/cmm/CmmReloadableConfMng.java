@@ -10,7 +10,7 @@ public interface CmmReloadableConfMng {
 	public void resetAll() throws Exception;
 
 	public enum TReloadableConf {
-		ComUriAuthorityMgr("ComUriAuthorityMgr"), KConfig("KConfig");
+		ComUriAuthorityMgr("ComUriAuthorityMgr");
 		private final String code;
 		public String code() {
 			return code;

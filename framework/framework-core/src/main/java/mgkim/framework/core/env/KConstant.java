@@ -1,5 +1,8 @@
 package mgkim.framework.core.env;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class KConstant {
 
 	public static final String VM_SPRING_PROFILES_ACTIVE = "spring.profiles.active";
@@ -53,4 +56,27 @@ public class KConstant {
 	public static final String SWG_SYSTEM_MANAGEMENT = "system-management";
 	public static final String SWG_SERVICE_ADMIN = "service-admin";
 	public static final String SWG_SERVICE_COMMON = "service-common";
+	
+	
+	public static List<String> FILTER_HIDDENAPI = Arrays.asList(
+			  "/"
+			, "/status.html"
+			, "/uri.html"
+			, "/resources/**"
+			, "/swagger-ui.html"       // io.springfox:2.10.5
+			, "/swagger-resources**"
+			, "/swagger-resources/**"
+			, "/webjars/**"
+			, "/v2/api-docs"           // -- io.springfox:2.10.5
+			);
+	
+	public static final List<String> PUBLIC_URI = Arrays.asList(
+			  "/public/**"
+			, "/api/adm/runtime/**"
+			, "/api/adm/initdata/**"
+			);
+	
+	public static final List<String> API_URI = Arrays.asList(
+			  "/api/**"
+			);
 }

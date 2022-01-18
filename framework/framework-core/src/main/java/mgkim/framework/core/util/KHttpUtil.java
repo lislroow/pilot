@@ -15,7 +15,6 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import mgkim.framework.core.env.KConfig;
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.type.TApiType;
 
@@ -36,17 +35,9 @@ public class KHttpUtil {
 	public static TApiType resolveApiType() {
 		HttpServletRequest request = getRequest();
 		TApiType apiType = null;
-		if (KMatcherUtil.matchesByAnt(request, KConfig.FILTER_OPENAPI)) {
-			apiType = TApiType.OPENAPI;
-		} else if (KMatcherUtil.matchesByAnt(request, KConfig.FILTER_INTERAPI)) {
-			apiType = TApiType.INTERAPI;
-		} else if (KMatcherUtil.matchesByAnt(request, KConfig.FILTER_PUBLIC)) {
+		if (KMatcherUtil.matchesByAnt(request, KConstant.PUBLIC_URI)) {
 			apiType = TApiType.PUBLIC;
-		} else if (KMatcherUtil.matchesByAnt(request, KConfig.FILTER_API3)) {
-			apiType = TApiType.API3;
-		} else if (KMatcherUtil.matchesByAnt(request, KConfig.FILTER_API2)) {
-			apiType = TApiType.API2;
-		} else if (KMatcherUtil.matchesByAnt(request, KConfig.FILTER_API)) {
+		} else if (KMatcherUtil.matchesByAnt(request, KConstant.API_URI)) {
 			apiType = TApiType.API;
 		} else {
 			apiType = TApiType.UNKNOWN;

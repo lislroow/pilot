@@ -33,7 +33,6 @@ public class KRequestListener extends RequestContextListener {
 			KContext.initRequest(request);
 			//log.accesslog();
 			ComDebugScheduler.check();
-			boolean loggable = KContext.getT(AttrKey.LOGGABLE);
 			String referer = KContext.getT(AttrKey.REFERER);
 			log.debug(KLogMarker.REQUEST, "referer={}", referer);
 			/*if (false) {

@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import mgkim.framework.core.annotation.KBean;
-import mgkim.framework.core.env.KConfig;
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.util.KDateUtil;
@@ -84,16 +83,8 @@ public class CmmReloadableConfMngImpl implements CmmReloadableConfMng {
 				log.error("환경설정(CONF_ID=`{}`)을 갱신하는 중 오류가 발생했습니다.", confIdType.code(), e);
 			}
 			break;
-		case KConfig:
-			try {
-				KConfig.reload();
-			} catch(Exception e) {
-				isSuccess = false;
-				log.error("환경설정(CONF_ID=`{}`)을 갱신하는 중 오류가 발생했습니다.", confIdType.code(), e);
-			}
-			break;
 		}
-
+		
 		if (isSuccess) {
 			log.warn("환경설정(CONF_ID=`{}`) 갱신을 완료 했습니다.", confIdType.code());
 			item.setConfStcd(TConfStcd.DONE.code());

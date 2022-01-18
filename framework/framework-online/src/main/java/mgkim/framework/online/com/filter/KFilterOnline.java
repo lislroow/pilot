@@ -183,41 +183,38 @@ public class KFilterOnline extends KFilter {
 		TRequestType requestType = KContext.getT(AttrKey.REQUEST_TYPE);
 		KReadableRequestWrapper requestWrapper = null;
 		try {
-			boolean loggable = KContext.getT(AttrKey.LOGGABLE);
-			if (loggable) {
-				if (requestType == TRequestType.JSON) {
-					requestWrapper = new KReadableRequestWrapper(request);
-					String body = requestWrapper.getBodyString();
-					String header = KStringUtil.toJson(KHttpUtil.getHeaders());
-					if (KStringUtil.isJson(body)) {
-						log.trace(KLogMarker.request, "\nrequest-header = {}\nrequest-body = {}", header, body);
-					} else {
-						log.warn(KLogMarker.request, "request-body 가 json 형식이 아닙니다. request-body={}", body);
-					}
+			if (requestType == TRequestType.JSON) {
+				requestWrapper = new KReadableRequestWrapper(request);
+				String body = requestWrapper.getBodyString();
+				String header = KStringUtil.toJson(KHttpUtil.getHeaders());
+				if (KStringUtil.isJson(body)) {
+					log.trace(KLogMarker.request, "\nrequest-header = {}\nrequest-body = {}", header, body);
 				} else {
-					//ServletFileUpload upload = new ServletFileUpload();
-					//upload.setSizeMax(KInitRoot.MAX_UPLOAD_SIZE);
-					//FileItemIterator iterator = null;
-					//try {
-					//	iterator = upload.getItemIterator(request);
-					//} catch (FileUploadException e) {
-					//	e.printStackTrace();
-					//}
-					//while (iterator != null && iterator.hasNext()) {
-					//	FileItemStream item = null;
-					//	try {
-					//		item = iterator.next();
-					//	} catch (FileUploadException e) {
-					//		e.printStackTrace();
-					//	}
-					//	if (KStringUtil.isEmpty(item.getContentType())) {
-					//		InputStream in = item.openStream();
-					//		BufferedReader br = new BufferedReader(new InputStreamReader(in));
-					//		String a = br.readLine();
-					//		System.out.println(a);
-					//	}
-					//}
+					log.warn(KLogMarker.request, "request-body 가 json 형식이 아닙니다. request-body={}", body);
 				}
+			} else {
+				//ServletFileUpload upload = new ServletFileUpload();
+				//upload.setSizeMax(KInitRoot.MAX_UPLOAD_SIZE);
+				//FileItemIterator iterator = null;
+				//try {
+				//	iterator = upload.getItemIterator(request);
+				//} catch (FileUploadException e) {
+				//	e.printStackTrace();
+				//}
+				//while (iterator != null && iterator.hasNext()) {
+				//	FileItemStream item = null;
+				//	try {
+				//		item = iterator.next();
+				//	} catch (FileUploadException e) {
+				//		e.printStackTrace();
+				//	}
+				//	if (KStringUtil.isEmpty(item.getContentType())) {
+				//		InputStream in = item.openStream();
+				//		BufferedReader br = new BufferedReader(new InputStreamReader(in));
+				//		String a = br.readLine();
+				//		System.out.println(a);
+				//	}
+				//}
 			}
 		} catch (Exception e) {
 			KException ke = new KSysException(KMessage.E7008, e, "request-logging", "요청");
