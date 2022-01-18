@@ -49,7 +49,8 @@ public class KInitMvc implements WebMvcConfigurer {
 
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
-		registry.addViewController("/").setViewName("redirect:"+KConstant.REFERER_SWAGGER);
+		log.info("");
+		//registry.addViewController("/").setViewName("redirect:"+KConstant.REFERER_SWAGGER);
 	}
 
 	@Override

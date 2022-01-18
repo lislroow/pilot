@@ -61,11 +61,11 @@ import mgkim.framework.online.com.scheduler.CmmApiTxLogScheduler;
 import mgkim.framework.online.com.scheduler.ComSessionStatusMngScheduler;
 
 @KBean(name = "api 필터")
-public class KFilterOnline extends KFilter {
+public class KFilterApi extends KFilter {
 	
-	private static final Logger log = LoggerFactory.getLogger(KFilterOnline.class);
+	private static final Logger log = LoggerFactory.getLogger(KFilterApi.class);
 	
-	final String BEAN_NAME = KObjectUtil.name(KFilterOnline.class);
+	final String BEAN_NAME = KObjectUtil.name(KFilterApi.class);
 	
 	@Autowired(required = true)
 	private ComUriListMgr comUriListMgr;

@@ -26,7 +26,9 @@ import org.springframework.security.web.access.intercept.FilterSecurityIntercept
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import mgkim.framework.online.com.filter.KFilterOnline;
+import mgkim.framework.core.env.KConstant;
+import mgkim.framework.online.com.filter.KFilterApi;
+import mgkim.framework.online.com.filter.KFilterPublic;
 import mgkim.framework.online.com.mgr.ComUriAuthorityMgr;
 
 @Configuration
@@ -42,9 +44,19 @@ public class KInitSecurity extends WebSecurityConfigurerAdapter {
 	public FilterChainProxy filterChainProxy() throws Exception {
 		ApplicationContext ctx = getApplicationContext();
 		List<SecurityFilterChain> filterChains = new ArrayList<SecurityFilterChain>();
+		
+		// public
+		for (String uriPattern : KConstant.FILTER_HIDDENAPI) {
+			filterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher(uriPattern), new Filter[] {
+				ctx.getBean(KFilterPublic.class)
+			}));
+		}
+		
+		// api
 		filterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/api/**"), new Filter[] {
-				ctx.getBean(KFilterOnline.class)
+				ctx.getBean(KFilterApi.class)
 		}));
+		
 		FilterChainProxy bean = new FilterChainProxy(filterChains);
 		return bean;
 	}
