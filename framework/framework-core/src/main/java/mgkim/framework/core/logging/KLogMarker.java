@@ -7,6 +7,7 @@ import mgkim.framework.core.util.KStringUtil;
 
 public class KLogMarker {
 	
+	public static final Marker ERROR = MarkerFactory.getMarker("[ERROR]");
 	public static final Marker REQUEST = MarkerFactory.getMarker("[REQ]");
 	public static final Marker RESPONSE = MarkerFactory.getMarker("[RES]");
 	public static final Marker SQL = MarkerFactory.getMarker("[sql]");

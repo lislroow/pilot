@@ -62,11 +62,14 @@ public class KFilterSecurity extends KFilter {
 				}
 
 			}
-		} catch(KException e) {
-			KExceptionHandler.response(response, e);
+		} catch(KException ke) {
+			log.error(KLogMarker.ERROR, "{} {}", ke.getId(), ke.getText(), ke.getCause());
+			KExceptionHandler.response(response, ke);
 			return;
 		} catch(Exception e) {
-			KExceptionHandler.response(response, new KSysException(KMessage.E7007, e, BEAN_NAME));
+			KException ke = new KSysException(KMessage.E7007, e, BEAN_NAME);
+			log.error(KLogMarker.ERROR, "{} {}", ke.getId(), ke.getText(), e);
+			KExceptionHandler.response(response, ke);
 			return;
 		}
 		chain.doFilter(request, response);

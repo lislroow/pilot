@@ -71,6 +71,9 @@ public class KException extends Exception {
 	// -- `exception` KExceptionMapper 클래스에서 생성
 
 	public Object cause() {
+		if (this.getCause() != null) {
+			return this.getCause();
+		}
 		return this;
 	}
 	public String getId() {

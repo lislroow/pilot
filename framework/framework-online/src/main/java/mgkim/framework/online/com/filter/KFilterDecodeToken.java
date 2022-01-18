@@ -19,19 +19,19 @@ import mgkim.framework.core.exception.KException;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
+import mgkim.framework.core.logging.KLogMarker;
 import mgkim.framework.core.stereo.KFilter;
 import mgkim.framework.core.type.TApiType;
 import mgkim.framework.core.type.TAuthType;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.cmm.CmmUserToken;
-import mgkim.framework.online.com.listener.KRequestListener;
 import mgkim.framework.online.com.mgr.ComUserTokenMgr;
 
 @KBean(name = "token decode 필터")
 public class KFilterDecodeToken extends KFilter implements InitializingBean {
 	
-	private static final Logger log = LoggerFactory.getLogger(KRequestListener.class);
+	private static final Logger log = LoggerFactory.getLogger(KFilterDecodeToken.class);
 
 	final String BEAN_NAME = KObjectUtil.name(KFilterDecodeToken.class);
 
@@ -151,11 +151,14 @@ public class KFilterDecodeToken extends KFilter implements InitializingBean {
 				io.jsonwebtoken.Jwt token = comUserTokenMgr.parsetoken(bearer);
 				KContext.initToken(token);
 			}
-		} catch(KException e) {
-			KExceptionHandler.response(response, e);
+		} catch(KException ke) {
+			log.error(KLogMarker.ERROR, "{} {}", ke.getId(), ke.getText(), ke.getCause());
+			KExceptionHandler.response(response, ke);
 			return;
 		} catch(Exception e) {
-			KExceptionHandler.response(response, new KSysException(KMessage.E7007, e, BEAN_NAME));
+			KException ke = new KSysException(KMessage.E7007, e, BEAN_NAME);
+			log.error(KLogMarker.ERROR, "{} {}", ke.getId(), ke.getText(), e);
+			KExceptionHandler.response(response, ke);
 			return;
 		}
 		chain.doFilter(request, response);

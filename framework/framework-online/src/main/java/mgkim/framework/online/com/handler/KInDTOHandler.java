@@ -85,7 +85,7 @@ public class KInDTOHandler extends RequestBodyAdviceAdapter implements Initializ
 						cmmDtoLog.logging(inDTO);
 					} catch(Exception e) {
 						KException exception = KExceptionHandler.resolve(e);
-						KExceptionHandler.print(exception);
+						log.error(KLogMarker.ERROR, "{} {}", exception.getId(), exception.getText(), e);
 					}
 				}
 			}
@@ -93,14 +93,9 @@ public class KInDTOHandler extends RequestBodyAdviceAdapter implements Initializ
 			// bodyVO 필드 복호화: bodyVO 에 `@KEncrypt` 가 선언된 필드를 복호화함
 			if (comFieldCryptorMgr != null) {
 				try {
-					String uri = KContext.getT(AttrKey.URI);
-
 					TApiType apiType = KContext.getT(AttrKey.API_TYPE);
 					switch(apiType) {
 					case API:
-					case API2:
-					case INTERAPI:
-					case OPENAPI:
 						comFieldCryptorMgr.decrypt(inDTO);
 						break;
 					case PUBLIC:
@@ -109,7 +104,7 @@ public class KInDTOHandler extends RequestBodyAdviceAdapter implements Initializ
 					}
 				} catch(Exception e) {
 					KException exception = KExceptionHandler.resolve(e);
-					KExceptionHandler.print(exception);
+					log.error(KLogMarker.ERROR, "{} {}", exception.getId(), exception.getText(), e);
 				}
 			}
 
@@ -121,7 +116,7 @@ public class KInDTOHandler extends RequestBodyAdviceAdapter implements Initializ
 					}
 				} catch(Exception e) {
 					KException exception = KExceptionHandler.resolve(e);
-					KExceptionHandler.print(exception);
+					log.error(KLogMarker.ERROR, "{} {}", exception.getId(), exception.getText(), e);
 				}
 			}
 		}

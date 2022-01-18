@@ -2,7 +2,6 @@ package mgkim.framework.online.com.aop;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,8 +9,8 @@ import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.logging.KLogMarker;
 
 
-@Aspect
-@KBean
+//@Aspect
+//@KBean
 public class KFilterAspect {
 	
 	private static final Logger log = LoggerFactory.getLogger(KFilterAspect.class);

@@ -34,6 +34,7 @@ import mgkim.framework.core.exception.KException;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
+import mgkim.framework.core.logging.KLogMarker;
 import mgkim.framework.core.type.TApiType;
 import mgkim.framework.core.type.TAuthType;
 import mgkim.framework.core.type.TResponseType;
@@ -89,7 +90,7 @@ public class KOutDTOHandler extends AbstractMappingJacksonResponseBodyAdvice imp
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public KOutDTO<?> process(HttpServletRequest request, Exception ex) {
 		KException exception = KExceptionHandler.resolve(ex);
-		KExceptionHandler.print(exception);
+		log.error(KLogMarker.ERROR, "{} {}", exception.getId(), exception.getText(), ex);
 
 		KOutDTO<?> outDTO = new KOutDTO<>();
 		return outDTO;

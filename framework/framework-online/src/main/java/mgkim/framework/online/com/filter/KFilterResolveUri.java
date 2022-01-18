@@ -7,6 +7,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
@@ -19,6 +21,7 @@ import mgkim.framework.core.exception.KException;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
+import mgkim.framework.core.logging.KLogMarker;
 import mgkim.framework.core.stereo.KFilter;
 import mgkim.framework.core.type.TRequestType;
 import mgkim.framework.core.util.KObjectUtil;
@@ -27,7 +30,8 @@ import mgkim.framework.online.com.mgr.ComUriListMgr;
 
 @KBean(name = "api 접근 허용 체크 필터")
 public class KFilterResolveUri extends KFilter {
-
+	
+	private static final Logger log = LoggerFactory.getLogger(KFilterResolveUri.class);
 
 	final String BEAN_NAME = KObjectUtil.name(KFilterResolveUri.class);
 
@@ -55,12 +59,17 @@ public class KFilterResolveUri extends KFilter {
 
 		} catch(HttpMediaTypeNotSupportedException e) {
 			String contentType = request.getHeader("Content-Type");
-			KExceptionHandler.response(response, new KSysException(KMessage.E7002, e, contentType));
-		} catch(KException e) {
-			KExceptionHandler.response(response, e);
+			KException ke = new KSysException(KMessage.E7002, e, contentType);
+			log.error(KLogMarker.ERROR, "{} {}", ke.getId(), ke.getText(), e);
+			KExceptionHandler.response(response, ke);
+		} catch(KException ke) {
+			log.error(KLogMarker.ERROR, "{} {}", ke.getId(), ke.getText(), ke.getCause());
+			KExceptionHandler.response(response, ke);
 			return;
 		} catch(Exception e) {
-			KExceptionHandler.response(response, new KSysException(KMessage.E7007, e, BEAN_NAME));
+			KException ke = new KSysException(KMessage.E7007, e, BEAN_NAME);
+			log.error(KLogMarker.ERROR, "{} {}", ke.getId(), ke.getText(), e);
+			KExceptionHandler.response(response, ke);
 			return;
 		}
 		chain.doFilter(request, response);

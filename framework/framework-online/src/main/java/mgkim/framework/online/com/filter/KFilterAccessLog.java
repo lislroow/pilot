@@ -28,6 +28,7 @@ import org.springframework.web.util.ContentCachingResponseWrapper;
 import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
+import mgkim.framework.core.exception.KException;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
@@ -106,7 +107,9 @@ public class KFilterAccessLog  extends KFilter {
 				*/
 			}
 		} catch(Exception e) {
-			KExceptionHandler.response(response, new KSysException(KMessage.E7008, e, BEAN_NAME, "요청"));
+			KException ke = new KSysException(KMessage.E7008, e, BEAN_NAME, "요청");
+			log.error(KLogMarker.ERROR, "{} {}", ke.getId(), ke.getText(), e);
+			KExceptionHandler.response(response, ke);
 			return;
 		} finally {
 			responseWrapper = new ContentCachingResponseWrapper(response);

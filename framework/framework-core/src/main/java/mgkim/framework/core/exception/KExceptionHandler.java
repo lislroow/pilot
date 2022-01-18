@@ -22,6 +22,7 @@ import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.env.KSqlContext;
 import mgkim.framework.core.type.TEncodingType;
+import mgkim.framework.core.type.TResponseType;
 import mgkim.framework.core.util.KExceptionUtil;
 
 @KBean
@@ -32,8 +33,7 @@ public class KExceptionHandler {
 	public static void response(HttpServletResponse response, Exception ex) {
 		// 1) `exception` 분석
 		{
-			KException exception = KExceptionHandler.resolve(ex);
-			print(exception);
+			KExceptionHandler.resolve(ex);
 		}
 
 		// 2) `KContext` 정보 가져오기
@@ -80,6 +80,7 @@ public class KExceptionHandler {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+				KContext.set(AttrKey.RESPONSE_TYPE, TResponseType.JSON);
 			}
 		}
 	}
@@ -161,19 +162,5 @@ public class KExceptionHandler {
 		}
 
 		return exception;
-	}
-
-	public static void print(KException exception) {
-		// 1) `cause` 객체 확인
-		Object cause = null;
-		cause = exception.cause();
-		if (cause instanceof Throwable) {
-			cause = KExceptionUtil.getTrace((Throwable)cause, true);
-		}
-
-		// 2) `exception` 로깅
-		{
-			log.error("{}{}{} [{}] {}{}{}", KConstant.LT_EXCEPTION, KConstant.LINE, KConstant.LT_EXCEPTION, exception.getId(), exception.getText(), KConstant.LINE, cause);
-		}
 	}
 }
