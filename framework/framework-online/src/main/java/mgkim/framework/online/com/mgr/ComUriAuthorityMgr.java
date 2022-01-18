@@ -44,15 +44,15 @@ public class ComUriAuthorityMgr implements FilterInvocationSecurityMetadataSourc
 	final String BEAN_NAME = KObjectUtil.name(ComUriAuthorityMgr.class);
 
 	public static final String CONFIG_SQL = ""
-			+ "	SELECT /* `mgkim.framework.core.session.SysUriAuthorityMgr.CONFIG_SQL */  "
+			+ "	SELECT /* mgkim.framework.online.com.mgr.ComUriAuthorityMgr.CONFIG_SQL */  "
 			+ "			  A.URI_VAL   AS URI                                        "
 			+ "			, C.ROLE_ID   AS AUTHORITY                                  "
 			+ "	FROM	  MGCB301TM A /* MGCB_uri기본정보 */                        "
 			+ "			, MGCB241TR B /* MGCB_uri권한그룹매핑 */                    "
 			+ "			, MGCB221TR C /* MGCB_권한그룹설정 */                       "
-			+ "	WHERE  A.SITE_TPCD = :siteTpcd                                      "
-			+ "		AND A.SITE_TPCD = B.SITE_TPCD                                   "
-			+ "		AND A.SITE_TPCD = C.SITE_TPCD                                   "
+			+ "	WHERE   A.APP_CD = :appCd                                         "
+			+ "		AND A.APP_CD = B.APP_CD                                   "
+			+ "		AND A.APP_CD = C.APP_CD                                   "
 			+ "		AND A.USE_YN = 'Y'                                              "
 			+ "		AND A.URI_ID = B.URI_ID                                         "
 			+ "		AND B.RGRP_ID = C.RGRP_ID                                       "
@@ -79,7 +79,7 @@ public class ComUriAuthorityMgr implements FilterInvocationSecurityMetadataSourc
 			KContext.set(AttrKey.SQL_FILE, "mgkim.framework.core.session.SysUriAuthorityMgr.CONFIG_SQL");
 			KContext.set(AttrKey.SQL_TEXT, CONFIG_SQL);
 			Map<String, String> paramMap = new HashMap<String, String>();
-			paramMap.put("siteTpcd", KProfile.SITE_TPCD);
+			paramMap.put("appCd", KProfile.APP_CD);
 			resultList = jdbcTemplate.queryForList(CONFIG_SQL, paramMap);
 		} catch(Exception e) {
 			KExceptionHandler.resolve(e);

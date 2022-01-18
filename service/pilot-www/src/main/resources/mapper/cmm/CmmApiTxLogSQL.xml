@@ -6,15 +6,15 @@
     INSERT 
            /*+ APPEND */
       INTO MGCB406TH /* MGCB_api처리로그 */ (
-          SITE_TPCD
+          APP_CD
         , TXDTTM
         , URI_VAL
         , TXID
         , IP
         , USER_ID
         , SSID
+        , APP_ID
         , HOSTNAME
-        , WAS_ID
         , RSLTCD
         , RSLTMSG
         , ERRTXT
@@ -24,15 +24,15 @@
         , LAST_MODFR_NO
         , LAST_MODF_DTTM
       ) VALUES (
-          #{siteTpcd}
+          #{appCd}
         , TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS')
         , #{uriVal}
         , #{txid}
         , #{ip}
         , #{userId}
         , #{ssid}
+        , #{appId}
         , #{hostname}
-        , #{wasId}
         , #{rsltcd}
         , #{rsltmsg}
         , #{errtxt}
@@ -48,7 +48,7 @@
   <![CDATA[
     INSERT
       INTO MGCB407TA /* MGCB_api처리로그arch */ (
-          SITE_TPCD
+          APP_CD
         , TXDTTM
         , TXDT
         , TXTM
@@ -58,7 +58,7 @@
         , USER_ID
         , SSID
         , HOSTNAME
-        , WAS_ID
+        , APP_ID
         , RSLTCD
         , RSLTMSG
         , FIRST_REGIR_NO
@@ -66,7 +66,7 @@
         , LAST_MODFR_NO
         , LAST_MODF_DTTM
       )
-      SELECT SITE_TPCD
+      SELECT APP_CD
            , TXDTTM
            , TO_CHAR(FIRST_REGI_DTTM, 'YYYYMMDD')
            , TO_CHAR(FIRST_REGI_DTTM, 'HH24')
@@ -76,7 +76,7 @@
            , USER_ID
            , SSID
            , HOSTNAME
-           , WAS_ID
+           , APP_ID
            , RSLTCD
            , RSLTMSG
            , FIRST_REGIR_NO

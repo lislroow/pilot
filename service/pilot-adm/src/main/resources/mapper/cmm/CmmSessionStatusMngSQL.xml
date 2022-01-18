@@ -6,7 +6,7 @@
     MERGE
      INTO MGCB151TS /* MGCB_사용자세션상태 */
     USING DUAL
-       ON (SITE_TPCD = #{siteTpcd}
+       ON (APP_CD = #{appCd}
           AND SSID = #{ssid}
           AND USER_ID = #{userId}
           AND AUMTH_TPCD = #{aumthTpcd}
@@ -23,7 +23,7 @@
          , SYM_KEY = null
      WHEN NOT MATCHED THEN
        INSERT (
-           SITE_TPCD
+           APP_CD
          , USER_ID
          , AUMTH_TPCD
          , SSID
@@ -35,7 +35,7 @@
          , IP
          , LAST_MODF_DTTM
        ) VALUES (
-           #{siteTpcd}
+           #{appCd}
          , #{userId}
          , #{aumthTpcd}
          , #{ssid}
@@ -62,11 +62,11 @@
          , B.DLOGIN_ALOW_YN
       FROM MGCB151TS A /* MGCB_사용자세션상태 */
          , MGCB121TM B /* MGCB_사용자로그인정책정보 */
-     WHERE A.SITE_TPCD = #{siteTpcd}
+     WHERE A.APP_CD = #{appCd}
        AND A.USER_ID = #{userId}
        AND A.AUMTH_TPCD = #{aumthTpcd}
        AND A.SSID = #{ssid}
-       AND A.SITE_TPCD = B.SITE_TPCD(+)
+       AND A.APP_CD = B.APP_CD(+)
        AND A.USER_ID = B.USER_ID(+) 
   </select>
 
@@ -81,7 +81,7 @@
          , BROWS_INF
          , IP
       FROM MGCB151TS /* MGCB_사용자세션상태 */
-     WHERE SITE_TPCD = #{siteTpcd}
+     WHERE APP_CD = #{appCd}
        AND USER_ID = #{userId}
   </select>
 
@@ -152,7 +152,7 @@
   <![CDATA[
     INSERT
       INTO MGCB152TH /* MGCB_사용자세션이력 */ (
-          SITE_TPCD
+          APP_CD
         , USER_ID
         , AUMTH_TPCD
         , SSID
@@ -163,7 +163,7 @@
         , IP
       )
       SELECT 
-             A.SITE_TPCD
+             A.APP_CD
            , A.USER_ID
            , A.AUMTH_TPCD
            , A.SSID

@@ -2,18 +2,18 @@ package mgkim.framework.core.session;
 
 public class KSession {
 
-	private String siteTpcd;
+	private String appCd;
 	private String userTpcd;
 	private String aumthTpcd;
 	private String userId;
 	private String ssid;
 	private String ip;
 
-	public String getSiteTpcd() {
-		return siteTpcd;
+	public String getAppCd() {
+		return appCd;
 	}
-	public void setSiteTpcd(String siteTpcd) {
-		this.siteTpcd = siteTpcd;
+	public void setAppCd(String appCd) {
+		this.appCd = appCd;
 	}
 	public String getUserTpcd() {
 		return userTpcd;

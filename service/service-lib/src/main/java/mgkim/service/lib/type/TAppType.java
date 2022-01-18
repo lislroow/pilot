@@ -2,7 +2,7 @@ package mgkim.service.lib.type;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum TSiteType {
+public enum TAppType {
 	
 	WWW("10"), ADM("20"), BAT("30");
 	
@@ -19,14 +19,14 @@ public enum TSiteType {
 		return label.toLowerCase();
 	}
 	
-	private TSiteType(String code) {
+	private TAppType(String code) {
 		this.code = code;
 		this.label = this.name().toLowerCase();
 	}
 	
-	public static TSiteType get(String val) {
-		TSiteType[] list = TSiteType.values();
-		for (TSiteType item : list) {
+	public static TAppType get(String val) {
+		TAppType[] list = TAppType.values();
+		for (TAppType item : list) {
 			if (item.code.equals(val) || item.label.equals(val)) {
 				return item;
 			}

@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 @JsonSerialize
 public class KCmmVO {
 
-	private String siteTpcd;
+	private String appCd;
 	private String ssuserId;
 	private String aumthTpcd;
 	private String ssid;
@@ -20,11 +20,11 @@ public class KCmmVO {
 
 	@JsonIgnore
 	@ApiModelProperty(hidden = true)
-	public String getSiteTpcd() {
-		return siteTpcd;
+	public String getAppCd() {
+		return appCd;
 	}
-	public void setSiteTpcd(String siteTpcd) {
-		this.siteTpcd = siteTpcd;
+	public void setAppCd(String appCd) {
+		this.appCd = appCd;
 	}
 
 	@JsonIgnore

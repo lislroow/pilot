@@ -7,7 +7,7 @@
     SELECT 
            COUNT(*)
       FROM MGCB101TM /* MGCB_사용자정보 */
-     WHERE SITE_TPCD = #{siteTpcd}
+     WHERE APP_CD = #{appCd}
        AND USER_ID = #{userId}
   ]]>
   </select>
@@ -15,7 +15,7 @@
   <select id="selectUserLoginPolicy" parameterType="java.util.Map" resultType="CmmUserLoginPolicyVO">
   <![CDATA[
     SELECT 
-           SITE_TPCD
+           APP_CD
          , USER_ID
          , AUMTH_TPCD_LIST
          , DLOGIN_ALOW_YN
@@ -25,7 +25,7 @@
          , PWCHG_DT
          , SSVALD_SEC
       FROM MGCB121TM /* MGCB_사용자로그인정책정보 */
-     WHERE SITE_TPCD = #{siteTpcd}
+     WHERE APP_CD = #{appCd}
        AND USER_ID = #{userId}
   ]]>
   </select>

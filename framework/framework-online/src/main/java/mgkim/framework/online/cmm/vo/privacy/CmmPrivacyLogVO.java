@@ -4,7 +4,7 @@ import mgkim.framework.core.dto.KCmmVO;
 
 public class CmmPrivacyLogVO extends KCmmVO {
 
-	private String siteTpcd;
+	private String appCd;
 	private String mngtgId;
 	private String mngtgTpcd;
 	private String logDt;
@@ -15,11 +15,11 @@ public class CmmPrivacyLogVO extends KCmmVO {
 	private String txid;
 	private String logFpath;
 
-	public String getSiteTpcd() {
-		return siteTpcd;
+	public String getAppCd() {
+		return appCd;
 	}
-	public void setSiteTpcd(String siteTpcd) {
-		this.siteTpcd = siteTpcd;
+	public void setAppCd(String appCd) {
+		this.appCd = appCd;
 	}
 	public String getMngtgId() {
 		return mngtgId;

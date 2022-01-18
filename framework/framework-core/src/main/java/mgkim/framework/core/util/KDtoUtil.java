@@ -28,7 +28,7 @@ public class KDtoUtil {
 			return false;
 		} else if (KCmmVO.class.isInstance(obj)) {
 			KCmmVO cmmVO = (KCmmVO) obj;
-			cmmVO.setSiteTpcd(KProfile.SITE_TPCD);
+			cmmVO.setAppCd(KProfile.APP_CD);
 
 			if (TApiType.PUBLIC == KContext.getT(AttrKey.API_TYPE)) {
 				return true;

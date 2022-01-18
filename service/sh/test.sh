@@ -5,6 +5,7 @@ BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 echo -e "\e[35m+++ [file] ${BASEDIR}/${0##*/} ${@} +++\e[m"
 . ${BASEDIR}/include.sh
 
+BEARER_TOKEN="eyJ0eXAiOiJhY2Nlc3NUb2tlbiIsImV4cCI6MTY0MjQ4MDYwMTM5NSwiYWxnIjoiSFMyNTYifQ.eyJ1c2VyVHBjZCI6ImFwaSIsInNzdmFsZFNlYyI6MTAwMDAwMDAsImF1bXRoVHBjZCI6IjAxIiwiYXBwQ2QiOiIxMCIsInVzZXJJZCI6IjEwMDAwMDAwMDEiLCJzc2lkIjoiczFqZXczczFjdzF2c20ifQ.irG9qvgJlq4CEwpGl0bzjrNYBj4UqeXpowhCc3ORDf0"
 CURL_OPTS="--connect-timeout 10 --silent"
 
 function execute() {
@@ -46,7 +47,9 @@ function curl_template() {
     #   1) paste here
     #   2) add option: ${CURL_OPTS}
     #   3) replace url: http://'${ip}':'${port}'
-    #response=$(curl --location --request POST ${CURL_OPTS} 'http://'${ip}':'${port}'/public/cmm/user/idlogin' \
+    #      response=$(curl --location --request POST ${CURL_OPTS} 'http://'${ip}':'${port}'/public/cmm/user/idlogin' \
+    #   4) replace authorization: 
+    #      --header 'Authorization: Bearer ${BEARER_TOKEN}' \
     ## //[actual-code]
     echo "response=${response}"
     idx=$(( $idx + 1 ))
@@ -90,7 +93,7 @@ function curl_apitxlog_selectLogList() {
     echo "[${idx}/${tot}] app_id=${app_id} port=${port}"
     ## [actual-code]
     response=$(curl --location --request POST ${CURL_OPTS} 'http://'${ip}':'${port}'/api/adm/apitxlog/selectLogList' \
-    --header 'Authorization: Bearer eyJ0eXAiOiJhY2Nlc3NUb2tlbiIsImV4cCI6MTY0MDIzMDQ4MDg1MywiYWxnIjoiSFMyNTYifQ.eyJ1c2VyVHBjZCI6ImFwaSIsInNzdmFsZFNlYyI6MTAwMDAwMDAsImF1bXRoVHBjZCI6IjAxIiwic2l0ZVRwY2QiOiIxMCIsInVzZXJJZCI6IjEwMDAwMDAwMDEiLCJzc2lkIjoidG9nNXdmYjR4azUwMCJ9.craIp4TKqIXR9EsppMPL6sAQz8JmvA17KFf0b0QDsAo' \
+    --header 'Authorization: Bearer ${BEARER_TOKEN}' \
     --header 'Content-Type: application/json' \
     --data-raw '{
       "body": {

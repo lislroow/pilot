@@ -4,7 +4,7 @@ import mgkim.framework.core.dto.KCmmVO;
 
 public class CmmSessionStatusVO extends KCmmVO {
 
-	private String siteTpcd = null;
+	private String appCd = null;
 	private String userId = null;
 	private String aumthTpcd = null;
 	private String ssid = null;
@@ -18,11 +18,11 @@ public class CmmSessionStatusVO extends KCmmVO {
 	private String symKey = null;
 	private String dloginAlowYn;
 
-	public String getSiteTpcd() {
-		return siteTpcd;
+	public String getAppCd() {
+		return appCd;
 	}
-	public void setSiteTpcd(String siteTpcd) {
-		this.siteTpcd = siteTpcd;
+	public void setAppCd(String appCd) {
+		this.appCd = appCd;
 	}
 	public String getUserId() {
 		return userId;

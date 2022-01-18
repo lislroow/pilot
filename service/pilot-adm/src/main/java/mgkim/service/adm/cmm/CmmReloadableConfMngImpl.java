@@ -34,7 +34,7 @@ public class CmmReloadableConfMngImpl implements CmmReloadableConfMng {
 		List<CmmReloadableConfVO> list = null;
 		CmmReloadableConfVO vo = new CmmReloadableConfVO();
 		vo.setHostname(KProfile.getHostname());
-		vo.setWasId(KProfile.APP_ID);
+		vo.setAppId(KProfile.APP_ID);
 
 		list = cmmReloadableConfMngMapper.selectReloadStateList(vo);
 
@@ -108,7 +108,7 @@ public class CmmReloadableConfMngImpl implements CmmReloadableConfMng {
 	public void resetAll() throws Exception {
 		CmmReloadableConfVO item = new CmmReloadableConfVO();
 		item.setHostname(KProfile.getHostname());
-		item.setWasId(KProfile.APP_ID);
+		item.setAppId(KProfile.APP_ID);
 		log.warn("`모든환경설정`의 상태코드를 reset 합니다.");
 		cmmReloadableConfMngMapper.deleteReloadStateForReset(item);
 		for (TReloadableConf confId : TReloadableConf.values()) {

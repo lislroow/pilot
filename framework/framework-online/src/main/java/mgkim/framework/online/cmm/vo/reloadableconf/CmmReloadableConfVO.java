@@ -6,8 +6,8 @@ import mgkim.framework.core.dto.KCmmVO;
 
 public class CmmReloadableConfVO extends KCmmVO {
 
+	private String appId;
 	private String hostname;
-	private String wasId;
 	private String confId;
 	private String confStcd;
 	private String apliDttm;
@@ -17,17 +17,17 @@ public class CmmReloadableConfVO extends KCmmVO {
 	private String lastModfrNo;
 	private Date lastModfDttm;
 
+	public String getAppId() {
+		return appId;
+	}
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
 	public String getHostname() {
 		return hostname;
 	}
 	public void setHostname(String hostname) {
 		this.hostname = hostname;
-	}
-	public String getWasId() {
-		return wasId;
-	}
-	public void setWasId(String wasId) {
-		this.wasId = wasId;
 	}
 	public String getConfId() {
 		return confId;

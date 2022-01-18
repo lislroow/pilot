@@ -441,7 +441,7 @@ public class RuntimeService {
 	public List<SpringSecurityUriVO> getRoleAndUri() {
 		List<SpringSecurityUriVO> resultList = new ArrayList<SpringSecurityUriVO>();
 		Map<String, String> param = new HashMap<String, String>();
-		param.put("siteTpcd", KProfile.SITE_TPCD);
+		param.put("appCd", KProfile.APP_CD);
 		List<Map<String, Object>> list = namedParameterJdbcTemplate.queryForList(ComUriAuthorityMgr.CONFIG_SQL, param);
 		list.forEach(item -> {
 			SpringSecurityUriVO vo = new SpringSecurityUriVO();

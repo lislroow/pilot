@@ -5,7 +5,7 @@ public class KToken {
 	@Deprecated
 	private long createTime;
 	private long expireTime;
-	private String siteTpcd;
+	private String appCd;
 	private String userTpcd;
 	private String aumthTpcd;
 	private String jwtTpcd;
@@ -29,11 +29,11 @@ public class KToken {
 	public void setExpireTime(long expireTime) {
 		this.expireTime = expireTime;
 	}
-	public String getSiteTpcd() {
-		return siteTpcd;
+	public String getAppCd() {
+		return appCd;
 	}
-	public void setSiteTpcd(String siteTpcd) {
-		this.siteTpcd = siteTpcd;
+	public void setAppCd(String appCd) {
+		this.appCd = appCd;
 	}
 	public String getUserTpcd() {
 		return userTpcd;

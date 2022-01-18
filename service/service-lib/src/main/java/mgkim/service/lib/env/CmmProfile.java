@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KProfile;
-import mgkim.service.lib.type.TSiteType;
+import mgkim.service.lib.type.TAppType;
 
 public class CmmProfile {
 	
@@ -19,12 +19,12 @@ public class CmmProfile {
 					appId = defAppId;
 					System.setProperty(KConstant.VM_APP_ID, appId);
 				}
-				String[] arr = java.util.Arrays.stream(TSiteType.values()).map(item -> item.label()).toArray(String[]::new);
+				String[] arr = java.util.Arrays.stream(TAppType.values()).map(item -> item.label()).toArray(String[]::new);
 				Matcher matcher = Pattern.compile("[lds]*("+String.join("|", arr)+")[0-9]*").matcher(appId);
 				if (matcher.find()) {
 					KProfile.APP_ID = appId;
-					TSiteType site = TSiteType.get(matcher.group(1));
-					KProfile.SITE_TPCD = site.code();
+					TAppType appType = TAppType.get(matcher.group(1));
+					KProfile.APP_CD = appType.code();
 				} else {
 					System.exit(-1);
 				}

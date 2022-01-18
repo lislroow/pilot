@@ -2,7 +2,7 @@ package mgkim.framework.online.cmm.vo.apitxlog;
 
 public class CmmApiTxLogVO {
 
-	private String siteTpcd;
+	private String appCd;
 	private String userId;
 	private String ip;
 	private String ssid;
@@ -11,8 +11,8 @@ public class CmmApiTxLogVO {
 	private String txtm;
 	private String txdttm;
 	private String uriVal;
+	private String appId;
 	private String hostname;
-	private String wasId;
 	private String rsltcd;
 	private String rsltmsg;
 	private String errtxt;
@@ -22,11 +22,11 @@ public class CmmApiTxLogVO {
 	private String lastModfrNo;
 	private String lastModfDttm;
 
-	public String getSiteTpcd() {
-		return siteTpcd;
+	public String getAppCd() {
+		return appCd;
 	}
-	public void setSiteTpcd(String siteTpcd) {
-		this.siteTpcd = siteTpcd;
+	public void setAppCd(String appCd) {
+		this.appCd = appCd;
 	}
 	public String getUserId() {
 		return userId;
@@ -76,17 +76,17 @@ public class CmmApiTxLogVO {
 	public void setUriVal(String uriVal) {
 		this.uriVal = uriVal;
 	}
+	public String getAppId() {
+		return appId;
+	}
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
 	public String getHostname() {
 		return hostname;
 	}
 	public void setHostname(String hostname) {
 		this.hostname = hostname;
-	}
-	public String getWasId() {
-		return wasId;
-	}
-	public void setWasId(String wasId) {
-		this.wasId = wasId;
 	}
 	public String getRsltcd() {
 		return rsltcd;

@@ -19,8 +19,8 @@ public class KProfile {
 	public static final String DOMAIN = "pilot";
 	public static final String HOSTNAME;
 	public static String APP_ID;
+	public static String APP_CD;
 	public static String APP_NAME;
-	public static String SITE_TPCD;
 	public static TSysType SYS;
 	public static List<String> profiles = new ArrayList<String>();
 	public static String PROFILES_STR;

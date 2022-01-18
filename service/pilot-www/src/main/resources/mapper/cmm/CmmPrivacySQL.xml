@@ -7,7 +7,7 @@
            MNGTG_ID
          , MNGTG_TPCD
       FROM MGCB402TM /* MGCB_개인정보접근관리정보 */
-     WHERE SITE_TPCD = #{siteTpcd}
+     WHERE APP_CD = #{appCd}
   </select>
 
 

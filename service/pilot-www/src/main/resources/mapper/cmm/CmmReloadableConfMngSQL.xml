@@ -4,9 +4,9 @@
 
   <select id="selectReloadStateList" parameterType="CmmReloadableConfVO" resultType="CmmReloadableConfVO">
     SELECT 
-           SITE_TPCD
+           APP_CD
+         , APP_ID
          , HOSTNAME
-         , WAS_ID
          , CONF_ID
          , CONF_STCD
          , APLI_DTTM
@@ -16,9 +16,9 @@
          , LAST_MODFR_NO
          , LAST_MODF_DTTM
       FROM MGCB401TS /* MGCB_reloadable-config상태 */
-     WHERE SITE_TPCD = #{siteTpcd}
+     WHERE APP_CD = #{appCd}
+       AND APP_ID = #{appId}
        AND HOSTNAME = #{hostname}
-       AND WAS_ID = #{wasId}
   </select>
 
   <update id="updateReloadState" parameterType="CmmReloadableConfVO">
@@ -28,27 +28,27 @@
          , APLI_DTTM = TO_CHAR(SYSDATE, 'YYYYMMDDHH24MISS')
          , APLI_RDTTM = null
          , LAST_MODF_DTTM = SYSDATE
-     WHERE SITE_TPCD = #{siteTpcd}
+     WHERE APP_CD = #{appCd}
+       AND APP_ID = #{appId}
        AND HOSTNAME = #{hostname}
-       AND WAS_ID = #{wasId}
        AND CONF_ID = #{confId}
   </update>
 
   <delete id="deleteReloadStateForReset" parameterType="CmmReloadableConfVO">
     DELETE
       FROM MGCB401TS /* MGCB_reloadable-config상태 */
-     WHERE SITE_TPCD = #{siteTpcd}
+     WHERE APP_CD = #{appCd}
+       AND APP_ID = #{appId}
        AND HOSTNAME = #{hostname}
-       AND WAS_ID = #{wasId}
   </delete>
 
   <update id="updateReloadStateForReset" parameterType="CmmReloadableConfVO">
     MERGE
      INTO MGCB401TS /* MGCB_reloadable-config상태 */
     USING DUAL
-       ON (SITE_TPCD = #{siteTpcd}
+       ON (APP_CD = #{appCd}
+          AND APP_ID = #{appId}
           AND HOSTNAME = #{hostname}
-          AND WAS_ID = #{wasId}
           AND CONF_ID = #{confId})
      WHEN MATCHED THEN
        UPDATE SET
@@ -59,9 +59,9 @@
          , LAST_MODF_DTTM = SYSDATE
      WHEN NOT MATCHED THEN
        INSERT (
-           SITE_TPCD
+           APP_CD
+         , APP_ID
          , HOSTNAME
-         , WAS_ID
          , CONF_ID
          , CONF_STCD
          , APLI_DTTM
@@ -71,9 +71,9 @@
          , LAST_MODFR_NO
          , LAST_MODF_DTTM
        ) VALUES (
-           #{siteTpcd}
+           #{appCd}
+         , #{appId}
          , #{hostname}
-         , #{wasId}
          , #{confId}
          , '00'
          , null
