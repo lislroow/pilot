@@ -39,7 +39,7 @@ function build() {
       -t -v \
       "concat(x:project/x:artifactId, '-', x:project/x:version, '.', x:project/x:packaging)" \
       ${BASEDIR}/${app_name}/pom.xml)
-    echo "jar_file=${jar_file}"
+    Log $verboss "jar_file=${jar_file}"
     
     # jar 파일명에 "-SNAPSHOT" 이 있으면 snapshot 저장소에 deploy 되어야 합니다.
     local nx_repo_id 
@@ -61,6 +61,7 @@ function build() {
     echo -e "## \e[36m[${idx}/${tot}] ${app_name}:\e[m \e[30;42m${mvn_cmd}\e[m"
     eval "${mvn_cmd}"
     idx=$(( $idx + 1 ))
+    echo "-----------"$'\n'
   done
 }
 
