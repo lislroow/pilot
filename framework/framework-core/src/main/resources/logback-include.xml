@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<included>
+  
+  <!-- FILTER-MARKER -->
+  <turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
+    <Marker>[sql-cmm]</Marker>
+    <OnMatch>${FILTER-MARKER-sql-cmm}</OnMatch>
+  </turboFilter>
+  <turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
+    <Marker>[sql-table]</Marker>
+    <OnMatch>${FILTER-MARKER-sql-table}</OnMatch>
+  </turboFilter>
+  <turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
+    <Marker>[aop-filter]</Marker>
+    <OnMatch>${FILTER-MARKER-aop-filter}</OnMatch>
+  </turboFilter>
+  <turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
+    <Marker>[aop-stereo]</Marker>
+    <OnMatch>${FILTER-MARKER-aop-stereo}</OnMatch>
+  </turboFilter>
+  
+  <!-- FILTER-MDC -->
+  <turboFilter class="ch.qos.logback.classic.turbo.MDCFilter">
+    <MDCKey>exec_type</MDCKey>
+    <value>[SCHEDULE]</value>
+    <OnMatch>${FILTER-MDC-exec_type-SCHEDULE}</OnMatch>
+  </turboFilter>
+  <turboFilter class="ch.qos.logback.classic.turbo.MDCFilter">
+    <MDCKey>debug</MDCKey>
+    <value>[true]</value>
+    <OnMatch>${FILTER-MDC-debug-true}</OnMatch>
+  </turboFilter>
+  
+</included>

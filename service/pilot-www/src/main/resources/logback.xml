@@ -3,12 +3,6 @@
   
   <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
   
-  <property name="A" value="ACCEPT" />
-  <property name="D" value="DENY" />
-  <property name="N" value="NEUTRAL" />
-  
-  <property name="LEVEL-root" value="info" />
-  <property name="LEVEL-framework" value="info" />
   <property name="LOGBASE" value="/outlog/pilot/file" />
   <property name="PATTERN-root"       value="[${app.id}][%d{HH:mm:ss}][%-5level][%logger:%line] ### %msg%n"/>
   <property name="PATTERN-fw-console" value="[${app.id}][%d{HH:mm:ss}][%-5level]%clr([fw]%X{ip}%X{ssid}%X{txid}%marker){highlight} ### %msg%n"/>
@@ -38,36 +32,24 @@
     </rollingPolicy>
   </appender>
   
-  <!-- marker 필터 -->
-  <turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
-    <Marker>[sql-cmm]</Marker>
-    <OnMatch>${D}</OnMatch>
-  </turboFilter>
-  <turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
-    <Marker>[sql-table]</Marker>
-    <OnMatch>${N}</OnMatch>
-  </turboFilter>
-  <turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
-    <Marker>[aop-filter]</Marker>
-    <OnMatch>${N}</OnMatch>
-  </turboFilter>
-  <turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
-    <Marker>[aop-stereo]</Marker>
-    <OnMatch>${N}</OnMatch>
-  </turboFilter>
+  <property name="A" value="ACCEPT" />
+  <property name="D" value="DENY" />
+  <property name="N" value="NEUTRAL" />
   
-  <!-- MDC 필터 -->
-  <turboFilter class="ch.qos.logback.classic.turbo.MDCFilter">
-    <MDCKey>exec_type</MDCKey>
-    <value>[SCHEDULE]</value>
-    <OnMatch>${D}</OnMatch>
-  </turboFilter>
-  <turboFilter class="ch.qos.logback.classic.turbo.MDCFilter">
-    <MDCKey>debug</MDCKey>
-    <value>[true]</value>
-    <OnMatch>${A}</OnMatch>
-  </turboFilter>
+  <!-- FILTER-MARKER -->
+  <property name="FILTER-MARKER-sql-cmm" value="${D}" />
+  <property name="FILTER-MARKER-sql-table" value="${A}" />
+  <property name="FILTER-MARKER-aop-filter" value="${N}" />
+  <property name="FILTER-MARKER-aop-stereo" value="${N}" />
+  <!-- FILTER-MDC -->
+  <property name="FILTER-MDC-exec_type-SCHEDULE" value="${D}" />
+  <property name="FILTER-MDC-debug-true" value="${A}" />
   
+  <!-- {framework-core} logback-include.xml: FILTER-MARKER, FILTER-MDC -->
+  <include resource="logback-include.xml" />
+  
+  
+  <property name="LEVEL-root" value="info" />
   <root level="${LEVEL-root}">
     <appender-ref ref="APPENDER-console" />
   </root>
