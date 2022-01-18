@@ -15,7 +15,7 @@ import org.springframework.context.event.ContextStartedEvent;
 import org.springframework.context.event.EventListener;
 
 import mgkim.framework.core.annotation.KBean;
-import mgkim.framework.core.logging.KLogLayout;
+import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.util.KStringUtil;
 
 @KBean
@@ -29,7 +29,7 @@ public class KInitChecker {
 		ApplicationContext ctx = event.getApplicationContext();
 		List<String> beanNameList = Arrays.asList(ctx.getBeanDefinitionNames());
 		log.info("spring {} = {} {} spring bean {}개가 로드 되었습니다.",
-				ctx.getId(), KStringUtil.toJson(beanNameList), KLogLayout.LINE, beanNameList.size());
+				ctx.getId(), KStringUtil.toJson(beanNameList), KConstant.LINE, beanNameList.size());
 		List<String> beanClassList = new ArrayList<String>();
 		if (beanNameList != null) {
 			beanNameList.forEach(item -> {
@@ -43,7 +43,7 @@ public class KInitChecker {
 			});
 		}
 		Collections.sort(beanClassList);
-		log.info("{} spring bean = {} {} ", ctx.getId(), KLogLayout.LINE, KStringUtil.toJson(beanClassList).replaceAll(",", KLogLayout.LINE).replaceAll("\"", "").replaceAll("\\[", "").replaceAll("\\]", ""));
+		log.info("{} spring bean = {} {} ", ctx.getId(), KConstant.LINE, KStringUtil.toJson(beanClassList).replaceAll(",", KConstant.LINE).replaceAll("\"", "").replaceAll("\\[", "").replaceAll("\\]", ""));
 		log.info("spring bean {}개가 로드 되었습니다. (실제: 전체 {}개 중 {}개 로그 출력에서 생략))", beanNameList.size(), beanNameList.size(), (beanNameList.size()-beanClassList.size()));
 		log.info("spring ["+event.getApplicationContext().getId() + "] started ");
 	}

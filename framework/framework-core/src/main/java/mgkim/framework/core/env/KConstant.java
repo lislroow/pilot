@@ -1,7 +1,5 @@
 package mgkim.framework.core.env;
 
-import mgkim.framework.core.logging.KAnsi;
-
 public class KConstant {
 
 	public static final String VM_SPRING_PROFILES_ACTIVE = "spring.profiles.active";
@@ -10,6 +8,7 @@ public class KConstant {
 	public static final String VM_APP_NAME = "app.name";
 	
 	public static final String EMPTY = "";
+	public static final String LINE = System.getProperty("line.separator");
 	
 	public static final String REFERER_SWAGGER = "/swagger-ui.html";        // io.springfox:2.10.5
 	//public static final String REFERER_SWAGGER = "/swagger-ui/index.html";  // io.springfox:3.0.0
@@ -48,10 +47,8 @@ public class KConstant {
 	public static final String TOKEN_ORG_CD = "orgCd";
 	public static final String TOKEN_ORG_NM = "orgNm";
 	
-	public static final String LT_CLASS = KAnsi.magenta("[ *** CLASS *** ]");
-	public static final String LT_EXCEPTION = KAnsi.magenta("[ *** EXCEPTION *** ]");
-	public static final String LT_PROFILE = KAnsi.magenta("[ *** PROFILE *** ]");
-	public static final String LT_PROPERTY = KAnsi.magenta("[ *** PROPERTY *** ]");
+	public static final String LT_EXCEPTION = "[ *** EXCEPTION *** ]";
+	public static final String LT_PROPERTY = "[ *** PROPERTY *** ]";
 	
 	public static final String HK_DEBUG = "debug";
 	public static final String HK_AUTHORIZATION = "Authorization";

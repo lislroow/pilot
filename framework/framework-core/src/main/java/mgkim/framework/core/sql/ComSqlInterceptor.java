@@ -237,7 +237,7 @@ public class ComSqlInterceptor implements Interceptor {
 					log.info(KLogMarker.getSqlMarker(sqlFile), "\n{}\n(rows={}, elapsed={})", paramSql, resultCount, elapsed);
 				}
 				// sql 실행 테이블 분석
-				if (false && KProfile.SYS == TSysType.LOC) {
+				if (true && KProfile.SYS == TSysType.LOC) {
 					KSqlUtil.resolveTables(sqlFile, sqlId, paramSql);
 				}
 				break;

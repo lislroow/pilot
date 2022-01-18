@@ -11,6 +11,7 @@ public class KLogMarker {
 	public static final Marker RESPONSE = MarkerFactory.getMarker("[RES]");
 	public static final Marker SQL = MarkerFactory.getMarker("[sql]");
 	public static final Marker SQL_CMM = MarkerFactory.getMarker("[sql-cmm]");
+	public static final Marker sql_table = MarkerFactory.getMarker("[sql-table]");
 	public static final Marker request = MarkerFactory.getMarker("[req]");
 	public static final Marker response = MarkerFactory.getMarker("[res]");
 	public static final Marker security = MarkerFactory.getMarker("[sec]");

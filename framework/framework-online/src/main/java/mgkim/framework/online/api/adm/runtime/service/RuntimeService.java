@@ -44,8 +44,8 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
+import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KProfile;
-import mgkim.framework.core.logging.KLogLayout;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.api.adm.runtime.vo.JavaEnvVariableVO;
@@ -320,7 +320,7 @@ public class RuntimeService {
 							StaticTextSqlNode node = (StaticTextSqlNode)ls.get(k);
 							String text = KStringUtil.nvl(KObjectUtil.getValue(node, "text"));
 							sbuf.append(text);
-							sbuf.append(KLogLayout.LINE);
+							sbuf.append(KConstant.LINE);
 						} else if (ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.ForEachSqlNode) {
 							//ForEachSqlNode node = (ForEachSqlNode)ls.get(k);
 							sbuf.append("  *** FOREACHE SQL ***  ");
@@ -341,7 +341,7 @@ public class RuntimeService {
 							StaticTextSqlNode node = (StaticTextSqlNode)ls.get(k);
 							String text = KStringUtil.nvl(KObjectUtil.getValue(node, "text"));
 							sbuf.append(text);
-							sbuf.append(KLogLayout.LINE);
+							sbuf.append(KConstant.LINE);
 						} else if (ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.ForEachSqlNode) {
 							//ForEachSqlNode node = (ForEachSqlNode)ls.get(k);
 							sbuf.append("  *** FOREACH SQL ***  ");
@@ -376,17 +376,17 @@ public class RuntimeService {
 				String file = item.getResource();
 				if (!file.equals(resourceFile)) {
 					resourceFile = file;
-					result.append(String.format("##########")+KLogLayout.LINE);
-					result.append(String.format("### %s ###", resourceFile)+KLogLayout.LINE);
-					result.append(String.format("##########")+KLogLayout.LINE);
-					result.append(""+KLogLayout.LINE);
+					result.append(String.format("##########")+KConstant.LINE);
+					result.append(String.format("### %s ###", resourceFile)+KConstant.LINE);
+					result.append(String.format("##########")+KConstant.LINE);
+					result.append(""+KConstant.LINE);
 				}
 				result.append(String.format("[%04d] ", seq));
 				String sqlId = item.getId();
 				result.append(String.format("SQL_ID=%s", sqlId));
 				SqlSource sqlSource = item.getSqlSource();
 				String sqlText = sqlSource.getBoundSql(null).getSql();
-				result.append(String.format("%sSQLTEXT=%s", KLogLayout.LINE, sqlText)+KLogLayout.LINE);
+				result.append(String.format("%sSQLTEXT=%s", KConstant.LINE, sqlText)+KConstant.LINE);
 			} catch(NullPointerException e) {
 				Object rootSqlNode = KObjectUtil.getValue(((SqlSource) item.getSqlSource()), "rootSqlNode");
 				ArrayList ls = (ArrayList)KObjectUtil.getValue(rootSqlNode, "contents");
@@ -396,7 +396,7 @@ public class RuntimeService {
 						StaticTextSqlNode node = (StaticTextSqlNode)ls.get(k);
 						String text = KStringUtil.nvl(KObjectUtil.getValue(node, "text"));
 						sbuf.append(text);
-						sbuf.append(KLogLayout.LINE);
+						sbuf.append(KConstant.LINE);
 					} else if (ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.ForEachSqlNode) {
 						//ForEachSqlNode node = (ForEachSqlNode)ls.get(k);
 						sbuf.append("  *** FOREACHE SQL ***  ");
@@ -407,7 +407,7 @@ public class RuntimeService {
 						sbuf.append("  *** OTHER SQL ***  ");
 					}
 				}
-				result.append(String.format("%sSQLTEXT=%s", KLogLayout.LINE, sbuf.toString())+KLogLayout.LINE);
+				result.append(String.format("%sSQLTEXT=%s", KConstant.LINE, sbuf.toString())+KConstant.LINE);
 			} catch(BuilderException e) {
 				Object rootSqlNode = KObjectUtil.getValue(((SqlSource) item.getSqlSource()), "rootSqlNode");
 				ArrayList ls = (ArrayList)KObjectUtil.getValue(rootSqlNode, "contents");
@@ -417,7 +417,7 @@ public class RuntimeService {
 						StaticTextSqlNode node = (StaticTextSqlNode)ls.get(k);
 						String text = KStringUtil.nvl(KObjectUtil.getValue(node, "text"));
 						sbuf.append(text);
-						sbuf.append(KLogLayout.LINE);
+						sbuf.append(KConstant.LINE);
 					} else if (ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.ForEachSqlNode) {
 						//ForEachSqlNode node = (ForEachSqlNode)ls.get(k);
 						sbuf.append("  *** FOREACH SQL ***  ");
@@ -428,12 +428,12 @@ public class RuntimeService {
 						sbuf.append("  *** OTHER SQL ***  ");
 					}
 				}
-				result.append(String.format("%sSQLTEXT=%s", KLogLayout.LINE, sbuf.toString())+KLogLayout.LINE);
+				result.append(String.format("%sSQLTEXT=%s", KConstant.LINE, sbuf.toString())+KConstant.LINE);
 			} catch(Exception e) {
-				result.append(""+KLogLayout.LINE+"[ ERROR ]");
+				result.append(""+KConstant.LINE+"[ ERROR ]");
 			}
 			seq++;
-			result.append(""+KLogLayout.LINE);
+			result.append(""+KConstant.LINE);
 		}
 		return result;
 	}

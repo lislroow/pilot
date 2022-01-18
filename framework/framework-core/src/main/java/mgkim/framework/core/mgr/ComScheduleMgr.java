@@ -17,7 +17,6 @@ import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.env.KConfig;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
-import mgkim.framework.core.logging.KAnsi;
 import mgkim.framework.core.stereo.KScheduler;
 import mgkim.framework.core.stereo.KTask;
 import mgkim.framework.core.util.KObjectUtil;
@@ -56,9 +55,9 @@ public class ComScheduleMgr implements InitializingBean, DisposableBean {
 			for (int i=0; i<scheduleList.size(); i++) {
 				KScheduler scheduler = scheduleList.get(i);
 				if (KObjectUtil.manage(scheduler.getClass())) {
-					log.info(KMessage.get(KMessage.E5010, KAnsi.boldCyan(KObjectUtil.name(scheduler.getClass()))));
+					log.info(KMessage.get(KMessage.E5010, KObjectUtil.name(scheduler.getClass())));
 				} else {
-					log.warn(KMessage.get(KMessage.E5009, KAnsi.boldRed(KObjectUtil.name(scheduler.getClass()))));
+					log.warn(KMessage.get(KMessage.E5009, KObjectUtil.name(scheduler.getClass())));
 				}
 			}
 		} catch(Exception e) {

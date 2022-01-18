@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
-import mgkim.framework.core.logging.KLogCommon;
+import mgkim.framework.core.logging.KLogMarker;
 import mgkim.framework.core.type.TSqlType;
 
 public class KSqlUtil {
@@ -249,15 +249,15 @@ public class KSqlUtil {
 	}
 	
 	public static void resolveTables(String sqlFile, String sqlId, String sqlText) {
-		String referer = KContext.getT(AttrKey.REFERER);
 		String uri = KContext.getT(AttrKey.URI);
-		if (!KStringUtil.isEmpty(referer)) {
-			referer = referer.substring(referer.lastIndexOf("/")+1, referer.length());
-			referer = referer.substring(0, referer.indexOf("?") == -1 ? referer.length() : referer.indexOf("?")); // GET 방식의 referer도 존재함
-		}
-		if (KStringUtil.isEmpty(referer)) {
-			return;
-		}
+		//String referer = KContext.getT(AttrKey.REFERER);
+		//if (!KStringUtil.isEmpty(referer)) {
+		//	referer = referer.substring(referer.lastIndexOf("/")+1, referer.length());
+		//	referer = referer.substring(0, referer.indexOf("?") == -1 ? referer.length() : referer.indexOf("?")); // GET 방식의 referer도 존재함
+		//}
+		//if (false && KStringUtil.isEmpty(referer)) {
+		//	return;
+		//}
 		String sqlTables = null;
 		Matcher m = Pattern.compile("("+TABLE_PATTERN+")", Pattern.CASE_INSENSITIVE).matcher(sqlText);
 		List<String> tableNames = new ArrayList<String>();
@@ -268,7 +268,8 @@ public class KSqlUtil {
 			}
 		}
 		sqlTables = tableNames.toString().replaceAll("\\[", "").replaceAll("\\]", "").replaceAll(" ", "");
-		String log = String.format("%s|%s|%s|%s|%s", referer, uri, sqlFile, sqlId, sqlTables);
-		KLogCommon.table(referer, log);
+		//String txt = String.format("%s|%s|%s|%s", uri, sqlFile, sqlId, sqlTables);
+		
+		log.debug(KLogMarker.sql_table, "\nsqlId = {}\ntables = {}", sqlId, sqlTables);
 	}
 }

@@ -25,7 +25,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 
 import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.dto.KOutDTO;
-import mgkim.framework.core.logging.KLogLayout;
+import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.cmm.vo.uri.CmmUriVO;
 
@@ -100,7 +100,7 @@ public class ComUriListMgr {
 		});
 
 		Collections.sort(uriList);
-		log.debug("api 목록 = {} ", KStringUtil.toJson(uriList).replaceAll(",", KLogLayout.LINE).replaceAll("\"", "").replaceAll("\\[", "").replaceAll("\\]", ""));
+		log.debug("api 목록 = {} ", KStringUtil.toJson(uriList).replaceAll(",", KConstant.LINE).replaceAll("\"", "").replaceAll("\\[", "").replaceAll("\\]", ""));
 		log.info("api 목록 {}개 가 로드 되었습니다.", uriList.size());
 	}
 

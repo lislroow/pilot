@@ -21,7 +21,6 @@ import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.env.KSqlContext;
-import mgkim.framework.core.logging.KLogLayout;
 import mgkim.framework.core.type.TEncodingType;
 import mgkim.framework.core.util.KExceptionUtil;
 
@@ -174,7 +173,7 @@ public class KExceptionHandler {
 
 		// 2) `exception` 로깅
 		{
-			log.error("{}{}{} [{}] {}{}{}", KConstant.LT_EXCEPTION, KLogLayout.LINE, KConstant.LT_EXCEPTION, exception.getId(), exception.getText(), KLogLayout.LINE, cause);
+			log.error("{}{}{} [{}] {}{}{}", KConstant.LT_EXCEPTION, KConstant.LINE, KConstant.LT_EXCEPTION, exception.getId(), exception.getText(), KConstant.LINE, cause);
 		}
 	}
 }
