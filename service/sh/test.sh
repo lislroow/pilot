@@ -5,7 +5,7 @@ BASEDIR="$( cd $( dirname "$0" ) && pwd -P)"
 echo -e "\e[35m+++ [file] ${BASEDIR}/${0##*/} ${@} +++\e[m"
 . ${BASEDIR}/include.sh
 
-BEARER_TOKEN="eyJ0eXAiOiJhY2Nlc3NUb2tlbiIsImV4cCI6MTY0MjQ4MDYwMTM5NSwiYWxnIjoiSFMyNTYifQ.eyJ1c2VyVHBjZCI6ImFwaSIsInNzdmFsZFNlYyI6MTAwMDAwMDAsImF1bXRoVHBjZCI6IjAxIiwiYXBwQ2QiOiIxMCIsInVzZXJJZCI6IjEwMDAwMDAwMDEiLCJzc2lkIjoiczFqZXczczFjdzF2c20ifQ.irG9qvgJlq4CEwpGl0bzjrNYBj4UqeXpowhCc3ORDf0"
+BEARER_TOKEN="eyJ0eXAiOiJhY2Nlc3NUb2tlbiIsImV4cCI6MTY0MjQ4MjMwNDUwNiwiYWxnIjoiSFMyNTYifQ.eyJ1c2VyVHBjZCI6ImFwaSIsInNzdmFsZFNlYyI6MTAwMDAwMDAsImF1bXRoVHBjZCI6IjAxIiwiYXBwQ2QiOiIxMCIsInVzZXJJZCI6IjEwMDAwMDAwMDEiLCJzc2lkIjoiczFqZXRiamxvMGtweDAifQ.S_JoCx0CSuw_gywbdOCRM34SH0WnIPpQp8eubq2Zxsw"
 CURL_OPTS="--connect-timeout 10 --silent"
 
 function execute() {
@@ -49,7 +49,7 @@ function curl_template() {
     #   3) replace url: http://'${ip}':'${port}'
     #      response=$(curl --location --request POST ${CURL_OPTS} 'http://'${ip}':'${port}'/public/cmm/user/idlogin' \
     #   4) replace authorization: 
-    #      --header 'Authorization: Bearer ${BEARER_TOKEN}' \
+    #      --header 'Authorization: Bearer '${BEARER_TOKEN} \
     ## //[actual-code]
     echo "response=${response}"
     idx=$(( $idx + 1 ))
@@ -93,7 +93,7 @@ function curl_apitxlog_selectLogList() {
     echo "[${idx}/${tot}] app_id=${app_id} port=${port}"
     ## [actual-code]
     response=$(curl --location --request POST ${CURL_OPTS} 'http://'${ip}':'${port}'/api/adm/apitxlog/selectLogList' \
-    --header 'Authorization: Bearer ${BEARER_TOKEN}' \
+    --header 'Authorization: Bearer '${BEARER_TOKEN} \
     --header 'Content-Type: application/json' \
     --data-raw '{
       "body": {
