@@ -30,7 +30,7 @@ function send_conf() {
             local files=("${BASEDIR}/${app_name}/src/main/resources/.logback-${app_name##*-}-${app_home##*-}.xml")
             Log $verboss "files=${files[@]}"
             local scp_cmd="scp ${files[@]} ${EXEC_USER}@${ip}:${app_home}"
-            echo -e "## \e[44m${scp_cmd}\e[m"
+            echo -e "## \e[30;42m${scp_cmd}\e[m"
             eval "${scp_cmd}"
             ## //[actual-code]
           done
@@ -53,7 +53,7 @@ function send_conf() {
           local files=("${BASEDIR}/${app_name}/src/main/resources/.logback-${app_name##*-}-${app_home##*-}.xml")
           Log $verboss "files=${files[@]}"
           local scp_cmd="scp ${files[@]} ${EXEC_USER}@${ip}:${app_home}"
-          echo -e "## \e[44m${scp_cmd}\e[m"
+          echo -e "## \e[30;42m${scp_cmd}\e[m"
           eval "${scp_cmd}"
           ## //[actual-code]
         done
@@ -75,7 +75,7 @@ function send_conf() {
           local files=("${BASEDIR}/${app_name}/src/main/resources/.logback-${app_name##*-}-${app_home##*-}.xml")
           Log $verboss "files=${files[@]}"
           local scp_cmd="scp ${files[@]} ${EXEC_USER}@${ip}:${app_home}"
-          echo -e "## \e[44m${scp_cmd}\e[m"
+          echo -e "## \e[30;42m${scp_cmd}\e[m"
           eval "${scp_cmd}"
           ## //[actual-code]
         done
@@ -95,7 +95,7 @@ function send_conf() {
         local files=("${BASEDIR}/${app_name}/src/main/resources/.logback-${app_name##*-}-${app_home##*-}.xml")
         Log $verboss "files=${files[@]}"
         local scp_cmd="scp ${files[@]} ${EXEC_USER}@${ip}:${app_home}"
-        echo -e "## \e[44m${scp_cmd}\e[m"
+        echo -e "## \e[30;42m${scp_cmd}\e[m"
         eval "${scp_cmd}"
         ## //[actual-code]
       done

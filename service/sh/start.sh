@@ -95,7 +95,7 @@ function start() {
     java_opts="${java_opts} -Dserver.port=${port}"
     
     local java_cmd="nohup $JAVA_HOME/bin/java ${java_opts} -jar ${jar_file} > ${log_filepath} 2>&1 &"
-    echo -e "   java: \e[44m${java_cmd}\e[m"
+    echo -e "   java: \e[30;42m${java_cmd}\e[m"
     Log $verboss "java_cmd=${java_cmd}"
     ExecCmd ${java_cmd}
     

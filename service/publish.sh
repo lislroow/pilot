@@ -30,7 +30,7 @@ function publish() {
             ## [actual-code]
             local ssh_cmd="ssh ${EXEC_USER}@${ip} '${app_home}/deploy.sh' ${profile_sys:0:1}${app_name:(${#DOMAIN}+1):1}"
             Log $verboss "ssh_cmd=${ssh_cmd}"
-            echo -e "## \e[36m[${idx}/${tot}] ${profile_sys} ${app_name} ${ip}:\e[m \e[44m${ssh_cmd}\e[m"
+            echo -e "## \e[36m[${idx}/${tot}] ${profile_sys} ${app_name} ${ip}:\e[m \e[30;42m${ssh_cmd}\e[m"
             eval "${ssh_cmd}"
             ## //[actual-code]
           done
@@ -56,7 +56,7 @@ function publish() {
           local ssh_cmd="ssh ${EXEC_USER}@${ip} '${app_home}/deploy.sh ${profile_sys:0:1}${app_name:(${#DOMAIN}+1):1}'"
           Log $verboss "ssh_cmd=${ssh_cmd}"
           echo -e "## \e[36mssh:\e[m ${ssh_cmd}"
-          echo -e "## \e[36m[${idx}/${tot}] ${profile_sys} ${app_name} ${ip}:\e[m \e[44m${ssh_cmd}\e[m"
+          echo -e "## \e[36m[${idx}/${tot}] ${profile_sys} ${app_name} ${ip}:\e[m \e[30;42m${ssh_cmd}\e[m"
           eval "${ssh_cmd}"
           ## //[actual-code]
         done
@@ -80,7 +80,7 @@ function publish() {
           ## [actual-code]
           local ssh_cmd="ssh ${EXEC_USER}@${ip} '${app_home}/deploy.sh ${profile_sys:0:1}${app_name:(${#DOMAIN}+1):1}'"
           Log $verboss "ssh_cmd=${ssh_cmd}"
-          echo -e "## \e[36m[${idx}/${tot}] ${profile_sys} ${app_name} ${ip}:\e[m \e[44m${ssh_cmd}\e[m"
+          echo -e "## \e[36m[${idx}/${tot}] ${profile_sys} ${app_name} ${ip}:\e[m \e[30;42m${ssh_cmd}\e[m"
           eval "${ssh_cmd}"
           ## //[actual-code]
         done
@@ -100,7 +100,7 @@ function publish() {
         ## [actual-code]
         local ssh_cmd="ssh ${EXEC_USER}@${ip} '${app_home}/deploy.sh ${profile_sys:0:1}${app_name:(${#DOMAIN}+1):1}'"
         Log $verboss "ssh_cmd=${ssh_cmd}"
-        echo -e "## \e[36m${profile_sys} ${app_name} ${ip}:\e[m \e[44m${ssh_cmd}\e[m"
+        echo -e "## \e[36m${profile_sys} ${app_name} ${ip}:\e[m \e[30;42m${ssh_cmd}\e[m"
         eval "${ssh_cmd}"
         ## //[actual-code]
       done

@@ -32,7 +32,7 @@ function build() {
     mvn_args="${mvn_args} --quiet"
     
     local mvn_cmd="mvn ${mvn_args} clean package spring-boot:repackage"
-    echo -e "## \e[36m[${idx}/${tot}] ${app_name}:\e[m \e[44m${mvn_cmd}\e[m"
+    echo -e "## \e[36m[${idx}/${tot}] ${app_name}:\e[m \e[30;42m${mvn_cmd}\e[m"
     eval "${mvn_cmd}"
     
     local jar_file=$(xmlstarlet sel -N x="http://maven.apache.org/POM/4.0.0" \
@@ -58,7 +58,7 @@ function build() {
     mvn_args="${mvn_args} -Durl=https://nexus/repository/${nx_repo_id}/"
     
     mvn_cmd="mvn ${mvn_args} deploy:deploy-file"
-    echo -e "## \e[36m[${idx}/${tot}] ${app_name}:\e[m \e[44m${mvn_cmd}\e[m"
+    echo -e "## \e[36m[${idx}/${tot}] ${app_name}:\e[m \e[30;42m${mvn_cmd}\e[m"
     eval "${mvn_cmd}"
     idx=$(( $idx + 1 ))
   done
