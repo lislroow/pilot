@@ -13,8 +13,7 @@ public class KConstant {
 	public static final String EMPTY = "";
 	public static final String LINE = System.getProperty("line.separator");
 	
-	public static final String REFERER_SWAGGER = "/swagger-ui.html";        // io.springfox:2.10.5
-	//public static final String REFERER_SWAGGER = "/swagger-ui/index.html";  // io.springfox:3.0.0
+	public static final String REFERER_SWAGGER = "/swagger-ui.html";
 	
 	public static final String SYS = "sys";
 	public static final String APP_ID = "appId";
@@ -31,9 +30,6 @@ public class KConstant {
 	public static final String RESULT_TEXT = "text";
 	public static final String RESULT_BCODE = "bcode";
 	public static final String RESULT_BMESSAGE = "bmessage";
-	
-	public static final String LT_EXCEPTION = "[ *** EXCEPTION *** ]";
-	public static final String LT_PROPERTY = "[ *** PROPERTY *** ]";
 	
 	public static final String HK_DEBUG = "debug";
 	public static final String HK_AUTHORIZATION = "Authorization";
@@ -57,18 +53,16 @@ public class KConstant {
 	public static final String SWG_SERVICE_ADMIN = "service-admin";
 	public static final String SWG_SERVICE_COMMON = "service-common";
 	
-	
 	public static List<String> HIDDEN_URI = Arrays.asList(
 			  "/"
-			, "/favicon.ico"
-			, "/status.html"
-			, "/uri.html"
-			, "/resources/**"
-			, "/swagger-ui.html"       // io.springfox:2.10.5
-			, "/swagger-resources**"
-			, "/swagger-resources/**"
-			, "/webjars/**"
-			, "/v2/api-docs"           // -- io.springfox:2.10.5
+//			, "/favicon.ico"
+//			, "/status.html"
+//			, "/resources/**"
+//			, "/swagger-ui.html"
+//			, "/swagger-resources**"
+//			, "/swagger-resources/**"
+//			, "/webjars/**"
+//			, "/v2/api-docs"
 			);
 	
 	public static final List<String> PUBLIC_URI = Arrays.asList(

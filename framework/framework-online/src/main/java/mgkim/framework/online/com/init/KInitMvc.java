@@ -56,16 +56,12 @@ public class KInitMvc implements WebMvcConfigurer {
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		// [status]
-		registry.addResourceHandler("/uri.html").addResourceLocations("classpath:/META-INF/static/");
 		registry.addResourceHandler("/status.html").addResourceLocations("classpath:/META-INF/static/");
 		registry.addResourceHandler("/resources/**").addResourceLocations("classpath:/META-INF/static/resources/");
-
+		
 		// [swagger]
-		registry.addResourceHandler("/swagger-ui.html")
-		.addResourceLocations("classpath:/META-INF/resources/");
-		registry.addResourceHandler("/webjars/**")
-		.addResourceLocations("classpath:/META-INF/resources/webjars/");
-		//.resourceChain(false);
+		registry.addResourceHandler("/swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
+		registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
 	}
 
 	/*@Bean("internalResourceViewResolver")

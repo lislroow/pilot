@@ -29,15 +29,7 @@ public class KProperty {
 		//, "jar:file:" + KConstant.PATH_WEBINF_LIB + "META-INF/core-online/core-config.properties" + "!/"
 	};
 
-	private static void printKeyValue(String key, Object value) {
-		log.warn("{} {}={}", KConstant.LT_PROPERTY, key, value);
-	}
-
 	public static String getString(String key) {
-		return getString(key, true);
-	}
-
-	private static String getString(String key, boolean log) {
 		String result = "";
 		InputStream is = null;
 		BufferedInputStream bis = null;
@@ -45,7 +37,6 @@ public class KProperty {
 		for (String path : KConfig.CONFIG_FILE) {
 			try {
 				if (result != null && !KConstant.EMPTY.equals(result)) {
-					if (log) printKeyValue(key, result);
 					return result;
 				}
 				props = new Properties();
@@ -90,43 +81,38 @@ public class KProperty {
 				}
 			}
 		}
-		if (log) printKeyValue(key, result);
 		return result;
 	}
 
 	public static String[] getArray(String key) {
 		String[] result = null;
-		String str = getString(key, false);
+		String str = getString(key);
 		result = str.split(",");
-		printKeyValue(key, "(String[])"+Arrays.asList(result));
 		return result;
 	}
 
 	public static List<String> getList(String key) {
 		List<String> result = null;
-		String str = getString(key, false);
+		String str = getString(key);
 		String[] tokens = KStringUtil.splitByWholeSeparator(str);
 		for (int i=0; i<tokens.length; i++) {
 			tokens[i] = StringUtils.trimAllWhitespace(tokens[i]);
 		}
 		result = Arrays.asList(tokens);
-		printKeyValue(key, result);
 		return result;
 	}
 
 	public static Boolean getBoolean(String key) {
 		boolean result;
-		String str = getString(key, false);
+		String str = getString(key);
 		result = KStringUtil.toBoolean(str) == null ? false : KStringUtil.toBoolean(str);
-		printKeyValue(key, result);
 		return result;
 	}
 
 	public static int getInt(String key, int def) {
 		int result;
-		String str = getString(key, false);
+		String str = getString(key);
 		result = KStringUtil.nvl(str, def);
-		printKeyValue(key, result);
 		return result;
 	}
 
@@ -144,11 +130,9 @@ public class KProperty {
 				String value = props.getProperty(key);
 				if (value == null) {
 					result = Collections.emptyMap();
-					printKeyValue(key, result);
 					return result;
 				}
 				result = KStringUtil.parseJson(value);
-				printKeyValue(key, result);
 				return result;
 			} catch(FileNotFoundException fne) {
 				log.debug("Property file not found.", fne);
@@ -172,7 +156,6 @@ public class KProperty {
 			}
 		}
 		result = Collections.emptyMap();
-		printKeyValue(key, result);
 		return result;
 	}
 }

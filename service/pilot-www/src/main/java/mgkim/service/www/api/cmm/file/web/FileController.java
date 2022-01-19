@@ -298,7 +298,7 @@ public class FileController {
 			{
 				Formatter formatter = new Formatter();
 				try {
-					String fmtStr = KProperty.getString("file.proto.www.board.path");
+					String fmtStr = KProperty.getString("file.pilot.www.board.path");
 					savePath = formatter.format(fmtStr, new Object[] {currDate}).toString();
 				} catch(Exception e) {
 					throw e;
@@ -311,7 +311,7 @@ public class FileController {
 			{
 				Formatter formatter = new Formatter();
 				try {
-					String fmtStr = KProperty.getString("file.proto.www.board.name");
+					String fmtStr = KProperty.getString("file.pilot.www.board.name");
 					saveFilenm = formatter.format(fmtStr, new Object[] {currDate, fileId, orgFileNm, orgFileExt}).toString();
 				} catch(Exception e) {
 					throw e;
