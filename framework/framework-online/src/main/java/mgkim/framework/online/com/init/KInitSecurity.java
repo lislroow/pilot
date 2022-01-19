@@ -46,16 +46,16 @@ public class KInitSecurity extends WebSecurityConfigurerAdapter {
 		List<SecurityFilterChain> filterChains = new ArrayList<SecurityFilterChain>();
 		
 		// public
-		for (String uriPattern : KConstant.FILTER_HIDDENAPI) {
-			filterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher(uriPattern), new Filter[] {
-				ctx.getBean(KFilterPublic.class)
-			}));
-		}
-		
+		Filter[] filterPublic = new Filter[] {ctx.getBean(KFilterPublic.class)};
+		KConstant.PUBLIC_URI.stream().forEach(
+				item -> filterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher(item), filterPublic))
+				);
+		KConstant.HIDDEN_URI.stream().forEach(
+				item -> filterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher(item), filterPublic))
+				);
 		// api
-		filterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/api/**"), new Filter[] {
-				ctx.getBean(KFilterApi.class)
-		}));
+		Filter[] filterApi = new Filter[] {ctx.getBean(KFilterApi.class)};
+		filterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/api/**"), filterApi));
 		
 		FilterChainProxy bean = new FilterChainProxy(filterChains);
 		return bean;

@@ -58,8 +58,9 @@ public class KConstant {
 	public static final String SWG_SERVICE_COMMON = "service-common";
 	
 	
-	public static List<String> FILTER_HIDDENAPI = Arrays.asList(
+	public static List<String> HIDDEN_URI = Arrays.asList(
 			  "/"
+			, "/favicon.ico"
 			, "/status.html"
 			, "/uri.html"
 			, "/resources/**"
