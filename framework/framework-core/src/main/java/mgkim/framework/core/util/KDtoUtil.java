@@ -40,13 +40,13 @@ public class KDtoUtil {
 			KSession session = KSessionUtil.getSession();
 			if (session != null) {
 				cmmVO.setSsuserId(session.getUserId());
+				io.jsonwebtoken.Jwt token = KContext.getT(AttrKey.TOKEN);
+				Map<String, Object> claims = (Map<String, Object>)token.getBody();
+				if (token != null) {
+					cmmVO.setAumthTpcd(KStringUtil.nvl(claims.get("aumthTpcd")));
+				}
+				cmmVO.setSsid(KContext.getT(AttrKey.SSID));
 			}
-			io.jsonwebtoken.Jwt token = KContext.getT(AttrKey.TOKEN);
-			Map<String, Object> claims = (Map<String, Object>)token.getBody();
-			if (token != null) {
-				cmmVO.setAumthTpcd(KStringUtil.nvl(claims.get("aumthTpcd")));
-			}
-			cmmVO.setSsid(KContext.getT(AttrKey.SSID));
 			cmmVO.setTxid(KContext.getT(AttrKey.TXID));
 			return true;
 		} else {

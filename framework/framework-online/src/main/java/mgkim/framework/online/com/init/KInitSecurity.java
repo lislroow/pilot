@@ -45,17 +45,13 @@ public class KInitSecurity extends WebSecurityConfigurerAdapter {
 		ApplicationContext ctx = getApplicationContext();
 		List<SecurityFilterChain> filterChains = new ArrayList<SecurityFilterChain>();
 		
-		// public
+		// 1) public
 		Filter[] filterPublic = new Filter[] {ctx.getBean(KFilterPublic.class)};
-		KConstant.PUBLIC_URI.stream().forEach(
-				item -> filterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher(item), filterPublic))
-				);
-		KConstant.HIDDEN_URI.stream().forEach(
-				item -> filterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher(item), filterPublic))
-				);
-		// api
-		Filter[] filterApi = new Filter[] {ctx.getBean(KFilterApi.class)};
-		filterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher("/api/**"), filterApi));
+		KConstant.PUBLIC_URI.stream().forEach(item -> filterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher(item), filterPublic)));
+		
+		// 2) api
+		Filter[] filterApi = new Filter[] { ctx.getBean(SecurityContextPersistenceFilter.class), ctx.getBean(KFilterApi.class)};
+		filterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher(KConstant.API_URI), filterApi));
 		
 		FilterChainProxy bean = new FilterChainProxy(filterChains);
 		return bean;
@@ -101,7 +97,7 @@ public class KInitSecurity extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		super.configure(web);
-		web.ignoring().antMatchers("/public/**");
+		//web.ignoring().antMatchers("/public/**");
 	}
 	
 	@Override

@@ -32,6 +32,17 @@ public class KMatcherUtil {
 		}
 		return false;
 	}
+	
+	public static boolean matchesByAnt(HttpServletRequest request, String urlPatterns) {
+		try {
+			if (new AntPathRequestMatcher(urlPatterns).matches(request)) {
+				return true;
+			}
+		} catch(Exception e) {
+			return false;
+		}
+		return false;
+	}
 
 	public static boolean matchesByAnt(HttpServletRequest request, List<String> urlPatterns) {
 		for (String pattern : urlPatterns) {

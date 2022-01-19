@@ -53,25 +53,11 @@ public class KConstant {
 	public static final String SWG_SERVICE_ADMIN = "service-admin";
 	public static final String SWG_SERVICE_COMMON = "service-common";
 	
-	public static List<String> HIDDEN_URI = Arrays.asList(
-			  "/"
-//			, "/favicon.ico"
-//			, "/status.html"
-//			, "/resources/**"
-//			, "/swagger-ui.html"
-//			, "/swagger-resources**"
-//			, "/swagger-resources/**"
-//			, "/webjars/**"
-//			, "/v2/api-docs"
-			);
-	
 	public static final List<String> PUBLIC_URI = Arrays.asList(
-			  "/public/**"
+			  "/"
+			, "/public/**"
 			, "/api/adm/runtime/**"
 			, "/api/adm/initdata/**"
 			);
-	
-	public static final List<String> API_URI = Arrays.asList(
-			  "/api/**"
-			);
+	public static final String API_URI = "/api/**";
 }

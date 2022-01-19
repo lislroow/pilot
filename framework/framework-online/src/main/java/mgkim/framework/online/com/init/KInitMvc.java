@@ -15,7 +15,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KProfile;
-import mgkim.framework.core.util.KStringUtil;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -42,17 +41,12 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 public class KInitMvc implements WebMvcConfigurer {
 	
 	private static final Logger log = LoggerFactory.getLogger(KInitMvc.class);
-
-	static {
-		log.debug("current profile={}", KStringUtil.toJson2(KProfile.profiles));
-	}
-
+	
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
-		log.info("");
 		//registry.addViewController("/").setViewName("redirect:"+KConstant.REFERER_SWAGGER);
 	}
-
+	
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		// [status]
@@ -64,7 +58,8 @@ public class KInitMvc implements WebMvcConfigurer {
 		registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
 	}
 
-	/*@Bean("internalResourceViewResolver")
+	/*
+	@Bean("internalResourceViewResolver")
 	public InternalResourceViewResolver createInternalResourceViewResolver() {
 		InternalResourceViewResolver bean = new InternalResourceViewResolver();
 		bean.setViewClass(JstlView.class);
@@ -74,8 +69,9 @@ public class KInitMvc implements WebMvcConfigurer {
 	}
 	@Override
 	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-		configurer.enable("mgkim-proto");
-	}*/
+		configurer.enable("");
+	}
+	*/
 
 	final String AUTHORIZATION_DESC = "Bearer + accessToken";
 
@@ -105,13 +101,13 @@ public class KInitMvc implements WebMvcConfigurer {
 				.apiInfo(apiInfo())
 				.select()
 				.apis(RequestHandlerSelectors.basePackage(KProfile.BASE_PACKAGE))
-				.paths(PathSelectors.regex("/api/.*|/public/.*|/interapi/.*|/openapi/.*|/orgapi/.*")).build();
+				.paths(PathSelectors.regex("/api/.*|/public/.*")).build();
 		return docket;
 	}
 
 	private ApiInfo apiInfo() {
 		return new ApiInfoBuilder()
-				.title("mgkim proto api")
+				.title("mgkim pilot api")
 				.build();
 	}
 
