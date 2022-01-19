@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mgkim.service.www.cmm.mapper.CmmFieldCryptorMapper">
+<mapper namespace="mgkim.service.cmm.mapper.CmmFieldCryptorMapper">
 
   <insert id="saveRsaKey" parameterType="CmmFieldCryptoVO">
     UPDATE

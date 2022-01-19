@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mgkim.service.adm.cmm.mapper.CmmSessionStatusMngMapper">
+<mapper namespace="mgkim.service.cmm.adm.mapper.CmmSessionStatusMngMapper">
 
   <insert id="insertNewStatus" parameterType="java.util.Map">
     MERGE

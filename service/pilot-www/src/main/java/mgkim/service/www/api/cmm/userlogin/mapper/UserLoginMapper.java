@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import mgkim.service.www.cmm.vo.CmmUserLoginPolicyVO;
+import mgkim.service.cmm.vo.CmmUserLoginPolicyVO;
 
 @Mapper
 public interface UserLoginMapper {
