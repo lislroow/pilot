@@ -3,11 +3,12 @@ package mgkim.framework.core.util;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -64,6 +65,8 @@ public class KHttpUtil {
 	}
 
 	public static Map<String, String> getHeaders() {
+		/*
+		// 2022.01.20 stream 교체
 		Map<String, String> result = new HashMap<String, String>();
 		HttpServletRequest request = KHttpUtil.getRequest();
 		Enumeration<String> hkeys = request.getHeaderNames();
@@ -72,6 +75,11 @@ public class KHttpUtil {
 			result.put(name, request.getHeader(name));
 		}
 		return result;
+		*/
+		HttpServletRequest request = KHttpUtil.getRequest();
+		Map<String, String> headerMap = Collections.list(request.getHeaderNames()).stream()
+				.collect(Collectors.toMap(name -> name, name -> request.getHeader(name)));
+		return headerMap;
 	}
 
 	public static String getHeader(String hkey) {

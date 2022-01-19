@@ -1,28 +1,17 @@
 package mgkim.framework.online.com.filter;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ReadListener;
 import javax.servlet.ServletException;
-import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.compress.utils.IOUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.http.entity.ContentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +34,7 @@ import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.core.logging.KLogMarker;
+import mgkim.framework.core.request.KReadableRequest;
 import mgkim.framework.core.stereo.KFilter;
 import mgkim.framework.core.type.TApiType;
 import mgkim.framework.core.type.TAuthType;
@@ -181,11 +171,11 @@ public class KFilterApi extends KFilter {
 		
 		// 4) request-logging
 		TRequestType requestType = KContext.getT(AttrKey.REQUEST_TYPE);
-		KReadableRequestWrapper requestWrapper = null;
+		KReadableRequest readableRequest = null;
 		try {
 			if (requestType == TRequestType.JSON) {
-				requestWrapper = new KReadableRequestWrapper(request);
-				String body = requestWrapper.getBodyString();
+				readableRequest = new KReadableRequest(request);
+				String body = readableRequest.getBodyString();
 				String header = KStringUtil.toJson(KHttpUtil.getHeaders());
 				if (KStringUtil.isJson(body)) {
 					log.trace(KLogMarker.request, "\nrequest-header = {}\nrequest-body = {}", header, body);
@@ -337,7 +327,7 @@ public class KFilterApi extends KFilter {
 		try {
 			responseWrapper = new ContentCachingResponseWrapper(response);
 			if (requestType == TRequestType.JSON) {
-				chain.doFilter(requestWrapper, responseWrapper);
+				chain.doFilter(readableRequest, responseWrapper);
 			} else {
 				chain.doFilter(request, responseWrapper);
 			}
@@ -400,78 +390,5 @@ public class KFilterApi extends KFilter {
 			cmmApiTxLogScheduler.addLog();
 			responseWrapper.copyBodyToResponse(); // copy를 하지 않으면 빈 문자열을 response 하게 됩니다.
 		}
-	}
-}
-
-class KReadableRequestWrapper extends HttpServletRequestWrapper {
-
-	private static final Logger log = LoggerFactory.getLogger(KReadableRequestWrapper.class);
-
-	private Charset encoding;
-	private byte[] rawData;
-	private String bodyString;
-
-	public KReadableRequestWrapper(HttpServletRequest request) throws IOException {
-		super(request);
-
-		if (request.getContentType() != null && request.getContentType().contains(ContentType.MULTIPART_FORM_DATA.getMimeType())) {
-			return;
-		}
-
-		String reqEncoding = request.getCharacterEncoding();
-		this.encoding = StringUtils.isBlank(request.getCharacterEncoding()) ? StandardCharsets.UTF_8 : Charset.forName(reqEncoding);
-
-		BufferedReader reader = null;
-		try {
-			InputStream in = request.getInputStream();
-			this.rawData = IOUtils.toByteArray(in);
-			reader = this.getReader();
-			bodyString = reader.lines().collect(Collectors.joining(System.lineSeparator()));
-		} catch (Exception e) {
-			log.error("", e);
-		} finally {
-			if (reader != null) {
-				reader.close();
-			}
-		}
-	}
-
-	@Override
-	public ServletInputStream getInputStream() {
-		ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(this.rawData);
-		return new ServletInputStream() {
-
-			@Override
-			public int read() throws IOException {
-				return byteArrayInputStream.read();
-			}
-
-			@Override
-			public boolean isFinished() {
-				return false;
-			}
-
-			@Override
-			public boolean isReady() {
-				return false;
-			}
-
-			@Override
-			public void setReadListener(ReadListener readListener) {
-			}
-		};
-	}
-
-	@Override
-	public BufferedReader getReader() {
-		return new BufferedReader(new InputStreamReader(this.getInputStream(), this.encoding));
-	}
-
-	public String getBodyString() {
-		return bodyString;
-	}
-
-	public void setBodyString(String bodyString) {
-		this.bodyString = bodyString;
 	}
 }
