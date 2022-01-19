@@ -1,4 +1,4 @@
-package mgkim.service.www.cmm.aop;
+package mgkim.service.adm.cmm;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

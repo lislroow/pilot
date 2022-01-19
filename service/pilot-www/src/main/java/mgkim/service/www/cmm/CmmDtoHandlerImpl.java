@@ -1,4 +1,4 @@
-package mgkim.service.adm.cmm.dtohandler;
+package mgkim.service.www.cmm;
 
 import org.springframework.stereotype.Component;
 
