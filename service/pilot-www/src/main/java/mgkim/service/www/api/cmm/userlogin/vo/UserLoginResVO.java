@@ -4,19 +4,19 @@ import java.util.Map;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import mgkim.framework.core.dto.OauthToken;
+import mgkim.framework.core.dto.KOAuthToken;
 
 @JsonSerialize
 public class UserLoginResVO {
 
-	private OauthToken jwt;
+	private KOAuthToken jwt;
 	private Map<String, Object> claims;
 	private String publicKey;
 
-	public OauthToken getJwt() {
+	public KOAuthToken getJwt() {
 		return jwt;
 	}
-	public void setJwt(OauthToken jwt) {
+	public void setJwt(KOAuthToken jwt) {
 		this.jwt = jwt;
 	}
 	public Map<String, Object> getClaims() {

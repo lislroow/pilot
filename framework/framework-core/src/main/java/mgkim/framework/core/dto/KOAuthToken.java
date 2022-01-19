@@ -1,6 +1,6 @@
 package mgkim.framework.core.dto;
 
-public class OauthToken {
+public class KOAuthToken {
 	
 	private String refreshToken;
 	
@@ -24,6 +24,6 @@ public class OauthToken {
 
 	@Override
 	public String toString() {
-		return "OauthToken [\n    refreshToken=" + refreshToken + ", \n    accessToken=" + accessToken + "\n]";
+		return "KOAuthToken [\n    refreshToken=" + refreshToken + ", \n    accessToken=" + accessToken + "\n]";
 	}
 }

@@ -16,7 +16,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import mgkim.framework.cmm.online.CmmUserToken;
 import mgkim.framework.core.annotation.KBean;
-import mgkim.framework.core.dto.OauthToken;
+import mgkim.framework.core.dto.KOAuthToken;
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.type.TUuidType;
 import mgkim.framework.core.util.KStringUtil;
@@ -48,8 +48,8 @@ public class ComUserTokenMgr {
 	@Autowired(required = true)
 	private CmmUserToken cmmUserToken;
 	
-	public OauthToken createOauthToken(Map<String, Object> claims) throws Exception {
-		OauthToken oauthToken = new OauthToken();
+	public KOAuthToken createOauthToken(Map<String, Object> claims) throws Exception {
+		KOAuthToken kOAuthToken = new KOAuthToken();
 		
 		// token `header` 설정
 		Map header = new HashMap();
@@ -61,15 +61,15 @@ public class ComUserTokenMgr {
 		// access-token 생성
 		header.put(JWT_HEADER_TYPE, FwJwtType.accessToken);
 		header.put(JWT_HEADER_EXPIRATION, new Date(curr + ACCESS_TOKEN_EXPIRE_SEC * 1000L).getTime());
-		oauthToken.setAccessToken(createToken(header, claims));
+		kOAuthToken.setAccessToken(createToken(header, claims));
 		
 		// refresh-token 생성
 		header.clear();
 		header.put(JWT_HEADER_TYPE, FwJwtType.refreshToken);
 		header.put(JWT_HEADER_EXPIRATION, new Date(curr + REFRESH_TOKEN_EXPIRE_SEC * 1000L).getTime());
-		oauthToken.setRefreshToken(createToken(header, claims));
+		kOAuthToken.setRefreshToken(createToken(header, claims));
 		
-		return oauthToken;
+		return kOAuthToken;
 	}
 	
 	public static io.jsonwebtoken.Jwt parsetoken(String accessToken) throws Exception {

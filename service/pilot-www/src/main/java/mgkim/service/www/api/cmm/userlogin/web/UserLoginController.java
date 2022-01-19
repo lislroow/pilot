@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import mgkim.framework.core.dto.KInDTO;
 import mgkim.framework.core.dto.KOutDTO;
-import mgkim.framework.core.dto.OauthToken;
+import mgkim.framework.core.dto.KOAuthToken;
 import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
@@ -86,7 +86,7 @@ public class UserLoginController {
 		}
 
 		// `jwt 생성`
-		OauthToken jwt;
+		KOAuthToken jwt;
 		{
 			try {
 				jwt = comUserTokenMgr.createOauthToken(claims);
@@ -157,7 +157,7 @@ public class UserLoginController {
 		}
 		
 		// `jwt 생성`
-		OauthToken jwt = new OauthToken();
+		KOAuthToken jwt = new KOAuthToken();
 		{
 			jwt.setAccessToken(accessToken);
 			jwt.setRefreshToken(encodedRefreshToken);
