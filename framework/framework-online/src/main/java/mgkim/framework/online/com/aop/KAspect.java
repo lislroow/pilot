@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import mgkim.framework.cmm.online.CmmMapperAspect;
+import mgkim.framework.cmm.online.CmmServiceAspect;
 import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
@@ -16,8 +18,6 @@ import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.logging.KLogMarker;
 import mgkim.framework.core.type.TExecType;
 import mgkim.framework.core.util.KObjectUtil;
-import mgkim.framework.online.cmm.aop.CmmMapperAspect;
-import mgkim.framework.online.cmm.aop.CmmServiceAspect;
 
 
 @Aspect

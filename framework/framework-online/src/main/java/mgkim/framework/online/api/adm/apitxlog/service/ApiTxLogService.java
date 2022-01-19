@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import mgkim.framework.cmm.online.vo.CmmApiTxLogVO;
 import mgkim.framework.core.dto.KCmmVO;
 import mgkim.framework.online.api.adm.apitxlog.mapper.ApiTxLogMapper;
-import mgkim.framework.online.cmm.vo.apitxlog.CmmApiTxLogVO;
 
 @Service
 public class ApiTxLogService {

@@ -6,10 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import mgkim.framework.cmm.online.vo.CmmUriVO;
 import mgkim.framework.core.util.KDateUtil;
 import mgkim.framework.online.api.adm.initdata.mapper.InitDataLoadMapper;
 import mgkim.framework.online.api.adm.initdata.vo.InitLoadMockVO;
-import mgkim.framework.online.cmm.vo.uri.CmmUriVO;
 import mgkim.framework.online.com.mgr.ComUriListMgr;
 
 @Service

@@ -1,4 +1,4 @@
-package mgkim.framework.online.cmm.vo.privacy;
+package mgkim.framework.cmm.online.vo;
 
 import mgkim.framework.core.dto.KCmmVO;
 

@@ -1,4 +1,4 @@
-package mgkim.framework.online.cmm.vo.sessionexpmng;
+package mgkim.framework.cmm.online.vo;
 
 import mgkim.framework.core.dto.KCmmVO;
 

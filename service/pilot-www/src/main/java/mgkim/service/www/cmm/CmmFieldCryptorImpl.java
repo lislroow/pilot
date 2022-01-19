@@ -4,9 +4,9 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import mgkim.framework.cmm.online.CmmFieldCryptor;
+import mgkim.framework.cmm.online.vo.CmmFieldCryptoVO;
 import mgkim.framework.core.annotation.KBean;
-import mgkim.framework.online.cmm.CmmFieldCryptor;
-import mgkim.framework.online.cmm.vo.fieldcryptor.CmmFieldCryptoVO;
 import mgkim.service.www.cmm.mapper.CmmFieldCryptorMapper;
 
 @KBean

@@ -1,10 +1,10 @@
-package mgkim.framework.online.cmm;
+package mgkim.framework.cmm.online;
 
 import java.util.Map;
 
+import mgkim.framework.cmm.online.vo.CmmSessionMngListVO;
+import mgkim.framework.cmm.online.vo.CmmSessionStatusVO;
 import mgkim.framework.core.annotation.KModule;
-import mgkim.framework.online.cmm.vo.sessionexpmng.CmmSessionMngListVO;
-import mgkim.framework.online.cmm.vo.sessionexpmng.CmmSessionStatusVO;
 
 @KModule(name = "세션 상태 관리", required = true)
 public interface CmmSessionStatusMng {

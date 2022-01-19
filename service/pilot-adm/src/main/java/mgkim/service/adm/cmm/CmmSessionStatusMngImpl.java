@@ -9,11 +9,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import mgkim.framework.cmm.online.CmmSessionStatusMng;
+import mgkim.framework.cmm.online.vo.CmmSessionMngListVO;
+import mgkim.framework.cmm.online.vo.CmmSessionStatusVO;
 import mgkim.framework.core.type.TSsStcdType;
 import mgkim.framework.core.util.KStringUtil;
-import mgkim.framework.online.cmm.CmmSessionStatusMng;
-import mgkim.framework.online.cmm.vo.sessionexpmng.CmmSessionMngListVO;
-import mgkim.framework.online.cmm.vo.sessionexpmng.CmmSessionStatusVO;
 import mgkim.service.adm.cmm.mapper.CmmSessionStatusMngMapper;
 
 @Service

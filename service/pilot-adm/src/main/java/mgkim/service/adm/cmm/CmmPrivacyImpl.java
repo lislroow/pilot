@@ -6,9 +6,9 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import mgkim.framework.online.cmm.CmmPrivacy;
-import mgkim.framework.online.cmm.vo.privacy.CmmPrivacyLogVO;
-import mgkim.framework.online.cmm.vo.privacy.CmmPrivacyMngVO;
+import mgkim.framework.cmm.online.CmmPrivacy;
+import mgkim.framework.cmm.online.vo.CmmPrivacyLogVO;
+import mgkim.framework.cmm.online.vo.CmmPrivacyMngVO;
 import mgkim.service.adm.cmm.mapper.CmmPrivacyMapper;
 
 @Service

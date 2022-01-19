@@ -1,9 +1,9 @@
-package mgkim.framework.online.cmm;
+package mgkim.framework.cmm.online;
 
 import java.util.List;
 
+import mgkim.framework.cmm.online.vo.CmmApiTxLogVO;
 import mgkim.framework.core.annotation.KModule;
-import mgkim.framework.online.cmm.vo.apitxlog.CmmApiTxLogVO;
 
 @KModule(name = "api처리로그", required = false)
 public interface CmmApiTxLog {

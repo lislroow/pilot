@@ -1,4 +1,4 @@
-package mgkim.framework.online.cmm.dtohandler;
+package mgkim.framework.cmm.online;
 
 import mgkim.framework.core.annotation.KModule;
 import mgkim.framework.core.dto.KInDTO;

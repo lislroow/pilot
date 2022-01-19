@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.AbstractMappingJacksonResponseBodyAdvice;
 
+import mgkim.framework.cmm.online.CmmDtoHandler;
 import mgkim.framework.core.dto.KOutDTO;
 import mgkim.framework.core.dto.KOutPageDTO;
 import mgkim.framework.core.dto.KOutPageVO;
@@ -40,7 +41,6 @@ import mgkim.framework.core.type.TAuthType;
 import mgkim.framework.core.type.TResponseType;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KStringUtil;
-import mgkim.framework.online.cmm.dtohandler.CmmDtoHandler;
 import mgkim.framework.online.com.mgr.ComFieldCryptorMgr;
 
 @RestControllerAdvice(basePackages=KProfile.BASE_PACKAGE)

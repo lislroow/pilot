@@ -4,10 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import mgkim.framework.core.annotation.KNonAspect;
+import mgkim.framework.cmm.online.CmmServiceAspect;
 import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.logging.KLogMarker;
 import mgkim.framework.core.util.KDtoUtil;
-import mgkim.framework.online.cmm.aop.CmmServiceAspect;
 
 @KBean
 public class CmmServiceAspectImpl implements CmmServiceAspect {

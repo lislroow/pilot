@@ -2,7 +2,7 @@ package mgkim.service.www.cmm.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import mgkim.framework.online.cmm.vo.apitxlog.CmmApiTxLogVO;
+import mgkim.framework.cmm.online.vo.CmmApiTxLogVO;
 
 @Mapper
 public interface CmmApiTxLogMapper {

@@ -1,4 +1,4 @@
-package mgkim.framework.online.cmm.vo.debug;
+package mgkim.framework.cmm.online.vo;
 
 import java.util.Date;
 

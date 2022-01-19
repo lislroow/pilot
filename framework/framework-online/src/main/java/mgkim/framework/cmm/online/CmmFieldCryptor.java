@@ -1,9 +1,9 @@
-package mgkim.framework.online.cmm;
+package mgkim.framework.cmm.online;
 
 import java.util.Map;
 
+import mgkim.framework.cmm.online.vo.CmmFieldCryptoVO;
 import mgkim.framework.core.annotation.KModule;
-import mgkim.framework.online.cmm.vo.fieldcryptor.CmmFieldCryptoVO;
 
 @KModule(name = "field 암호화키 관리", required = false)
 public interface CmmFieldCryptor {

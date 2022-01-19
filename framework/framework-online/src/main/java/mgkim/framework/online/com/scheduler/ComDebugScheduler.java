@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import mgkim.framework.cmm.online.CmmDebug;
+import mgkim.framework.cmm.online.vo.CmmDebugVO;
 import mgkim.framework.core.annotation.KTaskSchedule;
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KContext;
@@ -21,8 +23,6 @@ import mgkim.framework.core.stereo.KScheduler;
 import mgkim.framework.core.stereo.KTask;
 import mgkim.framework.core.util.KDateUtil;
 import mgkim.framework.core.util.KObjectUtil;
-import mgkim.framework.online.cmm.CmmDebug;
-import mgkim.framework.online.cmm.vo.debug.CmmDebugVO;
 
 @KTaskSchedule(name = "debug 스케줄러", interval = 3000, manage = true)
 public class ComDebugScheduler extends KScheduler {

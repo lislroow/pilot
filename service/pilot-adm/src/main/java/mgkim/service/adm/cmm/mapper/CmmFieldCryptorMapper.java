@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import mgkim.framework.online.cmm.vo.fieldcryptor.CmmFieldCryptoVO;
+import mgkim.framework.cmm.online.vo.CmmFieldCryptoVO;
 
 @Mapper
 public interface CmmFieldCryptorMapper {

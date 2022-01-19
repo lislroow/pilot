@@ -1,4 +1,4 @@
-package mgkim.framework.online.cmm.vo.apitxlog;
+package mgkim.framework.cmm.online.vo;
 
 public class CmmApiTxLogVO {
 

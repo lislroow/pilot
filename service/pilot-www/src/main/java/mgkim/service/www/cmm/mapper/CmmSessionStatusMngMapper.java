@@ -5,8 +5,8 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import mgkim.framework.online.cmm.vo.sessionexpmng.CmmSessionMngListVO;
-import mgkim.framework.online.cmm.vo.sessionexpmng.CmmSessionStatusVO;
+import mgkim.framework.cmm.online.vo.CmmSessionMngListVO;
+import mgkim.framework.cmm.online.vo.CmmSessionStatusVO;
 
 @Mapper
 public interface CmmSessionStatusMngMapper {

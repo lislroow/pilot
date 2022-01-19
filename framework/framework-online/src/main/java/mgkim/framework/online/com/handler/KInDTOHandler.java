@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdviceAdapter;
 
+import mgkim.framework.cmm.online.CmmDtoHandler;
+import mgkim.framework.cmm.online.CmmDtoLog;
 import mgkim.framework.core.dto.KInDTO;
 import mgkim.framework.core.dto.KInPageDTO;
 import mgkim.framework.core.dto.KInPageVO;
@@ -27,8 +29,6 @@ import mgkim.framework.core.logging.KLogMarker;
 import mgkim.framework.core.type.TApiType;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KStringUtil;
-import mgkim.framework.online.cmm.CmmDtoLog;
-import mgkim.framework.online.cmm.dtohandler.CmmDtoHandler;
 import mgkim.framework.online.com.mgr.ComFieldCryptorMgr;
 
 @RestControllerAdvice(basePackages=KProfile.BASE_PACKAGE)

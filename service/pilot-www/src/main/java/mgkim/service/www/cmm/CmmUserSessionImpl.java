@@ -6,12 +6,12 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import mgkim.framework.cmm.online.CmmUserSession;
 import mgkim.framework.core.exception.KException;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.core.session.KSession;
-import mgkim.framework.online.cmm.CmmUserSession;
 import mgkim.service.www.cmm.mapper.CmmUserSessionMapper;
 
 @Service

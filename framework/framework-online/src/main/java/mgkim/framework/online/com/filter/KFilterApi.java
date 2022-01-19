@@ -35,6 +35,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
+import mgkim.framework.cmm.online.CmmUserToken;
 import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
@@ -52,7 +53,6 @@ import mgkim.framework.core.type.TResponseType;
 import mgkim.framework.core.util.KHttpUtil;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KStringUtil;
-import mgkim.framework.online.cmm.CmmUserToken;
 import mgkim.framework.online.com.mgr.ComSessionStatusMgr;
 import mgkim.framework.online.com.mgr.ComUriListMgr;
 import mgkim.framework.online.com.mgr.ComUserSessionMgr;

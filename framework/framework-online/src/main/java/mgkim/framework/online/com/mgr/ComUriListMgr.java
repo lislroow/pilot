@@ -23,11 +23,11 @@ import org.springframework.web.servlet.HandlerExecutionChain;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
+import mgkim.framework.cmm.online.vo.CmmUriVO;
 import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.dto.KOutDTO;
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.util.KStringUtil;
-import mgkim.framework.online.cmm.vo.uri.CmmUriVO;
 
 @KBean(name = "url-목록 관리")
 public class ComUriListMgr {

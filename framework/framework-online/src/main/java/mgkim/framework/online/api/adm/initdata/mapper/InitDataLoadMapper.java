@@ -2,8 +2,8 @@ package mgkim.framework.online.api.adm.initdata.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import mgkim.framework.cmm.online.vo.CmmUriVO;
 import mgkim.framework.online.api.adm.initdata.vo.InitLoadMockVO;
-import mgkim.framework.online.cmm.vo.uri.CmmUriVO;
 
 @Mapper
 public interface InitDataLoadMapper {

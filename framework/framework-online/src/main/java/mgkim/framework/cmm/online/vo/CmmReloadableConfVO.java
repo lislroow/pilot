@@ -1,4 +1,4 @@
-package mgkim.framework.online.cmm.vo.reloadableconf;
+package mgkim.framework.cmm.online.vo;
 
 import java.util.Date;
 

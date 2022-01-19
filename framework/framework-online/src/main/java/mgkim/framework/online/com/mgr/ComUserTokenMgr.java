@@ -14,12 +14,12 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
+import mgkim.framework.cmm.online.CmmUserToken;
 import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.dto.OauthToken;
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.type.TUuidType;
 import mgkim.framework.core.util.KStringUtil;
-import mgkim.framework.online.cmm.CmmUserToken;
 
 @KBean(name = "사용자 토큰 관리")
 public class ComUserTokenMgr {

@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import mgkim.framework.cmm.online.CmmFieldCryptor;
+import mgkim.framework.cmm.online.vo.CmmFieldCryptoVO;
 import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.annotation.KEncrypt;
 import mgkim.framework.core.dto.KCmmVO;
@@ -28,8 +30,6 @@ import mgkim.framework.core.util.KAesUtil;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KRsaUtil;
 import mgkim.framework.core.util.KStringUtil;
-import mgkim.framework.online.cmm.CmmFieldCryptor;
-import mgkim.framework.online.cmm.vo.fieldcryptor.CmmFieldCryptoVO;
 
 @KBean(name = "필드암호화키 관리")
 public class ComFieldCryptorMgr implements InitializingBean {

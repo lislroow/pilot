@@ -1,4 +1,4 @@
-package mgkim.framework.online.cmm;
+package mgkim.framework.cmm.online;
 
 import java.util.List;
 import java.util.Map;

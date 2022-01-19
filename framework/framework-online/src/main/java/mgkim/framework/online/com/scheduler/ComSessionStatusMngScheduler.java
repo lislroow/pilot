@@ -8,6 +8,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import mgkim.framework.cmm.online.CmmSessionStatusMng;
+import mgkim.framework.cmm.online.vo.CmmSessionMngListVO;
 import mgkim.framework.core.annotation.KTaskSchedule;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
@@ -17,8 +19,6 @@ import mgkim.framework.core.stereo.KScheduler;
 import mgkim.framework.core.stereo.KTask;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KStringUtil;
-import mgkim.framework.online.cmm.CmmSessionStatusMng;
-import mgkim.framework.online.cmm.vo.sessionexpmng.CmmSessionMngListVO;
 
 @KTaskSchedule(name = "session 관리 스케줄러", interval = 10000, manage = true)
 public class ComSessionStatusMngScheduler extends KScheduler {

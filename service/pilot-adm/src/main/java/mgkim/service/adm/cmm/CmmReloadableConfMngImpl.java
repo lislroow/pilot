@@ -7,13 +7,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import mgkim.framework.cmm.online.CmmReloadableConfMng;
+import mgkim.framework.cmm.online.vo.CmmReloadableConfVO;
 import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.util.KDateUtil;
 import mgkim.framework.core.util.KStringUtil;
-import mgkim.framework.online.cmm.CmmReloadableConfMng;
-import mgkim.framework.online.cmm.vo.reloadableconf.CmmReloadableConfVO;
 import mgkim.framework.online.com.mgr.ComUriAuthorityMgr;
 import mgkim.service.adm.cmm.mapper.CmmReloadableConfMngMapper;
 

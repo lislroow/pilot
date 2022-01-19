@@ -1,4 +1,4 @@
-package mgkim.framework.online.cmm.vo.token;
+package mgkim.framework.cmm.online.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

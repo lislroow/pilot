@@ -3,9 +3,9 @@ package mgkim.service.www.cmm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import mgkim.framework.cmm.online.CmmDtoLog;
 import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.dto.KInDTO;
-import mgkim.framework.online.cmm.CmmDtoLog;
 
 @KBean
 public class CmmDtoLogImpl implements CmmDtoLog {

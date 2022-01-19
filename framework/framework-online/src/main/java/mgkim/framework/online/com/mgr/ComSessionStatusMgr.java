@@ -4,12 +4,12 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import mgkim.framework.cmm.online.CmmSessionStatusMng;
+import mgkim.framework.cmm.online.vo.CmmSessionStatusVO;
 import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.core.type.TSsStcdType;
-import mgkim.framework.online.cmm.CmmSessionStatusMng;
-import mgkim.framework.online.cmm.vo.sessionexpmng.CmmSessionStatusVO;
 
 @KBean(name = "session 상태 관리")
 public class ComSessionStatusMgr {

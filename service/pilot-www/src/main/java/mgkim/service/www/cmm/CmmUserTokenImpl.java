@@ -3,7 +3,7 @@ package mgkim.service.www.cmm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import mgkim.framework.online.cmm.CmmUserToken;
+import mgkim.framework.cmm.online.CmmUserToken;
 import mgkim.service.www.cmm.mapper.CmmUserTokenMapper;
 
 @Service
