@@ -9,7 +9,7 @@ import mgkim.service.cmm.mapper.CmmUserTokenMapper;
 @Service
 public class CmmUserTokenImpl implements CmmUserToken {
 
-	@Autowired
+	@Autowired(required = false)
 	private CmmUserTokenMapper cmmUserTokenMapper;
 
 	//@Override

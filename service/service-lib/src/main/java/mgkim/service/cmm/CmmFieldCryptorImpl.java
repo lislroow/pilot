@@ -12,7 +12,7 @@ import mgkim.service.cmm.mapper.CmmFieldCryptorMapper;
 @KBean
 public class CmmFieldCryptorImpl implements CmmFieldCryptor {
 
-	@Autowired
+	@Autowired(required = false)
 	private CmmFieldCryptorMapper cmmFieldCryptorMapper;
 
 	@Override

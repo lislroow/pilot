@@ -21,7 +21,7 @@ public class CmmSessionStatusMngImpl implements CmmSessionStatusMng {
 	
 	private static final Logger log = LoggerFactory.getLogger(CmmSessionStatusMngImpl.class);
 
-	@Autowired
+	@Autowired(required = false)
 	private CmmSessionStatusMngMapper cmmSessionStatusMngMapper;
 
 

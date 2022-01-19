@@ -14,7 +14,7 @@ import mgkim.service.cmm.mapper.CmmPrivacyMapper;
 @Service
 public class CmmPrivacyImpl implements CmmPrivacy {
 
-	@Autowired
+	@Autowired(required = false)
 	private CmmPrivacyMapper cmmPrivacyMapper;
 
 	@Override

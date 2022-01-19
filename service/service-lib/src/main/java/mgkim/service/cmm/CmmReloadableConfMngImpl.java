@@ -24,7 +24,7 @@ public class CmmReloadableConfMngImpl implements CmmReloadableConfMng {
 	//@Autowired
 	//private ComUriAuthorityMgr comUriAuthorityMgr;
 
-	@Autowired
+	@Autowired(required = false)
 	private CmmReloadableConfMngMapper cmmReloadableConfMngMapper;
 
 	@Override

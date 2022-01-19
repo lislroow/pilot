@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="1 seconds" packagingData="true">
+  
+  <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
+  
+  <property name="LOGBASE" value="/outlog/pilot/file" />
+  <property name="PATTERN-root"       value="[${app.id}][%d{HH:mm:ss}][%-5level][%logger:%line] ### %msg%n"/>
+  <property name="PATTERN-fw-console" value="[${app.id}][%d{HH:mm:ss}][%-5level]%clr([fw]%X{ip}%X{ssid}%X{txid}%marker){highlight}[%logger:%line] ### %msg%n"/>
+  <property name="PATTERN-fw-file"    value="[${app.id}][%d{HH:mm:ss}][%-5level][fw]%X{ip}%X{ssid}%X{txid}%marker[%logger:%line] ### %msg%n"/>
+  
+  <appender name="APPENDER-console" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="mgkim.framework.core.logging.KLogLayout">
+      <pattern>${PATTERN-root}</pattern>
+      <rule>
+        <logger>mgkim.framework</logger>
+        <pattern>${PATTERN-fw-console}</pattern>
+      </rule>
+    </encoder>
+  </appender>
+  
+  <appender name="APPENDER-file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${LOGBASE}/${app.id}.log</file>
+    <encoder class="mgkim.framework.core.logging.KLogLayout">
+      <pattern>${PATTERN-root}</pattern>
+      <rule>
+        <logger>mgkim.framework</logger>
+        <pattern>${PATTERN-fw-file}</pattern>
+      </rule>
+    </encoder>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>${LOGBASE}/${app.id}-%d{yyyyMMdd}.log</fileNamePattern>
+    </rollingPolicy>
+  </appender>
+  
+  <property name="A" value="ACCEPT" />
+  <property name="D" value="DENY" />
+  <property name="N" value="NEUTRAL" />
+  
+  <!-- FILTER-MARKER -->
+  <property name="FILTER-MARKER-sql-cmm" value="${D}" />
+  <property name="FILTER-MARKER-sql-table" value="${N}" />
+  <property name="FILTER-MARKER-aop" value="${N}" />
+  <!-- FILTER-MDC -->
+  <property name="FILTER-MDC-exec_type-SCHEDULE" value="${D}" />
+  <property name="FILTER-MDC-debug-true" value="${A}" />
+  
+  <!-- {framework-core} logback-include.xml: FILTER-MARKER, FILTER-MDC -->
+  <include resource="logback-include.xml" />
+  
+  
+  <property name="LEVEL-root" value="info" />
+  <root level="${LEVEL-root}">
+    <appender-ref ref="APPENDER-console" />
+  </root>
+  
+</configuration>

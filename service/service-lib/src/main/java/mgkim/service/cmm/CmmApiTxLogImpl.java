@@ -12,7 +12,7 @@ import mgkim.service.cmm.mapper.CmmApiTxLogMapper;
 @KBean
 public class CmmApiTxLogImpl implements CmmApiTxLog {
 
-	@Autowired
+	@Autowired(required = false)
 	private CmmApiTxLogMapper cmmApiTxLogMapper;
 
 	@Override

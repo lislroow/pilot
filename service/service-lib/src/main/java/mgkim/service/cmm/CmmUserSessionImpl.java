@@ -17,7 +17,7 @@ import mgkim.service.cmm.mapper.CmmUserSessionMapper;
 @Service
 public class CmmUserSessionImpl implements CmmUserSession {
 
-	@Autowired
+	@Autowired(required = false)
 	private CmmUserSessionMapper cmmUserSessionMapper;
 
 	@Override

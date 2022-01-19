@@ -25,6 +25,13 @@
   </scm>
   
   <dependencies>
+    <!-- service -->
+    <dependency>
+      <groupId>mgkim.service</groupId>
+      <artifactId>service-lib</artifactId>
+    </dependency>
+    <!-- //service -->
+    
     <!-- framework -->
     <dependency>
       <groupId>mgkim.framework</groupId>
