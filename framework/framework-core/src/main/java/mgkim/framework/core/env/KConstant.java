@@ -1,5 +1,6 @@
 package mgkim.framework.core.env;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,6 +13,8 @@ public class KConstant {
 	
 	public static final String EMPTY = "";
 	public static final String LINE = System.getProperty("line.separator");
+	
+	public static final File TMPDIR = new File(System.getProperty("java.io.tmpdir")); 
 	
 	public static final String REFERER_SWAGGER = "/swagger-ui.html";
 	

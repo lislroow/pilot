@@ -35,7 +35,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import mgkim.framework.core.dto.KInDTO;
 import mgkim.framework.core.dto.KOutDTO;
-import mgkim.framework.core.env.KConfig;
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
@@ -121,7 +120,7 @@ public class FileController {
 		{
 			zipnm = KStringUtil.nvl(zipnm, fgrpId+".zip");
 			String txid = KContext.getT(AttrKey.TXID);
-			String zipfpath = KConfig.TMPDIR + File.separator + txid + "_" + zipnm;
+			String zipfpath = KConstant.TMPDIR + File.separator + txid + "_" + zipnm;
 			ZipOutputStream zos = null;
 			try {
 				zos = new ZipOutputStream(new FileOutputStream(zipfpath));
@@ -178,7 +177,7 @@ public class FileController {
 		{
 			zipnm = KStringUtil.nvl(zipnm, fgrpId+".zip");
 			String txid = KContext.getT(AttrKey.TXID);
-			String zipfpath = KConfig.TMPDIR + File.separator + txid + "_" + zipnm;
+			String zipfpath = KConstant.TMPDIR + File.separator + txid + "_" + zipnm;
 			ZipOutputStream zos = null;
 			try {
 				zos = new ZipOutputStream(new FileOutputStream(zipfpath));

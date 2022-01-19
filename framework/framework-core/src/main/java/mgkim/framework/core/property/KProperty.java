@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
-import mgkim.framework.core.env.KConfig;
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.type.TEncodingType;
 import mgkim.framework.core.util.KStringUtil;
@@ -34,7 +33,7 @@ public class KProperty {
 		InputStream is = null;
 		BufferedInputStream bis = null;
 		Properties props = null;
-		for (String path : KConfig.CONFIG_FILE) {
+		for (String path : CONFIG_FILE) {
 			try {
 				if (result != null && !KConstant.EMPTY.equals(result)) {
 					return result;
@@ -121,7 +120,7 @@ public class KProperty {
 		InputStream is = null;
 		BufferedInputStream bis = null;
 		Properties props = null;
-		for (String path : KConfig.CONFIG_FILE) {
+		for (String path : CONFIG_FILE) {
 			try {
 				props = new Properties();
 				is = KProperty.class.getResourceAsStream(path);
