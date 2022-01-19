@@ -26,7 +26,7 @@ public class CmmUserSessionImpl implements CmmUserSession {
 		try {
 			session = cmmUserSessionMapper.selectUserSession(claims);
 		} catch(Exception e) {
-			KException ex = KExceptionHandler.resolve(e);
+			KException ex = KExceptionHandler.translate(e);
 			throw ex;
 		}
 

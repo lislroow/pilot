@@ -48,7 +48,7 @@ public abstract class KScheduler implements InitializingBean, DisposableBean {
 			init();
 			start();
 		} catch(Exception e) {
-			KExceptionHandler.resolve(e);
+			KExceptionHandler.translate(e);
 		}
 	}
 
@@ -83,7 +83,7 @@ public abstract class KScheduler implements InitializingBean, DisposableBean {
 			// java.util.concurrent
 			//future = scheduler.scheduleAtFixedRate(task, 0, interval, TimeUnit.MILLISECONDS);
 		} catch(Exception e) {
-			KExceptionHandler.resolve(e);
+			KExceptionHandler.translate(e);
 		} finally {
 			uptime = System.currentTimeMillis();
 			lastStartedTime = KDateUtil.now(KConstant.FMT_YYYY_MM_DD_HH_MM_SS_SSS);

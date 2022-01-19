@@ -24,27 +24,27 @@ import mgkim.framework.core.util.KObjectUtil;
 public class ComScheduleMgr implements InitializingBean, DisposableBean {
 	
 	private static final Logger log = LoggerFactory.getLogger(ComScheduleMgr.class);
-
+	
 	protected boolean enabled = true;
 	protected int interval = 2000;
-
+	
 	@Autowired(required = false)
 	protected List<KScheduler> scheduleList;
 	
 	public List<KScheduler> getScheduleList() {
 		return this.scheduleList;
 	}
-
+	
 	protected boolean startable;
-
+	
 	// org.springframework.scheduling.concurrent
 	protected ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
-
+	
 	// java.util.concurrent
 	//ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-
+	
 	protected ScheduledFuture<?> future;
-
+	
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		try {
@@ -60,10 +60,10 @@ public class ComScheduleMgr implements InitializingBean, DisposableBean {
 				}
 			}
 		} catch(Exception e) {
-			KExceptionHandler.resolve(e);
+			KExceptionHandler.translate(e);
 		}
 	}
-
+	
 	@EventListener
 	public void contextInit(ContextRefreshedEvent event) {
 		// 시작가능 여부
@@ -74,27 +74,18 @@ public class ComScheduleMgr implements InitializingBean, DisposableBean {
 				startable = true;
 			}
 		}
-
+		
 		// task 시작
 		{
 			if (startable) {
 				try {
 					start();
 				} catch(Exception e) {
-					KExceptionHandler.resolve(e);
+					KExceptionHandler.translate(e);
 				}
 			}
 		}
 	}
-
-	/*@EventListener
-	public void contextDestroy(ContextClosedEvent event) {
-		try {
-			destroy();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}*/
 
 	protected void start() {
 		try {
@@ -105,19 +96,19 @@ public class ComScheduleMgr implements InitializingBean, DisposableBean {
 				scheduler.setThreadNamePrefix(this.getClass().getSimpleName()+"-thread");
 				scheduler.initialize();
 			}
-
-
+			
+			
 			// scheduler 실행
 			{
 				KTask task = task();
-
+				
 				// org.springframework.scheduling.concurrent
 				future = scheduler.scheduleWithFixedDelay(task, interval);
-
+				
 				// java.util.concurrent
 				//scheduler.scheduleAtFixedRate(task, 0, interval, TimeUnit.MILLISECONDS);
 			}
-
+			
 			// 관리 대상 scheduler 실행
 			{
 				startable = true;
@@ -130,7 +121,7 @@ public class ComScheduleMgr implements InitializingBean, DisposableBean {
 				});
 			}
 		} catch(Exception e) {
-			KExceptionHandler.resolve(e);
+			KExceptionHandler.translate(e);
 		}
 	}
 
@@ -150,13 +141,13 @@ public class ComScheduleMgr implements InitializingBean, DisposableBean {
 						item.start();
 					});
 				} catch(Exception e) {
-					KExceptionHandler.resolve(e);
+					KExceptionHandler.translate(e);
 				}
 			}
 		};
 		return task;
 	}
-
+	
 	@Override
 	public void destroy() throws Exception {
 		if (!enabled && future == null) {

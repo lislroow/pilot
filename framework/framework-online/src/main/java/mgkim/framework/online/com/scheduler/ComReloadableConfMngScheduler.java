@@ -46,7 +46,7 @@ public class ComReloadableConfMngScheduler extends KScheduler {
 				try {
 					cmmReloadableConfMng.check();
 				} catch(Exception e) {
-					KExceptionHandler.resolve(e);
+					KExceptionHandler.translate(e);
 				}
 			}
 		};

@@ -72,7 +72,7 @@ public class ComFieldCryptorMgr implements InitializingBean {
 			vo.setPublicKey(publicKey);
 			cmmFieldCryptor.saveRsaKey(vo);
 		} catch(Exception e) {
-			throw KExceptionHandler.resolve(e);
+			throw KExceptionHandler.translate(e);
 		}
 		return publicKey;
 	}
@@ -83,7 +83,7 @@ public class ComFieldCryptorMgr implements InitializingBean {
 		try {
 			cmmFieldCryptor.saveSymKey(vo);
 		} catch(Exception e) {
-			throw KExceptionHandler.resolve(e);
+			throw KExceptionHandler.translate(e);
 		}
 	}
 

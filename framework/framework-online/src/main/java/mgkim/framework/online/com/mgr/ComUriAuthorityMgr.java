@@ -82,7 +82,7 @@ public class ComUriAuthorityMgr implements FilterInvocationSecurityMetadataSourc
 			paramMap.put("appCd", KProfile.APP_CD);
 			resultList = jdbcTemplate.queryForList(CONFIG_SQL, paramMap);
 		} catch(Exception e) {
-			KExceptionHandler.resolve(e);
+			KExceptionHandler.translate(e);
 			return null;
 		}
 

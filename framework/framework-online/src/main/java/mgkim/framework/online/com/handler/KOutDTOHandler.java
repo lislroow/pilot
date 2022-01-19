@@ -89,7 +89,7 @@ public class KOutDTOHandler extends AbstractMappingJacksonResponseBodyAdvice imp
 	@ExceptionHandler
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public KOutDTO<?> process(HttpServletRequest request, Exception ex) {
-		KException exception = KExceptionHandler.resolve(ex);
+		KException exception = KExceptionHandler.translate(ex);
 		log.error(KLogMarker.ERROR, "{} {}", exception.getId(), exception.getText(), ex);
 
 		KOutDTO<?> outDTO = new KOutDTO<>();
@@ -135,7 +135,7 @@ public class KOutDTOHandler extends AbstractMappingJacksonResponseBodyAdvice imp
 							break;
 						}
 					} catch(Exception e) {
-						KExceptionHandler.resolve(e);
+						KExceptionHandler.translate(e);
 						error = true;
 					}
 				}
@@ -146,7 +146,7 @@ public class KOutDTOHandler extends AbstractMappingJacksonResponseBodyAdvice imp
 				try {
 					cmmDtoHandler.postProcess(outDTO);
 				} catch(Exception e) {
-					KExceptionHandler.resolve(e);
+					KExceptionHandler.translate(e);
 					error = true;
 				}
 			}
