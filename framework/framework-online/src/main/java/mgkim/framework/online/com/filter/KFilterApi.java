@@ -350,6 +350,11 @@ public class KFilterApi extends KFilter {
 		
 		// 11) reponse-logging
 		try {
+			String elapsed = null;
+			if (KContext.getT(AttrKey.API_TYPE) == TApiType.API) {
+				long reqTime = KContext.getT(AttrKey.REQ_TIME);
+				elapsed = String.format("%.3f", (System.currentTimeMillis() - reqTime) / 1000.0);
+			}
 			TResponseType responseType = KContext.getT(AttrKey.RESPONSE_TYPE);
 			long contentSize = responseWrapper.getContentSize();
 			if (responseType == TResponseType.JSON) {
@@ -364,9 +369,9 @@ public class KFilterApi extends KFilter {
 						while ((readLine = br.readLine()) != null) {
 							buf.append(readLine);
 						}
-						log.trace(KLogMarker.response, "[{}] {} (bytes={})\nresponse-body = {}", resultCode, resultMessage, contentSize, buf.toString());
+						log.trace(KLogMarker.response, "[{}] {} (elapsed={}, bytes={})\nresponse-body = {}", resultCode, resultMessage, elapsed, contentSize, buf.toString());
 					} else {
-						log.info(KLogMarker.response, "[{}] {} (bytes={})", resultCode, resultMessage, contentSize);
+						log.info(KLogMarker.response, "[{}] {} (elapsed={}, bytes={})", resultCode, resultMessage, elapsed, contentSize);
 					}
 				} finally {
 					if (br != null) {
@@ -375,10 +380,10 @@ public class KFilterApi extends KFilter {
 				}
 			} else if (responseType == TResponseType.FILE) {
 				String filename = KContext.getT(AttrKey.DOWN_FILE);
-				log.info(KLogMarker.response, "download file=`{}` (`{}` bytes)", filename, contentSize);
+				log.info(KLogMarker.response, "download file=`{}` (elapsed={}, bytes={})", filename, elapsed, contentSize);
 			} else {
 				log.info("분류되지 않은 응답 형태 입니다.");
-				log.info(KLogMarker.response, "Content-Type=`{}` (`{}` bytes)", response.getContentType(), contentSize);
+				log.info(KLogMarker.response, "Content-Type=`{}` (elapsed={}, bytes={})", response.getContentType(), elapsed, contentSize);
 			}
 		} catch (Exception e) {
 			KException ke = new KSysException(KMessage.E7008, e, "reponse-logging", "응답");

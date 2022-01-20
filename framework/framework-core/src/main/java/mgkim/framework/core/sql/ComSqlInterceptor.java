@@ -225,8 +225,8 @@ public class ComSqlInterceptor implements Interceptor {
 					resultCount = 1;
 				}
 				
-				//log.trace(KLogMarker.getSqlMarker(sqlFile), "\nparam = {}\n{}\n(rows={}, elapsed={})\nresult = {}", KStringUtil.toJson(parameterObject), paramSql, resultCount, elapsed, KStringUtil.toJson(resultObject));
-				log.info(KLogMarker.getSqlMarker(sqlFile), "\n{}\n(rows={}, elapsed={})", paramSql, resultCount, elapsed);
+				//log.trace(KLogMarker.getSqlMarker(sqlFile), "\nparam = {}\n{}\n(elapsed={}, rows={})\nresult = {}", KStringUtil.toJson(parameterObject), paramSql, resultCount, elapsed, KStringUtil.toJson(resultObject));
+				log.info(KLogMarker.getSqlMarker(sqlFile), "\n{}\n(elapsed={}, rows={})", paramSql, elapsed, resultCount);
 				
 				// sql 실행 테이블 분석
 				if (true && KProfile.SYS == TSysType.LOC) {
