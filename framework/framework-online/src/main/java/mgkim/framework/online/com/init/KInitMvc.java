@@ -6,15 +6,17 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
 
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KProfile;
+import mgkim.framework.core.exception.KExceptionHandler;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -37,8 +39,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
 @Configuration
 @EnableSwagger2WebMvc // io.springfox:2.10.5
-@EnableWebMvc
-public class KInitMvc implements WebMvcConfigurer {
+//@EnableWebMvc
+public class KInitMvc extends WebMvcConfigurationSupport {
 	
 	private static final Logger log = LoggerFactory.getLogger(KInitMvc.class);
 	
@@ -57,7 +59,25 @@ public class KInitMvc implements WebMvcConfigurer {
 		registry.addResourceHandler("/swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
 		registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
 	}
+	
+	@Autowired
+	private KExceptionHandler exceptionHandler;
+	
+	@Override
+	protected ExceptionHandlerExceptionResolver createExceptionHandlerExceptionResolver() {
+		return exceptionHandler;
+	}
 
+
+	
+	
+//	@Bean
+//	@Order(value = Integer.MIN_VALUE)
+//	public KMvcExceptionHandler createKMvcExceptionHandler() {
+//		KMvcExceptionHandler bean = new KMvcExceptionHandler();
+//		return bean;
+//	}
+	
 	/*
 	@Bean("internalResourceViewResolver")
 	public InternalResourceViewResolver createInternalResourceViewResolver() {

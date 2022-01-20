@@ -392,7 +392,7 @@ public class KFilterApi extends KFilter {
 			return;
 		} finally {
 			// `api처리로그 스케줄러` 가 활성화 상태일 경우 실행
-			cmmApiTxLogScheduler.addLog();
+			//cmmApiTxLogScheduler.addLog();
 			responseWrapper.copyBodyToResponse(); // copy를 하지 않으면 빈 문자열을 response 하게 됩니다.
 		}
 	}

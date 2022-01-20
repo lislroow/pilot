@@ -31,11 +31,9 @@ import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.env.KProfile;
-import mgkim.framework.core.exception.KException;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
-import mgkim.framework.core.logging.KLogMarker;
 import mgkim.framework.core.type.TApiType;
 import mgkim.framework.core.type.TAuthType;
 import mgkim.framework.core.type.TResponseType;
@@ -86,15 +84,12 @@ public class KOutDTOHandler extends AbstractMappingJacksonResponseBodyAdvice imp
 		return super.getOrCreateContainer(body);
 	}
 
-	@ExceptionHandler
-	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	public KOutDTO<?> process(HttpServletRequest request, Exception ex) {
-		KException exception = KExceptionHandler.translate(ex);
-		log.error(KLogMarker.ERROR, "{} {}", exception.getId(), exception.getText(), ex);
-
-		KOutDTO<?> outDTO = new KOutDTO<>();
-		return outDTO;
-	}
+	//@ExceptionHandler
+	//@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	//public KOutDTO<?> process(HttpServletRequest request, Exception ex) {
+	//	KOutDTO<?> outDTO = new KOutDTO<>();
+	//	return outDTO;
+	//}
 
 	@Override
 	protected void beforeBodyWriteInternal(MappingJacksonValue bodyContainer, MediaType contentType,

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
@@ -12,6 +13,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.server.ServletServerHttpResponse;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -21,14 +25,74 @@ import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.env.KSqlContext;
+import mgkim.framework.core.logging.KLogMarker;
 import mgkim.framework.core.type.TEncodingType;
 import mgkim.framework.core.type.TResponseType;
 import mgkim.framework.core.util.KExceptionUtil;
 
 @KBean
-public class KExceptionHandler {
+public class KExceptionHandler extends ExceptionHandlerExceptionResolver {
 	
 	private static final Logger log = LoggerFactory.getLogger(KExceptionHandler.class);
+
+	@Override
+	protected ModelAndView doResolveHandlerMethodException(HttpServletRequest request, HttpServletResponse response,
+			HandlerMethod handlerMethod, Exception exception) {
+		KException ke = KExceptionHandler.translate(exception);
+		log.error(KLogMarker.ERROR, "{} {}", ke.getId(), ke.getText(), exception);
+		
+		/*
+		ServletInvocableHandlerMethod exceptionHandlerMethod = getExceptionHandlerMethod(handlerMethod, exception);
+		if (exceptionHandlerMethod == null) {
+			return null;
+		}
+		
+		if (super.getArgumentResolvers() != null) {
+			exceptionHandlerMethod.setHandlerMethodArgumentResolvers(super.getArgumentResolvers());
+		}
+		if (getReturnValueHandlers() != null) {
+			exceptionHandlerMethod.setHandlerMethodReturnValueHandlers(getReturnValueHandlers());
+		}
+		
+		
+		ServletWebRequest webRequest = new ServletWebRequest(request, response);
+		ModelAndViewContainer mavContainer = new ModelAndViewContainer();
+		
+		ArrayList<Throwable> exceptions = new ArrayList<>();
+		try {
+			if (logger.isDebugEnabled()) {
+				logger.debug("Using @ExceptionHandler " + exceptionHandlerMethod);
+			}
+			// Expose causes as provided arguments as well
+			Throwable exToExpose = exception;
+			while (exToExpose != null) {
+				exceptions.add(exToExpose);
+				Throwable cause = exToExpose.getCause();
+				exToExpose = (cause != exToExpose ? cause : null);
+			}
+			Object[] arguments = new Object[exceptions.size() + 1];
+			exceptions.toArray(arguments);  // efficient arraycopy call in ArrayList
+			arguments[arguments.length - 1] = handlerMethod;
+			exceptionHandlerMethod.invokeAndHandle(webRequest, mavContainer, arguments);
+		}
+		catch (Throwable invocationEx) {
+			// Any other than the original exception (or a cause) is unintended here,
+			// probably an accident (e.g. failed assertion or the like).
+			//if (!exceptions.contains(invocationEx) && logger.isWarnEnabled()) {
+			//	logger.warn("Failure in @ExceptionHandler " + exceptionHandlerMethod, invocationEx);
+			//}
+			// Continue with default processing of the original exception...
+			response(response, ke);
+		//			return new ModelAndView("jsonView");
+			return null;
+		}*/
+		response(response, ke);
+		return new ModelAndView();
+		//return null;	// 2022.01.20 null 일 경우 
+						// HandlerExceptionResolverComposite.resolveException(..) 에서 null 이 아닐때까지
+						// ExceptionHandlerExceptionResolver 를 상속받은 doResolveException(..) 호출
+						// DefaultHandlerExceptionResolver.doResolveException(..) 까지 호출되어 불필요한 처리가 발생함
+	}
 	
 	public static void response(HttpServletResponse response, Exception ex) {
 		// 1) `exception` 분석
@@ -156,7 +220,7 @@ public class KExceptionHandler {
 			KContext.set(AttrKey.RESULT_MESSAGE, exception.getText());
 			resultException = exception.cause();
 			if (resultException instanceof Throwable) {
-				resultException = KExceptionUtil.getTrace((Throwable)resultException, true);
+				resultException = KExceptionUtil.getTrace((Throwable)resultException, false);
 			}
 			KContext.set(AttrKey.RESULT_TEXT, resultException);
 		}

@@ -51,6 +51,10 @@ public class KAspect implements InitializingBean {
 			String clazzName = joinPoint.getSignature().getDeclaringTypeName();
 			String methodName = joinPoint.getSignature().getName();
 			
+			String pkg = joinPoint.getSignature().getDeclaringType().getPackage().getName();
+			String shortStr = joinPoint.getSignature().toShortString();
+			log.debug(KLogMarker.aop, "{}.{}", pkg, shortStr);
+			
 			// 전처리
 			if (cmmServiceAspect != null) {
 				cmmServiceAspect.preProcess(clazzName, methodName, args);
@@ -74,6 +78,10 @@ public class KAspect implements InitializingBean {
 		if (KContext.getT(AttrKey.EXEC_TYPE) == TExecType.REQUEST) {
 			String clazzName = joinPoint.getSignature().getDeclaringTypeName();
 			String methodName = joinPoint.getSignature().getName();
+			
+			String pkg = joinPoint.getSignature().getDeclaringType().getPackage().getName();
+			String shortStr = joinPoint.getSignature().toShortString();
+			log.debug(KLogMarker.aop, "{}.{}", pkg, shortStr);
 			
 			// 전처리
 			// `full-package 명` == `SQL namespace`
@@ -105,16 +113,17 @@ public class KAspect implements InitializingBean {
 		return result;
 	}
 	
-	@Around(value="execution(public * "+KProfile.BASE_PACKAGE+"..*.*(..))"
-			+ " && !@annotation(mgkim.framework.core.annotation.KNonAspect)")
-	public Object aroundForLogging(ProceedingJoinPoint joinPoint) throws Throwable {
-		if (KContext.getT(AttrKey.EXEC_TYPE) == TExecType.REQUEST) {
-			String pkg = joinPoint.getSignature().getDeclaringType().getPackage().getName();
-			String shortStr = joinPoint.getSignature().toShortString();
-			log.debug(KLogMarker.aop, "{}.{}", pkg, shortStr);
-		}
-		Object result = joinPoint.proceed();
-		return result;
-	}
+	//@Around(value="execution(public * mgkim..*Controller.*(..))"
+	//		+ " && execution(public * mgkim..*Controller.*(..))"
+	//		+ " && !@annotation(mgkim.framework.core.annotation.KNonAspect)")
+	//public Object aroundForLogging(ProceedingJoinPoint joinPoint) throws Throwable {
+	//	if (KContext.getT(AttrKey.EXEC_TYPE) == TExecType.REQUEST) {
+	//		String pkg = joinPoint.getSignature().getDeclaringType().getPackage().getName();
+	//		String shortStr = joinPoint.getSignature().toShortString();
+	//		log.debug(KLogMarker.aop, "{}.{}", pkg, shortStr);
+	//	}
+	//	Object result = joinPoint.proceed();
+	//	return result;
+	//}
 
 }
