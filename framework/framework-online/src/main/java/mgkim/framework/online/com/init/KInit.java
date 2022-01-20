@@ -18,7 +18,6 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.tomcat.util.descriptor.web.ContextResource;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
-import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
@@ -26,6 +25,7 @@ import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -37,10 +37,8 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -53,57 +51,25 @@ import org.springframework.transaction.interceptor.RuleBasedTransactionAttribute
 import org.springframework.transaction.interceptor.TransactionInterceptor;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.multipart.support.MultipartFilter;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
-import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.com.mybatis.ComSqlSessionFactory;
 
-@Configuration
 @EnableAsync
 @EnableAspectJAutoProxy(proxyTargetClass = true)
-@ComponentScan(basePackages = {KProfile.BASE_PACKAGE},
-	useDefaultFilters = false,
-	includeFilters = {
-		@ComponentScan.Filter(type = FilterType.ANNOTATION, value = org.springframework.stereotype.Service.class),
-		@ComponentScan.Filter(type = FilterType.ANNOTATION, value = org.springframework.stereotype.Component.class),
-		@ComponentScan.Filter(type = FilterType.ANNOTATION, value = mgkim.framework.core.annotation.KBean.class),
-		@ComponentScan.Filter(type = FilterType.ANNOTATION, value = mgkim.framework.core.annotation.KTaskSchedule.class)
-	},
-	excludeFilters = {
-		@ComponentScan.Filter(type = FilterType.ANNOTATION, value = EnableWebMvc.class)
-	}
-)
-// TODO [2022.01.10] Main 클래스(mgkim/Main.java)의 경로를 (/mgkim/service/www/Main.java)로 변경할 경우
-// MapperScan(MapperScannerConfigurer) 에서 오류가 발생함
-@MapperScan(basePackages = "mgkim.**.mapper",
-	annotationClass = org.apache.ibatis.annotations.Mapper.class)
+@Configuration
 public class KInit implements ServletContextInitializer, BeanFactoryPostProcessor {
 
-	//public static final String MAPPER_CLASS = "mgkim.**.mapper";
-	//@Bean("mapperScannerConfigurer")
-	//public MapperScannerConfigurer mapperScannerConfigurer() {
-	//	MapperScannerConfigurer bean = new MapperScannerConfigurer();
-	//	bean.setBasePackage(MAPPER_CLASS);
-	//	bean.setAnnotationClass(Mapper.class);
-	//	return bean;
-	//}
-	
 	private static final Logger log = LoggerFactory.getLogger(KInit.class);
-
+	
 	static {
-		// 웹 어플리케이션 초기화 시 가장 먼저 호출되는 코드 블럭
-		{
-			// 초기화를 진행하는 thread 의 KContext 초기화
-			KContext.initSystem();
-			log.debug("current profile={}", KStringUtil.toJson2(KProfile.profiles));
-		}
-
+		// 초기화를 진행하는 thread 의 KContext 초기화
+		KContext.initSystem();
 	}
-
+	
 	// ServletContextInitializer
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
@@ -126,10 +92,9 @@ public class KInit implements ServletContextInitializer, BeanFactoryPostProcesso
 			.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), false, "/*");
 	}
 	// -- ServletContextInitializer
-
-
-	public static final String JNDI = "jdbc/space-app";
-
+	
+	
+	
 	public static final String TRANSACTION_POINTCUT = ""
 			+ "     execution(* mgkim..service.*Service*.*(..))"
 			+ " && !execution(* mgkim..service.*NonTx.*(..))"
@@ -137,13 +102,16 @@ public class KInit implements ServletContextInitializer, BeanFactoryPostProcesso
 
 	public static final String CONFIG_FILE_PATH = "classpath:mybatis/mybatis-config.xml";
 	public static final String SQL_FILE = "classpath*:mapper/**/*SQL.xml";
-	//public static final List<String> JAR = Arrays.asList("core*.jar");
 	public static final long MAX_UPLOAD_SIZE = 600000000;
 
+	
 	@Bean
 	public TomcatServletWebServerFactory tomcatFactory() {
 		log.info("tomcat server 생성");
 		return new TomcatServletWebServerFactory() {
+			@Value("${spring.datasource.jndi-name:'jdbc/space-app'}")
+			String jndiName;
+			
 			@Override
 			protected TomcatWebServer getTomcatWebServer(Tomcat tomcat) {
 				tomcat.enableNaming();
@@ -154,7 +122,7 @@ public class KInit implements ServletContextInitializer, BeanFactoryPostProcesso
 			protected void postProcessContext(Context context) {
 				super.postProcessContext(context);
 				ContextResource resource = new ContextResource();
-				resource.setName(JNDI); //resource.setName("java:comp/env/"+JNDI); [not working]
+				resource.setName(jndiName);
 				resource.setType("javax.sql.DataSource");
 				resource.setAuth("Container");
 				resource.setProperty("maxTotal", "30"); // maxIdle: Maximum number of idle database connections to retain in pool. Set to -1 for no limit.  See also the DBCP 2 documentation on this and the minEvictableIdleTimeMillis configuration parameter.
@@ -250,11 +218,11 @@ public class KInit implements ServletContextInitializer, BeanFactoryPostProcesso
 	//public JndiObjectFactoryBean jndiObjectFactoryBean() {
 	//	JndiObjectFactoryBean bean = new JndiObjectFactoryBean();
 	//	boolean isWeblogic = bean.getClass().getClassLoader().toString().contains("weblogic");
-	//	log.debug("jndi-name 설정을 위해 weblogic 여부를 확인합니다. ClassLoader명={}", bean.getClass().getClassLoader().toString());
+	//	log.debug("jndiName-name 설정을 위해 weblogic 여부를 확인합니다. ClassLoader명={}", bean.getClass().getClassLoader().toString());
 	//	if (!isWeblogic) {
-	//		bean.setJndiName("java:comp/env/"+JNDI);
+	//		bean.setJndiName("java:comp/env/"+jndiName);
 	//	} else {
-	//		bean.setJndiName(JNDI);
+	//		bean.setJndiName(jndiName);
 	//	}
 	//	return bean;
 	//}

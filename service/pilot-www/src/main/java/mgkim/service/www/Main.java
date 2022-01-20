@@ -1,5 +1,6 @@
 package mgkim.service.www;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -7,11 +8,25 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 
-import mgkim.framework.core.env.KProfile;
 import mgkim.service.lib.env.CmmProfile;
 
-@ComponentScan(basePackages = {KProfile.BASE_PACKAGE})
+@ComponentScan(
+	basePackages = {
+		"mgkim.framework.core",
+		"mgkim.framework.online",
+		"mgkim.service.cmm",
+		"mgkim.service.www",
+	},
+	includeFilters = {
+		@ComponentScan.Filter(type = FilterType.ANNOTATION, value = org.springframework.stereotype.Service.class),
+		@ComponentScan.Filter(type = FilterType.ANNOTATION, value = org.springframework.stereotype.Component.class),
+		@ComponentScan.Filter(type = FilterType.ANNOTATION, value = mgkim.framework.core.annotation.KBean.class),
+		@ComponentScan.Filter(type = FilterType.ANNOTATION, value = mgkim.framework.core.annotation.KTaskSchedule.class)
+	}
+)
+@MapperScan(basePackages = "mgkim.**.mapper", annotationClass = org.apache.ibatis.annotations.Mapper.class)
 @SpringBootApplication
 public class Main extends SpringBootServletInitializer {
 	

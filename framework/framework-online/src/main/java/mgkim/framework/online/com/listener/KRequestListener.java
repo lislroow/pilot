@@ -21,6 +21,7 @@ import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.core.logging.KLogMarker;
 import mgkim.framework.core.request.KReadableRequest;
+import mgkim.framework.core.type.TApiType;
 import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.com.scheduler.ComDebugScheduler;
 
@@ -70,9 +71,11 @@ public class KRequestListener extends RequestContextListener {
 	public void requestDestroyed(ServletRequestEvent requestEvent) {
 		HttpServletRequest request = (HttpServletRequest) requestEvent.getServletRequest();
 		try {
-			long reqTime = KContext.getT(AttrKey.REQ_TIME);
-			String elapsed = String.format("%.3f", (System.currentTimeMillis() - reqTime) / 1000.0);
-			log.debug(KLogMarker.RESPONSE, "(elapsed={})", elapsed);
+			if (KContext.getT(AttrKey.API_TYPE) == TApiType.API) {
+				long reqTime = KContext.getT(AttrKey.REQ_TIME);
+				String elapsed = String.format("%.3f", (System.currentTimeMillis() - reqTime) / 1000.0);
+				log.info(KLogMarker.RESPONSE, "(elapsed={})", elapsed);
+			}
 			SecurityContextHolder.clearContext();
 			HttpSession session = request.getSession(false);
 			if (session != null) {
