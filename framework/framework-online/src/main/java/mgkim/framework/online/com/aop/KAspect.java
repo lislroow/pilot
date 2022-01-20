@@ -13,7 +13,6 @@ import mgkim.framework.cmm.online.CmmServiceAspect;
 import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
-import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.logging.KLogMarker;
 import mgkim.framework.core.type.TExecType;
@@ -42,7 +41,7 @@ public class KAspect implements InitializingBean {
 		}
 	}
 	
-	@Around(value="execution(public * "+KProfile.BASE_PACKAGE+"..*Service*.*(..))"
+	@Around(value="execution(public * mgkim..*Service*.*(..))"
 			+ " && !@annotation(mgkim.framework.core.annotation.KNonAspect)")
 	public Object aroundService(ProceedingJoinPoint joinPoint) throws Throwable {
 		Object[] args = joinPoint.getArgs();
@@ -70,7 +69,7 @@ public class KAspect implements InitializingBean {
 		return result;
 	}
 
-	@Around(value="execution(public * "+KProfile.BASE_PACKAGE+"..*Mapper.*(..))"
+	@Around(value="execution(public * mgkim..*Mapper.*(..))"
 			+ " && !@annotation(mgkim.framework.core.annotation.KNonAspect)")
 	public Object aroundMapper(ProceedingJoinPoint joinPoint) throws Throwable {
 		Object[] args = joinPoint.getArgs();
@@ -87,15 +86,6 @@ public class KAspect implements InitializingBean {
 			// `full-package 명` == `SQL namespace`
 			// `method 명` == `SQL id`
 			{
-				//KContext.resetSql();
-				//String sqlId = String.format("%s.%s",
-				//		joinPoint.getSignature().getDeclaringTypeName()
-				//		, joinPoint.getSignature().getName());
-				//KContext.set(AttrKey.SQL_ID, sqlId);
-				//if (KContext.getT(AttrKey.EXEC_TYPE) == TExecType.REQUEST) {
-				//	KContext.set(AttrKey.SQL_ID, sqlId);
-				//}
-				
 				if (cmmMapperAspect != null) {
 					cmmMapperAspect.preProcess(clazzName, methodName, args);
 				}
@@ -112,18 +102,4 @@ public class KAspect implements InitializingBean {
 		}
 		return result;
 	}
-	
-	//@Around(value="execution(public * mgkim..*Controller.*(..))"
-	//		+ " && execution(public * mgkim..*Controller.*(..))"
-	//		+ " && !@annotation(mgkim.framework.core.annotation.KNonAspect)")
-	//public Object aroundForLogging(ProceedingJoinPoint joinPoint) throws Throwable {
-	//	if (KContext.getT(AttrKey.EXEC_TYPE) == TExecType.REQUEST) {
-	//		String pkg = joinPoint.getSignature().getDeclaringType().getPackage().getName();
-	//		String shortStr = joinPoint.getSignature().toShortString();
-	//		log.debug(KLogMarker.aop, "{}.{}", pkg, shortStr);
-	//	}
-	//	Object result = joinPoint.proceed();
-	//	return result;
-	//}
-
 }

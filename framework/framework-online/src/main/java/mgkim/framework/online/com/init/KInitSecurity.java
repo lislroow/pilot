@@ -7,6 +7,7 @@ import javax.servlet.Filter;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,8 +38,12 @@ public class KInitSecurity extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	protected DataSource dataSource;
-	
-	static final boolean REJECT_PUBLIC_INVOCATIONS = false;
+
+	// [중요] api에 권한이 등록되지 않은 상태에서 호출 가능 여부를 설정합니다.
+	//   true: 호출이 불가능함
+	//   false: 호출이 가능함
+	@Value("${security.rejectPublicInvocations:false}")
+	boolean rejectPublicInvocations;
 	
 	@Bean("springSecurityFilterChain")
 	public FilterChainProxy filterChainProxy() throws Exception {
@@ -81,10 +86,7 @@ public class KInitSecurity extends WebSecurityConfigurerAdapter {
 		bean.setAuthenticationManager(this.authenticationManager());
 		bean.setAccessDecisionManager(affirmativeBased());
 		bean.setSecurityMetadataSource(comUriAuthorityMgr);
-		// [중요] api에 권한이 등록되지 않은 상태에서 호출 가능 여부를 설정합니다.
-		//   true: 호출이 불가능함
-		//   false: 호출이 가능함
-		bean.setRejectPublicInvocations(REJECT_PUBLIC_INVOCATIONS);
+		bean.setRejectPublicInvocations(rejectPublicInvocations);
 		return bean;
 	}
 	

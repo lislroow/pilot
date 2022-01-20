@@ -40,52 +40,6 @@ public class KExceptionHandler extends ExceptionHandlerExceptionResolver {
 			HandlerMethod handlerMethod, Exception exception) {
 		KException ke = KExceptionHandler.translate(exception);
 		log.error(KLogMarker.ERROR, "{} {}", ke.getId(), ke.getText(), exception);
-		
-		/*
-		ServletInvocableHandlerMethod exceptionHandlerMethod = getExceptionHandlerMethod(handlerMethod, exception);
-		if (exceptionHandlerMethod == null) {
-			return null;
-		}
-		
-		if (super.getArgumentResolvers() != null) {
-			exceptionHandlerMethod.setHandlerMethodArgumentResolvers(super.getArgumentResolvers());
-		}
-		if (getReturnValueHandlers() != null) {
-			exceptionHandlerMethod.setHandlerMethodReturnValueHandlers(getReturnValueHandlers());
-		}
-		
-		
-		ServletWebRequest webRequest = new ServletWebRequest(request, response);
-		ModelAndViewContainer mavContainer = new ModelAndViewContainer();
-		
-		ArrayList<Throwable> exceptions = new ArrayList<>();
-		try {
-			if (logger.isDebugEnabled()) {
-				logger.debug("Using @ExceptionHandler " + exceptionHandlerMethod);
-			}
-			// Expose causes as provided arguments as well
-			Throwable exToExpose = exception;
-			while (exToExpose != null) {
-				exceptions.add(exToExpose);
-				Throwable cause = exToExpose.getCause();
-				exToExpose = (cause != exToExpose ? cause : null);
-			}
-			Object[] arguments = new Object[exceptions.size() + 1];
-			exceptions.toArray(arguments);  // efficient arraycopy call in ArrayList
-			arguments[arguments.length - 1] = handlerMethod;
-			exceptionHandlerMethod.invokeAndHandle(webRequest, mavContainer, arguments);
-		}
-		catch (Throwable invocationEx) {
-			// Any other than the original exception (or a cause) is unintended here,
-			// probably an accident (e.g. failed assertion or the like).
-			//if (!exceptions.contains(invocationEx) && logger.isWarnEnabled()) {
-			//	logger.warn("Failure in @ExceptionHandler " + exceptionHandlerMethod, invocationEx);
-			//}
-			// Continue with default processing of the original exception...
-			response(response, ke);
-		//			return new ModelAndView("jsonView");
-			return null;
-		}*/
 		response(response, ke);
 		return new ModelAndView();
 		//return null;	// 2022.01.20 null 일 경우 
