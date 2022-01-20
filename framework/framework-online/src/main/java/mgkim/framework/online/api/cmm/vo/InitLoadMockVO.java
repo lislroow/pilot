@@ -1,4 +1,4 @@
-package mgkim.framework.online.api.adm.initdata.vo;
+package mgkim.framework.online.api.cmm.vo;
 
 import mgkim.framework.core.dto.KCmmVO;
 

@@ -1,4 +1,4 @@
-package mgkim.framework.online.api.adm.apitxlog.web;
+package mgkim.framework.online.api.cmm.web;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import mgkim.framework.core.dto.KCmmVO;
 import mgkim.framework.core.dto.KInPageDTO;
 import mgkim.framework.core.dto.KOutPageDTO;
 import mgkim.framework.core.env.KConstant;
-import mgkim.framework.online.api.adm.apitxlog.service.ApiTxLogService;
+import mgkim.framework.online.api.cmm.service.ApiTxLogService;
 
 @Api( tags = { KConstant.SWG_SYSTEM_COMMON } )
 @RestController

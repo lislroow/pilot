@@ -1,4 +1,4 @@
-package mgkim.framework.online.api.adm.initdata.service;
+package mgkim.framework.online.api.cmm.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 import mgkim.framework.cmm.online.vo.CmmUriVO;
 import mgkim.framework.core.util.KDateUtil;
-import mgkim.framework.online.api.adm.initdata.mapper.InitDataLoadMapper;
-import mgkim.framework.online.api.adm.initdata.vo.InitLoadMockVO;
+import mgkim.framework.online.api.cmm.mapper.InitDataLoadMapper;
+import mgkim.framework.online.api.cmm.vo.InitLoadMockVO;
 import mgkim.framework.online.com.mgr.ComUriListMgr;
 
 @Service

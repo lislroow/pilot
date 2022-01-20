@@ -1,4 +1,4 @@
-package mgkim.framework.online.api.cmm;
+package mgkim.framework.online.api.cmm.web;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package mgkim.framework.online.api.adm.initdata.web;
+package mgkim.framework.online.api.cmm.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,7 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import mgkim.framework.core.dto.KInDTO;
 import mgkim.framework.core.dto.KOutDTO;
 import mgkim.framework.core.env.KConstant;
-import mgkim.framework.online.api.adm.initdata.service.InitDataLoadService;
+import mgkim.framework.online.api.cmm.service.InitDataLoadService;
 
 @Api( tags = { KConstant.SWG_SYSTEM_MANAGEMENT } )
 @RestController

@@ -1,4 +1,4 @@
-package mgkim.framework.online.api.adm.apitxlog.mapper;
+package mgkim.framework.online.api.cmm.mapper;
 
 import java.util.List;
 
