@@ -341,9 +341,11 @@ table.full {width:100%}
 }
 .table-primary tr.checked td {
     background-color: #e3e6eb;
+    color: black;
 }
 .table-primary tr.selected td {
     background-color: #bfc8d1;
+    color: white;
 }
 .table-primary tbody.scrolltbody {
     display: block;

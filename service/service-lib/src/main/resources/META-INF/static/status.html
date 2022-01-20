@@ -184,7 +184,8 @@ function fn_filterTxtDataTbl01() {
   var filterCStr = $('#'+tblId+'_'+'filterC_txt').val();
 
   if(filterAStr == '' && filterBStr == '' && filterCStr == '') {
-    $tr_list.hide();
+    $tr_list.show();
+    fn_numberingTbl(tblId);
     return;
   }
 
@@ -344,7 +345,8 @@ function fn_filterTxtDataTbl02() {
   var filterBStr = $('#'+tblId+'_'+'filterB_txt').val();
 
   if(filterAStr == '' && filterBStr == '') {
-    $tr_list.hide();
+    $tr_list.show();
+    fn_numberingTbl(tblId);
     return;
   }
 
@@ -420,7 +422,7 @@ function fn_setDataTbl03(tblId, list) {
     var item = list[i];
     var $tr = $('#'+tblId+' > tfoot > tr').clone();
     $tr.find('td[id='+tblId+'_'+'a]').attr('id', tblId+'_'+'a'+'_'+i).text((list.length-i)).attr('data', (list.length-i));
-    $tr.find('td[id='+tblId+'_'+'b]').attr('id', tblId+'_'+'b'+'_'+i).text(item.springSecurityRole).attr('data', item.springSecurityRole);
+    $tr.find('td[id='+tblId+'_'+'b]').attr('id', tblId+'_'+'b'+'_'+i).text(item.authority).attr('data', item.authority);
     $tr.find('td[id='+tblId+'_'+'c]').attr('id', tblId+'_'+'c'+'_'+i).text(item.uri).attr('data', item.uri);
     $('#'+tblId+' > tbody').append($tr);
   }
@@ -500,7 +502,8 @@ function fn_filterTxtDataTbl04() {
   var filterAStr = $('#'+tblId+'_'+'filterA_txt').val();
 
   if(filterAStr == '') {
-    $tr_list.hide();
+    $tr_list.show();
+    fn_numberingTbl(tblId);
     return;
   }
 
@@ -583,7 +586,8 @@ function fn_filterTxtDataTbl05() {
   var filterAStr = $('#'+tblId+'_'+'filterA_txt').val();
 
   if(filterAStr == '') {
-    $tr_list.hide();
+    $tr_list.show();
+    fn_numberingTbl(tblId);
     return;
   }
 
@@ -674,7 +678,8 @@ function fn_filterTxtDataTbl06() {
   var filterAStr = $('#'+tblId+'_'+'filterA_txt').val();
 
   if(filterAStr == '') {
-    $tr_list.hide();
+    $tr_list.show();
+    fn_numberingTbl(tblId);
     return;
   }
 
