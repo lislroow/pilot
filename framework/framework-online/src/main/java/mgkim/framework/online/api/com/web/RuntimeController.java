@@ -26,11 +26,9 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.AbstractEnvironment;
 import org.springframework.core.env.EnumerablePropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -62,20 +60,6 @@ public class RuntimeController {
 	
 	@Autowired
 	private ApplicationContext springContext;
-	
-	@Autowired
-	@Qualifier(value = "requestMappingHandlerMapping")
-	private RequestMappingHandlerMapping requestMapping;
-	
-	private NamedParameterJdbcTemplate namedJdbc;
-	
-	@Autowired
-	private Environment environment;
-	
-	@Autowired
-	public void setDataSource(DataSource dataSource) {
-		this.namedJdbc = new NamedParameterJdbcTemplate(dataSource);
-	}
 	
 	@ApiOperation(value = "(실행환경) spring-bean 목록 조회")
 	@RequestMapping(value = "/api/com/runtime/spring-beans", method = RequestMethod.GET)
@@ -305,7 +289,7 @@ public class RuntimeController {
 	@RequestMapping(value = "/api/com/runtime/spring-uri", method = RequestMethod.GET)
 	public @ResponseBody KOutDTO<List<Map<String, String>>> springUri() throws Exception {
 		KOutDTO<List<Map<String, String>>> outDTO = new KOutDTO<List<Map<String, String>>>();
-		
+		RequestMappingHandlerMapping requestMapping = springContext.getBean("requestMappingHandlerMapping", RequestMappingHandlerMapping.class);
 		List<Map<String, String>> outBody = new ArrayList<Map<String, String>>();
 		Map<RequestMappingInfo, HandlerMethod> mapping = requestMapping.getHandlerMethods();
 		outBody = mapping.entrySet().stream()
@@ -338,7 +322,8 @@ public class RuntimeController {
 	@RequestMapping(value = "/api/com/runtime/spring-security-uri", method = RequestMethod.GET)
 	public @ResponseBody KOutDTO<List<Map<String, Object>>> springSecurityUri() throws Exception {
 		KOutDTO<List<Map<String, Object>>> outDTO = new KOutDTO<List<Map<String, Object>>>();
-		
+		DataSource dataSource = springContext.getBean(DataSource.class);
+		NamedParameterJdbcTemplate namedJdbc = new NamedParameterJdbcTemplate(dataSource);
 		Map<String, String> param = new HashMap<String, String>();
 		param.put("appCd", KProfile.APP_CD);
 		List<Map<String, Object>> list = namedJdbc.queryForList(ComUriAuthorityMgr.CONFIG_SQL, param);
@@ -355,6 +340,9 @@ public class RuntimeController {
 	@RequestMapping(value = "/api/com/runtime/properties", method = RequestMethod.GET)
 	public @ResponseBody KOutDTO<List<Map<String, Object>>> javaEnvVariable() throws Exception {
 		KOutDTO<List<Map<String, Object>>> outDTO = new KOutDTO<List<Map<String, Object>>>();
+		
+		org.springframework.core.env.Environment environment = springContext.getBean(org.springframework.core.env.Environment.class);
+		
 		MutablePropertySources sources = ((AbstractEnvironment) environment).getPropertySources();
 		List<Map<String, Object>> outBody = null;
 		outBody = (sources.stream()
