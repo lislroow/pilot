@@ -24,7 +24,6 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
-import mgkim.framework.cmm.online.CmmUserToken;
 import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
@@ -64,8 +63,6 @@ public class KFilterApi extends KFilter {
 	@Autowired(required = true)
 	private ComUserTokenMgr comUserTokenMgr;
 	@Autowired(required = true)
-	private CmmUserToken cmmUserToken;
-	@Autowired(required = true)
 	private ComSessionStatusMgr comSessionStatusMgr;
 	@Autowired(required = true)
 	private ComUserSessionMgr comUserSessionMgr;
@@ -74,8 +71,8 @@ public class KFilterApi extends KFilter {
 	
 	@Override
 	public void afterPropertiesSet() throws ServletException {
-		if (cmmUserToken == null) {
-			log.warn(KMessage.get(KMessage.E5002, KObjectUtil.name(CmmUserToken.class)));
+		if (cmmApiTxLogScheduler == null) {
+			log.warn(KMessage.get(KMessage.E5002, KObjectUtil.name(CmmApiTxLogScheduler.class)));
 			return;
 		}
 	}

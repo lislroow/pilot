@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.JwtBuilder;
@@ -14,7 +12,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
-import mgkim.framework.cmm.online.CmmUserToken;
 import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.dto.KOAuthToken;
 import mgkim.framework.core.env.KConstant;
@@ -44,9 +41,6 @@ public class ComUserTokenMgr {
 	
 	public static final String API_TOKEN_CLAIMS = "{\"ssid\": \"\", \"ip\": \"\", \"userId\": \"\", \"userType\": \"\", \"elvtBizSysTpcd\": \"10\", \"loginCertTpcd\": \"I\", \"elvtConnTpcd\": \"01\", \"elvtShrNo\": \"\", \"agentCustno\": -1, \"autoCertYn\": \"N\", \"linkSeccoCd\": \"000\"}";
 	public static final String OPENAPI_TOKEN_CLAIMS = "{\"ssid\": \"\", \"ip\": \"\", \"userId\": \"\", \"userType\": \"\", \"aesKey\": \"\", \"orgCd\": \"\", \"orgNm\": \"\"}";
-	
-	@Autowired(required = true)
-	private CmmUserToken cmmUserToken;
 	
 	public KOAuthToken createOauthToken(Map<String, Object> claims) throws Exception {
 		KOAuthToken kOAuthToken = new KOAuthToken();
