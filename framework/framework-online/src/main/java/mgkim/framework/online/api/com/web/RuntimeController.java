@@ -99,7 +99,6 @@ public class RuntimeController {
 							.filter(anno -> anno instanceof io.swagger.annotations.Api)
 							.map(anno -> String.join(",", ((Api)anno).tags()))
 							.collect(Collectors.joining(","));
-						map.put("applicationContextId", springContext.getId());
 						map.put("beanId", beanName);
 						map.put("swaggerTags", swaggerTags);
 						list.add(map);
