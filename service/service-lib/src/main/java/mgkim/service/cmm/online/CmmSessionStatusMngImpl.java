@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import mgkim.framework.cmm.online.CmmSessionStatusMng;
 import mgkim.framework.cmm.online.vo.CmmSessionMngListVO;
 import mgkim.framework.cmm.online.vo.CmmSessionStatusVO;
-import mgkim.framework.core.type.TSsStcdType;
+import mgkim.framework.core.type.KType.TSsStcdType;
 import mgkim.framework.core.util.KStringUtil;
 import mgkim.service.cmm.online.mapper.CmmSessionStatusMngMapper;
 

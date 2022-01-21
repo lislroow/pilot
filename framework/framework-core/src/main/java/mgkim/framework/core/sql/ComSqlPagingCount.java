@@ -29,7 +29,7 @@ import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.env.KSqlContext;
 import mgkim.framework.core.logging.KLogMarker;
-import mgkim.framework.core.type.TSqlType;
+import mgkim.framework.core.type.KType.TSqlType;
 import mgkim.framework.core.util.KSqlUtil;
 
 public class ComSqlPagingCount {

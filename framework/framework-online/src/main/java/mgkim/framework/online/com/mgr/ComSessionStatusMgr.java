@@ -9,7 +9,7 @@ import mgkim.framework.cmm.online.vo.CmmSessionStatusVO;
 import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
-import mgkim.framework.core.type.TSsStcdType;
+import mgkim.framework.core.type.KType.TSsStcdType;
 
 @KBean(name = "session 상태 관리")
 public class ComSessionStatusMgr {

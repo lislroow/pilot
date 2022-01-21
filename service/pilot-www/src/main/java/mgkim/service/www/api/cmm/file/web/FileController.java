@@ -39,7 +39,7 @@ import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.property.KProperty;
-import mgkim.framework.core.type.TUuidType;
+import mgkim.framework.core.type.KType.TUuidType;
 import mgkim.framework.core.util.KFileUtil;
 import mgkim.framework.core.util.KHttpUtil;
 import mgkim.framework.core.util.KStringUtil;

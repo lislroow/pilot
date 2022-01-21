@@ -15,7 +15,7 @@ import io.jsonwebtoken.SignatureException;
 import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.dto.KOAuthToken;
 import mgkim.framework.core.env.KConstant;
-import mgkim.framework.core.type.TUuidType;
+import mgkim.framework.core.type.KType.TUuidType;
 import mgkim.framework.core.util.KStringUtil;
 
 @KBean(name = "사용자 토큰 관리")

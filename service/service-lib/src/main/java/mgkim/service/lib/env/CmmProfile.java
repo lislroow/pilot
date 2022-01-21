@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.type.KType.OsType;
-import mgkim.framework.core.type.TSysType;
+import mgkim.framework.core.type.KType.TSysType;
 import mgkim.service.lib.type.TAppType;
 
 public class CmmProfile {

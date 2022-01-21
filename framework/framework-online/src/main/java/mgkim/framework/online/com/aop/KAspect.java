@@ -15,7 +15,7 @@ import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.logging.KLogMarker;
-import mgkim.framework.core.type.TExecType;
+import mgkim.framework.core.type.KType.TExecType;
 import mgkim.framework.core.util.KObjectUtil;
 
 

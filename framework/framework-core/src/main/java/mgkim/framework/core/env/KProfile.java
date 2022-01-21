@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import mgkim.framework.core.type.KType.OsType;
-import mgkim.framework.core.type.TSysType;
+import mgkim.framework.core.type.KType.TSysType;
 
 public class KProfile {
 

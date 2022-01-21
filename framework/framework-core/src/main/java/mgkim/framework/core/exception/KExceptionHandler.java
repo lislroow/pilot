@@ -26,8 +26,8 @@ import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.env.KSqlContext;
 import mgkim.framework.core.logging.KLogMarker;
-import mgkim.framework.core.type.TEncodingType;
-import mgkim.framework.core.type.TResponseType;
+import mgkim.framework.core.type.KType.TEncodingType;
+import mgkim.framework.core.type.KType.TResponseType;
 import mgkim.framework.core.util.KExceptionUtil;
 
 @KBean

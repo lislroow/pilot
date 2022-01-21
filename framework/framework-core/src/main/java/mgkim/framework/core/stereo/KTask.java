@@ -8,7 +8,7 @@ import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.exception.KException;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.logging.KLogMarker;
-import mgkim.framework.core.type.TUuidType;
+import mgkim.framework.core.type.KType.TUuidType;
 import mgkim.framework.core.util.KDateUtil;
 import mgkim.framework.core.util.KStringUtil;
 

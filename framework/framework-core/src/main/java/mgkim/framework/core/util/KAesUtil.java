@@ -15,7 +15,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import mgkim.framework.core.type.TEncodingType;
+import mgkim.framework.core.type.KType.TEncodingType;
 
 public class KAesUtil {
 

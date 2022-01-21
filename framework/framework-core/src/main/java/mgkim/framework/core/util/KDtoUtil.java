@@ -10,7 +10,7 @@ import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.session.KSession;
 import mgkim.framework.core.type.KType.TApiType;
-import mgkim.framework.core.type.TExecType;
+import mgkim.framework.core.type.KType.TExecType;
 
 public class KDtoUtil {
 

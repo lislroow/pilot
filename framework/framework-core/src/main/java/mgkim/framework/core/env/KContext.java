@@ -14,9 +14,9 @@ import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.core.logging.KLogMDC;
 import mgkim.framework.core.logging.KLogMarker;
 import mgkim.framework.core.type.KType.TApiType;
-import mgkim.framework.core.type.TAuthType;
-import mgkim.framework.core.type.TExecType;
-import mgkim.framework.core.type.TUuidType;
+import mgkim.framework.core.type.KType.TAuthType;
+import mgkim.framework.core.type.KType.TExecType;
+import mgkim.framework.core.type.KType.TUuidType;
 import mgkim.framework.core.util.KHttpUtil;
 import mgkim.framework.core.util.KStringUtil;
 
