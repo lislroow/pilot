@@ -38,8 +38,7 @@ import springfox.documentation.swagger.web.UiConfigurationBuilder;
 import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
 @Configuration
-@EnableSwagger2WebMvc // io.springfox:2.10.5
-//@EnableWebMvc
+@EnableSwagger2WebMvc
 public class KInitMvc extends WebMvcConfigurationSupport {
 	
 	private static final Logger log = LoggerFactory.getLogger(KInitMvc.class);
@@ -52,8 +51,8 @@ public class KInitMvc extends WebMvcConfigurationSupport {
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		// [status]
-		registry.addResourceHandler("/status.html").addResourceLocations("classpath:/META-INF/static/");
-		registry.addResourceHandler("/resources/**").addResourceLocations("classpath:/META-INF/static/resources/");
+		registry.addResourceHandler("/runtime.html").addResourceLocations("classpath:/META-INF/static/runtime/");
+		registry.addResourceHandler("/resources/**").addResourceLocations("classpath:/META-INF/static/runtime/resources/");
 		
 		// [swagger]
 		registry.addResourceHandler("/swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
