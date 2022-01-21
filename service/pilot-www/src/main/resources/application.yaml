@@ -24,3 +24,6 @@ server:
 security:
   rejectPublicInvocations: false
 
+schedule:
+  apitxlog:
+    enabled: true

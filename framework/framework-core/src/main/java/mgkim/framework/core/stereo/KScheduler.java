@@ -17,8 +17,7 @@ import mgkim.framework.core.util.KObjectUtil;
 public abstract class KScheduler implements InitializingBean, DisposableBean {
 	
 	private static final Logger log = LoggerFactory.getLogger(KScheduler.class);
-
-	public boolean enabled = true;
+	
 	protected int interval = 1000;
 
 	// org.springframework.scheduling.concurrent
@@ -57,11 +56,6 @@ public abstract class KScheduler implements InitializingBean, DisposableBean {
 	protected abstract KTask task() throws Exception;
 
 	public void start() {
-		if (!enabled) {
-			log.warn(KMessage.get(KMessage.E5014, KObjectUtil.name(this.getClass())));
-			return;
-		}
-		
 		// scheduler 실행 중인지 확인
 		{
 			if (isRunning()) {
@@ -91,9 +85,6 @@ public abstract class KScheduler implements InitializingBean, DisposableBean {
 	}
 	
 	public void stop() {
-		if (!enabled) {
-			return;
-		}
 		if (future != null) {
 			future.cancel(true);
 			log.warn(KMessage.get(KMessage.E5012, KObjectUtil.name(this.getClass())));
@@ -116,9 +107,6 @@ public abstract class KScheduler implements InitializingBean, DisposableBean {
 	
 	@Override
 	public void destroy() throws Exception {
-		if (!enabled) {
-			return;
-		}
 		future.cancel(true);
 		scheduler.shutdown();
 	}

@@ -7,6 +7,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import mgkim.framework.cmm.online.CmmSessionStatusMng;
 import mgkim.framework.cmm.online.vo.CmmSessionMngListVO;
@@ -22,6 +23,9 @@ import mgkim.framework.core.util.KStringUtil;
 
 @KTaskSchedule(name = "session 관리 스케줄러", interval = 10000, manage = true)
 public class ComSessionStatusMngScheduler extends KScheduler {
+	
+	@Value("${schedule.sessionStatusMng.enabled:true}")
+	private boolean enabled;
 
 	private Queue<String> queue = new ConcurrentLinkedQueue<String>();
 

@@ -8,6 +8,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import mgkim.framework.cmm.online.CmmDebug;
 import mgkim.framework.cmm.online.vo.CmmDebugVO;
@@ -28,7 +29,10 @@ import mgkim.framework.core.util.KObjectUtil;
 public class ComDebugScheduler extends KScheduler {
 	
 	private static final Logger log = LoggerFactory.getLogger(ComDebugScheduler.class);
-
+	
+	@Value("${schedule.debug.enabled:true}")
+	private boolean enabled;
+	
 	private static List<CmmDebugVO> debugList = new ArrayList<CmmDebugVO>(); // 주의: debugList객체는 null 이 되지 않도록 주의가 필요합니다.
 
 	@Autowired(required = false)

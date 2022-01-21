@@ -45,7 +45,7 @@ public class SchedulerController {
 								map.put("name", KObjectUtil.name(item.getClass()));
 								map.put("interval", KObjectUtil.interval(item.getClass()));
 								map.put("managed", KObjectUtil.manage(item.getClass()));
-								map.put("enabled", item.enabled);
+								//map.put("enabled", item.enabled);
 								map.put("running", item.isRunning());
 								map.put("uptime", item.uptime());
 								map.put("lastStartedTime", item.getLastStartedTime());

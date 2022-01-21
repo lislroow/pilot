@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 
 import mgkim.framework.core.annotation.KTaskSchedule;
@@ -30,6 +31,9 @@ import mgkim.framework.core.util.KSqlUtil;
 
 @KTaskSchedule(name = "sqlmap-file-reload 스케줄러", interval = 500, manage = false)
 public class ComSqlmapReloadScheduler extends KScheduler {
+
+	@Value("${schedule.sqlmapReload.enabled:true}")
+	private boolean enabled;
 	
 	private static final Logger log = LoggerFactory.getLogger(ComSqlmapReloadScheduler.class);
 

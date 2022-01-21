@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import mgkim.framework.cmm.online.CmmApiTxLog;
 import mgkim.framework.cmm.online.vo.CmmApiTxLogVO;
@@ -27,7 +28,10 @@ import mgkim.framework.core.util.KObjectUtil;
 public class ComApiTxLogScheduler extends KScheduler {
 	
 	private static final Logger log = LoggerFactory.getLogger(ComApiTxLogScheduler.class);
-
+	
+	@Value("${schedule.apitxlog.enabled:true}")
+	private boolean enabled;
+	
 	private final int MAX_QUEUQ_SIZE = 3;
 
 	private Queue<CmmApiTxLogVO> queue = new ConcurrentLinkedQueue<CmmApiTxLogVO>();

@@ -101,6 +101,8 @@ public class KSqlUtil {
 						value = boundSql.getAdditionalParameter(propertyName);
 					} else if (parameterObject instanceof java.util.Map) {
 						value = ((Map)parameterObject).get(propertyName);
+					} else if (parameterObject instanceof java.lang.String) {
+						value = parameterObject;
 					} else {
 						value = KObjectUtil.getValue(parameterObject, propertyName);
 					}
