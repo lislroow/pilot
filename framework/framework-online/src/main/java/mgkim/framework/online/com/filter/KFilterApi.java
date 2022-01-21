@@ -89,7 +89,7 @@ public class KFilterApi extends KFilter {
 		try {
 			HandlerMethod method = comUriListMgr.getHandlerMethod(request);
 			if (method == null) {
-				throw new KSysException(KMessage.E7001);
+				throw new KSysException(KMessage.E7001, uri);
 			}
 			// `REQUEST_TYPE` 결정
 			String contentType = KStringUtil.nvl(request.getContentType());
