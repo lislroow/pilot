@@ -132,7 +132,7 @@ public class RuntimeController {
 					outBody.add(sqlId);
 					SqlSource sqlSource = item.getSqlSource();
 					String sqlText = sqlSource.getBoundSql(null).getSql();
-				} catch(NullPointerException e) {
+				} catch (NullPointerException e) {
 					Object rootSqlNode = KObjectUtil.getValue(((SqlSource) item.getSqlSource()), "rootSqlNode");
 					ArrayList ls = (ArrayList)KObjectUtil.getValue(rootSqlNode, "contents");
 					StringBuffer sbuf = new StringBuffer();
@@ -153,7 +153,7 @@ public class RuntimeController {
 						}
 					}
 					//System.err.println(String.format("%sSQLTEXT=%s", KLogSysLayout.lineSeparator, sbuf.toString()));
-				} catch(BuilderException e) {
+				} catch (BuilderException e) {
 					Object rootSqlNode = KObjectUtil.getValue(((SqlSource) item.getSqlSource()), "rootSqlNode");
 					ArrayList ls = (ArrayList)KObjectUtil.getValue(rootSqlNode, "contents");
 					StringBuffer sbuf = new StringBuffer();
@@ -174,7 +174,7 @@ public class RuntimeController {
 						}
 					}
 					//System.err.println(String.format("%sSQLTEXT=%s", KLogSysLayout.lineSeparator, sbuf.toString()));
-				} catch(Exception e) {
+				} catch (Exception e) {
 					//System.err.println("");
 					e.printStackTrace();
 				}
@@ -201,7 +201,7 @@ public class RuntimeController {
 		Set<MappedStatement> list = null;
 		try {
 			list = proxy.getConfiguration().getMappedStatements().stream().collect(Collectors.toSet());
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		Iterator<MappedStatement> iter = list.iterator();
@@ -241,7 +241,7 @@ public class RuntimeController {
 				SqlSource sqlSource = item.getSqlSource();
 				String sqlText = sqlSource.getBoundSql(null).getSql();
 				respText.append(String.format("%sSQLTEXT=%s", KConstant.LINE, sqlText)+KConstant.LINE);
-			} catch(NullPointerException e) {
+			} catch (NullPointerException e) {
 				Object rootSqlNode = KObjectUtil.getValue(((SqlSource) item.getSqlSource()), "rootSqlNode");
 				ArrayList ls = (ArrayList)KObjectUtil.getValue(rootSqlNode, "contents");
 				StringBuffer sbuf = new StringBuffer();
@@ -262,7 +262,7 @@ public class RuntimeController {
 					}
 				}
 				respText.append(String.format("%sSQLTEXT=%s", KConstant.LINE, sbuf.toString())+KConstant.LINE);
-			} catch(BuilderException e) {
+			} catch (BuilderException e) {
 				Object rootSqlNode = KObjectUtil.getValue(((SqlSource) item.getSqlSource()), "rootSqlNode");
 				ArrayList ls = (ArrayList)KObjectUtil.getValue(rootSqlNode, "contents");
 				StringBuffer buf = new StringBuffer();
@@ -283,7 +283,7 @@ public class RuntimeController {
 					}
 				}
 				respText.append(String.format("%sSQLTEXT=%s", KConstant.LINE, buf.toString())+KConstant.LINE);
-			} catch(Exception e) {
+			} catch (Exception e) {
 				respText.append(""+KConstant.LINE+"[ ERROR ]");
 			}
 			seq++;
@@ -295,7 +295,7 @@ public class RuntimeController {
 			//headers.setContentType(MediaType.TEXT_PLAIN);
 			headers.set("Content-Type", "text/plain; charset=utf-8");
 			resp = new ResponseEntity<byte[]>(respText.toString().getBytes(), headers, HttpStatus.OK);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			resp = new ResponseEntity<byte[]>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return resp;
@@ -344,11 +344,9 @@ public class RuntimeController {
 		List<Map<String, Object>> list = namedJdbc.queryForList(ComUriAuthorityMgr.CONFIG_SQL, param);
 		
 		List<Map<String, Object>> outBody = null;
-		outBody = list.stream()
-					.map(item -> item.entrySet()
-					.stream()
-					.collect(Collectors.toMap(e -> e.getKey().toLowerCase(), Map.Entry::getValue)))
+		outBody = list.stream().map(item -> item.entrySet().stream().collect(Collectors.toMap(e -> e.getKey().toLowerCase(), e -> e.getValue())))
 					.collect(Collectors.toList());
+		
 		outDTO.setBody(outBody);
 		return outDTO;
 	}
