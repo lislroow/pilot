@@ -281,11 +281,8 @@ function fn_setDataTbl02(tblId, list) {
     var item = list[i];
     var $tr = $('#'+tblId+' > tfoot > tr').clone();
     $tr.find('td[id='+tblId+'_'+'a]').attr('id', tblId+'_'+'a'+'_'+i).text((list.length-i)).attr('data', (list.length-i));
-    $tr.find('td[id='+tblId+'_'+'b]').attr('id', tblId+'_'+'b'+'_'+i).text(item.swaggerHttpMethod).attr('data', item.swaggerHttpMethod);
     $tr.find('td[id='+tblId+'_'+'c]').attr('id', tblId+'_'+'c'+'_'+i).text(item.uri).attr('data', item.uri);
     $tr.find('td[id='+tblId+'_'+'d]').attr('id', tblId+'_'+'d'+'_'+i).text(item.className).attr('data', item.className);
-    $tr.find('td[id='+tblId+'_'+'e]').attr('id', tblId+'_'+'e'+'_'+i).text(item.securityRole).attr('data', item.securityRole);
-    $tr.find('td[id='+tblId+'_'+'f]').attr('id', tblId+'_'+'f'+'_'+i).text(item.swaggerValue).attr('data', item.swaggerValue);
     $('#'+tblId+' > tbody').append($tr);
   }
   fn_numberingTbl(tblId);
@@ -830,12 +827,6 @@ function fn_filterTxtDataTbl06() {
                         <input id="tbl02_filterA_txt" type="text" />
                       </label>
                     </div>
-                    <div id="tbl02_filterB_div" class="mar-btm-10 mar-rgt-20">
-                      <label for="tbl02_filterB_txt">
-                        <span id="tbl02_filterB_txt_span">desc : </span>
-                        <input id="tbl02_filterB_txt" type="text" />
-                      </label>
-                    </div>
                     <label for="tbl02_filter4_chk_ALL">
                       <input id="tbl02_filter4_chk_ALL" type="checkbox" />
                       <span id="tbl02_filter4_chk_ALL_span">*전체</span>
@@ -846,20 +837,14 @@ function fn_filterTxtDataTbl06() {
             <table id="tbl02" class="table-primary mar-btm-20">
                 <colgroup>
                     <col style="width:5px;" />
-                    <col style="width:8px;" />
                     <col style="width:30px;" />
                     <col style="width:15px;" />
-                    <col style="width:40px;" />
-                    <col style="width:20px;" />
                 </colgroup>
                 <thead>
                     <tr class="align-center">
                         <th scope="col">no</th>
-                        <th scope="col">method</th>
                         <th scope="col">uri</th>
                         <th scope="col">class</th>
-                        <th scope="col">security</th>
-                        <th scope="col">desc</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -867,11 +852,8 @@ function fn_filterTxtDataTbl06() {
                 <tfoot style="display: none;">
                     <tr>
                         <td id="tbl02_a" class="align-center"></td>
-                        <td id="tbl02_b" class="align-center"></td>
                         <td id="tbl02_c" class="align-left"></td>
                         <td id="tbl02_d" class="align-left"></td>
-                        <td id="tbl02_e" class="align-left"></td>
-                        <td id="tbl02_f" class="align-left"></td>
                     </tr>
                 </tfoot>
             </table>

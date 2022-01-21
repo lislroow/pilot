@@ -82,7 +82,7 @@ public class RuntimeController {
 	@RequestMapping(value = "/api/com/runtime/spring-beans", method = RequestMethod.GET)
 	public @ResponseBody KOutDTO<List<Map>> springBeans() throws Exception {
 		KOutDTO<List<Map>> outDTO = new KOutDTO<List<Map>>();
-		List<Map> listVO = new ArrayList<Map>();
+		List<Map> outBody = new ArrayList<Map>();
 		Arrays.stream(springContext.getBeanDefinitionNames())
 				.forEach(beanName -> {
 					Map vo = new HashMap();
@@ -112,10 +112,9 @@ public class RuntimeController {
 					vo.put("applicationContextId", springContext.getId());
 					vo.put("beanId", beanName);
 					vo.put("swaggerTags", swaggerTags.toString());
-					listVO.add(vo);
-					log.trace(beanName + " = " + bean.getClass().getCanonicalName() + " = " + annotations);
+					outBody.add(vo);
 				});
-		outDTO.setBody(listVO);
+		outDTO.setBody(outBody);
 		return outDTO;
 	}
 	
@@ -124,7 +123,7 @@ public class RuntimeController {
 	public @ResponseBody KOutDTO<List<String>> mybatisMapper() throws Exception {
 		KOutDTO<List<String>> outDTO = new KOutDTO<List<String>>();
 
-		List<String> listVO = new ArrayList<String>();
+		List<String> outBody = new ArrayList<String>();
 		int seq = 1;
 		String resourceFile = null;
 		Iterator<MappedStatement> iter = getSqlmapEntry().iterator();
@@ -139,7 +138,7 @@ public class RuntimeController {
 						resourceFile = file;
 					}
 					String sqlId = item.getId();
-					listVO.add(sqlId);
+					outBody.add(sqlId);
 					SqlSource sqlSource = item.getSqlSource();
 					String sqlText = sqlSource.getBoundSql(null).getSql();
 				} catch(NullPointerException e) {
@@ -192,8 +191,8 @@ public class RuntimeController {
 			}
 			//System.err.println("");
 		}
-		Collections.sort(listVO);
-		outDTO.setBody(listVO);
+		Collections.sort(outBody);
+		outDTO.setBody(outBody);
 		return outDTO;
 	}
 	
@@ -313,50 +312,37 @@ public class RuntimeController {
 
 	@ApiOperation(value = "(실행환경) spring-uri 목록 조회")
 	@RequestMapping(value = "/api/com/runtime/spring-uri", method = RequestMethod.GET)
-	public @ResponseBody KOutDTO<List<Map>> springUri() throws Exception {
-		KOutDTO<List<Map>> outDTO = new KOutDTO<List<Map>>();
+	public @ResponseBody KOutDTO<List<Map<String, String>>> springUri() throws Exception {
+		KOutDTO<List<Map<String, String>>> outDTO = new KOutDTO<List<Map<String, String>>>();
 		
-		List<Map> listVO = new ArrayList<Map>();
-		Map<RequestMappingInfo, HandlerMethod> map = null;
-		map = requestMapping.getHandlerMethods();
-		map.forEach((key, value) -> {
-			Map vo = new HashMap();
-			StringBuffer uri = new StringBuffer("");
-			RequestMapping classAnnotation = value.getBeanType().getAnnotation(org.springframework.web.bind.annotation.RequestMapping.class);
-			if (classAnnotation != null) {
-				if (classAnnotation.value().length > 0) {
-					uri.append(classAnnotation.value()[0]);
-					if (classAnnotation.value().length >= 2) {
-						log.warn("Class-Lavel의 @RequestMapping의 value 값이 2개 이상인 것이 있습니다. 해당 클래스를 확인해주세요. {}" + value.getClass().getSimpleName());
-					}
-				}
-			}
-			StringBuffer swaggerHttpMehtod = new StringBuffer("");
-			StringBuffer swaggerValue = new StringBuffer("");
-			List<Annotation> list = Arrays.asList(value.getMethod().getAnnotations());
-			list.forEach(item -> {
-				if (item instanceof org.springframework.web.bind.annotation.RequestMapping) {
-					RequestMapping annotations = (RequestMapping)item;
-					Arrays.asList(annotations.value()).forEach(annotation -> {
-						uri.append(annotation);
-					});
-					log.trace(key+" = "+annotations.value());
-				}
-			});
-			StringBuffer roles = new StringBuffer("");
-			vo.put("uri", uri.toString());
-			vo.put("className", value.getBeanType().getSimpleName());
-			vo.put("swaggerHttpMethod", swaggerHttpMehtod.toString());
-			vo.put("swaggerValue", swaggerValue.toString());
-			vo.put("securityRole", roles.toString());
-			
-			listVO.add(vo);
-		});
+		List<Map<String, String>> outBody = new ArrayList<Map<String, String>>();
+		Map<RequestMappingInfo, HandlerMethod> mapping = requestMapping.getHandlerMethods();
+		outBody = mapping.entrySet().stream()
+			.collect(ArrayList<Map<String, String>>::new,
+					(list, entry) -> {
+						HandlerMethod handleMethod = entry.getValue();
+						Map<String, String> map = new HashMap<String, String>();
+						
+						// uri
+						String _uri = Arrays.asList(handleMethod.getMethod().getAnnotations())
+							.stream()
+							.filter(anno -> anno instanceof org.springframework.web.bind.annotation.RequestMapping)
+							.map(anno -> String.join(",", ((RequestMapping)anno).value()))
+							.collect(Collectors.joining(","));
+						if ("".equals(_uri)) {
+							return;
+						}
+						map.put("uri", _uri);
+						map.put("className", handleMethod.getBeanType().getSimpleName());
+						list.add(map);
+					},
+					ArrayList<Map<String, String>>::addAll
+				);
 		
-		outDTO.setBody(listVO);
+		outDTO.setBody(outBody);
 		return outDTO;
 	}
-
+	
 	@ApiOperation(value = "(실행환경) spring-security-uri 목록 조회")
 	@RequestMapping(value = "/api/com/runtime/spring-security-uri", method = RequestMethod.GET)
 	public @ResponseBody KOutDTO<List<Map<String, Object>>> springSecurityUri() throws Exception {
@@ -375,7 +361,7 @@ public class RuntimeController {
 		outDTO.setBody(outBody);
 		return outDTO;
 	}
-
+	
 	@ApiOperation(value = "(실행환경) properties 목록 조회")
 	@RequestMapping(value = "/api/com/runtime/properties", method = RequestMethod.GET)
 	public @ResponseBody KOutDTO<List<Map<String, Object>>> javaEnvVariable() throws Exception {
