@@ -36,24 +36,25 @@ public class SchedulerController {
 		if (scheduleList == null) {
 			return outDTO;
 		}
-		List<Map<String, String>> listVO = scheduleList.stream().collect(
-				ArrayList<Map<String, String>>::new, 
-				(list, item) -> {
-					Map map = new HashMap();
-					map.put("clazz", item.getClass().getTypeName());
-					map.put("name", KObjectUtil.name(item.getClass()));
-					map.put("interval", KObjectUtil.interval(item.getClass()));
-					map.put("managed", KObjectUtil.manage(item.getClass()));
-					map.put("enabled", item.enabled);
-					map.put("running", item.isRunning());
-					map.put("uptime", item.uptime());
-					map.put("lastStartedTime", item.getLastStartedTime());
-					map.put("lastStoppedTime", item.getLastStoppedTime());
-					map.put("lastExecutedTime", item.getLastExecutedTime());
-					list.add(map);
-				}, 
-				ArrayList::addAll);
-		outDTO.setBody(listVO);
+		List<Map<String, String>> outBody = null;
+		outBody = scheduleList.stream()
+					.collect(ArrayList<Map<String, String>>::new, 
+							(list, item) -> {
+								Map map = new HashMap();
+								map.put("clazz", item.getClass().getTypeName());
+								map.put("name", KObjectUtil.name(item.getClass()));
+								map.put("interval", KObjectUtil.interval(item.getClass()));
+								map.put("managed", KObjectUtil.manage(item.getClass()));
+								map.put("enabled", item.enabled);
+								map.put("running", item.isRunning());
+								map.put("uptime", item.uptime());
+								map.put("lastStartedTime", item.getLastStartedTime());
+								map.put("lastStoppedTime", item.getLastStoppedTime());
+								map.put("lastExecutedTime", item.getLastExecutedTime());
+								list.add(map);
+							}, 
+							ArrayList::addAll);
+		outDTO.setBody(outBody);
 		return outDTO;
 	}
 }
