@@ -39,7 +39,7 @@ import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.property.KProperty;
-import mgkim.framework.core.type.KType.TUuidType;
+import mgkim.framework.core.type.KType.UuidType;
 import mgkim.framework.core.util.KFileUtil;
 import mgkim.framework.core.util.KHttpUtil;
 import mgkim.framework.core.util.KStringUtil;
@@ -246,7 +246,7 @@ public class FileController {
 
 		// 파일그룹 저장
 		{
-			String fgrpId = KStringUtil.createUuid(true, TUuidType.FGRPID);
+			String fgrpId = KStringUtil.createUuid(true, UuidType.FGRPID);
 			list.forEach(item -> {
 				item.setFgrpId(fgrpId);
 			});
@@ -286,7 +286,7 @@ public class FileController {
 		}
 
 		// 2) 첨부파일 저장
-		String fileId = KStringUtil.createUuid(true, TUuidType.FILEID);
+		String fileId = KStringUtil.createUuid(true, UuidType.FILEID);
 		String savePath = null;       // 첨부파일 디렉토리
 		String saveFilenm = null;     // 첨부파일 파일명
 		String saveFpath = null;      // 첨부파일 디렉토리+"/"+파일명

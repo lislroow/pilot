@@ -26,7 +26,7 @@ import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.core.logging.KLogMarker;
-import mgkim.framework.core.type.KType.TApiType;
+import mgkim.framework.core.type.KType.ApiType;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.com.mgr.ComFieldCryptorMgr;
@@ -93,7 +93,7 @@ public class KInDTOHandler extends RequestBodyAdviceAdapter implements Initializ
 			// bodyVO 필드 복호화: bodyVO 에 `@KEncrypt` 가 선언된 필드를 복호화함
 			if (comFieldCryptorMgr != null) {
 				try {
-					TApiType apiType = KContext.getT(AttrKey.API_TYPE);
+					ApiType apiType = KContext.getT(AttrKey.API_TYPE);
 					switch(apiType) {
 					case API:
 						comFieldCryptorMgr.decrypt(inDTO);

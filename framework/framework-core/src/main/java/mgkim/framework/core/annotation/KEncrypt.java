@@ -5,12 +5,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import mgkim.framework.core.type.KType.TCryptoType;
+import mgkim.framework.core.type.KType.CryptoType;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface KEncrypt {
 
-	TCryptoType type() default TCryptoType.RSA;
+	CryptoType type() default CryptoType.RSA;
 
 }

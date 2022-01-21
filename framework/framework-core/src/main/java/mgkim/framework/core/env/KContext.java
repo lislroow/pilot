@@ -13,10 +13,10 @@ import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.core.logging.KLogMDC;
 import mgkim.framework.core.logging.KLogMarker;
-import mgkim.framework.core.type.KType.TApiType;
-import mgkim.framework.core.type.KType.TAuthType;
-import mgkim.framework.core.type.KType.TExecType;
-import mgkim.framework.core.type.KType.TUuidType;
+import mgkim.framework.core.type.KType.ApiType;
+import mgkim.framework.core.type.KType.AuthType;
+import mgkim.framework.core.type.KType.ExecType;
+import mgkim.framework.core.type.KType.UuidType;
 import mgkim.framework.core.util.KHttpUtil;
 import mgkim.framework.core.util.KStringUtil;
 
@@ -47,7 +47,7 @@ public class KContext {
 			map = attr.get();
 		}
 
-		TExecType execType = TExecType.SYSTEM;
+		ExecType execType = ExecType.SYSTEM;
 		KContext.set(AttrKey.EXEC_TYPE, execType);
 		KLogMDC.put(AttrKey.EXEC_TYPE, execType.name());
 	}
@@ -59,11 +59,11 @@ public class KContext {
 			map = attr.get();
 		}
 		
-		TExecType execType = TExecType.SCHEDULE;
+		ExecType execType = ExecType.SCHEDULE;
 		KContext.set(AttrKey.EXEC_TYPE, execType);
 		KLogMDC.put(AttrKey.EXEC_TYPE, execType.name());
 		
-		String txid = KStringUtil.createUuid(true, TUuidType.TXID);
+		String txid = KStringUtil.createUuid(true, UuidType.TXID);
 		KContext.set(AttrKey.TXID, txid);
 		KLogMDC.put(AttrKey.TXID, txid);
 	}
@@ -75,7 +75,7 @@ public class KContext {
 			map = attr.get();
 		}
 		
-		TExecType execType = TExecType.REQUEST;
+		ExecType execType = ExecType.REQUEST;
 		KContext.set(AttrKey.EXEC_TYPE, execType);
 		KLogMDC.put(AttrKey.EXEC_TYPE, execType.name());
 		
@@ -95,16 +95,16 @@ public class KContext {
 		String authorization = KStringUtil.nvl(request.getHeader(KConstant.HK_AUTHORIZATION));
 		KContext.set(AttrKey.AUTHORIZATION, authorization);
 		
-		TAuthType authType = null;
+		AuthType authType = null;
 		if (KStringUtil.isEmpty(authorization)) {
-			authType = TAuthType.NOAUTH;
+			authType = AuthType.NOAUTH;
 		} else {
-			if (authorization.toUpperCase().startsWith(TAuthType.BEARER.name())) {
-				authType = TAuthType.BEARER;
-			} else if (authorization.toUpperCase().startsWith(TAuthType.APIKEY.name())) {
-				authType = TAuthType.APIKEY;
+			if (authorization.toUpperCase().startsWith(AuthType.BEARER.name())) {
+				authType = AuthType.BEARER;
+			} else if (authorization.toUpperCase().startsWith(AuthType.APIKEY.name())) {
+				authType = AuthType.APIKEY;
 			} else {
-				authType = TAuthType.NOAUTH;
+				authType = AuthType.NOAUTH;
 			}
 		}
 		KContext.set(AttrKey.AUTH_TYPE, authType);
@@ -116,26 +116,26 @@ public class KContext {
 		switch(authType) {
 		case BEARER:
 			// accessToken
-			bearer = authorization.substring(TAuthType.BEARER.name().length()+1);  // +1은 "Bearer " 공백문자
+			bearer = authorization.substring(AuthType.BEARER.name().length()+1);  // +1은 "Bearer " 공백문자
 			// apikey
 			apikey = "";
 		case NOAUTH:
 			// guid
 			guid = request.getHeader(KConstant.GUID);
 			if (guid == null) {
-				guid = KStringUtil.createUuid(true, TUuidType.GUID);
+				guid = KStringUtil.createUuid(true, UuidType.GUID);
 			}
 			// txid
 			txid = request.getHeader(KConstant.TXID);
 			if (txid == null) {
-				txid = KStringUtil.createUuid(true, TUuidType.TXID);
+				txid = KStringUtil.createUuid(true, UuidType.TXID);
 			}
 			break;
 		case APIKEY:
 			// accessToken
 			bearer = "";
 			// apikey
-			apikey = authorization.substring(TAuthType.APIKEY.name().length()+1);  // +1은 "Apikey " 공백문자
+			apikey = authorization.substring(AuthType.APIKEY.name().length()+1);  // +1은 "Apikey " 공백문자
 			// guid `api key`를 guid 로 사용함
 			guid = apikey;
 			// txid
@@ -153,7 +153,7 @@ public class KContext {
 		KContext.set(AttrKey.TXID, txid);
 		
 		// apiType 확인
-		TApiType apiType = KHttpUtil.resolveApiType();
+		ApiType apiType = KHttpUtil.resolveApiType();
 		KContext.set(AttrKey.API_TYPE, apiType);
 		
 		KLogMDC.put(AttrKey.URI, uri);

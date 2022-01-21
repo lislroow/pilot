@@ -15,7 +15,7 @@ import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.exception.KMessage;
-import mgkim.framework.core.type.KType.TResponseType;
+import mgkim.framework.core.type.KType.RespType;
 import mgkim.framework.core.util.KDateUtil;
 import mgkim.framework.core.util.KHttpUtil;
 import mgkim.framework.core.util.KStringUtil;
@@ -36,7 +36,7 @@ public class KFileHandler extends ResourceHttpMessageConverter {
 			throws IOException, HttpMessageNotWritableException {
 		// `RESPONSE_TYPE` 결정
 		{
-			KContext.set(AttrKey.RESPONSE_TYPE, TResponseType.FILE);
+			KContext.set(AttrKey.RESPONSE_TYPE, RespType.FILE);
 		}
 
 		String filename = outputMessage.getHeaders().getContentDisposition().getFilename();

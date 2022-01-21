@@ -37,9 +37,9 @@ import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.logging.KLogMarker;
-import mgkim.framework.core.type.KType.TExecType;
-import mgkim.framework.core.type.KType.TSqlType;
-import mgkim.framework.core.type.KType.TSysType;
+import mgkim.framework.core.type.KType.ExecType;
+import mgkim.framework.core.type.KType.SqlType;
+import mgkim.framework.core.type.KType.SysType;
 import mgkim.framework.core.util.KDtoUtil;
 import mgkim.framework.core.util.KSqlUtil;
 import mgkim.framework.core.util.KStringUtil;
@@ -98,7 +98,7 @@ public class ComSqlInterceptor implements Interceptor {
 		Object resultObject = null;
 		
 		// 로깅 준비
-		TExecType execType = KContext.getT(AttrKey.EXEC_TYPE);
+		ExecType execType = KContext.getT(AttrKey.EXEC_TYPE);
 		KContext.set(AttrKey.SQL_ID, sqlId);
 		KContext.set(AttrKey.SQL_FILE, sqlFile);
 		
@@ -110,7 +110,7 @@ public class ComSqlInterceptor implements Interceptor {
 		boolean isOnError = false;
 		int resultCount = -1;
 		String elapsed = null;
-		TSqlType sqlType = TSqlType.ORIGIN_SQL;
+		SqlType sqlType = SqlType.ORIGIN_SQL;
 		try {
 			// paging 처리 및 sql 로깅
 			{
@@ -131,9 +131,9 @@ public class ComSqlInterceptor implements Interceptor {
 						}
 						
 						if (isPaging) {
-							sqlType = TSqlType.PAGING_SQL;
+							sqlType = SqlType.PAGING_SQL;
 						} else {
-							sqlType = TSqlType.ORIGIN_SQL;
+							sqlType = SqlType.ORIGIN_SQL;
 						}
 					}
 					
@@ -229,7 +229,7 @@ public class ComSqlInterceptor implements Interceptor {
 				log.info(KLogMarker.getSqlMarker(sqlFile), "\n{}\n(elapsed={}, rows={})", paramSql, elapsed, resultCount);
 				
 				// sql 실행 테이블 분석
-				if (true && KProfile.SYS == TSysType.LOC) {
+				if (true && KProfile.SYS == SysType.LOC) {
 					KSqlUtil.resolveTables(sqlFile, sqlId, paramSql);
 				}
 				break;

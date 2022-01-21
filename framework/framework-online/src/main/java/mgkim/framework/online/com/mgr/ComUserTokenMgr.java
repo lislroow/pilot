@@ -15,7 +15,7 @@ import io.jsonwebtoken.SignatureException;
 import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.dto.KOAuthToken;
 import mgkim.framework.core.env.KConstant;
-import mgkim.framework.core.type.KType.TUuidType;
+import mgkim.framework.core.type.KType.UuidType;
 import mgkim.framework.core.util.KStringUtil;
 
 @KBean(name = "사용자 토큰 관리")
@@ -50,7 +50,7 @@ public class ComUserTokenMgr {
 		long curr = System.currentTimeMillis();
 		
 		// 토큰ID(`jti`) 생성: access-token 과 refresh-token 의 jti 는 같도록 설정함
-		claims.put(KConstant.SSID, KStringUtil.createUuid(true, TUuidType.SSID));
+		claims.put(KConstant.SSID, KStringUtil.createUuid(true, UuidType.SSID));
 		
 		// access-token 생성
 		header.put(JWT_HEADER_TYPE, FwJwtType.accessToken);

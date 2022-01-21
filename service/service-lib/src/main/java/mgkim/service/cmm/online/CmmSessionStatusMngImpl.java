@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import mgkim.framework.cmm.online.CmmSessionStatusMng;
 import mgkim.framework.cmm.online.vo.CmmSessionMngListVO;
 import mgkim.framework.cmm.online.vo.CmmSessionStatusVO;
-import mgkim.framework.core.type.KType.TSsStcdType;
+import mgkim.framework.core.type.KType.SsStcdType;
 import mgkim.framework.core.util.KStringUtil;
 import mgkim.service.cmm.online.mapper.CmmSessionStatusMngMapper;
 
@@ -86,9 +86,9 @@ public class CmmSessionStatusMngImpl implements CmmSessionStatusMng {
 			
 
 			// `기존 session` 의 `세션 상태` 확인
-			TSsStcdType ssStcdType = TSsStcdType.get(list.get(i).getSsStcd());
+			SsStcdType ssStcdType = SsStcdType.get(list.get(i).getSsStcd());
 
-			if (ssStcdType == TSsStcdType.LOGIN) { // LOGIN 인 경우에는 DUPL_LOGIN 으로 변경
+			if (ssStcdType == SsStcdType.LOGIN) { // LOGIN 인 경우에는 DUPL_LOGIN 으로 변경
 				String aumthTpcd = KStringUtil.nvl(list.get(i).getAumthTpcd());
 				// `기존 session` 의 `인증 방식` 확인
 				if (!aumthTpcd.equals(claims.get("aumthTpcd"))) {

@@ -15,7 +15,7 @@ import org.springframework.security.crypto.codec.Base64;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import mgkim.framework.core.type.KType.TUuidType;
+import mgkim.framework.core.type.KType.UuidType;
 
 public class KStringUtil {
 
@@ -36,7 +36,7 @@ public class KStringUtil {
 		return createUuid(true);
 	}
 
-	public static String createUuid(boolean isShorten, TUuidType type) {
+	public static String createUuid(boolean isShorten, UuidType type) {
 		String result = null;
 		String uuid = UUID.randomUUID().toString();
 		if (isShorten) {

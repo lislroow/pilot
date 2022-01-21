@@ -15,7 +15,7 @@ import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.logging.KLogMarker;
-import mgkim.framework.core.type.KType.TExecType;
+import mgkim.framework.core.type.KType.ExecType;
 import mgkim.framework.core.util.KObjectUtil;
 
 
@@ -46,7 +46,7 @@ public class KAspect implements InitializingBean {
 	public Object aroundService(ProceedingJoinPoint joinPoint) throws Throwable {
 		Object[] args = joinPoint.getArgs();
 		Object result = null;
-		if (KContext.getT(AttrKey.EXEC_TYPE) == TExecType.REQUEST) {
+		if (KContext.getT(AttrKey.EXEC_TYPE) == ExecType.REQUEST) {
 			String clazzName = joinPoint.getSignature().getDeclaringTypeName();
 			String methodName = joinPoint.getSignature().getName();
 			
@@ -74,7 +74,7 @@ public class KAspect implements InitializingBean {
 	public Object aroundMapper(ProceedingJoinPoint joinPoint) throws Throwable {
 		Object[] args = joinPoint.getArgs();
 		Object result = null;
-		if (KContext.getT(AttrKey.EXEC_TYPE) == TExecType.REQUEST) {
+		if (KContext.getT(AttrKey.EXEC_TYPE) == ExecType.REQUEST) {
 			String clazzName = joinPoint.getSignature().getDeclaringTypeName();
 			String methodName = joinPoint.getSignature().getName();
 			

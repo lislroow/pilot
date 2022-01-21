@@ -27,7 +27,7 @@ import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.env.KSqlContext;
 import mgkim.framework.core.logging.KLogMarker;
 import mgkim.framework.core.type.KType.TEncodingType;
-import mgkim.framework.core.type.KType.TResponseType;
+import mgkim.framework.core.type.KType.RespType;
 import mgkim.framework.core.util.KExceptionUtil;
 
 @KBean
@@ -98,7 +98,7 @@ public class KExceptionHandler extends ExceptionHandlerExceptionResolver {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				KContext.set(AttrKey.RESPONSE_TYPE, TResponseType.JSON);
+				KContext.set(AttrKey.RESPONSE_TYPE, RespType.JSON);
 			}
 		}
 	}

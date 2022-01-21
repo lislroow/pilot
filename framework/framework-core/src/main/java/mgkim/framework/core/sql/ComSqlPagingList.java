@@ -34,7 +34,7 @@ import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
-import mgkim.framework.core.type.KType.TSqlType;
+import mgkim.framework.core.type.KType.SqlType;
 import mgkim.framework.core.util.KSqlUtil;
 import mgkim.framework.core.util.KStringUtil;
 
@@ -119,7 +119,7 @@ public class ComSqlPagingList {
 			{
 				String sql = KSqlUtil.removeForeachIndex(boundSql);
 				sql = String.format(KSqlUtil.PAGING_SQL, sql);
-				String comment = String.format("/* (%s) %s::%s */", KContext.getT(AttrKey.TXID), sqlFile, (TSqlType.PAGING_SQL.code() + " " + sqlId));
+				String comment = String.format("/* (%s) %s::%s */", KContext.getT(AttrKey.TXID), sqlFile, (SqlType.PAGING_SQL.code() + " " + sqlId));
 				sql = KSqlUtil.insertSqlComment(sql, comment);
 				sql = KStringUtil.replaceEmptyLine(sql);
 				sHandlerMetaObject.setValue("delegate.boundSql.sql", sql);

@@ -29,7 +29,7 @@ import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.env.KSqlContext;
 import mgkim.framework.core.logging.KLogMarker;
-import mgkim.framework.core.type.KType.TSqlType;
+import mgkim.framework.core.type.KType.SqlType;
 import mgkim.framework.core.util.KSqlUtil;
 
 public class ComSqlPagingCount {
@@ -80,7 +80,7 @@ public class ComSqlPagingCount {
 				{
 					String sql = KSqlUtil.removeForeachIndex(boundSql);
 					sql = String.format(KSqlUtil.COUNT_SQL, sql);
-					String comment = String.format("/* (%s) %s::%s */", KContext.getT(AttrKey.TXID), sqlFile, (TSqlType.COUNT_SQL1.code() + " " + sqlId));
+					String comment = String.format("/* (%s) %s::%s */", KContext.getT(AttrKey.TXID), sqlFile, (SqlType.COUNT_SQL1.code() + " " + sqlId));
 					sql = KSqlUtil.insertSqlComment(sql, comment);
 					pstmt = connection.prepareStatement(sql);
 					int startIndex = 1;
@@ -94,7 +94,7 @@ public class ComSqlPagingCount {
 						count = rs.getInt(1);
 					}
 				} catch(Exception ex) {
-					String countSql = KSqlUtil.createParamSql(parameterObject, statementHandler, TSqlType.COUNT_SQL1);
+					String countSql = KSqlUtil.createParamSql(parameterObject, statementHandler, SqlType.COUNT_SQL1);
 					log.error("{}", countSql);
 					throw ex;
 				}
@@ -189,7 +189,7 @@ public class ComSqlPagingCount {
 					// prepareStatment 생성
 					{
 						String sql = KSqlUtil.removeForeachIndex(boundSql);
-						String comment = String.format("/* (%s) %s::%s */", KContext.getT(AttrKey.TXID), sqlFile, (TSqlType.COUNT_SQL2.code() + " " + sqlId));
+						String comment = String.format("/* (%s) %s::%s */", KContext.getT(AttrKey.TXID), sqlFile, (SqlType.COUNT_SQL2.code() + " " + sqlId));
 						sql = KSqlUtil.insertSqlComment(sql, comment);
 						pstmt = connection.prepareStatement(sql);
 						int startIndex = 1;
@@ -202,7 +202,7 @@ public class ComSqlPagingCount {
 						count = rs.getInt(1);
 					}
 				} catch(Exception ex) {
-					String countSql = KSqlUtil.createParamSql(parameterObject, statementHandler, TSqlType.COUNT_SQL2);
+					String countSql = KSqlUtil.createParamSql(parameterObject, statementHandler, SqlType.COUNT_SQL2);
 					log.error(KLogMarker.getSqlMarker(sqlFile), "\n{}", countSql);
 					throw ex;
 				}

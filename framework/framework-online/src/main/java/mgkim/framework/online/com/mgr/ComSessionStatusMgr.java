@@ -9,7 +9,7 @@ import mgkim.framework.cmm.online.vo.CmmSessionStatusVO;
 import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
-import mgkim.framework.core.type.KType.TSsStcdType;
+import mgkim.framework.core.type.KType.SsStcdType;
 
 @KBean(name = "session 상태 관리")
 public class ComSessionStatusMgr {
@@ -38,24 +38,24 @@ public class ComSessionStatusMgr {
 		*/
 
 		try {
-			TSsStcdType ssStcdType = null;
+			SsStcdType ssStcdType = null;
 			CmmSessionStatusVO statusVO = cmmSessionStatusMng.selectStatusForIsLogin(claims);
 			if (statusVO == null) {
 				return false;
 			}
-			ssStcdType = TSsStcdType.get(statusVO.getSsStcd());
-			if (ssStcdType == TSsStcdType.LOGIN) {
+			ssStcdType = SsStcdType.get(statusVO.getSsStcd());
+			if (ssStcdType == SsStcdType.LOGIN) {
 				return true;
 			}
 
-			if (ssStcdType == TSsStcdType.DUP_LOGIN) {
+			if (ssStcdType == SsStcdType.DUP_LOGIN) {
 				if ("N".equals(statusVO.getDloginAlowYn())) {
 					throw new KSysException(KMessage.E6102);
 				} else {
 					return true;
 				}
-			} else if (ssStcdType == TSsStcdType.EXPIRED
-					|| ssStcdType == TSsStcdType.LOGOUT) {
+			} else if (ssStcdType == SsStcdType.EXPIRED
+					|| ssStcdType == SsStcdType.LOGOUT) {
 				throw new KSysException(KMessage.E6101);
 			} else {
 				throw new KSysException(KMessage.E6109, statusVO.getSsStcd());

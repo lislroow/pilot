@@ -5,8 +5,8 @@ import java.util.regex.Pattern;
 
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KProfile;
-import mgkim.framework.core.type.KType.OsType;
-import mgkim.framework.core.type.KType.TSysType;
+import mgkim.framework.core.type.KType.OSType;
+import mgkim.framework.core.type.KType.SysType;
 import mgkim.service.lib.type.TAppType;
 
 public class CmmProfile {
@@ -20,7 +20,7 @@ public class CmmProfile {
 				appId = "l"+s.getClassName().split("\\.")[2];
 				System.setProperty(KConstant.VM_APP_ID, appId);
 			}
-			String[] sysArr = java.util.Arrays.stream(TSysType.values()).map(item -> item.label().substring(0, 1)).toArray(String[]::new);
+			String[] sysArr = java.util.Arrays.stream(SysType.values()).map(item -> item.label().substring(0, 1)).toArray(String[]::new);
 			String[] appArr = java.util.Arrays.stream(TAppType.values()).map(item -> item.label()).toArray(String[]::new);
 			String appPtrn = String.format("(%s)(%s)[0-9]*"
 					, String.join("|", sysArr)
@@ -48,13 +48,13 @@ public class CmmProfile {
 			case DEV:
 			case STA:
 			case PROD:
-				if (KProfile.OS == OsType.LINUX) {
+				if (KProfile.OSType == OSType.LINUX) {
 					String configXml = String.format("/app/pilot-%s/.logback-%s-%s.xml"
 							, KProfile.SYS.label()
 							, KProfile.APP_NM
 							, KProfile.SYS.label());
 					System.setProperty("logging.config", configXml);
-				} else if (KProfile.OS == OsType.WIN) {
+				} else if (KProfile.OSType == OSType.WIN) {
 					String configXml = String.format("src/main/resources/.logback-%s-%s.xml"
 							, KProfile.APP_NM
 							, KProfile.SYS.label());

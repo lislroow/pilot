@@ -17,7 +17,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import mgkim.framework.core.env.KConstant;
-import mgkim.framework.core.type.KType.TApiType;
+import mgkim.framework.core.type.KType.ApiType;
 
 public class KHttpUtil {
 	
@@ -33,15 +33,15 @@ public class KHttpUtil {
 		return request.getRequestURI();
 	}
 
-	public static TApiType resolveApiType() {
+	public static ApiType resolveApiType() {
 		HttpServletRequest request = getRequest();
-		TApiType apiType = null;
+		ApiType apiType = null;
 		if (KMatcherUtil.matchesByAnt(request, KConstant.PUBLIC_URI)) {
-			apiType = TApiType.PUBLIC;
+			apiType = ApiType.PUBLIC;
 		} else if (KMatcherUtil.matchesByAnt(request, KConstant.API_URI)) {
-			apiType = TApiType.API;
+			apiType = ApiType.API;
 		} else {
-			apiType = TApiType.UNKNOWN;
+			apiType = ApiType.UNKNOWN;
 		}
 		return apiType;
 	}

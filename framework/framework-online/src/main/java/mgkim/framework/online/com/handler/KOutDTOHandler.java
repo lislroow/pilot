@@ -29,9 +29,9 @@ import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
-import mgkim.framework.core.type.KType.TApiType;
-import mgkim.framework.core.type.KType.TAuthType;
-import mgkim.framework.core.type.KType.TResponseType;
+import mgkim.framework.core.type.KType.ApiType;
+import mgkim.framework.core.type.KType.AuthType;
+import mgkim.framework.core.type.KType.RespType;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.com.mgr.ComFieldCryptorMgr;
@@ -84,7 +84,7 @@ public class KOutDTOHandler extends AbstractMappingJacksonResponseBodyAdvice imp
 			MethodParameter returnType, ServerHttpRequest request, ServerHttpResponse response) {
 		// `RESPONSE_TYPE` 결정
 		{
-			KContext.set(AttrKey.RESPONSE_TYPE, TResponseType.JSON);
+			KContext.set(AttrKey.RESPONSE_TYPE, RespType.JSON);
 		}
 
 		Map<String, Object> headerMap = new LinkedHashMap<String, Object>();
@@ -108,7 +108,7 @@ public class KOutDTOHandler extends AbstractMappingJacksonResponseBodyAdvice imp
 			{
 				if (comFieldCryptorMgr != null) {
 					try {
-						TApiType apiType = KContext.getT(AttrKey.API_TYPE);
+						ApiType apiType = KContext.getT(AttrKey.API_TYPE);
 						switch(apiType) {
 						case API:
 							comFieldCryptorMgr.encrypt(outDTO);
@@ -207,7 +207,7 @@ public class KOutDTOHandler extends AbstractMappingJacksonResponseBodyAdvice imp
 					headerMap.put(KConstant.RESULT_BMESSAGE, bmessage);
 				}
 				
-				TAuthType authType = KContext.getT(AttrKey.AUTH_TYPE);
+				AuthType authType = KContext.getT(AttrKey.AUTH_TYPE);
 				switch(authType) {
 				case APIKEY: // apikey 인증 방식
 					break;

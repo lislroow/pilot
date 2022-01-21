@@ -8,7 +8,7 @@ import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.exception.KException;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.logging.KLogMarker;
-import mgkim.framework.core.type.KType.TUuidType;
+import mgkim.framework.core.type.KType.UuidType;
 import mgkim.framework.core.util.KDateUtil;
 import mgkim.framework.core.util.KStringUtil;
 
@@ -20,7 +20,7 @@ public abstract class KTask implements Runnable {
 
 	@Override
 	public void run() {
-		String execId = KStringUtil.createUuid(true, TUuidType.TXID);
+		String execId = KStringUtil.createUuid(true, UuidType.TXID);
 		try {
 			KContext.initSchedule();
 			this.execute(execId);

@@ -8,8 +8,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import mgkim.framework.core.type.KType.OsType;
-import mgkim.framework.core.type.KType.TSysType;
+import mgkim.framework.core.type.KType.OSType;
+import mgkim.framework.core.type.KType.SysType;
 
 public class KProfile {
 
@@ -23,8 +23,8 @@ public class KProfile {
 	public static String APP_CD;
 	public static String APP_NM;
 	public static String APP_NAME;
-	public static TSysType SYS;
-	public static OsType OS;
+	public static SysType SYS;
+	public static OSType OSType;
 	public static List<String> profiles = new ArrayList<String>();
 	public static String PROFILES_STR;
 
@@ -44,14 +44,14 @@ public class KProfile {
 			HOSTNAME = hostname;
 		}
 		String osName = System.getProperty(KConstant.VM_OS_NAME);
-		KProfile.OS = OsType.get(osName);
+		KProfile.OSType = OSType.get(osName);
 		
 		String appId = System.getProperty(KConstant.VM_APP_ID);
 		if (appId == null) {
-			KProfile.SYS = TSysType.LOC;
+			KProfile.SYS = SysType.LOC;
 		} else {
 			String appId_c1 = appId.substring(0, 1);
-			KProfile.SYS = TSysType.get(appId_c1);
+			KProfile.SYS = SysType.get(appId_c1);
 		}
 		KProfile.addProfile(KProfile.SYS.label());
 	}
@@ -66,7 +66,7 @@ public class KProfile {
 	}
 
 	public static boolean isLocal() {
-		return SYS == TSysType.LOC;
+		return SYS == SysType.LOC;
 	}
 
 	public static String getHostname() {

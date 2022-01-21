@@ -35,10 +35,10 @@ import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.core.logging.KLogMarker;
 import mgkim.framework.core.request.KReadableRequest;
 import mgkim.framework.core.stereo.KFilter;
-import mgkim.framework.core.type.KType.TApiType;
-import mgkim.framework.core.type.KType.TAuthType;
-import mgkim.framework.core.type.KType.TRequestType;
-import mgkim.framework.core.type.KType.TResponseType;
+import mgkim.framework.core.type.KType.ApiType;
+import mgkim.framework.core.type.KType.AuthType;
+import mgkim.framework.core.type.KType.ReqType;
+import mgkim.framework.core.type.KType.RespType;
 import mgkim.framework.core.util.KHttpUtil;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KStringUtil;
@@ -94,9 +94,9 @@ public class KFilterApi extends KFilter {
 			// `REQUEST_TYPE` 결정
 			String contentType = KStringUtil.nvl(request.getContentType());
 			if (contentType.startsWith(MediaType.APPLICATION_JSON_VALUE)) {
-				KContext.set(AttrKey.REQUEST_TYPE, TRequestType.JSON);
+				KContext.set(AttrKey.REQUEST_TYPE, ReqType.JSON);
 			} else {
-				KContext.set(AttrKey.REQUEST_TYPE, TRequestType.FILE);
+				KContext.set(AttrKey.REQUEST_TYPE, ReqType.FILE);
 			}
 		} catch (HttpMediaTypeNotSupportedException e) {
 			String contentType = request.getHeader("Content-Type");
@@ -167,10 +167,10 @@ public class KFilterApi extends KFilter {
 		}
 		
 		// 4) request-logging
-		TRequestType requestType = KContext.getT(AttrKey.REQUEST_TYPE);
+		ReqType reqType = KContext.getT(AttrKey.REQUEST_TYPE);
 		KReadableRequest readableRequest = null;
 		try {
-			if (requestType == TRequestType.JSON) {
+			if (reqType == ReqType.JSON) {
 				readableRequest = new KReadableRequest(request);
 				String body = readableRequest.getBodyString();
 				String header = KStringUtil.toJson(KHttpUtil.getHeaders());
@@ -215,8 +215,8 @@ public class KFilterApi extends KFilter {
 		// 5) decode-token
 		try {
 			String bearer = null;
-			TApiType apiType = KContext.getT(AttrKey.API_TYPE);
-			TAuthType authType = KContext.getT(AttrKey.AUTH_TYPE);
+			ApiType apiType = KContext.getT(AttrKey.API_TYPE);
+			AuthType authType = KContext.getT(AttrKey.AUTH_TYPE);
 			
 			// api타입별 유효한 인증타입(apikey, bearer) 검증
 			
@@ -323,7 +323,7 @@ public class KFilterApi extends KFilter {
 		ContentCachingResponseWrapper responseWrapper = null;
 		try {
 			responseWrapper = new ContentCachingResponseWrapper(response);
-			if (requestType == TRequestType.JSON) {
+			if (reqType == ReqType.JSON) {
 				chain.doFilter(readableRequest, responseWrapper);
 			} else {
 				chain.doFilter(request, responseWrapper);
@@ -348,13 +348,13 @@ public class KFilterApi extends KFilter {
 		// 11) reponse-logging
 		try {
 			String elapsed = null;
-			if (KContext.getT(AttrKey.API_TYPE) == TApiType.API) {
+			if (KContext.getT(AttrKey.API_TYPE) == ApiType.API) {
 				long reqTime = KContext.getT(AttrKey.REQ_TIME);
 				elapsed = String.format("%.3f", (System.currentTimeMillis() - reqTime) / 1000.0);
 			}
-			TResponseType responseType = KContext.getT(AttrKey.RESPONSE_TYPE);
+			RespType respType = KContext.getT(AttrKey.RESPONSE_TYPE);
 			long contentSize = responseWrapper.getContentSize();
-			if (responseType == TResponseType.JSON) {
+			if (respType == RespType.JSON) {
 				String resultCode = KContext.getT(AttrKey.RESULT_CODE);
 				String resultMessage = KContext.getT(AttrKey.RESULT_MESSAGE);
 				BufferedReader br = null;
@@ -375,7 +375,7 @@ public class KFilterApi extends KFilter {
 						br.close();
 					}
 				}
-			} else if (responseType == TResponseType.FILE) {
+			} else if (respType == RespType.FILE) {
 				String filename = KContext.getT(AttrKey.DOWN_FILE);
 				log.info(KLogMarker.response, "download file=`{}` (elapsed={}, bytes={})", filename, elapsed, contentSize);
 			} else {

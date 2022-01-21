@@ -18,8 +18,8 @@ import mgkim.framework.core.dto.KOutDTO;
 import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
-import mgkim.framework.core.type.KType.TAumthType;
-import mgkim.framework.core.type.KType.TUserType;
+import mgkim.framework.core.type.KType.AumthType;
+import mgkim.framework.core.type.KType.UserType;
 import mgkim.framework.online.com.mgr.ComFieldCryptorMgr;
 import mgkim.framework.online.com.mgr.ComSessionStatusMgr;
 import mgkim.framework.online.com.mgr.ComUserTokenMgr;
@@ -59,8 +59,8 @@ public class UserLoginController {
 		{
 			// `필수 정의`
 			claims.put("appCd", KProfile.APP_CD);
-			claims.put("userTpcd", TUserType.API.code());
-			claims.put("aumthTpcd", TAumthType.IDLOGIN.code());
+			claims.put("userTpcd", UserType.API.code());
+			claims.put("aumthTpcd", AumthType.IDLOGIN.code());
 			claims.put("userId", inVO.getUserId());
 
 			// `사용자 정의`

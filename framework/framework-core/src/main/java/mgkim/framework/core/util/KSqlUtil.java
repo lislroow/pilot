@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.logging.KLogMarker;
-import mgkim.framework.core.type.KType.TSqlType;
+import mgkim.framework.core.type.KType.SqlType;
 
 public class KSqlUtil {
 	
@@ -125,7 +125,7 @@ public class KSqlUtil {
 		return parameterIndex;
 	}
 	
-	public static String createParamSql(Object parameterObject, StatementHandler statementHandler, TSqlType paramSqlType) throws Exception {
+	public static String createParamSql(Object parameterObject, StatementHandler statementHandler, SqlType paramSqlType) throws Exception {
 		// 준비
 		MetaObject sHandlerMetaObject = MetaObject.forObject(statementHandler, new DefaultObjectFactory(), new DefaultObjectWrapperFactory(), new DefaultReflectorFactory());
 		MappedStatement mappedStatement = (MappedStatement) sHandlerMetaObject.getValue("delegate.mappedStatement");

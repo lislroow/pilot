@@ -9,8 +9,8 @@ import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.session.KSession;
-import mgkim.framework.core.type.KType.TApiType;
-import mgkim.framework.core.type.KType.TExecType;
+import mgkim.framework.core.type.KType.ApiType;
+import mgkim.framework.core.type.KType.ExecType;
 
 public class KDtoUtil {
 
@@ -30,10 +30,10 @@ public class KDtoUtil {
 			KCmmVO cmmVO = (KCmmVO) obj;
 			cmmVO.setAppCd(KProfile.APP_CD);
 
-			if (TApiType.PUBLIC == KContext.getT(AttrKey.API_TYPE)) {
+			if (ApiType.PUBLIC == KContext.getT(AttrKey.API_TYPE)) {
 				return true;
 			}
-			if (TExecType.REQUEST != KContext.getT(AttrKey.EXEC_TYPE)) {
+			if (ExecType.REQUEST != KContext.getT(AttrKey.EXEC_TYPE)) {
 				return true;
 			}
 

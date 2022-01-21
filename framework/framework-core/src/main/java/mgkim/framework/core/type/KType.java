@@ -4,18 +4,18 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public class KType {
 
-	public enum OsType {
+	public enum OSType {
 		WIN, LINUX;
 		public String label() {
 			return this.name().toLowerCase();
 		}
-		public static OsType get(String val) {
+		public static OSType get(String val) {
 			if (val == null || "".equals(val)) {
 				return null;
 			}
 			val = val.toLowerCase().substring(0, 1);
-			OsType[] list = OsType.values();
-			for (OsType item : list) {
+			OSType[] list = OSType.values();
+			for (OSType item : list) {
 				String label = item.label();
 				String label_c1 = label.substring(0, 1);
 				if (label_c1.equals(val)) {
@@ -26,18 +26,18 @@ public class KType {
 		}
 	}
 
-	public enum TApiType {
+	public enum ApiType {
 		API("api"), PUBLIC("public"), UNKNOWN("unknown");
 		private final String code;
 		public String code() {
 			return code;
 		}
-		private TApiType(String code) {
+		private ApiType(String code) {
 			this.code = code;
 		}
-		public static TApiType get(String code) {
-			TApiType[] values = TApiType.values();
-			for (TApiType item : values) {
+		public static ApiType get(String code) {
+			ApiType[] values = ApiType.values();
+			for (ApiType item : values) {
 				if (item.code().equals(code)) {
 					return item;
 				}
@@ -50,7 +50,7 @@ public class KType {
 		}
 	}
 	
-	public enum TAumthType {
+	public enum AumthType {
 		IDLOGIN("01"), EASYLOGIN("02"), NOLOGIN("10"), DEVLOGIN("90");
 		private final String code;
 		@JsonValue
@@ -61,13 +61,13 @@ public class KType {
 		public String label() {
 			return label;
 		}
-		private TAumthType(String code) {
+		private AumthType(String code) {
 			this.code = code;
 			this.label = this.name().toLowerCase();
 		}
-		public static TAumthType get(String val) {
-			TAumthType[] list = TAumthType.values();
-			for (TAumthType item : list) {
+		public static AumthType get(String val) {
+			AumthType[] list = AumthType.values();
+			for (AumthType item : list) {
 				if (item.code.equals(val) || item.label.equals(val)) {
 					return item;
 				}
@@ -76,13 +76,13 @@ public class KType {
 		}
 	}
 	
-	public enum TAuthType {
+	public enum AuthType {
 		NOAUTH("noauth"), BEARER("bearer"), APIKEY("apikey");
 		private final String code;
 		public String code() {
 			return code;
 		}
-		private TAuthType(String code) {
+		private AuthType(String code) {
 			this.code = code;
 		}
 		@Override
@@ -91,13 +91,13 @@ public class KType {
 		}
 	}
 	
-	public enum TCryptoType {
+	public enum CryptoType {
 		RSA("rsa"), AES("aes");
 		private final String code;
 		public String code() {
 			return code;
 		}
-		private TCryptoType(String code) {
+		private CryptoType(String code) {
 			this.code = code;
 		}
 	}
@@ -113,18 +113,18 @@ public class KType {
 		}
 	}
 	
-	public enum TExecType {
+	public enum ExecType {
 		REQUEST("request"), SCHEDULE("schedule"), SYSTEM("system");
 		private final String code;
 		public String code() {
 			return code;
 		}
-		private TExecType(String code) {
+		private ExecType(String code) {
 			this.code = code;
 		}
-		public static TExecType get(String code) {
-			TExecType[] values = TExecType.values();
-			for (TExecType item : values) {
+		public static ExecType get(String code) {
+			ExecType[] values = ExecType.values();
+			for (ExecType item : values) {
 				if (item.code().equals(code)) {
 					return item;
 				}
@@ -133,7 +133,7 @@ public class KType {
 		}
 	}
 	
-	public enum TJwtType {
+	public enum JwtType {
 		REFRESH_TOKEN("refreshToken"), ACCESS_TOKEN("accessToken");
 		private final String code;
 		@JsonValue
@@ -144,13 +144,13 @@ public class KType {
 		public String label() {
 			return label;
 		}
-		private TJwtType(String code) {
+		private JwtType(String code) {
 			this.code = code;
 			this.label = code;
 		}
-		public static TJwtType get(String val) {
-			TJwtType[] list = TJwtType.values();
-			for (TJwtType item : list) {
+		public static JwtType get(String val) {
+			JwtType[] list = JwtType.values();
+			for (JwtType item : list) {
 				if (item.code.equals(val) || item.label.equals(val)) {
 					return item;
 				}
@@ -159,18 +159,18 @@ public class KType {
 		}
 	}
 	
-	public enum TRequestType {
+	public enum ReqType {
 		JSON("json"), FILE("file"), FORM_DATA("form-data");
 		private final String code;
 		public String code() {
 			return code;
 		}
-		private TRequestType(String code) {
+		private ReqType(String code) {
 			this.code = code;
 		}
-		public static TRequestType get(String code) {
-			TRequestType[] values = TRequestType.values();
-			for (TRequestType item : values) {
+		public static ReqType get(String code) {
+			ReqType[] values = ReqType.values();
+			for (ReqType item : values) {
 				if (item.code().equals(code)) {
 					return item;
 				}
@@ -179,18 +179,18 @@ public class KType {
 		}
 	}
 	
-	public enum TResponseType {
+	public enum RespType {
 		JSON("json"), FILE("file");
 		private final String code;
 		public String code() {
 			return code;
 		}
-		private TResponseType(String code) {
+		private RespType(String code) {
 			this.code = code;
 		}
-		public static TResponseType get(String code) {
-			TResponseType[] values = TResponseType.values();
-			for (TResponseType item : values) {
+		public static RespType get(String code) {
+			RespType[] values = RespType.values();
+			for (RespType item : values) {
 				if (item.code().equals(code)) {
 					return item;
 				}
@@ -199,7 +199,7 @@ public class KType {
 		}
 	}
 	
-	public enum TSqlType {
+	public enum SqlType {
 		ORIGIN_SQL("origin-sql"),
 		PAGING_SQL("paging-sql"),
 		COUNT_SQL1("count-sql1"),
@@ -209,12 +209,12 @@ public class KType {
 		public String code() {
 			return code;
 		}
-		private TSqlType(String code) {
+		private SqlType(String code) {
 			this.code = code;
 		}
 	}
 	
-	public enum TSsStcdType {
+	public enum SsStcdType {
 		LOGIN("00"), DUP_LOGIN("10"), EXPIRED("20"), LOGOUT("30");
 		private final String code;
 		@JsonValue
@@ -225,13 +225,13 @@ public class KType {
 		public String label() {
 			return label;
 		}
-		private TSsStcdType(String code) {
+		private SsStcdType(String code) {
 			this.code = code;
 			this.label = this.name().toLowerCase();
 		}
-		public static TSsStcdType get(String val) {
-			TSsStcdType[] list = TSsStcdType.values();
-			for (TSsStcdType item : list) {
+		public static SsStcdType get(String val) {
+			SsStcdType[] list = SsStcdType.values();
+			for (SsStcdType item : list) {
 				if (item.code.equals(val) || item.label.equals(val)) {
 					return item;
 				}
@@ -240,18 +240,18 @@ public class KType {
 		}
 	}
 	
-	public enum TSysType {
+	public enum SysType {
 		LOC, DEV, STA, PROD;
 		public String label() {
 			return this.name().toLowerCase();
 		}
-		public static TSysType get(String val) {
+		public static SysType get(String val) {
 			if (val == null || "".equals(val)) {
 				return null;
 			}
 			val = val.toLowerCase();
-			TSysType[] list = TSysType.values();
-			for (TSysType item : list) {
+			SysType[] list = SysType.values();
+			for (SysType item : list) {
 				String label = item.label();
 				String label_c1 = label.substring(0, 1);
 				if (label.equals(val) || label_c1.equals(val)) {
@@ -262,7 +262,7 @@ public class KType {
 		}
 	}
 	
-	public enum TUserType {
+	public enum UserType {
 		API("api");
 		private final String code;
 		@JsonValue
@@ -273,22 +273,22 @@ public class KType {
 		public String label() {
 			return label;
 		}
-		private TUserType(String code) {
+		private UserType(String code) {
 			this.code = code;
 			this.label = code;
 		}
-		public static TUserType get(String val) {
-			TUserType[] list = TUserType.values();
-			for (TUserType item : list) {
+		public static UserType get(String val) {
+			UserType[] list = UserType.values();
+			for (UserType item : list) {
 				if (item.code.equals(val) || item.label.equals(val)) {
 					return item;
 				}
 			}
-			return TUserType.API;
+			return UserType.API;
 		}
 	}
 	
-	public enum TUuidType {
+	public enum UuidType {
 		GUID("g", 13), SSID("s", 13), TXID("t", 13), APIKEY("ak", 13),
 		FILEID("f", 13), FGRPID("fg", 13);
 		private final String prefix;
@@ -299,7 +299,7 @@ public class KType {
 		public int length() {
 			return length;
 		}
-		private TUuidType(String prefix, int length) {
+		private UuidType(String prefix, int length) {
 			this.prefix = prefix;
 			this.length = length;
 		}
