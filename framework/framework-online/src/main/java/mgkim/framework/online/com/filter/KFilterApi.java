@@ -46,7 +46,7 @@ import mgkim.framework.online.com.mgr.ComSessionStatusMgr;
 import mgkim.framework.online.com.mgr.ComUriListMgr;
 import mgkim.framework.online.com.mgr.ComUserSessionMgr;
 import mgkim.framework.online.com.mgr.ComUserTokenMgr;
-import mgkim.framework.online.com.scheduler.CmmApiTxLogScheduler;
+import mgkim.framework.online.com.scheduler.ComApiTxLogScheduler;
 import mgkim.framework.online.com.scheduler.ComSessionStatusMngScheduler;
 
 @KBean(name = "api 필터")
@@ -59,7 +59,7 @@ public class KFilterApi extends KFilter {
 	@Autowired(required = true)
 	private ComUriListMgr comUriListMgr;
 	@Autowired(required = true)
-	private CmmApiTxLogScheduler cmmApiTxLogScheduler;
+	private ComApiTxLogScheduler comApiTxLogScheduler;
 	@Autowired(required = true)
 	private ComUserTokenMgr comUserTokenMgr;
 	@Autowired(required = true)
@@ -71,8 +71,8 @@ public class KFilterApi extends KFilter {
 	
 	@Override
 	public void afterPropertiesSet() throws ServletException {
-		if (cmmApiTxLogScheduler == null) {
-			log.warn(KMessage.get(KMessage.E5002, KObjectUtil.name(CmmApiTxLogScheduler.class)));
+		if (comApiTxLogScheduler == null) {
+			log.warn(KMessage.get(KMessage.E5002, KObjectUtil.name(ComApiTxLogScheduler.class)));
 			return;
 		}
 	}
@@ -389,7 +389,7 @@ public class KFilterApi extends KFilter {
 			return;
 		} finally {
 			// `api처리로그 스케줄러` 가 활성화 상태일 경우 실행
-			//cmmApiTxLogScheduler.addLog();
+			//comApiTxLogScheduler.addLog();
 			responseWrapper.copyBodyToResponse(); // copy를 하지 않으면 빈 문자열을 response 하게 됩니다.
 		}
 	}

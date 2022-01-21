@@ -24,9 +24,9 @@ import mgkim.framework.core.util.KDateUtil;
 import mgkim.framework.core.util.KObjectUtil;
 
 @KTaskSchedule(name = "api처리로그 관리", interval = 1000, manage = true)
-public class CmmApiTxLogScheduler extends KScheduler {
+public class ComApiTxLogScheduler extends KScheduler {
 	
-	private static final Logger log = LoggerFactory.getLogger(CmmApiTxLogScheduler.class);
+	private static final Logger log = LoggerFactory.getLogger(ComApiTxLogScheduler.class);
 
 	private final int MAX_QUEUQ_SIZE = 3;
 
@@ -43,7 +43,7 @@ public class CmmApiTxLogScheduler extends KScheduler {
 			if (KObjectUtil.required(CmmApiTxLog.class)) {
 				throw new KSysException(KMessage.E5001, KObjectUtil.name(CmmApiTxLog.class));
 			} else {
-				log.warn(KMessage.get(KMessage.E5003, KObjectUtil.name(CmmApiTxLogScheduler.class), KObjectUtil.name(CmmApiTxLog.class)));
+				log.warn(KMessage.get(KMessage.E5003, KObjectUtil.name(ComApiTxLogScheduler.class), KObjectUtil.name(CmmApiTxLog.class)));
 			}
 			return;
 		}
