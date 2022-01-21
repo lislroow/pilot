@@ -1,4 +1,4 @@
-package mgkim.framework.online.api.cmm.web;
+package mgkim.framework.online.api.com.web;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
@@ -81,7 +81,7 @@ public class RuntimeController {
 	}
 	
 	@ApiOperation(value = "(실행환경) spring-bean 목록 조회")
-	@RequestMapping(value = "/api/adm/runtime/spring-beans", method = RequestMethod.GET)
+	@RequestMapping(value = "/api/com/runtime/spring-beans", method = RequestMethod.GET)
 	public @ResponseBody KOutDTO<List<Map>> springBeans() throws Exception {
 		KOutDTO<List<Map>> outDTO = new KOutDTO<List<Map>>();
 		List<Map> listVO = new ArrayList<Map>();
@@ -122,7 +122,7 @@ public class RuntimeController {
 	}
 	
 	@ApiOperation(value = "(실행환경) mybatis-mapper 목록 조회")
-	@RequestMapping(value = "/api/adm/runtime/mybatis-mapper", method = RequestMethod.GET)
+	@RequestMapping(value = "/api/com/runtime/mybatis-mapper", method = RequestMethod.GET)
 	public @ResponseBody KOutDTO<List<String>> mybatisMapper() throws Exception {
 		KOutDTO<List<String>> outDTO = new KOutDTO<List<String>>();
 
@@ -228,7 +228,7 @@ public class RuntimeController {
 	}
 
 	@ApiOperation(value = "(실행환경) mybatis-mapper-sqltext 조회")
-	@RequestMapping(value = "/api/adm/runtime/mybatis-mapper-sqltext", method = RequestMethod.GET)
+	@RequestMapping(value = "/api/com/runtime/mybatis-mapper-sqltext", method = RequestMethod.GET)
 	public @ResponseBody ResponseEntity<byte[]> mybatisMapperSqltext() throws Exception {
 		ResponseEntity<byte[]> resp = null;
 		
@@ -314,7 +314,7 @@ public class RuntimeController {
 	}
 
 	@ApiOperation(value = "(실행환경) spring-uri 목록 조회")
-	@RequestMapping(value = "/api/adm/runtime/spring-uri", method = RequestMethod.GET)
+	@RequestMapping(value = "/api/com/runtime/spring-uri", method = RequestMethod.GET)
 	public @ResponseBody KOutDTO<List<Map>> springUri() throws Exception {
 		KOutDTO<List<Map>> outDTO = new KOutDTO<List<Map>>();
 		
@@ -360,7 +360,7 @@ public class RuntimeController {
 	}
 
 	@ApiOperation(value = "(실행환경) spring-security-uri 목록 조회")
-	@RequestMapping(value = "/api/adm/runtime/spring-security-uri", method = RequestMethod.GET)
+	@RequestMapping(value = "/api/com/runtime/spring-security-uri", method = RequestMethod.GET)
 	public @ResponseBody KOutDTO<List<Map<String, Object>>> springSecurityUri() throws Exception {
 		KOutDTO<List<Map<String, Object>>> outDTO = new KOutDTO<List<Map<String, Object>>>();
 
@@ -378,7 +378,7 @@ public class RuntimeController {
 	}
 
 	@ApiOperation(value = "(실행환경) java-env-variable 목록 조회")
-	@RequestMapping(value = "/api/adm/runtime/java-env-variable", method = RequestMethod.GET)
+	@RequestMapping(value = "/api/com/runtime/java-env-variable", method = RequestMethod.GET)
 	public @ResponseBody KOutDTO<List<Map>> javaEnvVariable() throws Exception {
 		KOutDTO<List<Map>> outDTO = new KOutDTO<List<Map>>();
 		List<Map> listVO = new ArrayList<Map>();
@@ -411,7 +411,7 @@ public class RuntimeController {
 	}
 
 	@ApiOperation(value = "(실행환경) jdbc-datasource 목록 조회")
-	@RequestMapping(value = "/api/adm/runtime/jdbc-datasource", method = RequestMethod.GET)
+	@RequestMapping(value = "/api/com/runtime/jdbc-datasource", method = RequestMethod.GET)
 	public @ResponseBody KOutDTO<List<Map>> jdbcDatasource() throws Exception {
 		KOutDTO<List<Map>> outDTO = new KOutDTO<List<Map>>();
 

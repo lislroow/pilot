@@ -1,4 +1,4 @@
-package mgkim.framework.online.api.cmm.vo;
+package mgkim.framework.online.api.com.vo;
 
 import java.util.List;
 

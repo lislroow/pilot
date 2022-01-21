@@ -1,4 +1,4 @@
-package mgkim.framework.online.api.cmm.web;
+package mgkim.framework.online.api.com.web;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import mgkim.framework.core.dto.KCmmVO;
 import mgkim.framework.core.dto.KInPageDTO;
 import mgkim.framework.core.dto.KOutPageDTO;
 import mgkim.framework.core.env.KConstant;
-import mgkim.framework.online.api.cmm.service.ApiTxLogService;
+import mgkim.framework.online.api.com.service.ApiTxLogService;
 
 @Api( tags = { KConstant.SWG_SYSTEM_COMMON } )
 @RestController
@@ -26,7 +26,7 @@ public class ApiTxLogController {
 	private ApiTxLogService apiTxLogService;
 
 	@ApiOperation(value = "(apitxlog) 로그 데이터 조회: selectList")
-	@RequestMapping(value = "/api/adm/apitxlog/selectLogList", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/com/apitxlog/selectLogList", method = RequestMethod.POST)
 	public @ResponseBody KOutPageDTO<List<CmmApiTxLogVO>> selectLogList(@RequestBody KInPageDTO<KCmmVO> inDTO) throws Exception {
 		KOutPageDTO<List<CmmApiTxLogVO>> outDTO = new KOutPageDTO<List<CmmApiTxLogVO>>();
 		KCmmVO inVO = inDTO.getBody();

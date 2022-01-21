@@ -1,4 +1,4 @@
-package mgkim.framework.online.api.cmm.web;
+package mgkim.framework.online.api.com.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,7 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import mgkim.framework.core.dto.KInDTO;
 import mgkim.framework.core.dto.KOutDTO;
 import mgkim.framework.core.env.KConstant;
-import mgkim.framework.online.api.cmm.service.InitDataLoadService;
+import mgkim.framework.online.api.com.service.InitDataLoadService;
 
 @Api( tags = { KConstant.SWG_SYSTEM_MANAGEMENT } )
 @RestController
@@ -26,7 +26,7 @@ public class InitDataLoadController {
 	// 데이터 일괄 적재
 	// ##############
 	@ApiOperation(value = "(초기데이터) 데이터 일괄 적재")
-	@RequestMapping(value = "/api/adm/initdata/loadAll", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/com/initdata/loadAll", method = RequestMethod.POST)
 	public @ResponseBody KOutDTO<String> loadAll(@RequestBody KInDTO<?> inDTO) throws Exception {
 		KOutDTO<String> outDTO = new KOutDTO<String>();
 		initDataLoadService.loadRole();
@@ -47,7 +47,7 @@ public class InitDataLoadController {
 	// 1) 권한
 	// ##############
 	@ApiOperation(value = "(초기데이터) 1.1 권한")
-	@RequestMapping(value = "/api/adm/initdata/loadRole", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/com/initdata/loadRole", method = RequestMethod.POST)
 	public @ResponseBody KOutDTO<?> loadRole(@RequestBody KInDTO<?> inDTO) throws Exception {
 		KOutDTO<?> outDTO = new KOutDTO<>();
 		initDataLoadService.loadRole();
@@ -55,7 +55,7 @@ public class InitDataLoadController {
 	}
 
 	@ApiOperation(value = "(초기데이터) 1.2 권한그룹")
-	@RequestMapping(value = "/api/adm/initdata/loadRgrp", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/com/initdata/loadRgrp", method = RequestMethod.POST)
 	public @ResponseBody KOutDTO<?> loadRgrp(@RequestBody KInDTO<?> inDTO) throws Exception {
 		KOutDTO<?> outDTO = new KOutDTO<>();
 		initDataLoadService.loadRgrp();
@@ -63,7 +63,7 @@ public class InitDataLoadController {
 	}
 
 	@ApiOperation(value = "(초기데이터) 1.3 권한그룹설정")
-	@RequestMapping(value = "/api/adm/initdata/loadRoleRgrp", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/com/initdata/loadRoleRgrp", method = RequestMethod.POST)
 	public @ResponseBody KOutDTO<?> loadRoleRgrp(@RequestBody KInDTO<?> inDTO) throws Exception {
 		KOutDTO<?> outDTO = new KOutDTO<>();
 		initDataLoadService.loadRoleRgrp();
@@ -75,7 +75,7 @@ public class InitDataLoadController {
 	// 2) 자원
 	// ##############
 	@ApiOperation(value = "(초기데이터) 2.1 uri(raw)")
-	@RequestMapping(value = "/api/adm/initdata/loadUriRaw", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/com/initdata/loadUriRaw", method = RequestMethod.POST)
 	public @ResponseBody KOutDTO<?> loadUriRaw(@RequestBody KInDTO<?> inDTO) throws Exception {
 		KOutDTO<?> outDTO = new KOutDTO<>();
 		initDataLoadService.loadUriRaw();
@@ -83,7 +83,7 @@ public class InitDataLoadController {
 	}
 
 	@ApiOperation(value = "(초기데이터) 2.2 uri")
-	@RequestMapping(value = "/api/adm/initdata/loadUri", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/com/initdata/loadUri", method = RequestMethod.POST)
 	public @ResponseBody KOutDTO<?> loadUri(@RequestBody KInDTO<?> inDTO) throws Exception {
 		KOutDTO<?> outDTO = new KOutDTO<>();
 		initDataLoadService.loadUri();
@@ -91,7 +91,7 @@ public class InitDataLoadController {
 	}
 
 	@ApiOperation(value = "(초기데이터) 2.3 uri권한")
-	@RequestMapping(value = "/api/adm/initdata/loadUriRgrp", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/com/initdata/loadUriRgrp", method = RequestMethod.POST)
 	public @ResponseBody KOutDTO<?> loadUriRgrp(@RequestBody KInDTO<?> inDTO) throws Exception {
 		KOutDTO<?> outDTO = new KOutDTO<>();
 		initDataLoadService.loadUriRgrp();
@@ -103,7 +103,7 @@ public class InitDataLoadController {
 	// 3) 사용자
 	// ##############
 	@ApiOperation(value = "(초기데이터) 3.1 사용자(raw)")
-	@RequestMapping(value = "/api/adm/initdata/loadUserRaw", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/com/initdata/loadUserRaw", method = RequestMethod.POST)
 	public @ResponseBody KOutDTO<?> loadUserRaw(@RequestBody KInDTO<?> inDTO) throws Exception {
 		KOutDTO<?> outDTO = new KOutDTO<>();
 		initDataLoadService.loadUserRaw();
@@ -111,7 +111,7 @@ public class InitDataLoadController {
 	}
 
 	@ApiOperation(value = "(초기데이터) 3.2 사용자")
-	@RequestMapping(value = "/api/adm/initdata/loadUser", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/com/initdata/loadUser", method = RequestMethod.POST)
 	public @ResponseBody KOutDTO<?> loadUser(@RequestBody KInDTO<?> inDTO) throws Exception {
 		KOutDTO<?> outDTO = new KOutDTO<>();
 		initDataLoadService.loadUser();
@@ -119,7 +119,7 @@ public class InitDataLoadController {
 	}
 
 	@ApiOperation(value = "(초기데이터) 3.3 사용자권한")
-	@RequestMapping(value = "/api/adm/initdata/loadUserRpgr", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/com/initdata/loadUserRpgr", method = RequestMethod.POST)
 	public @ResponseBody KOutDTO<?> loadUserRpgr(@RequestBody KInDTO<?> inDTO) throws Exception {
 		KOutDTO<?> outDTO = new KOutDTO<>();
 		initDataLoadService.loadUserRpgr();

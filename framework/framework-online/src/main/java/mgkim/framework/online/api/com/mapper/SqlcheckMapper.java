@@ -1,11 +1,11 @@
-package mgkim.framework.online.api.cmm.mapper;
+package mgkim.framework.online.api.com.mapper;
 
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import mgkim.framework.online.api.cmm.vo.SqlcheckVO;
+import mgkim.framework.online.api.com.vo.SqlcheckVO;
 
 @Mapper
 public interface SqlcheckMapper {

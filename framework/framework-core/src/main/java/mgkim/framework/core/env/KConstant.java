@@ -59,8 +59,8 @@ public class KConstant {
 	public static final List<String> PUBLIC_URI = Arrays.asList(
 			  "/"
 			, "/public/**"
-			, "/api/adm/runtime/**"
-			, "/api/adm/initdata/**"
+			, "/api/com/runtime/**"
+			, "/api/com/initdata/**"
 			);
 	public static final String API_URI = "/api/**";
 }

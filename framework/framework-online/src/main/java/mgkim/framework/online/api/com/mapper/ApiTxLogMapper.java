@@ -1,4 +1,4 @@
-package mgkim.framework.online.api.cmm.mapper;
+package mgkim.framework.online.api.com.mapper;
 
 import java.util.List;
 

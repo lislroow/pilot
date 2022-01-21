@@ -1,4 +1,4 @@
-package mgkim.framework.online.api.cmm.web;
+package mgkim.framework.online.api.com.web;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +33,7 @@ public class ComController {
 	private ComDebugScheduler comDebugScheduler;
 
 	@ApiOperation(value = "(apitxlog) 로그 데이터 이관")
-	@RequestMapping(value = "/api/cmm/apitxlog/archive", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/com/apitxlog/archive", method = RequestMethod.POST)
 	public @ResponseBody KOutDTO<String> archive(@RequestBody KInDTO<Long> inDTO) throws Exception {
 		KOutDTO<String> outDTO = new KOutDTO<String>();
 		Long inData = inDTO.getBody();
@@ -48,7 +48,7 @@ public class ComController {
 	}
 
 	@ApiOperation(value = "(session) 세션 trace")
-	@RequestMapping(value = "/api/cmm/session/trace-start", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/com/session/trace-start", method = RequestMethod.POST)
 	public @ResponseBody KOutDTO<CmmDebugVO> traceStart(@RequestBody KInDTO<CmmDebugVO> inDTO) throws Exception {
 		KOutDTO<CmmDebugVO> outDTO = new KOutDTO<CmmDebugVO>();
 		CmmDebugVO inVO = inDTO.getBody();
@@ -58,14 +58,14 @@ public class ComController {
 	}
 
 	@ApiOperation(value = "(session) 세션 health-check")
-	@RequestMapping(value = {"/api/cmm/session/health-check"}, method = RequestMethod.POST)
+	@RequestMapping(value = {"/api/com/session/health-check"}, method = RequestMethod.POST)
 	public @ResponseBody KOutDTO<?> healthCheck() throws Exception {
 		KOutDTO<?> outDTO = new KOutDTO<>();
 		return outDTO;
 	}
 
 	@ApiOperation(value = "(time) 시간 현재시각")
-	@RequestMapping(value = "/public/cmm/time/systimestamp", method = RequestMethod.POST)
+	@RequestMapping(value = "/public/com/time/systimestamp", method = RequestMethod.POST)
 	public @ResponseBody KOutDTO<String> systimestamp(@RequestBody KInDTO<?> inDTO) throws Exception {
 		KOutDTO<String> outDTO = new KOutDTO<String>();
 		outDTO.setBody(KDateUtil.now(KConstant.FMT_YYYY_MM_DD_HH_MM_SS));

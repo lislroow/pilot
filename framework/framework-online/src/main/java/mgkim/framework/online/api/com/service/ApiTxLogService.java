@@ -1,4 +1,4 @@
-package mgkim.framework.online.api.cmm.service;
+package mgkim.framework.online.api.com.service;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import mgkim.framework.cmm.online.vo.CmmApiTxLogVO;
 import mgkim.framework.core.dto.KCmmVO;
-import mgkim.framework.online.api.cmm.mapper.ApiTxLogMapper;
+import mgkim.framework.online.api.com.mapper.ApiTxLogMapper;
 
 @Service
 public class ApiTxLogService {

@@ -1,4 +1,4 @@
-package mgkim.framework.online.api.cmm.web;
+package mgkim.framework.online.api.com.web;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +29,7 @@ public class SchedulerController {
 	private ComScheduleMgr comScheduleMgr;
 
 	@ApiOperation(value = "(scheduler) 스케줄러 현황")
-	@RequestMapping(value = "/api/adm/scheduler/status", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/com/scheduler/status", method = RequestMethod.POST)
 	public @ResponseBody KOutDTO<List<Map<String, String>>> status(@RequestBody KInDTO<?> inDTO) throws Exception {
 		KOutDTO<List<Map<String, String>>> outDTO = new KOutDTO<List<Map<String, String>>>();
 		List<KScheduler> scheduleList = comScheduleMgr.getScheduleList();
