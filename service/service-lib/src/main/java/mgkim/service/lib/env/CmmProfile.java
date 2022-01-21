@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KProfile;
-import mgkim.framework.core.type.TOsType;
+import mgkim.framework.core.type.KType.OsType;
 import mgkim.framework.core.type.TSysType;
 import mgkim.service.lib.type.TAppType;
 
@@ -48,13 +48,13 @@ public class CmmProfile {
 			case DEV:
 			case STA:
 			case PROD:
-				if (KProfile.OS == TOsType.LINUX) {
+				if (KProfile.OS == OsType.LINUX) {
 					String configXml = String.format("/app/pilot-%s/.logback-%s-%s.xml"
 							, KProfile.SYS.label()
 							, KProfile.APP_NM
 							, KProfile.SYS.label());
 					System.setProperty("logging.config", configXml);
-				} else if (KProfile.OS == TOsType.WIN) {
+				} else if (KProfile.OS == OsType.WIN) {
 					String configXml = String.format("src/main/resources/.logback-%s-%s.xml"
 							, KProfile.APP_NM
 							, KProfile.SYS.label());

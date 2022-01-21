@@ -35,7 +35,7 @@ import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.core.logging.KLogMarker;
 import mgkim.framework.core.request.KReadableRequest;
 import mgkim.framework.core.stereo.KFilter;
-import mgkim.framework.core.type.TApiType;
+import mgkim.framework.core.type.KType.TApiType;
 import mgkim.framework.core.type.TAuthType;
 import mgkim.framework.core.type.TRequestType;
 import mgkim.framework.core.type.TResponseType;

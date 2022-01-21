@@ -17,7 +17,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import mgkim.framework.core.env.KConstant;
-import mgkim.framework.core.type.TApiType;
+import mgkim.framework.core.type.KType.TApiType;
 
 public class KHttpUtil {
 	

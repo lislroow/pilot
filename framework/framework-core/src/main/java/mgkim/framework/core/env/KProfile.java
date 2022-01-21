@@ -8,7 +8,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import mgkim.framework.core.type.TOsType;
+import mgkim.framework.core.type.KType.OsType;
 import mgkim.framework.core.type.TSysType;
 
 public class KProfile {
@@ -24,7 +24,7 @@ public class KProfile {
 	public static String APP_NM;
 	public static String APP_NAME;
 	public static TSysType SYS;
-	public static TOsType OS;
+	public static OsType OS;
 	public static List<String> profiles = new ArrayList<String>();
 	public static String PROFILES_STR;
 
@@ -44,7 +44,7 @@ public class KProfile {
 			HOSTNAME = hostname;
 		}
 		String osName = System.getProperty(KConstant.VM_OS_NAME);
-		KProfile.OS = TOsType.get(osName);
+		KProfile.OS = OsType.get(osName);
 		
 		String appId = System.getProperty(KConstant.VM_APP_ID);
 		if (appId == null) {

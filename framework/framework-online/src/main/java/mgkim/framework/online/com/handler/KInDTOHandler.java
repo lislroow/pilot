@@ -26,7 +26,7 @@ import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.core.logging.KLogMarker;
-import mgkim.framework.core.type.TApiType;
+import mgkim.framework.core.type.KType.TApiType;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.com.mgr.ComFieldCryptorMgr;

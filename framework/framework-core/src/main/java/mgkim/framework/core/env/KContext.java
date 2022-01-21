@@ -13,7 +13,7 @@ import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.core.logging.KLogMDC;
 import mgkim.framework.core.logging.KLogMarker;
-import mgkim.framework.core.type.TApiType;
+import mgkim.framework.core.type.KType.TApiType;
 import mgkim.framework.core.type.TAuthType;
 import mgkim.framework.core.type.TExecType;
 import mgkim.framework.core.type.TUuidType;

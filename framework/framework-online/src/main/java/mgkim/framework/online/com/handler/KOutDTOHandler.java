@@ -29,7 +29,7 @@ import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
-import mgkim.framework.core.type.TApiType;
+import mgkim.framework.core.type.KType.TApiType;
 import mgkim.framework.core.type.TAuthType;
 import mgkim.framework.core.type.TResponseType;
 import mgkim.framework.core.util.KObjectUtil;
