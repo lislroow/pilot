@@ -83,7 +83,7 @@ public class RuntimeController {
 		KOutDTO<List<Map<String, String>>> outDTO = new KOutDTO<List<Map<String, String>>>();
 		List<Map<String, String>> outBody = new ArrayList<Map<String, String>>();
 		outBody = Arrays.stream(springContext.getBeanDefinitionNames())
-			.filter(beanName -> !beanName.startsWith("springfox."))
+			.filter(beanName -> !springContext.getBean(beanName).getClass().getName().startsWith("springfox."))
 			.collect(ArrayList<Map<String, String>>::new,
 					(list, beanName) -> {
 						Map<String, String> map = new HashMap<String, String>();

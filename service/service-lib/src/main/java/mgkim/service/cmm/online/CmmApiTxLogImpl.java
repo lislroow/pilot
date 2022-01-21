@@ -1,4 +1,4 @@
-package mgkim.service.cmm;
+package mgkim.service.cmm.online;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import mgkim.framework.cmm.online.CmmApiTxLog;
 import mgkim.framework.cmm.online.vo.CmmApiTxLogVO;
 import mgkim.framework.core.annotation.KBean;
-import mgkim.service.cmm.mapper.CmmApiTxLogMapper;
+import mgkim.service.cmm.online.mapper.CmmApiTxLogMapper;
 
 @KBean
 public class CmmApiTxLogImpl implements CmmApiTxLog {

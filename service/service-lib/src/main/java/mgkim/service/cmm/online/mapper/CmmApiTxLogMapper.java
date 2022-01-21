@@ -1,4 +1,4 @@
-package mgkim.service.cmm.mapper;
+package mgkim.service.cmm.online.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 

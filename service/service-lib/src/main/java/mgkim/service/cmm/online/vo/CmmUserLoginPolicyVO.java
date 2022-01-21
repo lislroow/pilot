@@ -1,4 +1,4 @@
-package mgkim.service.cmm.vo;
+package mgkim.service.cmm.online.vo;
 
 public class CmmUserLoginPolicyVO {
 

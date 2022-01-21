@@ -23,7 +23,7 @@ import mgkim.framework.core.type.TUserType;
 import mgkim.framework.online.com.mgr.ComFieldCryptorMgr;
 import mgkim.framework.online.com.mgr.ComSessionStatusMgr;
 import mgkim.framework.online.com.mgr.ComUserTokenMgr;
-import mgkim.service.cmm.vo.CmmUserLoginPolicyVO;
+import mgkim.service.cmm.online.vo.CmmUserLoginPolicyVO;
 import mgkim.service.www.api.cmm.userlogin.service.UserLoginService;
 import mgkim.service.www.api.cmm.userlogin.vo.UserLoginReqVO;
 import mgkim.service.www.api.cmm.userlogin.vo.UserLoginResVO;

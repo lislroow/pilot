@@ -1,4 +1,4 @@
-package mgkim.service.cmm;
+package mgkim.service.cmm.online;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import mgkim.framework.cmm.online.vo.CmmSessionMngListVO;
 import mgkim.framework.cmm.online.vo.CmmSessionStatusVO;
 import mgkim.framework.core.type.TSsStcdType;
 import mgkim.framework.core.util.KStringUtil;
-import mgkim.service.cmm.mapper.CmmSessionStatusMngMapper;
+import mgkim.service.cmm.online.mapper.CmmSessionStatusMngMapper;
 
 @Service
 public class CmmSessionStatusMngImpl implements CmmSessionStatusMng {

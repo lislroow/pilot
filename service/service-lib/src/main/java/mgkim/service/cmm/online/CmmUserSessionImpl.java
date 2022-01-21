@@ -1,4 +1,4 @@
-package mgkim.service.cmm;
+package mgkim.service.cmm.online;
 
 import java.util.List;
 import java.util.Map;
@@ -12,7 +12,7 @@ import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.core.session.KSession;
-import mgkim.service.cmm.mapper.CmmUserSessionMapper;
+import mgkim.service.cmm.online.mapper.CmmUserSessionMapper;
 
 @Service
 public class CmmUserSessionImpl implements CmmUserSession {

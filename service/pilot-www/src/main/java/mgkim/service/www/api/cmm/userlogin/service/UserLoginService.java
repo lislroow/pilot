@@ -5,7 +5,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import mgkim.service.cmm.vo.CmmUserLoginPolicyVO;
+import mgkim.service.cmm.online.vo.CmmUserLoginPolicyVO;
 import mgkim.service.www.api.cmm.userlogin.mapper.UserLoginMapper;
 
 @Service
