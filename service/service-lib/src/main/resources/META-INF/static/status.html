@@ -571,7 +571,7 @@ function fn_setDataTbl05(tblId, list) {
       var item = list[i];
       var $tr = $('#'+tblId+' > tfoot > tr').clone();
       $tr.find('td[id='+tblId+'_'+'a]').attr('id', tblId+'_'+'a'+'_'+i).text((list.length-i)).attr('data', (list.length-i));
-      $tr.find('td[id='+tblId+'_'+'b]').attr('id', tblId+'_'+'b'+'_'+i).text(item.sourceType).attr('data', item.sourceType);
+      $tr.find('td[id='+tblId+'_'+'b]').attr('id', tblId+'_'+'b'+'_'+i).text(item.beanClass).attr('data', item.beanClass);
       $tr.find('td[id='+tblId+'_'+'c]').attr('id', tblId+'_'+'c'+'_'+i).text(item.key).attr('data', item.key);
       $tr.find('td[id='+tblId+'_'+'d]').attr('id', tblId+'_'+'d'+'_'+i).text(item.value).attr('data', item.value);
       $('#'+tblId+' > tbody').append($tr);
@@ -1007,14 +1007,14 @@ function fn_filterTxtDataTbl06() {
             <table id="tbl05" class="table-primary mar-btm-20">
                 <colgroup>
                     <col style="width:5px;" />
-                    <col style="width:6px;" />
+                    <col style="width:60px;" />
                     <col style="width:25px;" />
                     <col style="width:70px;" />
                 </colgroup>
                 <thead>
                     <tr class="align-center">
                         <th scope="col">no</th>
-                        <th scope="col">source</th>
+                        <th scope="col">beanClass</th>
                         <th scope="col">key</th>
                         <th scope="col">value</th>
                     </tr>

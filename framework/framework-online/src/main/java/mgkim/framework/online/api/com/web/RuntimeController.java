@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import javax.sql.DataSource;
@@ -28,10 +29,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.env.AbstractEnvironment;
+import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.MutablePropertySources;
-import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -360,86 +361,63 @@ public class RuntimeController {
 	@RequestMapping(value = "/api/com/runtime/spring-security-uri", method = RequestMethod.GET)
 	public @ResponseBody KOutDTO<List<Map<String, Object>>> springSecurityUri() throws Exception {
 		KOutDTO<List<Map<String, Object>>> outDTO = new KOutDTO<List<Map<String, Object>>>();
-
-		List<Map<String, Object>> listVO = null;
+		
 		Map<String, String> param = new HashMap<String, String>();
 		param.put("appCd", KProfile.APP_CD);
 		List<Map<String, Object>> list = namedJdbc.queryForList(ComUriAuthorityMgr.CONFIG_SQL, param);
-		listVO = list.stream().map(
-				item -> item.entrySet()
+		
+		List<Map<String, Object>> outBody = null;
+		outBody = list.stream()
+					.map(item -> item.entrySet()
 					.stream()
 					.collect(Collectors.toMap(e -> e.getKey().toLowerCase(), Map.Entry::getValue)))
-				.collect(Collectors.toList());
-		outDTO.setBody(listVO);
+					.collect(Collectors.toList());
+		outDTO.setBody(outBody);
 		return outDTO;
 	}
 
-	@ApiOperation(value = "(실행환경) java-env-variable 목록 조회")
-	@RequestMapping(value = "/api/com/runtime/java-env-variable", method = RequestMethod.GET)
-	public @ResponseBody KOutDTO<List<Map>> javaEnvVariable() throws Exception {
-		KOutDTO<List<Map>> outDTO = new KOutDTO<List<Map>>();
-		List<Map> listVO = new ArrayList<Map>();
-		MutablePropertySources sources = ((org.springframework.core.env.AbstractEnvironment) environment).getPropertySources();
-		sources.iterator().forEachRemaining(item -> {
-			if (item instanceof SystemEnvironmentPropertySource) {
-				SystemEnvironmentPropertySource sysEnv = (SystemEnvironmentPropertySource) item;
-				sysEnv.getSource().forEach((key, value) -> {
-					Map vo = new HashMap();
-					vo.put("sourceType", "sys-env");
-					vo.put("key", key);
-					vo.put("value", value.toString());
-					listVO.add(vo);
-					log.trace(key + " = " + value);
-				});
-			} else if (item instanceof MapPropertySource) {
-				MapPropertySource javaEnv = (MapPropertySource) item;
-				javaEnv.getSource().forEach((key, value) -> {
-					Map vo = new HashMap();
-					vo.put("sourceType", "java-env");
-					vo.put("key", key);
-					vo.put("value", value.toString());
-					listVO.add(vo);
-					log.trace(key + " = " + value);
-				});
-			}
-		});
-		outDTO.setBody(listVO);
+	@ApiOperation(value = "(실행환경) properties 목록 조회")
+	@RequestMapping(value = "/api/com/runtime/properties", method = RequestMethod.GET)
+	public @ResponseBody KOutDTO<List<Map<String, Object>>> javaEnvVariable() throws Exception {
+		KOutDTO<List<Map<String, Object>>> outDTO = new KOutDTO<List<Map<String, Object>>>();
+		MutablePropertySources sources = ((AbstractEnvironment) environment).getPropertySources();
+		List<Map<String, Object>> outBody = null;
+		outBody = (sources.stream()
+					.filter(ps -> ps instanceof EnumerablePropertySource)
+					.collect(Collectors.toMap(e -> e.getClass().getSimpleName(), Function.identity())))
+				.entrySet().stream()
+				.collect(ArrayList<Map<String, Object>>::new,
+					(list, prop) -> {
+						Object clazz = prop.getKey();
+						List<Map<String, Object>> smap = null;
+						smap = Arrays.stream(((EnumerablePropertySource) prop.getValue()).getPropertyNames())
+								.filter(sprop -> !"java.class.path".equals(sprop))
+								.collect(ArrayList<Map<String, Object>>::new,
+									(slist, sprop) -> {
+										Map<String, Object> map = new HashMap<String, Object>();
+										map.put("beanClass", clazz);
+										map.put("key", sprop);
+										map.put("value", environment.getProperty(sprop));
+										list.add(map);
+									},
+									ArrayList::addAll);
+						list.addAll(smap);
+					},
+					ArrayList::addAll);
+		outDTO.setBody(outBody);
 		return outDTO;
 	}
-
+	
 	@ApiOperation(value = "(실행환경) jdbc-datasource 목록 조회")
 	@RequestMapping(value = "/api/com/runtime/jdbc-datasource", method = RequestMethod.GET)
 	public @ResponseBody KOutDTO<List<Map<String, String>>> jdbcDatasource() throws Exception {
 		KOutDTO<List<Map<String, String>>> outDTO = new KOutDTO<List<Map<String, String>>>();
 		BasicDataSource dataSource = springContext.getBean(BasicDataSource.class);
 		if (dataSource != null) {
-			/*
-			Stream<String> names = Stream.of(
-					"closed",
-					"driverClassName",
-					"initialSize",
-					"maxIdle",
-					"maxTotal",
-					"minIdle",
-					"connectionProperties",
-					"url",
-					"validationQuery",
-					"evictionPolicyClassName"
-					);
-			List<Map<String, String>> listVO = names.collect(
-					ArrayList<Map<String, String>>::new,
-					(list, name) -> {
-						Map<String, String> map = new HashMap<String, String>();
-						map.put("key", name);
-						map.put("value", KStringUtil.nvl(KObjectUtil.getValue(dataSource, name)));
-						list.add(map);
-					},
-					ArrayList::addAll);
-			*/
-			List<Map<String, String>> listVO2 = Arrays.stream(BasicDataSource.class.getDeclaredFields())
+			List<Map<String, String>> outBody = null;
+			outBody = Arrays.stream(BasicDataSource.class.getDeclaredFields())
 					.filter(field -> !"connectionPool".equals(field.getName()))
-					.collect(
-						ArrayList<Map<String, String>>::new,
+					.collect(ArrayList<Map<String, String>>::new,
 						(list, field) -> {
 							Map<String, String> map = new HashMap<String, String>();
 							map.put("key", field.getName());
@@ -447,7 +425,7 @@ public class RuntimeController {
 							list.add(map);
 						},
 						ArrayList::addAll);
-			outDTO.setBody(listVO2);
+			outDTO.setBody(outBody);
 		}
 		return outDTO;
 	}

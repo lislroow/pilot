@@ -96,7 +96,7 @@ function fn_getDataTbl04_callback() {
 
 function fn_getDataTbl05(fn_callback) {
   $.ajax({
-    url: baseUrl + '/api/com/runtime/java-env-variable',
+    url: baseUrl + '/api/com/runtime/properties',
     success: function(data) {
       var list = data.body;
       var tblId = 'tbl05';
