@@ -104,7 +104,6 @@ function fn_setDataTbl01(tblId, list) {
 
     var $tr = $('#'+tblId+' > tfoot > tr').clone();
     $tr.find('td[id='+tblId+'_'+'a]').attr('id', tblId+'_'+'a'+'_'+i).text((list.length-i)).attr('data', (list.length-i));
-    $tr.find('td[id='+tblId+'_'+'b]').attr('id', tblId+'_'+'b'+'_'+i).text(item.applicationContextId).attr('data', item.applicationContextId);
     $tr.find('td[id='+tblId+'_'+'c]').attr('id', tblId+'_'+'c'+'_'+i).text(item.beanId).attr('data', item.beanId);
 
     var matched = item.beanClass.match(regex);
@@ -775,7 +774,6 @@ function fn_filterTxtDataTbl06() {
             <table id="tbl01" class="table-primary mar-btm-20">
                 <colgroup>
                     <col style="width:5px;" />
-                    <col style="width:15px;" />
                     <col style="width:30px;" />
                     <col style="width:40px;" />
                     <col style="width:20px;" />
@@ -783,7 +781,6 @@ function fn_filterTxtDataTbl06() {
                 <thead>
                     <tr class="align-center">
                         <th scope="col">no</th>
-                        <th scope="col">context</th>
                         <th scope="col">id</th>
                         <th scope="col">class</th>
                         <th scope="col">desc</th>
@@ -794,7 +791,6 @@ function fn_filterTxtDataTbl06() {
                 <tfoot style="display: none;">
                     <tr>
                         <td id="tbl01_a" class="align-center"></td>
-                        <td id="tbl01_b" class="align-center"></td>
                         <td id="tbl01_c" class="align-left"></td>
                         <td id="tbl01_d" class="align-left"></td>
                         <td id="tbl01_e" class="align-left"></td>

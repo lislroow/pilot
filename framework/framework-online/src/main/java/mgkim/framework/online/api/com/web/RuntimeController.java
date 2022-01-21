@@ -1,6 +1,5 @@
 package mgkim.framework.online.api.com.web;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -80,40 +79,33 @@ public class RuntimeController {
 	
 	@ApiOperation(value = "(실행환경) spring-bean 목록 조회")
 	@RequestMapping(value = "/api/com/runtime/spring-beans", method = RequestMethod.GET)
-	public @ResponseBody KOutDTO<List<Map>> springBeans() throws Exception {
-		KOutDTO<List<Map>> outDTO = new KOutDTO<List<Map>>();
-		List<Map> outBody = new ArrayList<Map>();
-		Arrays.stream(springContext.getBeanDefinitionNames())
-				.forEach(beanName -> {
-					Map vo = new HashMap();
-					Object bean = springContext.getBean(beanName);
-					String beanClass = bean.getClass().getName();
-					if (beanClass.startsWith("springfox.")) {
-						return;
-					}
-					if (beanClass.contains(".$")) {
-						beanClass = bean.getClass().getInterfaces()[0].getCanonicalName();
-					}
-					vo.put("beanClass", beanClass);
-					List<Annotation> annotations = Arrays.asList(bean.getClass().getAnnotations());
-					StringBuffer swaggerTags = new StringBuffer("");
-					annotations.forEach(annotation -> {
-						if (annotation instanceof io.swagger.annotations.Api) {
-							Api api = (Api) annotation;
-							Arrays.asList(api.tags()).forEach(tag -> {
-								if (swaggerTags.toString().equals("")) {
-									swaggerTags.append(tag);
-								} else {
-									swaggerTags.append(", "+ tag);
-								}
-							});
+	public @ResponseBody KOutDTO<List<Map<String, String>>> springBeans() throws Exception {
+		KOutDTO<List<Map<String, String>>> outDTO = new KOutDTO<List<Map<String, String>>>();
+		List<Map<String, String>> outBody = new ArrayList<Map<String, String>>();
+		outBody = Arrays.stream(springContext.getBeanDefinitionNames())
+			.filter(beanName -> !beanName.startsWith("springfox."))
+			.collect(ArrayList<Map<String, String>>::new,
+					(list, beanName) -> {
+						Map<String, String> map = new HashMap<String, String>();
+						
+						Object bean = springContext.getBean(beanName);
+						String beanClass = bean.getClass().getName();
+						if (beanClass.contains(".$")) {
+							beanClass = bean.getClass().getInterfaces()[0].getCanonicalName(); 
 						}
-					});
-					vo.put("applicationContextId", springContext.getId());
-					vo.put("beanId", beanName);
-					vo.put("swaggerTags", swaggerTags.toString());
-					outBody.add(vo);
-				});
+						map.put("beanClass", beanClass);
+						String swaggerTags = null;
+						swaggerTags = Arrays.asList(bean.getClass().getAnnotations()).stream()
+							.filter(anno -> anno instanceof io.swagger.annotations.Api)
+							.map(anno -> String.join(",", ((Api)anno).tags()))
+							.collect(Collectors.joining(","));
+						map.put("applicationContextId", springContext.getId());
+						map.put("beanId", beanName);
+						map.put("swaggerTags", swaggerTags);
+						list.add(map);
+					},
+					ArrayList<Map<String, String>>::addAll
+				);
 		outDTO.setBody(outBody);
 		return outDTO;
 	}
