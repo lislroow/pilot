@@ -20,7 +20,7 @@ function fn_getDataAll() {
 
 function fn_getDataTbl01(fn_callback) {
   $.ajax({
-    url: baseUrl + '/api/adm/runtime/spring-beans',
+    url: baseUrl + '/api/com/runtime/spring-beans',
     success: function(data) {
       var list = data.body;
       var tblId = 'tbl01';
@@ -39,7 +39,7 @@ function fn_getDataTbl01_callback() {
 
 function fn_getDataTbl02(fn_callback) {
   $.ajax({
-    url: baseUrl + '/api/adm/runtime/spring-uri',
+    url: baseUrl + '/api/com/runtime/spring-uri',
     success: function(data) {
       var list = data.body;
       var tblId = 'tbl02';
@@ -58,7 +58,7 @@ function fn_getDataTbl02_callback() {
 
 function fn_getDataTbl03(fn_callback) {
   $.ajax({
-    url: baseUrl + '/api/adm/runtime/spring-security-uri',
+    url: baseUrl + '/api/com/runtime/spring-security-uri',
     success: function(data) {
       var list = data.body;
       var tblId = 'tbl03';
@@ -77,7 +77,7 @@ function fn_getDataTbl03_callback() {
 
 function fn_getDataTbl04(fn_callback) {
   $.ajax({
-    url: baseUrl + '/api/adm/runtime/mybatis-mapper',
+    url: baseUrl + '/api/com/runtime/mybatis-mapper',
     success: function(data) {
       var list = data.body;
       var tblId = 'tbl04';
@@ -96,7 +96,7 @@ function fn_getDataTbl04_callback() {
 
 function fn_getDataTbl05(fn_callback) {
   $.ajax({
-    url: baseUrl + '/api/adm/runtime/java-env-variable',
+    url: baseUrl + '/api/com/runtime/java-env-variable',
     success: function(data) {
       var list = data.body;
       var tblId = 'tbl05';
@@ -115,7 +115,7 @@ function fn_getDataTbl05_callback() {
 
 function fn_getDataTbl06(fn_callback) {
   $.ajax({
-    url: baseUrl + '/api/adm/runtime/jdbc-datasource',
+    url: baseUrl + '/api/com/runtime/jdbc-datasource',
     success: function(data) {
       var list = data.body;
       var tblId = 'tbl06';

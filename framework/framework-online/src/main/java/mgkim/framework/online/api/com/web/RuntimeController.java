@@ -72,9 +72,6 @@ public class RuntimeController {
 	@Autowired
 	private Environment environment;
 	
-	@Autowired(required = false)
-	private BasicDataSource jndiObjectFactoryBean;
-	
 	@Autowired
 	public void setDataSource(DataSource dataSource) {
 		this.namedJdbc = new NamedParameterJdbcTemplate(dataSource);
@@ -86,37 +83,37 @@ public class RuntimeController {
 		KOutDTO<List<Map>> outDTO = new KOutDTO<List<Map>>();
 		List<Map> listVO = new ArrayList<Map>();
 		Arrays.stream(springContext.getBeanDefinitionNames())
-		.forEach(beanName -> {
-			Map vo = new HashMap();
-			Object bean = springContext.getBean(beanName);
-			String beanClass = bean.getClass().getName();
-			if (beanClass.startsWith("springfox.")) {
-				return;
-			}
-			if (beanClass.contains(".$")) {
-				beanClass = bean.getClass().getInterfaces()[0].getCanonicalName();
-			}
-			vo.put("beanClass", beanClass);
-			List<Annotation> annotations = Arrays.asList(bean.getClass().getAnnotations());
-			StringBuffer swaggerTags = new StringBuffer("");
-			annotations.forEach(annotation -> {
-				if (annotation instanceof io.swagger.annotations.Api) {
-					Api api = (Api) annotation;
-					Arrays.asList(api.tags()).forEach(tag -> {
-						if (swaggerTags.toString().equals("")) {
-							swaggerTags.append(tag);
-						} else {
-							swaggerTags.append(", "+ tag);
+				.forEach(beanName -> {
+					Map vo = new HashMap();
+					Object bean = springContext.getBean(beanName);
+					String beanClass = bean.getClass().getName();
+					if (beanClass.startsWith("springfox.")) {
+						return;
+					}
+					if (beanClass.contains(".$")) {
+						beanClass = bean.getClass().getInterfaces()[0].getCanonicalName();
+					}
+					vo.put("beanClass", beanClass);
+					List<Annotation> annotations = Arrays.asList(bean.getClass().getAnnotations());
+					StringBuffer swaggerTags = new StringBuffer("");
+					annotations.forEach(annotation -> {
+						if (annotation instanceof io.swagger.annotations.Api) {
+							Api api = (Api) annotation;
+							Arrays.asList(api.tags()).forEach(tag -> {
+								if (swaggerTags.toString().equals("")) {
+									swaggerTags.append(tag);
+								} else {
+									swaggerTags.append(", "+ tag);
+								}
+							});
 						}
 					});
-				}
-			});
-			vo.put("applicationContextId", springContext.getId());
-			vo.put("beanId", beanName);
-			vo.put("swaggerTags", swaggerTags.toString());
-			listVO.add(vo);
-			log.trace(beanName + " = " + bean.getClass().getCanonicalName() + " = " + annotations);
-		});
+					vo.put("applicationContextId", springContext.getId());
+					vo.put("beanId", beanName);
+					vo.put("swaggerTags", swaggerTags.toString());
+					listVO.add(vo);
+					log.trace(beanName + " = " + bean.getClass().getCanonicalName() + " = " + annotations);
+				});
 		outDTO.setBody(listVO);
 		return outDTO;
 	}
@@ -412,70 +409,46 @@ public class RuntimeController {
 
 	@ApiOperation(value = "(실행환경) jdbc-datasource 목록 조회")
 	@RequestMapping(value = "/api/com/runtime/jdbc-datasource", method = RequestMethod.GET)
-	public @ResponseBody KOutDTO<List<Map>> jdbcDatasource() throws Exception {
-		KOutDTO<List<Map>> outDTO = new KOutDTO<List<Map>>();
-
-		List<Map> listVO = new ArrayList<Map>();
-		Map vo = null;
-		
-		BasicDataSource jndiObject = jndiObjectFactoryBean;
-
-		vo = new HashMap();
-		vo.put("key", "closed");
-		vo.put("value", ""+KObjectUtil.getValue(jndiObject, "closed"));
-		listVO.add(vo);
-
-		vo = new HashMap();
-		vo.put("key", "driverClassName");
-		vo.put("value", ""+KObjectUtil.getValue(jndiObject, "driverClassName"));
-		listVO.add(vo);
-
-		vo = new HashMap();
-		vo.put("key", "initialSize");
-		vo.put("value", ""+KObjectUtil.getValue(jndiObject, "initialSize"));
-		listVO.add(vo);
-
-		vo = new HashMap();
-		vo.put("key", "maxIdle");
-		vo.put("value", ""+KObjectUtil.getValue(jndiObject, "maxIdle"));
-		listVO.add(vo);
-
-		vo = new HashMap();
-		vo.put("key", "maxTotal");
-		vo.put("value", ""+KObjectUtil.getValue(jndiObject, "maxTotal"));
-		listVO.add(vo);
-
-		vo = new HashMap();
-		vo.put("key", "minIdle");
-		vo.put("value", ""+KObjectUtil.getValue(jndiObject, "minIdle"));
-		listVO.add(vo);
-
-		vo = new HashMap();
-		vo.put("key", "password");
-		vo.put("value", ""+KObjectUtil.getValue(jndiObject, "password"));
-		listVO.add(vo);
-
-		vo = new HashMap();
-		vo.put("key", "url");
-		vo.put("value", ""+KObjectUtil.getValue(jndiObject, "url"));
-		listVO.add(vo);
-
-		vo = new HashMap();
-		vo.put("key", "username");
-		vo.put("value", ""+KObjectUtil.getValue(jndiObject, "username"));
-		listVO.add(vo);
-
-		vo = new HashMap();
-		vo.put("key", "validationQuery");
-		vo.put("value", ""+KObjectUtil.getValue(jndiObject, "validationQuery"));
-		listVO.add(vo);
-
-		vo = new HashMap();
-		vo.put("key", "evictionPolicyClassName");
-		vo.put("value", ""+KObjectUtil.getValue(jndiObject, "evictionPolicyClassName"));
-		listVO.add(vo);
-	
-		outDTO.setBody(listVO);
+	public @ResponseBody KOutDTO<List<Map<String, String>>> jdbcDatasource() throws Exception {
+		KOutDTO<List<Map<String, String>>> outDTO = new KOutDTO<List<Map<String, String>>>();
+		BasicDataSource dataSource = springContext.getBean(BasicDataSource.class);
+		if (dataSource != null) {
+			/*
+			Stream<String> names = Stream.of(
+					"closed",
+					"driverClassName",
+					"initialSize",
+					"maxIdle",
+					"maxTotal",
+					"minIdle",
+					"connectionProperties",
+					"url",
+					"validationQuery",
+					"evictionPolicyClassName"
+					);
+			List<Map<String, String>> listVO = names.collect(
+					ArrayList<Map<String, String>>::new,
+					(list, name) -> {
+						Map<String, String> map = new HashMap<String, String>();
+						map.put("key", name);
+						map.put("value", KStringUtil.nvl(KObjectUtil.getValue(dataSource, name)));
+						list.add(map);
+					},
+					ArrayList::addAll);
+			*/
+			List<Map<String, String>> listVO2 = Arrays.stream(BasicDataSource.class.getDeclaredFields())
+					.filter(field -> !"connectionPool".equals(field.getName()))
+					.collect(
+						ArrayList<Map<String, String>>::new,
+						(list, field) -> {
+							Map<String, String> map = new HashMap<String, String>();
+							map.put("key", field.getName());
+							map.put("value", KStringUtil.nvl(KObjectUtil.getValue(dataSource, field.getName())));
+							list.add(map);
+						},
+						ArrayList::addAll);
+			outDTO.setBody(listVO2);
+		}
 		return outDTO;
 	}
 }
