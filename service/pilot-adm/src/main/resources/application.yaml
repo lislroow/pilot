@@ -24,3 +24,11 @@ server:
 security:
   rejectPublicInvocations: false
 
+# schedule 설정
+schedule:
+  apitxlog:
+    enabled: false
+  sessionStatusMng:
+    enabled: false
+  sqlmapReload:
+    enabled: false
