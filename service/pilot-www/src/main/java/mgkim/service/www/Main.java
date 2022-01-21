@@ -31,15 +31,15 @@ import mgkim.service.lib.env.CmmProfile;
 public class Main extends SpringBootServletInitializer {
 	
 	private static final Logger log = LoggerFactory.getLogger(Main.class);
-
+	
 	static {
 		CmmProfile.init();
 	}
-
+	
 	public static void main(String[] args) {
 		SpringApplication.run(Main.class, args);
 	}
-
+	
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(Main.class);
