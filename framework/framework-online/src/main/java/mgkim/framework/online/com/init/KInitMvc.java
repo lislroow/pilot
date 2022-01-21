@@ -70,13 +70,6 @@ public class KInitMvc extends WebMvcConfigurationSupport {
 
 	
 	
-//	@Bean
-//	@Order(value = Integer.MIN_VALUE)
-//	public KMvcExceptionHandler createKMvcExceptionHandler() {
-//		KMvcExceptionHandler bean = new KMvcExceptionHandler();
-//		return bean;
-//	}
-	
 	/*
 	@Bean("internalResourceViewResolver")
 	public InternalResourceViewResolver createInternalResourceViewResolver() {
