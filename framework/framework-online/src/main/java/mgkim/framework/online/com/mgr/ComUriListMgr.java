@@ -3,7 +3,6 @@ package mgkim.framework.online.com.mgr;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -99,7 +98,6 @@ public class ComUriListMgr {
 			uriList.add(uriVO);
 		});
 
-		Collections.sort(uriList);
 		log.debug("api 목록 = {} ", KStringUtil.toJson(uriList).replaceAll(",", KConstant.LINE).replaceAll("\"", "").replaceAll("\\[", "").replaceAll("\\]", ""));
 		log.info("api 목록 {}개 가 로드 되었습니다.", uriList.size());
 	}

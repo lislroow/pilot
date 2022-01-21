@@ -2,7 +2,7 @@ package mgkim.framework.cmm.online.vo;
 
 import mgkim.framework.core.dto.KCmmVO;
 
-public class CmmUriVO extends KCmmVO implements Comparable<CmmUriVO> {
+public class CmmUriVO extends KCmmVO {
 
 	private String uriId;
 	private String uriVal;
@@ -96,27 +96,5 @@ public class CmmUriVO extends KCmmVO implements Comparable<CmmUriVO> {
 	}
 	public void setUseYn(String useYn) {
 		this.useYn = useYn;
-	}
-
-	@Override
-	public int compareTo(CmmUriVO o) {
-		int result;
-		if (o.getUriVal() == null || this.getUriVal() == null) {
-			if (o.getUriNm() == null || this.getUriNm() == null) {
-				result = -1;
-				return result;
-			}
-		}
-		if (this.getUriVal().compareToIgnoreCase(o.getUriVal()) == 0) {
-			if (o.getUriNm() == null || this.getUriNm() == null) {
-				result = -1;
-				return result;
-			} else {
-				result = this.getUriNm().compareToIgnoreCase(o.getUriNm());
-			}
-		} else {
-			result = this.getUriVal().compareToIgnoreCase(o.getUriVal());
-		}
-		return result;
 	}
 }
