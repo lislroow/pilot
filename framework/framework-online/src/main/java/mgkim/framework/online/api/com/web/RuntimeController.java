@@ -89,6 +89,7 @@ public class RuntimeController {
 					},
 					ArrayList<Map<String, String>>::addAll
 				);
+		Collections.sort(outBody, Comparator.comparing(map -> map.get("beanClass")));
 		outDTO.setBody(outBody);
 		return outDTO;
 	}
@@ -293,6 +294,7 @@ public class RuntimeController {
 		List<Map<String, String>> outBody = new ArrayList<Map<String, String>>();
 		Map<RequestMappingInfo, HandlerMethod> mapping = requestMapping.getHandlerMethods();
 		outBody = mapping.entrySet().stream()
+			.filter(item -> !item.getValue().getBeanType().getName().startsWith("springfox."))
 			.collect(ArrayList<Map<String, String>>::new,
 					(list, entry) -> {
 						HandlerMethod handleMethod = entry.getValue();
@@ -313,7 +315,7 @@ public class RuntimeController {
 					},
 					ArrayList<Map<String, String>>::addAll
 				);
-		
+		Collections.sort(outBody, Comparator.comparing(map -> map.get("uri")));
 		outDTO.setBody(outBody);
 		return outDTO;
 	}
@@ -331,7 +333,7 @@ public class RuntimeController {
 		List<Map<String, Object>> outBody = null;
 		outBody = list.stream().map(item -> item.entrySet().stream().collect(Collectors.toMap(e -> e.getKey().toLowerCase(), e -> e.getValue())))
 					.collect(Collectors.toList());
-		
+		Collections.sort(outBody, Comparator.comparing(map -> KStringUtil.nvl(map.get("uri"))));
 		outDTO.setBody(outBody);
 		return outDTO;
 	}
