@@ -1,4 +1,4 @@
-package mgkim.service.www.api.cmm.userlogin.mapper;
+package mgkim.service.www.api.cmm.user.mapper;
 
 import java.util.Map;
 

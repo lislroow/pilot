@@ -1,4 +1,4 @@
-package mgkim.service.www.api.cmm.userlogin.web;
+package mgkim.service.www.api.cmm.user.web;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +23,7 @@ import mgkim.framework.online.com.mgr.ComFieldCryptorMgr;
 import mgkim.framework.online.com.mgr.ComSessionStatusMgr;
 import mgkim.framework.online.com.mgr.ComUserTokenMgr;
 import mgkim.service.cmm.online.vo.CmmUserLoginPolicyVO;
-import mgkim.service.www.api.cmm.userlogin.service.UserLoginService;
+import mgkim.service.www.api.cmm.user.service.UserLoginService;
 import mgkim.service.www.com.env.CmmConstant;
 
 //@Api( tags = { KConstant.SWG_SERVICE_COMMON } )
