@@ -1,12 +1,10 @@
 package mgkim.framework.online.api.com.web;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,8 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import mgkim.framework.cmm.online.vo.CmmApiTxLogVO;
-import mgkim.framework.core.annotation.KPageIdx;
-import mgkim.framework.core.annotation.KRequestMap;
 import mgkim.framework.core.dto.KCmmVO;
 import mgkim.framework.core.dto.KInDTO;
 import mgkim.framework.core.dto.KInPageDTO;
@@ -61,28 +57,6 @@ public class ApiTxLogController {
 		KOutPageDTO<List<CmmApiTxLogVO>> outDTO = new KOutPageDTO<List<CmmApiTxLogVO>>();
 		KCmmVO inVO = inDTO.getBody();
 		List<CmmApiTxLogVO> outData = apiTxLogService.selectLogList(inVO);
-		outDTO.setBody(outData);
-		return outDTO;
-	}
-	
-	@ApiOperation(value = "(apitxlog) 로그 데이터 목록 조회")
-	@RequestMapping(value = "/api/com/apitxlog", method = RequestMethod.GET)
-	public @ResponseBody KOutPageDTO<List<CmmApiTxLogVO>> apitxlog(
-			@KRequestMap HashMap<String, Object> inMap,
-			@KPageIdx Integer pageidx) throws Exception {
-		KOutPageDTO<List<CmmApiTxLogVO>> outDTO = new KOutPageDTO<List<CmmApiTxLogVO>>();
-		List<CmmApiTxLogVO> outData = apiTxLogService.selectLogList_map(inMap);
-		outDTO.setBody(outData);
-		return outDTO;
-	}
-	
-	@ApiOperation(value = "(apitxlog) 로그 데이터 조회")
-	@RequestMapping(value = "/api/com/apitxlog/{txid}", method = RequestMethod.GET)
-	public @ResponseBody KOutPageDTO<CmmApiTxLogVO> apitxlog(
-			@KRequestMap HashMap<String, Object> inMap,
-			@PathVariable(name = "txid") String txid) throws Exception {
-		KOutPageDTO<CmmApiTxLogVO> outDTO = new KOutPageDTO<CmmApiTxLogVO>();
-		CmmApiTxLogVO outData = apiTxLogService.selectLogByTxid_map(inMap);
 		outDTO.setBody(outData);
 		return outDTO;
 	}
