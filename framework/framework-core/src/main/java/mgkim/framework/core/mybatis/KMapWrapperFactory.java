@@ -1,4 +1,4 @@
-package mgkim.framework.online.com.mybatis;
+package mgkim.framework.core.mybatis;
 
 import java.util.Map;
 

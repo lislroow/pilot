@@ -16,8 +16,8 @@ import org.springframework.jdbc.support.lob.DefaultLobHandler;
 import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
-import mgkim.framework.online.com.mybatis.KMapWrapperFactory;
-import mgkim.framework.online.com.mybatis.KSqlSessionFactory;
+import mgkim.framework.core.mybatis.KMapWrapperFactory;
+import mgkim.framework.core.mybatis.KSqlSessionFactory;
 
 @Configuration
 public class KInitMybatis {

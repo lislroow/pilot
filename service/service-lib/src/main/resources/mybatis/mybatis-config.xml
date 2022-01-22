@@ -10,7 +10,7 @@
     <setting name="defaultStatementTimeout" value="600" /><!-- mybatis의 sql 수행이 15초를 넘을 경우 SQLTimeoutException: ORA-01013 예외가 발생함 -->
   </settings>
   
-  <objectWrapperFactory type="mgkim.framework.online.com.mybatis.KMapWrapperFactory"/>
+  <objectWrapperFactory type="mgkim.framework.core.mybatis.KMapWrapperFactory"/>
   
   <plugins>
     <plugin interceptor="mgkim.framework.core.sql.ComSqlInterceptor" />

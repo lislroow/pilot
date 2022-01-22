@@ -48,11 +48,11 @@ import mgkim.framework.core.dto.KOutDTO;
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.mgr.ComScheduleMgr;
+import mgkim.framework.core.mybatis.KSqlSessionFactory;
 import mgkim.framework.core.stereo.KScheduler;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.com.mgr.ComUriAuthorityMgr;
-import mgkim.framework.online.com.mybatis.KSqlSessionFactory;
 
 @Api( tags = { KConstant.SWG_V1 } )
 @RestController
