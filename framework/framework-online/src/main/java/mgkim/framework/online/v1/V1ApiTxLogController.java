@@ -1,4 +1,4 @@
-package mgkim.framework.online.api.pub.web;
+package mgkim.framework.online.v1;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,15 +24,15 @@ import mgkim.framework.online.api.com.service.ApiTxLogService;
 
 @Api( tags = { KConstant.SWG_SYSTEM_COMMON } )
 @RestController
-public class PubApiTxLogController {
+public class V1ApiTxLogController {
 	
-	private static final Logger log = LoggerFactory.getLogger(PubApiTxLogController.class);
+	private static final Logger log = LoggerFactory.getLogger(V1ApiTxLogController.class);
 
 	@Autowired(required = false)
 	private ApiTxLogService apiTxLogService;
 	
 	@ApiOperation(value = "(apitxlog) 로그 데이터 목록 조회")
-	@RequestMapping(value = "/api/pub/apitxlog", method = RequestMethod.GET)
+	@RequestMapping(value = "/v1/apitxlog", method = RequestMethod.GET)
 	public @ResponseBody KOutPageDTO<List<CmmApiTxLogVO>> apitxlog(
 			@KRequestMap HashMap<String, Object> inMap,
 			@KPageIdx Integer pageidx,
@@ -44,7 +44,7 @@ public class PubApiTxLogController {
 	}
 	
 	@ApiOperation(value = "(apitxlog) 로그 데이터 조회")
-	@RequestMapping(value = "/api/pub/apitxlog/{txid}", method = RequestMethod.GET)
+	@RequestMapping(value = "/v1/apitxlog/{txid}", method = RequestMethod.GET)
 	public @ResponseBody KOutPageDTO<CmmApiTxLogVO> apitxlog(
 			@KRequestMap HashMap<String, Object> inMap,
 			@PathVariable(name = "txid") String txid) throws Exception {
