@@ -37,7 +37,7 @@
   <property name="N" value="NEUTRAL" />
   
   <!-- FILTER-MARKER -->
-  <property name="FILTER-MARKER-sql-cmm" value="${D}" />
+  <property name="FILTER-MARKER-sql-cmm" value="${N}" />
   <property name="FILTER-MARKER-sql-table" value="${N}" />
   <property name="FILTER-MARKER-aop" value="${N}" />
   <!-- FILTER-MDC -->
