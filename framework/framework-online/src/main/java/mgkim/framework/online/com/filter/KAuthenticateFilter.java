@@ -49,12 +49,12 @@ import mgkim.framework.online.com.mgr.ComUserTokenMgr;
 import mgkim.framework.online.com.scheduler.ComApiTxLogScheduler;
 import mgkim.framework.online.com.scheduler.ComSessionStatusMngScheduler;
 
-@KBean(name = "api 필터")
-public class KFilterApi extends KFilter {
+@KBean(name = "authenticate 필터")
+public class KAuthenticateFilter extends KFilter {
 	
-	private static final Logger log = LoggerFactory.getLogger(KFilterApi.class);
+	private static final Logger log = LoggerFactory.getLogger(KAuthenticateFilter.class);
 	
-	final String BEAN_NAME = KObjectUtil.name(KFilterApi.class);
+	final String BEAN_NAME = KObjectUtil.name(KAuthenticateFilter.class);
 	
 	@Autowired(required = true)
 	private ComUriListMgr comUriListMgr;
@@ -187,28 +187,6 @@ public class KFilterApi extends KFilter {
 				log.trace(KLogMarker.request, "\nrequest-header = {}\nrequest-querystring(map) = {}", header, body);
 			} else if (reqType == ReqType.FILE) {
 			} else {
-				//ServletFileUpload upload = new ServletFileUpload();
-				//upload.setSizeMax(KInitRoot.MAX_UPLOAD_SIZE);
-				//FileItemIterator iterator = null;
-				//try {
-				//	iterator = upload.getItemIterator(request);
-				//} catch (FileUploadException e) {
-				//	e.printStackTrace();
-				//}
-				//while (iterator != null && iterator.hasNext()) {
-				//	FileItemStream item = null;
-				//	try {
-				//		item = iterator.next();
-				//	} catch (FileUploadException e) {
-				//		e.printStackTrace();
-				//	}
-				//	if (KStringUtil.isEmpty(item.getContentType())) {
-				//		InputStream in = item.openStream();
-				//		BufferedReader br = new BufferedReader(new InputStreamReader(in));
-				//		String a = br.readLine();
-				//		System.out.println(a);
-				//	}
-				//}
 			}
 		} catch (Exception e) {
 			KException ke = new KSysException(KMessage.E7008, e, "request-logging", "요청");

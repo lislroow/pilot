@@ -28,8 +28,9 @@ import org.springframework.security.web.context.SecurityContextPersistenceFilter
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import mgkim.framework.core.env.KConstant;
-import mgkim.framework.online.com.filter.KFilterApi;
-import mgkim.framework.online.com.filter.KFilterPublic;
+import mgkim.framework.online.com.filter.KAuthenticateFilter;
+import mgkim.framework.online.com.filter.KPublicFilter;
+import mgkim.framework.online.com.filter.KV1Filter;
 import mgkim.framework.online.com.mgr.ComUriAuthorityMgr;
 
 @Configuration
@@ -50,13 +51,16 @@ public class KInitSecurity extends WebSecurityConfigurerAdapter {
 		ApplicationContext ctx = getApplicationContext();
 		List<SecurityFilterChain> filterChains = new ArrayList<SecurityFilterChain>();
 		
-		// 1) public
-		Filter[] filterPublic = new Filter[] {ctx.getBean(KFilterPublic.class)};
-		KConstant.PUBLIC_URI.stream().forEach(item -> filterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher(item), filterPublic)));
+		// 1) authenticate
+		Filter[] authenticateFilter = new Filter[] { ctx.getBean(SecurityContextPersistenceFilter.class), ctx.getBean(KAuthenticateFilter.class)};
+		filterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher(KConstant.API_URI), authenticateFilter));
 		
-		// 2) api
-		Filter[] filterApi = new Filter[] { ctx.getBean(SecurityContextPersistenceFilter.class), ctx.getBean(KFilterApi.class)};
-		filterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher(KConstant.API_URI), filterApi));
+		// 2) v1
+		Filter[] v1Filter = new Filter[] { ctx.getBean(SecurityContextPersistenceFilter.class), ctx.getBean(KV1Filter.class)};
+		filterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher(KConstant.V1_URI), v1Filter));
+
+		// 3) public
+		KConstant.PUBLIC_URI.stream().forEach(item -> filterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher(item), ctx.getBean(KPublicFilter.class))));
 		
 		FilterChainProxy bean = new FilterChainProxy(filterChains);
 		return bean;

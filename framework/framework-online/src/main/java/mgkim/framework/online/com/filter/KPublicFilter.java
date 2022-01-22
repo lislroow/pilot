@@ -21,11 +21,11 @@ import mgkim.framework.core.stereo.KFilter;
 import mgkim.framework.core.util.KObjectUtil;
 
 @KBean(name = "public 필터")
-public class KFilterPublic extends KFilter {
+public class KPublicFilter extends KFilter {
 	
-	private static final Logger log = LoggerFactory.getLogger(KFilterApi.class);
+	private static final Logger log = LoggerFactory.getLogger(KPublicFilter.class);
 	
-	final String BEAN_NAME = KObjectUtil.name(KFilterPublic.class);
+	final String BEAN_NAME = KObjectUtil.name(KPublicFilter.class);
 	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
