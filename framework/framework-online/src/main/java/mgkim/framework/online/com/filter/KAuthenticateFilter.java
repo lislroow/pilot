@@ -225,12 +225,14 @@ public class KAuthenticateFilter extends KFilter {
 			io.jsonwebtoken.Jwt token = comUserTokenMgr.parsetoken(bearer);
 			KContext.initToken(token);
 		} catch (KException ke) {
-			log.error(KLogMarker.ERROR, "{} {}", ke.getId(), ke.getText(), ke.getCause());
+			String header = KStringUtil.toJson(KHttpUtil.getHeaders());
+			log.error(KLogMarker.ERROR, "{} {}\nrequest-header = {}", ke.getId(), ke.getText(), header, ke.getCause());
 			KExceptionHandler.response(response, ke);
 			return;
 		} catch (Exception e) {
 			KException ke = new KSysException(KMessage.E7007, e, "decode-token");
-			log.error(KLogMarker.ERROR, "{} {}", ke.getId(), ke.getText(), e);
+			String header = KStringUtil.toJson(KHttpUtil.getHeaders());
+			log.error(KLogMarker.ERROR, "{} {}\nrequest-header = {}", ke.getId(), ke.getText(), header, e);
 			KExceptionHandler.response(response, ke);
 			return;
 		}
