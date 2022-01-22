@@ -4,11 +4,16 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.support.MultipartFilter;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
@@ -67,6 +72,57 @@ public class KInitMvc extends WebMvcConfigurationSupport {
 		return exceptionHandler;
 	}
 	
+	@Bean
+	public MultipartFilter multipartFilter() {
+		MultipartFilter filter = new MultipartFilter();
+		filter.setMultipartResolverBeanName("multipartResolver");
+		return filter;
+	}
+
+	@Bean
+	public MultipartResolver multipartResolver() {
+		return new StandardServletMultipartResolver() {
+			@Override
+			public boolean isMultipart(HttpServletRequest request) {
+				String method = request.getMethod().toLowerCase();
+				// 2022.01.23 기본은 post 이며, put 일 경우에도 multipart 로 인식할 수 있도록 함
+				if (!Arrays.asList("put", "post").contains(method)) {
+					return false;
+				}
+				String contentType = request.getContentType();
+				return (contentType != null && contentType.toLowerCase().startsWith("multipart/"));
+			}
+		};
+	}
+	//@Bean("multipartResolver")
+	//public CommonsMultipartResolver multipartResolver()  {
+	//	CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+	//	multipartResolver.setDefaultEncoding("UTF-8");
+	//	multipartResolver.setMaxUploadSize(104857600);
+	//	multipartResolver.setMaxInMemorySize(104857600);
+	//	return multipartResolver;
+	//}
+	
+	
+	/*@Bean
+	public MultipartConfigElement multipartConfigElement() {
+		MultipartConfigFactory factory = new MultipartConfigFactory();
+		factory.setMaxFileSize(DataSize.ofMegabytes(512));
+		factory.setMaxRequestSize(DataSize.ofMegabytes(512));
+		return factory.createMultipartConfig();
+	}*/
+	/**/
+	/*
+	public static final long MAX_UPLOAD_SIZE = 600000000;
+	@Bean("multipartResolver")
+	public CommonsMultipartResolver createCommonsMultipartResolver() {
+		CommonsMultipartResolver bean = new CommonsMultipartResolver();
+		//bean.setMaxUploadSize(Long.MAX_VALUE);
+		bean.setMaxUploadSize(MAX_UPLOAD_SIZE);
+		bean.setMaxInMemorySize(10240);
+		return bean;
+	}
+	*/
 	
 	/*
 	@Bean("internalResourceViewResolver")

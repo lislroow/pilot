@@ -81,10 +81,10 @@ public class KV1Filter extends KFilter {
 		
 		// 2) preflight
 		try {
-			response.setHeader("Allow", "GET, POST, OPTIONS");
+			response.setHeader("Allow", "GET, POST, PUT, OPTIONS");
 			response.addHeader("Access-Control-Allow-Origin", "*");
 			response.setHeader("Access-Control-Allow-Headers", "ssid, txid, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Method, Access-Control-Allow-Headers, Authorization, Access-Control-Max-Age");
-			response.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+			response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, OPTIONS");
 			response.setHeader("Access-Control-Expose-Headers", "Content-Dispostion");
 			boolean isPreFlight = CorsUtils.isPreFlightRequest(request);
 			if (isPreFlight) {

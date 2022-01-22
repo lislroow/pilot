@@ -42,8 +42,6 @@ import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import org.springframework.transaction.interceptor.RollbackRuleAttribute;
 import org.springframework.transaction.interceptor.RuleBasedTransactionAttribute;
 import org.springframework.transaction.interceptor.TransactionInterceptor;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.multipart.support.MultipartFilter;
 
 import mgkim.framework.core.env.KContext;
 
@@ -66,17 +64,12 @@ public class KInit implements ServletContextInitializer, BeanFactoryPostProcesso
 		servletContext.addListener(new mgkim.framework.online.com.listener.KContextListener());
 		servletContext.addListener(new mgkim.framework.online.com.listener.KSessionListener());
 		servletContext.addListener(new mgkim.framework.online.com.listener.KRequestListener());
-
+		
 		FilterRegistration.Dynamic characterEncoding = servletContext.addFilter("encodingFilter", new org.springframework.web.filter.CharacterEncodingFilter());
 		characterEncoding.setInitParameter("encoding", "UTF-8");
 		characterEncoding.setInitParameter("forceEncoding", "true");
 		characterEncoding.addMappingForUrlPatterns(null, false, "*");
-
-		MultipartFilter springMultipartFilter = new MultipartFilter();
-		springMultipartFilter.setMultipartResolverBeanName("multipartResolver");
-		FilterRegistration.Dynamic multipartFilter = servletContext.addFilter("springMultipartFilter", springMultipartFilter);
-		multipartFilter.addMappingForUrlPatterns(null, false, "*");
-
+		
 		servletContext.getFilterRegistration("springSecurityFilterChain")
 			.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), false, "/*");
 	}
@@ -174,19 +167,6 @@ public class KInit implements ServletContextInitializer, BeanFactoryPostProcesso
 
 
 
-
-
-	public static final long MAX_UPLOAD_SIZE = 600000000;
-
-
-	@Bean("multipartResolver")
-	public CommonsMultipartResolver createCommonsMultipartResolver() {
-		CommonsMultipartResolver bean = new CommonsMultipartResolver();
-		//bean.setMaxUploadSize(Long.MAX_VALUE);
-		bean.setMaxUploadSize(MAX_UPLOAD_SIZE);
-		bean.setMaxInMemorySize(10240);
-		return bean;
-	}
 
 
 

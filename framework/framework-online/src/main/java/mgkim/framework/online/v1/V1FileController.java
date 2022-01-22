@@ -257,7 +257,7 @@ public class V1FileController {
 	}
 	
 	@ApiOperation(value = "(file) 파일 업로드")
-	@RequestMapping(value="/v1/file/fileUpload", method=RequestMethod.POST)
+	@RequestMapping(value="/v1/file/upload", method=RequestMethod.PUT)
 	public @ResponseBody KOutDTO<FileVO> fileUpload(
 			@RequestPart(value = "attach", required = true) MultipartFile attach) throws Exception {
 		KOutDTO<FileVO> outDTO = new KOutDTO<FileVO>();
