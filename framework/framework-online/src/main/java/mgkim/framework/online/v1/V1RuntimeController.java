@@ -47,6 +47,8 @@ import io.swagger.annotations.ApiOperation;
 import mgkim.framework.core.dto.KOutDTO;
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KProfile;
+import mgkim.framework.core.mgr.ComScheduleMgr;
+import mgkim.framework.core.stereo.KScheduler;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.com.mgr.ComUriAuthorityMgr;
@@ -394,4 +396,39 @@ public class V1RuntimeController {
 		}
 		return outDTO;
 	}
+	
+	@ApiOperation(value = "(scheduler) 스케줄러 현황")
+	@RequestMapping(value = "/v1/scheduler", method = RequestMethod.GET)
+	public @ResponseBody KOutDTO<List<Map<String, String>>> scheduler() throws Exception {
+		KOutDTO<List<Map<String, String>>> outDTO = new KOutDTO<List<Map<String, String>>>();
+		
+		ComScheduleMgr comScheduleMgr = springContext.getBean(ComScheduleMgr.class);
+		if (comScheduleMgr != null) {
+			List<KScheduler> scheduleList = comScheduleMgr.getScheduleList();
+			if (scheduleList == null) {
+				return outDTO;
+			}
+			List<Map<String, String>> outBody = null;
+			outBody = scheduleList.stream()
+					.collect(ArrayList<Map<String, String>>::new, 
+							(list, item) -> {
+								Map map = new HashMap();
+								map.put("clazz", item.getClass().getTypeName());
+								map.put("name", KObjectUtil.name(item.getClass()));
+								map.put("interval", KObjectUtil.interval(item.getClass()));
+								map.put("managed", KObjectUtil.manage(item.getClass()));
+								//map.put("enabled", item.enabled);
+								map.put("running", item.isRunning());
+								map.put("uptime", item.uptime());
+								map.put("lastStartedTime", item.getLastStartedTime());
+								map.put("lastStoppedTime", item.getLastStoppedTime());
+								map.put("lastExecutedTime", item.getLastExecutedTime());
+								list.add(map);
+							}, 
+							ArrayList::addAll);
+			outDTO.setBody(outBody);
+		}
+		return outDTO;
+	}
+	
 }
