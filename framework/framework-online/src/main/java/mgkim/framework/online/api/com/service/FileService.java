@@ -1,12 +1,13 @@
-package mgkim.service.www.api.cmm.file.service;
+package mgkim.framework.online.api.com.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import mgkim.service.www.api.cmm.file.mapper.FileMapper;
-import mgkim.service.www.api.cmm.file.vo.FileVO;
+import mgkim.framework.online.api.com.mapper.FileMapper;
+import mgkim.framework.online.api.com.vo.FileVO;
 
 @Service
 public class FileService {
@@ -19,8 +20,8 @@ public class FileService {
 		return cnt;
 	}
 
-	public FileVO selectFile(FileVO vo) throws Exception {
-		return fileMapper.selectFile(vo);
+	public Map<String, Object> selectFile(Map<String, Object> inMap) throws Exception {
+		return fileMapper.selectFile(inMap);
 	}
 
 	public List<FileVO> selectFilegroup(FileVO vo) throws Exception {

@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.ibatis.executor.resultset.ResultSetHandler;
@@ -32,6 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StopWatch;
 
+import mgkim.framework.core.dto.KCmmVO;
 import mgkim.framework.core.dto.KInPageVO;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
@@ -118,7 +120,11 @@ public class ComSqlInterceptor implements Interceptor {
 				case REQUEST:
 					// parameterObject 공통 필드 설정
 					{
-						KDtoUtil.setSysValues(parameterObject);
+						if (KCmmVO.class.isInstance(parameterObject)) {
+							KDtoUtil.setSysValues(parameterObject);
+						} else if (java.util.Map.class.isInstance(parameterObject)) {
+							KDtoUtil.putSysValues((Map)parameterObject);
+						}
 					}
 					
 					// paging 여부 확인

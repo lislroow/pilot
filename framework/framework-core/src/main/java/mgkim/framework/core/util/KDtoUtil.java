@@ -13,6 +13,29 @@ import mgkim.framework.core.type.KType.ApiType;
 import mgkim.framework.core.type.KType.ExecType;
 
 public class KDtoUtil {
+	
+	public static boolean putSysValues(Map map) {
+		map.put("appCd", KProfile.APP_CD);
+		
+		if (ApiType.PUBLIC == KContext.getT(AttrKey.API_TYPE)) {
+			return true;
+		}
+		if (ExecType.REQUEST != KContext.getT(AttrKey.EXEC_TYPE)) {
+			return true;
+		}
+		KSession session = KSessionUtil.getSession();
+		if (session != null) {
+			map.put("ssuserId", session.getUserId());
+			io.jsonwebtoken.Jwt token = KContext.getT(AttrKey.TOKEN);
+			Map<String, Object> claims = (Map<String, Object>)token.getBody();
+			if (token != null) {
+				map.put("aumthTpcd", KStringUtil.nvl(claims.get("aumthTpcd")));
+			}
+			map.put("ssid", KContext.getT(AttrKey.SSID));
+		}
+		map.put("txid", KContext.getT(AttrKey.TXID));
+		return true;
+	}
 
 	public static boolean setSysValues(Object obj) {
 		if (java.util.List.class.isInstance(obj)) {

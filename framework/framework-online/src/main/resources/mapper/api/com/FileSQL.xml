@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mgkim.service.www.api.cmm.file.mapper.FileMapper">
+<mapper namespace="mgkim.framework.online.api.com.mapper.FileMapper">
 
   <insert id="insertFile" parameterType="FileVO">
     INSERT
@@ -41,7 +41,7 @@
       )
   </insert>
 
-  <select id="selectFile" parameterType="FileVO" resultType="FileVO">
+  <select id="selectFile" parameterType="java.util.Map" resultType="java.util.Map">
     SELECT 
            A.*
       FROM MGCB404TM A /* MGCB_파일정보 */

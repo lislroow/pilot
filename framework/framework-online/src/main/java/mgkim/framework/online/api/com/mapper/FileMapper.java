@@ -1,17 +1,18 @@
-package mgkim.service.www.api.cmm.file.mapper;
+package mgkim.framework.online.api.com.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import mgkim.service.www.api.cmm.file.vo.FileVO;
+import mgkim.framework.online.api.com.vo.FileVO;
 
 @Mapper
 public interface FileMapper {
 
 	public int insertFile(FileVO vo) throws Exception;
 
-	public FileVO selectFile(FileVO vo) throws Exception;
+	public Map<String, Object> selectFile(Map<String, Object> inMap) throws Exception;
 
 	public List<FileVO> selectFilegroup(FileVO vo) throws Exception;
 

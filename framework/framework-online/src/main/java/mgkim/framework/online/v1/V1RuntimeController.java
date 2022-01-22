@@ -52,7 +52,7 @@ import mgkim.framework.core.stereo.KScheduler;
 import mgkim.framework.core.util.KObjectUtil;
 import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.com.mgr.ComUriAuthorityMgr;
-import mgkim.framework.online.com.mybatis.ComSqlSessionFactory;
+import mgkim.framework.online.com.mybatis.KSqlSessionFactory;
 
 @Api( tags = { KConstant.SWG_V1 } )
 @RestController
@@ -176,7 +176,7 @@ public class V1RuntimeController {
 	
 	private List<MappedStatement> getSqlmapEntry() {
 		List<MappedStatement> result = new ArrayList<MappedStatement>();
-		ComSqlSessionFactory bean = springContext.getBean(ComSqlSessionFactory.class);
+		KSqlSessionFactory bean = springContext.getBean(KSqlSessionFactory.class);
 		SqlSessionFactory proxy = (SqlSessionFactory) Proxy.newProxyInstance(
 				SqlSessionFactory.class.getClassLoader(),
 				new Class[]{SqlSessionFactory.class},

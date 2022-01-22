@@ -1,4 +1,4 @@
-package mgkim.service.www.api.cmm.file.web;
+package mgkim.framework.online.v1;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,19 +10,22 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Formatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,49 +36,45 @@ import org.springframework.web.multipart.MultipartFile;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import mgkim.framework.core.dto.KInDTO;
+import mgkim.framework.core.annotation.KRequestMap;
 import mgkim.framework.core.dto.KOutDTO;
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
-import mgkim.framework.core.property.KProperty;
 import mgkim.framework.core.type.KType.UuidType;
 import mgkim.framework.core.util.KFileUtil;
 import mgkim.framework.core.util.KHttpUtil;
 import mgkim.framework.core.util.KStringUtil;
-import mgkim.service.www.api.cmm.file.service.FileService;
-import mgkim.service.www.api.cmm.file.vo.FileVO;
+import mgkim.framework.online.api.com.service.FileService;
+import mgkim.framework.online.api.com.vo.FileVO;
 
-@Api( tags = { KConstant.SWG_SERVICE_COMMON } )
+@Api( tags = { KConstant.SWG_V1 } )
 @RestController
-public class FileController {
+public class V1FileController {
 
 	@Autowired
 	private FileService fileService;
-
+	
 	@ApiOperation(value = "(file) 파일 다운로드")
-	@RequestMapping(value = "/api/cmm/file/fileDownload", method = RequestMethod.POST)
-	public @ResponseBody ResponseEntity<InputStreamResource> fileDownload(
-			@RequestBody KInDTO<String> inDTO) throws Exception {
+	@RequestMapping(value = "/v1/file/download/{fileId}", method = RequestMethod.GET)
+	public @ResponseBody ResponseEntity<InputStreamResource> download(
+			@KRequestMap HashMap<String, Object> inMap,
+			@PathVariable(name = "fileId") String fileId) throws Exception {
 		ResponseEntity<InputStreamResource> result = null;
-
+		
 		// 파일 경로 조회
 		String filepath = null;
 		{
-			String fileId = inDTO.getBody();
-			FileVO param = new FileVO.Builder()
-					.fileId(fileId)
-					.build();
-			FileVO fileVO = null;
+			Map<String, Object> resultMap = null;
 			try {
-				fileVO = fileService.selectFile(param);
+				resultMap = fileService.selectFile(inMap);
 			} catch(Exception e) {
 				e.printStackTrace();
 				throw e;
 			}
-			filepath = fileVO.getSaveFpath();
+			filepath = KStringUtil.nvl(resultMap.get("saveFpath"));
 		}
-
+		
 		// 파일 다운로드
 		{
 			File file = new File(filepath);
@@ -94,9 +93,9 @@ public class FileController {
 		}
 		return result;
 	}
-
+	
 	@ApiOperation(value = "(file) 파일그룹 다운로드 v1 (InputStreamResource) 응답 후 zip 파일을 삭제하지 않음")
-	@RequestMapping(value = "/api/cmm/file/fgrpDownload/v1", method = RequestMethod.POST)
+	@RequestMapping(value = "/v1/file/fgrpDownload/v1", method = RequestMethod.POST)
 	public @ResponseBody ResponseEntity<InputStreamResource> fgrpDownload(
 			@RequestParam(value = "fgrpId", required = true) String fgrpId,
 			@RequestParam(value = "zipnm", required = false) String zipnm) throws Exception {
@@ -153,7 +152,7 @@ public class FileController {
 	}
 
 	@ApiOperation(value = "(file) 파일그룹 다운로드 v2 (FileSystemResource) 응답 후 zip 파일 삭제")
-	@RequestMapping(value = "/api/cmm/file/fgrpDownload/v2", method = RequestMethod.POST)
+	@RequestMapping(value = "/v1/file/fgrpDownload/v2", method = RequestMethod.POST)
 	public @ResponseBody ResponseEntity<FileSystemResource> fgrpDownloadv2(
 			@RequestParam(value = "fgrpId", required = true) String fgrpId,
 			@RequestParam(value = "zipnm", required = false) String zipnm) throws Exception {
@@ -222,7 +221,7 @@ public class FileController {
 	}
 
 	@ApiOperation(value = "(file) 파일그룹 업로드")
-	@RequestMapping(value="/api/cmm/file/fgrpUpload", method=RequestMethod.POST)
+	@RequestMapping(value="/v1/file/fgrpUpload", method=RequestMethod.POST)
 	public @ResponseBody KOutDTO<List<FileVO>> fgrpUpload(
 			@RequestPart(value = "attach", required = true) List<MultipartFile> attachList) throws Exception {
 		KOutDTO<List<FileVO>> outDTO = new KOutDTO<List<FileVO>>();
@@ -256,9 +255,9 @@ public class FileController {
 		outDTO.setBody(list);
 		return outDTO;
 	}
-
+	
 	@ApiOperation(value = "(file) 파일 업로드")
-	@RequestMapping(value="/api/cmm/file/fileUpload", method=RequestMethod.POST)
+	@RequestMapping(value="/v1/file/fileUpload", method=RequestMethod.POST)
 	public @ResponseBody KOutDTO<FileVO> fileUpload(
 			@RequestPart(value = "attach", required = true) MultipartFile attach) throws Exception {
 		KOutDTO<FileVO> outDTO = new KOutDTO<FileVO>();
@@ -266,7 +265,12 @@ public class FileController {
 		outDTO.setBody(fileVO);
 		return outDTO;
 	}
-
+	
+	@Value("${file.upload.dirpath}")
+	private String dirpath;
+	@Value("${file.upload.filename}")
+	private String filename;
+	
 	private FileVO saveFile(MultipartFile attach) throws Exception {
 		// 1) 파라미터 처리
 		String orgFileName;
@@ -297,8 +301,7 @@ public class FileController {
 			{
 				Formatter formatter = new Formatter();
 				try {
-					String fmtStr = KProperty.getString("file.pilot.www.board.path");
-					savePath = formatter.format(fmtStr, new Object[] {currDate}).toString();
+					savePath = formatter.format(dirpath, new Object[] {currDate}).toString();
 				} catch(Exception e) {
 					throw e;
 				} finally {
@@ -310,8 +313,7 @@ public class FileController {
 			{
 				Formatter formatter = new Formatter();
 				try {
-					String fmtStr = KProperty.getString("file.pilot.www.board.name");
-					saveFilenm = formatter.format(fmtStr, new Object[] {currDate, fileId, orgFileNm, orgFileExt}).toString();
+					saveFilenm = formatter.format(filename, new Object[] {currDate, fileId, orgFileNm, orgFileExt}).toString();
 				} catch(Exception e) {
 					throw e;
 				} finally {
