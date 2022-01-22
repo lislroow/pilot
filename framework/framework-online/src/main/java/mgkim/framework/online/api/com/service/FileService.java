@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import mgkim.framework.online.api.com.mapper.FileMapper;
-import mgkim.framework.online.api.com.vo.FileVO;
 
 @Service
 public class FileService {
@@ -15,8 +14,8 @@ public class FileService {
 	@Autowired
 	private FileMapper fileMapper;
 
-	public int insertFile(FileVO vo) throws Exception {
-		int cnt = fileMapper.insertFile(vo);
+	public int insertFile(Map<String, Object> map) throws Exception {
+		int cnt = fileMapper.insertFile(map);
 		return cnt;
 	}
 
@@ -24,14 +23,14 @@ public class FileService {
 		return fileMapper.selectFile(inMap);
 	}
 
-	public List<FileVO> selectFilegroup(FileVO vo) throws Exception {
-		return fileMapper.selectFilegroup(vo);
+	public List<Map<String, Object>> selectFilegroup(Map<String, Object> map) throws Exception {
+		return fileMapper.selectFilegroup(map);
 	}
 
-	public int insertFilegroup(List<FileVO> list) throws Exception {
+	public int insertFilegroup(List<Map<String, Object>> list) throws Exception {
 		int cnt = 0;
-		for (FileVO vo : list) {
-			cnt += fileMapper.insertFilegroup(vo);
+		for (Map<String, Object> map : list) {
+			cnt += fileMapper.insertFilegroup(map);
 		}
 		return cnt;
 	}

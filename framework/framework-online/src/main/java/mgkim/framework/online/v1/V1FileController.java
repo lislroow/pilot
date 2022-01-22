@@ -46,7 +46,6 @@ import mgkim.framework.core.util.KFileUtil;
 import mgkim.framework.core.util.KHttpUtil;
 import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.api.com.service.FileService;
-import mgkim.framework.online.api.com.vo.FileVO;
 
 @Api( tags = { KConstant.SWG_V1 } )
 @RestController
@@ -57,7 +56,7 @@ public class V1FileController {
 	
 	@ApiOperation(value = "(file) 파일 다운로드")
 	@RequestMapping(value = "/v1/file/download/{fileId}", method = RequestMethod.GET)
-	public @ResponseBody ResponseEntity<InputStreamResource> download(
+	public @ResponseBody ResponseEntity<InputStreamResource> download_fileId(
 			@KRequestMap HashMap<String, Object> inMap,
 			@PathVariable(name = "fileId") String fileId) throws Exception {
 		ResponseEntity<InputStreamResource> result = null;
@@ -95,20 +94,20 @@ public class V1FileController {
 	}
 	
 	@ApiOperation(value = "(file) 파일그룹 다운로드 v1 (InputStreamResource) 응답 후 zip 파일을 삭제하지 않음")
-	@RequestMapping(value = "/v1/file/fgrpDownload/v1", method = RequestMethod.POST)
-	public @ResponseBody ResponseEntity<InputStreamResource> fgrpDownload(
-			@RequestParam(value = "fgrpId", required = true) String fgrpId,
+	@RequestMapping(value = "/v1/filegrp/download1/{fgrpId}", method = RequestMethod.GET)
+	public @ResponseBody ResponseEntity<InputStreamResource> download1_fgrpId(
+			@KRequestMap HashMap<String, Object> inMap,
+			@PathVariable(name = "fgrpId") String fgrpId,
 			@RequestParam(value = "zipnm", required = false) String zipnm) throws Exception {
 		ResponseEntity<InputStreamResource> result = null;
 
 		// 파일 경로 조회
-		List<FileVO> list = null;
+		List<Map<String, Object>> list = null;
 		{
-			FileVO param = new FileVO.Builder()
-					.fgrpId(fgrpId)
-					.build();
+			Map<String, Object> fileMap = new HashMap<String, Object>();
+			fileMap.put("fgrpId", fgrpId);
 			try {
-				list = fileService.selectFilegroup(param);
+				list = fileService.selectFilegroup(fileMap);
 			} catch(Exception e) {
 				e.printStackTrace();
 				throw e;
@@ -123,9 +122,11 @@ public class V1FileController {
 			ZipOutputStream zos = null;
 			try {
 				zos = new ZipOutputStream(new FileOutputStream(zipfpath));
-				for (FileVO fileVO : list) {
-					zos.putNextEntry(new ZipEntry(fileVO.getOrgFilenm()));
-					byte[] buf = Files.readAllBytes(Paths.get(fileVO.getSaveFpath()));
+				for (Map<String, Object> fileVO : list) {
+					String orgFilenm = KStringUtil.nvl(fileVO.get("orgFilenm"));
+					zos.putNextEntry(new ZipEntry(orgFilenm));
+					String saveFpath = KStringUtil.nvl(fileVO.get("saveFpath"));
+					byte[] buf = Files.readAllBytes(Paths.get(saveFpath));
 					zos.write(buf);
 				}
 				zos.closeEntry();
@@ -152,20 +153,20 @@ public class V1FileController {
 	}
 
 	@ApiOperation(value = "(file) 파일그룹 다운로드 v2 (FileSystemResource) 응답 후 zip 파일 삭제")
-	@RequestMapping(value = "/v1/file/fgrpDownload/v2", method = RequestMethod.POST)
-	public @ResponseBody ResponseEntity<FileSystemResource> fgrpDownloadv2(
-			@RequestParam(value = "fgrpId", required = true) String fgrpId,
+	@RequestMapping(value = "/v1/filegrp/download2/{fgrpId}", method = RequestMethod.GET)
+	public @ResponseBody ResponseEntity<FileSystemResource> download2_fgrpId(
+			@KRequestMap HashMap<String, Object> inMap,
+			@PathVariable(name = "fgrpId") String fgrpId,
 			@RequestParam(value = "zipnm", required = false) String zipnm) throws Exception {
 		ResponseEntity<FileSystemResource> result = null;
 
 		// 파일 경로 조회
-		List<FileVO> list = null;
+		List<Map<String, Object>> list = null;
 		{
-			FileVO param = new FileVO.Builder()
-					.fgrpId(fgrpId)
-					.build();
+			Map<String, Object> fileMap = new HashMap<String, Object>();
+			fileMap.put("fgrpId", fgrpId);
 			try {
-				list = fileService.selectFilegroup(param);
+				list = fileService.selectFilegroup(fileMap);
 			} catch(Exception e) {
 				e.printStackTrace();
 				throw e;
@@ -180,9 +181,11 @@ public class V1FileController {
 			ZipOutputStream zos = null;
 			try {
 				zos = new ZipOutputStream(new FileOutputStream(zipfpath));
-				for (FileVO fileVO : list) {
-					zos.putNextEntry(new ZipEntry(fileVO.getOrgFilenm()));
-					byte[] buf = Files.readAllBytes(Paths.get(fileVO.getSaveFpath()));
+				for (Map<String, Object> fileMap : list) {
+					String orgFilenm = KStringUtil.nvl(fileMap.get("orgFilenm"));
+					zos.putNextEntry(new ZipEntry(orgFilenm));
+					String saveFpath = KStringUtil.nvl(fileMap.get("saveFpath"));
+					byte[] buf = Files.readAllBytes(Paths.get(saveFpath));
 					zos.write(buf);
 				}
 				zos.closeEntry();
@@ -221,11 +224,11 @@ public class V1FileController {
 	}
 
 	@ApiOperation(value = "(file) 파일그룹 업로드")
-	@RequestMapping(value="/v1/file/fgrpUpload", method=RequestMethod.POST)
-	public @ResponseBody KOutDTO<List<FileVO>> fgrpUpload(
+	@RequestMapping(value="/v1/filegrp/upload", method=RequestMethod.PUT)
+	public @ResponseBody KOutDTO<List<Map<String, Object>>> upload_filegrp(
 			@RequestPart(value = "attach", required = true) List<MultipartFile> attachList) throws Exception {
-		KOutDTO<List<FileVO>> outDTO = new KOutDTO<List<FileVO>>();
-
+		KOutDTO<List<Map<String, Object>>> outDTO = new KOutDTO<List<Map<String, Object>>>();
+		
 		// 파라미터 검증
 		{
 			if (attachList == null || attachList.size() == 0) {
@@ -233,13 +236,13 @@ public class V1FileController {
 				return null;
 			}
 		}
-
+		
 		// 파일 저장
-		List<FileVO> list = new ArrayList<FileVO>();
+		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 		int cnt = attachList.size();
 		for (int i=0; i<cnt; i++) {
 			MultipartFile attach = attachList.get(i);
-			FileVO fileVO = saveFile(attach);
+			Map<String, Object> fileVO = saveFile(attach);
 			list.add(fileVO);
 		}
 
@@ -247,7 +250,7 @@ public class V1FileController {
 		{
 			String fgrpId = KStringUtil.createUuid(true, UuidType.FGRPID);
 			list.forEach(item -> {
-				item.setFgrpId(fgrpId);
+				item.put("fgrpId", fgrpId);
 			});
 			fileService.insertFilegroup(list);
 		}
@@ -258,11 +261,11 @@ public class V1FileController {
 	
 	@ApiOperation(value = "(file) 파일 업로드")
 	@RequestMapping(value="/v1/file/upload", method=RequestMethod.PUT)
-	public @ResponseBody KOutDTO<FileVO> fileUpload(
+	public @ResponseBody KOutDTO<Map<String, Object>> upload_file(
 			@RequestPart(value = "attach", required = true) MultipartFile attach) throws Exception {
-		KOutDTO<FileVO> outDTO = new KOutDTO<FileVO>();
-		FileVO fileVO = saveFile(attach);
-		outDTO.setBody(fileVO);
+		KOutDTO<Map<String, Object>> outDTO = new KOutDTO<Map<String, Object>>();
+		Map<String, Object> fileMap = saveFile(attach);
+		outDTO.setBody(fileMap);
 		return outDTO;
 	}
 	
@@ -271,22 +274,22 @@ public class V1FileController {
 	@Value("${file.upload.filename}")
 	private String filename;
 	
-	private FileVO saveFile(MultipartFile attach) throws Exception {
+	private Map<String, Object> saveFile(MultipartFile attach) throws Exception {
 		// 1) 파라미터 처리
-		String orgFileName;
-		String orgFileNm;
-		String orgFileExt;
+		String orgFilenm;
+		String _orgFile;
+		String _orgFileExt;
 
 		// 1.1) 첨부파일 정보
 		{
 			if (attach == null) {
 			}
-			orgFileName = attach.getOriginalFilename();
-			int pos = orgFileName.lastIndexOf(".");
+			orgFilenm = attach.getOriginalFilename();
+			int pos = orgFilenm.lastIndexOf(".");
 			if (pos == -1) {
 			}
-			orgFileNm = orgFileName.substring(0, pos);
-			orgFileExt = orgFileName.substring(pos + 1);
+			_orgFile = orgFilenm.substring(0, pos);
+			_orgFileExt = orgFilenm.substring(pos + 1);
 		}
 
 		// 2) 첨부파일 저장
@@ -313,7 +316,7 @@ public class V1FileController {
 			{
 				Formatter formatter = new Formatter();
 				try {
-					saveFilenm = formatter.format(filename, new Object[] {currDate, fileId, orgFileNm, orgFileExt}).toString();
+					saveFilenm = formatter.format(filename, new Object[] {currDate, fileId, _orgFile, _orgFileExt}).toString();
 				} catch(Exception e) {
 					throw e;
 				} finally {
@@ -334,28 +337,26 @@ public class V1FileController {
 		}
 
 		// 3) 첨부파일 등록 (DB)
-		FileVO fileVO = null;
+		Map<String, Object> fileMap = new HashMap<String, Object>();
 		{
-			fileVO = new FileVO.Builder()
-					.fileId(fileId)
-					.orgFilenm(orgFileName)
-					.saveFilenm(saveFilenm)
-					.saveFpath(saveFpath)
-					.fileExt(orgFileExt)
-					.fileSize(file.length())
-					.cksum(KFileUtil.cksum(file.getAbsolutePath()))
-					.crptYn("N")
-					.zipYn("N")
-					.build();
+			fileMap.put("fileId", fileId);
+			fileMap.put("orgFilenm", orgFilenm);
+			fileMap.put("saveFilenm", saveFilenm);
+			fileMap.put("saveFpath", saveFpath);
+			fileMap.put("orgFileExt", _orgFileExt);
+			fileMap.put("fileSize", file.length());
+			fileMap.put("cksum", KFileUtil.cksum(file.getAbsolutePath()));
+			fileMap.put("crptYn", "N");
+			fileMap.put("zipYn", "N");
 			try {
-				fileService.insertFile(fileVO);
+				fileService.insertFile(fileMap);
 			} catch(Exception e) {
 				file.delete();
 				throw e;
 			}
 		}
 
-		return fileVO;
+		return fileMap;
 	}
 
 
