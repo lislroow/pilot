@@ -71,15 +71,9 @@ function curl_user_idlogin() {
     read -r  ip <<< $(GetSvrInfo "ip" "app_id" "${app_id}")
     echo -e "## \e[36m[${idx}/${tot}] app_id=${app_id} port=${port}\e[m"
     ## [actual-code]
-    response=$(curl --location --request POST ${CURL_OPTS} 'http://'${ip}':'${port}'/public/cmm/user/idlogin' \
+    response=$(curl --location --request POST ${CURL_OPTS} 'http://'${ip}':'${port}'/public/cmm/user/id-login' \
     --header 'debug: Y' \
-    --header 'Content-Type: application/json' \
-    --data-raw '{
-      "header": {},
-      "body": {
-        "userId": "1000000001"
-      }
-    }')
+    --form 'userId="1000000001"')
     ## //[actual-code]
     echo "   ${response}"
     idx=$(( $idx + 1 ))
@@ -96,22 +90,7 @@ function curl_apitxlog_selectLogList() {
     read -r  port <<< $(GetSvrInfo "port" "app_id" "${app_id}")
     echo -e "## \e[36m[${idx}/${tot}] app_id=${app_id} port=${port}\e[m"
     ## [actual-code]
-    response=$(curl --location --request POST ${CURL_OPTS} 'http://'${ip}':'${port}'/api/com/apitxlog/selectLogList' \
-    --header 'Authorization: Bearer '${BEARER_TOKEN} \
-    --header 'Content-Type: application/json' \
-    --data-raw '{
-      "body": {
-      },
-      "header": {
-        "debug": "Y"
-      },
-      "page": {
-        "pageindex": 1,
-        "pageunit": 4,
-        "paging": true,
-        "rowunit": 4
-      }
-    }')
+    response=$(curl --location --request GET ${CURL_OPTS} 'http://'${ip}':'${port}'/v1/apitxlog')
     ## //[actual-code]
     echo "   ${response}"
     idx=$(( $idx + 1 ))

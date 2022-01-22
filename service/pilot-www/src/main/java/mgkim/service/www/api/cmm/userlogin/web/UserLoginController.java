@@ -4,15 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
-import mgkim.framework.core.dto.KInDTO;
+import mgkim.framework.core.annotation.KRequestMap;
 import mgkim.framework.core.dto.KOAuthToken;
 import mgkim.framework.core.dto.KOutDTO;
 import mgkim.framework.core.env.KProfile;
@@ -25,8 +24,6 @@ import mgkim.framework.online.com.mgr.ComSessionStatusMgr;
 import mgkim.framework.online.com.mgr.ComUserTokenMgr;
 import mgkim.service.cmm.online.vo.CmmUserLoginPolicyVO;
 import mgkim.service.www.api.cmm.userlogin.service.UserLoginService;
-import mgkim.service.www.api.cmm.userlogin.vo.UserLoginReqVO;
-import mgkim.service.www.api.cmm.userlogin.vo.UserLoginResVO;
 import mgkim.service.www.com.env.CmmConstant;
 
 //@Api( tags = { KConstant.SWG_SERVICE_COMMON } )
@@ -46,11 +43,11 @@ public class UserLoginController {
 	private UserLoginService userLoginService;
 	
 	@ApiOperation(value = "(로그인) ID로그인")
-	@RequestMapping(value = "/public/cmm/user/idlogin", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody KOutDTO<UserLoginResVO> idlogin(@RequestBody KInDTO<UserLoginReqVO> inDTO) throws Exception {
-		KOutDTO<UserLoginResVO> outDTO = new KOutDTO<UserLoginResVO>();
-		UserLoginReqVO inVO = inDTO.getBody();
-
+	@RequestMapping(value = "/public/cmm/user/id-login", method = RequestMethod.POST)
+	public @ResponseBody KOutDTO<Map<String, Object>> idlogin(
+			@KRequestMap HashMap<String, Object> inMap,
+			@RequestParam(required = true) String userId) throws Exception {
+		KOutDTO<Map<String, Object>> outDTO = new KOutDTO<Map<String, Object>>();
 		// `token 생성`
 		Map<String, Object> claims = new HashMap<String, Object>();
 		{
@@ -58,7 +55,7 @@ public class UserLoginController {
 			claims.put("appCd", KProfile.APP_CD);
 			claims.put("userTpcd", UserType.API.code());
 			claims.put("aumthTpcd", AumthType.IDLOGIN.code());
-			claims.put("userId", inVO.getUserId());
+			claims.put("userId", userId);
 
 			// `사용자 정의`
 			//token.setEmail(inVO.getEmail());
@@ -112,23 +109,24 @@ public class UserLoginController {
 		}
 
 		// `결과 처리`
-		UserLoginResVO outVO;
+		Map<String, Object> outBody = new HashMap<String, Object>();
 		{
-			outVO = new UserLoginResVO();
-			outVO.setJwt(jwt);
-			outVO.setClaims(claims);
-			outVO.setPublicKey(publicKey);
-			outDTO.setBody(outVO);
+			outBody.put("jwt", jwt);
+			outBody.put("claims", claims);
+			outBody.put("publicKey", publicKey);
+			
+			outDTO.setBody(outBody);
 		}
 		
 		return outDTO;
 	}
 
-	@ApiOperation(value = "refreshAccessToken")
-	@RequestMapping(value = "/api/cmm/user/refreshAccessToken", method = RequestMethod.POST)
-	public @ResponseBody KOutDTO<UserLoginResVO> refreshAccessToken(@RequestBody KInDTO<String> inDTO) throws Exception {
-		KOutDTO<UserLoginResVO> outDTO = new KOutDTO<UserLoginResVO>();
-		String encodedRefreshToken = inDTO.getBody();
+	@ApiOperation(value = "refresh-access-token")
+	@RequestMapping(value = "/api/cmm/user/refresh-access-token", method = RequestMethod.POST)
+	public @ResponseBody KOutDTO<Map<String, Object>> refreshAccessToken(
+			@KRequestMap HashMap<String, Object> inMap,
+			@RequestParam(required = true, name = "encoded-refresh-token") String encodedRefreshToken) throws Exception {
+		KOutDTO<Map<String, Object>> outDTO = new KOutDTO<Map<String, Object>>();
 
 		// `token 변환`
 		Map<String, Object> claims = null;
@@ -161,21 +159,22 @@ public class UserLoginController {
 		}
 
 		// `결과 처리`
-		UserLoginResVO outVO;
+		Map<String, Object> outBody = new HashMap<String, Object>();
 		{
-			outVO = new UserLoginResVO();
-			outVO.setJwt(jwt);
-			outVO.setClaims(claims);
-			outDTO.setBody(outVO);
+			outBody.put("jwt", jwt);
+			outBody.put("claims", claims);
+			
+			outDTO.setBody(outBody);
 		}
 		return outDTO;
 	}
 
 	@ApiOperation(value = "(로그인) symmetric-key 저장")
-	@RequestMapping(value = "/api/cmm/user/saveSymKey", method = RequestMethod.POST)
-	public @ResponseBody KOutDTO<?> saveSymKey(@RequestBody KInDTO<String> inDTO) throws Exception {
+	@RequestMapping(value = "/api/cmm/user/save-symmetric-key", method = RequestMethod.POST)
+	public @ResponseBody KOutDTO<?> saveSymKey(
+			@KRequestMap HashMap<String, Object> inMap,
+			@RequestParam(required = true, name = "symmetric-key") String symKey) throws Exception {
 		KOutDTO<?> outDTO = new KOutDTO<>();
-		String symKey = inDTO.getBody();
 		comFieldCryptorMgr.saveSymKey(symKey);
 		return outDTO;
 	}
