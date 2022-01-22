@@ -66,8 +66,6 @@ public class KInitMvc extends WebMvcConfigurationSupport {
 	protected ExceptionHandlerExceptionResolver createExceptionHandlerExceptionResolver() {
 		return exceptionHandler;
 	}
-
-
 	
 	
 	/*
@@ -84,21 +82,12 @@ public class KInitMvc extends WebMvcConfigurationSupport {
 		configurer.enable("");
 	}
 	*/
-
+	
 	final String AUTHORIZATION_DESC = "Bearer + accessToken";
-
+	
 	@Bean
 	public Docket docket() {
 		Docket docket = new Docket(DocumentationType.OAS_30)
-		//Docket docket = new Docket(DocumentationType.SWAGGER_2)
-				//.globalRequestParameters(Arrays.asList(new RequestParameterBuilder()
-				//		.name("debug")
-				//		.in(ParameterType.HEADER)
-				//		.required(false)
-				//		//.example(new ExampleBuilder().value("Y").build())
-				//		.build()
-				//	))
-				
 				.globalRequestParameters(Arrays.asList(
 						new RequestParameterBuilder()
 							.name("debug")
@@ -108,7 +97,6 @@ public class KInitMvc extends WebMvcConfigurationSupport {
 							.description("Y 일 경우 log-level TRACE")
 							.build()
 						))
-				
 				.ignoredParameterTypes(KRequestMap.class)
 				.useDefaultResponseMessages(false)
 				.securityContexts(Arrays.asList(SecurityContext.builder()
@@ -123,14 +111,14 @@ public class KInitMvc extends WebMvcConfigurationSupport {
 				.paths(PathSelectors.regex("/api/.*|/public/.*|/v1/.*")).build();
 		return docket;
 	}
-
+	
 	List<SecurityReference> defaultAuth() {
 		AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
 		AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
 		authorizationScopes[0] = authorizationScope;
 		return Collections.singletonList(new SecurityReference(AUTHORIZATION_DESC, authorizationScopes));
 	}
-
+	
 	@Bean
 	UiConfiguration uiConfig() {
 		return UiConfigurationBuilder.builder()
@@ -151,6 +139,4 @@ public class KInitMvc extends WebMvcConfigurationSupport {
 				.validatorUrl(null)
 				.build();
 	}
-	// -- io.springfox:3.0.0
-
 }
