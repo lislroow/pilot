@@ -51,6 +51,7 @@ public class KConstant {
 	public static final String FMT_HH_MM_SS = "HH:mm:ss";
 	public static final String FMT_HH_MM_SS_SSS = "HH:mm:ss.SSS";
 	
+	public static final String SWG_V1 = "v1";
 	public static final String SWG_SYSTEM_COMMON = "system-common";
 	public static final String SWG_SYSTEM_MANAGEMENT = "system-management";
 	public static final String SWG_SERVICE_ADMIN = "service-admin";

@@ -22,7 +22,7 @@ import mgkim.framework.core.dto.KOutPageDTO;
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.online.api.com.service.ApiTxLogService;
 
-@Api( tags = { KConstant.SWG_SYSTEM_COMMON } )
+@Api( tags = { KConstant.SWG_V1 } )
 @RestController
 public class V1ApiTxLogController {
 	
