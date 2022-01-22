@@ -176,7 +176,11 @@ public class KFilterApi extends KFilter {
 				String querystrings = KStringUtil.nvl(KHttpUtil.getRequest().getQueryString());
 				Map<String, String> m = Arrays.stream(querystrings.split("&"))
 						.collect(HashMap<String, String>::new,
-								(map, qs) -> map.put(qs.split("=")[0], qs.split("=")[1]),
+								(map, qs) -> {
+									if (qs.split("=").length == 2 ) {
+										map.put(qs.split("=")[0], qs.split("=")[1]);
+									}
+								},
 								HashMap<String, String>::putAll);
 				String body = KStringUtil.toJson(m);
 				String header = KStringUtil.toJson(KHttpUtil.getHeaders());

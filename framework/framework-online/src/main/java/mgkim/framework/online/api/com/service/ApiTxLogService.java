@@ -21,9 +21,14 @@ public class ApiTxLogService {
 		return list;
 	}
 	
-	public List<CmmApiTxLogVO> selectLogList(Map<String, String> inMap) throws Exception {
-		List<CmmApiTxLogVO> list = apiTxLogMapper.selectLogListByMap(inMap);
+	public List<CmmApiTxLogVO> selectLogList_map(Map<String, Object> inMap) throws Exception {
+		List<CmmApiTxLogVO> list = apiTxLogMapper.selectLogList_map(inMap);
 		return list;
+	}
+	
+	public CmmApiTxLogVO selectLogByTxid_map(Map<String, Object> inMap) throws Exception {
+		CmmApiTxLogVO item = apiTxLogMapper.selectLogByTxid_map(inMap);
+		return item;
 	}
 
 }

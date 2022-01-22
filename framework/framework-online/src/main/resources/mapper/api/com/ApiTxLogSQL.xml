@@ -9,11 +9,18 @@
      ORDER BY FIRST_REGI_DTTM DESC
   </select>
 
-  <select id="selectLogListByMap" parameterType="java.util.Map" resultType="CmmApiTxLogVO">
+  <select id="selectLogList_map" parameterType="java.util.Map" resultType="CmmApiTxLogVO">
     SELECT 
            A.*
       FROM MGCB407TA A /* MGCB_api처리로그arch */
      ORDER BY FIRST_REGI_DTTM DESC
+  </select>
+
+  <select id="selectLogByTxid_map" parameterType="java.util.Map" resultType="CmmApiTxLogVO">
+    SELECT 
+           A.*
+      FROM MGCB407TA A /* MGCB_api처리로그arch */
+     WHERE TXID = #{txid}
   </select>
 
   <select id="selectLogList-count" parameterType="KCmmVO" resultType="CmmApiTxLogVO">

@@ -13,6 +13,8 @@ public interface ApiTxLogMapper {
 	
 	public List<CmmApiTxLogVO> selectLogList(KCmmVO vo) throws Exception;
 	
-	public List<CmmApiTxLogVO> selectLogListByMap(Map<String, String> inMap) throws Exception;
+	public List<CmmApiTxLogVO> selectLogList_map(Map<String, Object> inMap) throws Exception;
+	
+	public CmmApiTxLogVO selectLogByTxid_map(Map<String, Object> inMap) throws Exception;
 	
 }
