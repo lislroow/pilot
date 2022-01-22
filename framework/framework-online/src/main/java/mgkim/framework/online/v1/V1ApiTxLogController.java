@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,8 +36,8 @@ public class V1ApiTxLogController {
 	@RequestMapping(value = "/v1/apitxlog", method = RequestMethod.GET)
 	public @ResponseBody KOutPageDTO<List<CmmApiTxLogVO>> apitxlog(
 			@KRequestMap HashMap<String, Object> inMap,
-			@KPageIdx Integer pageidx,
-			@KRowUnit Integer rowunit) throws Exception {
+			@KPageIdx @RequestParam(required = false) Integer pageidx,
+			@KRowUnit @RequestParam(required = false) Integer rowunit) throws Exception {
 		KOutPageDTO<List<CmmApiTxLogVO>> outDTO = new KOutPageDTO<List<CmmApiTxLogVO>>();
 		List<CmmApiTxLogVO> outData = apiTxLogService.selectLogList_map(inMap);
 		outDTO.setBody(outData);

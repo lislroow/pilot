@@ -115,7 +115,7 @@ public class KInitMvc extends WebMvcConfigurationSupport {
 				.apiInfo(apiInfo())
 				.select()
 				.apis(RequestHandlerSelectors.basePackage(KProfile.BASE_PACKAGE))
-				.paths(PathSelectors.regex("/api/.*|/public/.*")).build();
+				.paths(PathSelectors.regex("/api/.*|/public/.*|/v1/.*")).build();
 		return docket;
 	}
 
