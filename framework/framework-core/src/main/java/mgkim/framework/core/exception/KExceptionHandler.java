@@ -26,8 +26,8 @@ import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.env.KSqlContext;
 import mgkim.framework.core.logging.KLogMarker;
-import mgkim.framework.core.type.KType.TEncodingType;
 import mgkim.framework.core.type.KType.RespType;
+import mgkim.framework.core.type.KType.TEncodingType;
 import mgkim.framework.core.util.KExceptionUtil;
 
 @KBean
@@ -37,9 +37,16 @@ public class KExceptionHandler extends ExceptionHandlerExceptionResolver {
 
 	@Override
 	protected ModelAndView doResolveHandlerMethodException(HttpServletRequest request, HttpServletResponse response,
-			HandlerMethod handlerMethod, Exception exception) {
-		KException ke = KExceptionHandler.translate(exception);
-		log.error(KLogMarker.ERROR, "{} {}", ke.getId(), ke.getText(), exception);
+			HandlerMethod handlerMethod, Exception e) {
+		KException ke = null;
+		// 2022.01.22 spring 에서 발생한 오류 여부 판단
+		if (e.getClass().getName().startsWith("org.springframework.web")) {
+			ke = new KSysException(KMessage.E7010, e, e.getMessage());
+			ke = KExceptionHandler.translate(ke);
+		} else {
+			ke = KExceptionHandler.translate(e);
+		}
+		log.error(KLogMarker.ERROR, "{} {}", ke.getId(), ke.getText(), e);
 		response(response, ke);
 		return new ModelAndView();
 		//return null;	// 2022.01.20 null 일 경우 

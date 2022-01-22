@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
@@ -90,13 +90,6 @@ public class KFilterApi extends KFilter {
 			HandlerMethod method = comUriListMgr.getHandlerMethod(request);
 			if (method == null) {
 				throw new KSysException(KMessage.E7001, uri);
-			}
-			// `REQUEST_TYPE` 결정
-			String contentType = KStringUtil.nvl(request.getContentType());
-			if (contentType.startsWith(MediaType.APPLICATION_JSON_VALUE)) {
-				KContext.set(AttrKey.REQUEST_TYPE, ReqType.JSON);
-			} else {
-				KContext.set(AttrKey.REQUEST_TYPE, ReqType.FILE);
 			}
 		} catch (HttpMediaTypeNotSupportedException e) {
 			String contentType = request.getHeader("Content-Type");
@@ -179,6 +172,16 @@ public class KFilterApi extends KFilter {
 				} else {
 					log.warn(KLogMarker.request, "request-body 가 json 형식이 아닙니다. request-body={}", body);
 				}
+			} else if (reqType == ReqType.QUERY) {
+				String querystrings = KStringUtil.nvl(KHttpUtil.getRequest().getQueryString());
+				Map<String, String> m = Arrays.stream(querystrings.split("&"))
+						.collect(HashMap<String, String>::new,
+								(map, qs) -> map.put(qs.split("=")[0], qs.split("=")[1]),
+								HashMap<String, String>::putAll);
+				String body = KStringUtil.toJson(m);
+				String header = KStringUtil.toJson(KHttpUtil.getHeaders());
+				log.trace(KLogMarker.request, "\nrequest-header = {}\nrequest-querystring(map) = {}", header, body);
+			} else if (reqType == ReqType.FILE) {
 			} else {
 				//ServletFileUpload upload = new ServletFileUpload();
 				//upload.setSizeMax(KInitRoot.MAX_UPLOAD_SIZE);

@@ -36,7 +36,6 @@ public class KRequestListener extends RequestContextListener {
 		try {
 			long reqTime = System.currentTimeMillis();
 			KContext.set(AttrKey.REQ_TIME, reqTime);
-
 			KContext.initRequest(request);
 			//log.accesslog();
 			//ComDebugScheduler.check();

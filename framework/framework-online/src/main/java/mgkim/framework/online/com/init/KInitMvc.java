@@ -14,6 +14,7 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
 
+import mgkim.framework.core.annotation.KRequestMap;
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.exception.KExceptionHandler;
@@ -107,6 +108,7 @@ public class KInitMvc extends WebMvcConfigurationSupport {
 						.parameterType("header")
 						.build()
 						))
+				.ignoredParameterTypes(KRequestMap.class)
 				.useDefaultResponseMessages(false)
 				.securityContexts(Arrays.asList(securityContext()))
 				.securitySchemes(Arrays.asList(apiKey()))

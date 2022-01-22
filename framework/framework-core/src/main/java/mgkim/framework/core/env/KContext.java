@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
@@ -16,6 +17,7 @@ import mgkim.framework.core.logging.KLogMarker;
 import mgkim.framework.core.type.KType.ApiType;
 import mgkim.framework.core.type.KType.AuthType;
 import mgkim.framework.core.type.KType.ExecType;
+import mgkim.framework.core.type.KType.ReqType;
 import mgkim.framework.core.type.KType.UuidType;
 import mgkim.framework.core.util.KHttpUtil;
 import mgkim.framework.core.util.KStringUtil;
@@ -91,6 +93,15 @@ public class KContext {
 		
 		String referer = KStringUtil.nvl(request.getHeader(HttpHeaders.REFERER));
 		KContext.set(AttrKey.REFERER, referer);
+		
+		String contentType = KStringUtil.nvl(request.getContentType());
+		if (contentType.startsWith(MediaType.APPLICATION_JSON_VALUE)) {
+			KContext.set(AttrKey.REQUEST_TYPE, ReqType.JSON);
+		} else if (contentType.equals("multipart/form-data")) {
+			KContext.set(AttrKey.REQUEST_TYPE, ReqType.FILE);
+		} else {
+			KContext.set(AttrKey.REQUEST_TYPE, ReqType.QUERY);
+		}
 		
 		String authorization = KStringUtil.nvl(request.getHeader(KConstant.HK_AUTHORIZATION));
 		KContext.set(AttrKey.AUTHORIZATION, authorization);

@@ -96,7 +96,7 @@ function curl_apitxlog_selectLogList() {
     read -r  port <<< $(GetSvrInfo "port" "app_id" "${app_id}")
     echo -e "## \e[36m[${idx}/${tot}] app_id=${app_id} port=${port}\e[m"
     ## [actual-code]
-    response=$(curl --location --request POST ${CURL_OPTS} 'http://'${ip}':'${port}'/api/adm/apitxlog/selectLogList' \
+    response=$(curl --location --request POST ${CURL_OPTS} 'http://'${ip}':'${port}'/api/com/apitxlog/selectLogList' \
     --header 'Authorization: Bearer '${BEARER_TOKEN} \
     --header 'Content-Type: application/json' \
     --data-raw '{

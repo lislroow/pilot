@@ -32,9 +32,6 @@ import mgkim.service.www.com.env.CmmConstant;
 //@Api( tags = { KConstant.SWG_SERVICE_COMMON } )
 @RestController
 public class UserLoginController {
-	public UserLoginController() {
-		System.out.println("");
-	}
 
 	@Autowired(required = true)
 	private ComUserTokenMgr comUserTokenMgr;

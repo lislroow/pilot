@@ -160,7 +160,7 @@ public class KType {
 	}
 	
 	public enum ReqType {
-		JSON("json"), FILE("file"), FORM_DATA("form-data");
+		JSON("json"), QUERY("query"), FILE("file"), FORM_DATA("form-data");
 		private final String code;
 		public String code() {
 			return code;
