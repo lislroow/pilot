@@ -19,13 +19,13 @@ import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.exception.KExceptionHandler;
 import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.schema.ModelRef;
+import springfox.documentation.builders.RequestParameterBuilder;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.AuthorizationScope;
+import springfox.documentation.service.ParameterType;
 import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
@@ -36,10 +36,10 @@ import springfox.documentation.swagger.web.OperationsSorter;
 import springfox.documentation.swagger.web.TagsSorter;
 import springfox.documentation.swagger.web.UiConfiguration;
 import springfox.documentation.swagger.web.UiConfigurationBuilder;
-import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
-@EnableSwagger2WebMvc
+@EnableSwagger2
 public class KInitMvc extends WebMvcConfigurationSupport {
 	
 	private static final Logger log = LoggerFactory.getLogger(KInitMvc.class);
@@ -56,8 +56,8 @@ public class KInitMvc extends WebMvcConfigurationSupport {
 		registry.addResourceHandler("/resources/**").addResourceLocations("classpath:/META-INF/static/runtime/resources/");
 		
 		// [swagger]
-		registry.addResourceHandler("/swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
-		registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+		registry.addResourceHandler("/swagger-ui/**").addResourceLocations("classpath:/META-INF/resources/webjars/springfox-swagger-ui/");
+		registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/springfox-swagger-ui/");
 	}
 	
 	@Autowired
@@ -90,9 +90,8 @@ public class KInitMvc extends WebMvcConfigurationSupport {
 
 	@Bean
 	public Docket docket() {
-		//Docket docket = new Docket(DocumentationType.SPRING_WEB)
-		//Docket docket = new Docket(DocumentationType.OAS_30)
-		Docket docket = new Docket(DocumentationType.SWAGGER_2)
+		Docket docket = new Docket(DocumentationType.OAS_30)
+		//Docket docket = new Docket(DocumentationType.SWAGGER_2)
 				//.globalRequestParameters(Arrays.asList(new RequestParameterBuilder()
 				//		.name("debug")
 				//		.in(ParameterType.HEADER)
@@ -100,14 +99,17 @@ public class KInitMvc extends WebMvcConfigurationSupport {
 				//		//.example(new ExampleBuilder().value("Y").build())
 				//		.build()
 				//	))
-				.globalOperationParameters(Arrays.asList(
-						new ParameterBuilder()
-						.name("debug")
-						.defaultValue("Y")
-						.modelRef(new ModelRef("string"))
-						.parameterType("header")
-						.build()
+				
+				.globalRequestParameters(Arrays.asList(
+						new RequestParameterBuilder()
+							.name("debug")
+							//.contentModel(new ModelSpecificationBuilder().)
+							.in(ParameterType.HEADER)
+							.required(false)
+							.description("Y 일 경우 log-level TRACE")
+							.build()
 						))
+				
 				.ignoredParameterTypes(KRequestMap.class)
 				.useDefaultResponseMessages(false)
 				.securityContexts(Arrays.asList(securityContext()))

@@ -59,6 +59,8 @@ public class KConstant {
 	
 	public static final List<String> PUBLIC_URI = Arrays.asList(
 			  "/"
+			, "/swagger-ui/**"
+			, "/webjars/**"
 			, "/public/**"
 			);
 	public static final String API_URI = "/api/**";
