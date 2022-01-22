@@ -1,4 +1,4 @@
-package mgkim.framework.online.api.com.web;
+package mgkim.framework.online.v1;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -52,17 +52,17 @@ import mgkim.framework.core.util.KStringUtil;
 import mgkim.framework.online.com.mgr.ComUriAuthorityMgr;
 import mgkim.framework.online.com.mybatis.ComSqlSessionFactory;
 
-@Api( tags = { KConstant.SWG_SYSTEM_MANAGEMENT } )
+@Api( tags = { KConstant.SWG_V1 } )
 @RestController
-public class RuntimeController {
+public class V1RuntimeController {
 
-	private static final Logger log = LoggerFactory.getLogger(RuntimeController.class);
+	private static final Logger log = LoggerFactory.getLogger(V1RuntimeController.class);
 	
 	@Autowired
 	private ApplicationContext springContext;
 	
 	@ApiOperation(value = "(실행환경) spring-bean 목록 조회")
-	@RequestMapping(value = "/api/com/runtime/spring-beans", method = RequestMethod.GET)
+	@RequestMapping(value = "/v1/runtime/spring-beans", method = RequestMethod.GET)
 	public @ResponseBody KOutDTO<List<Map<String, String>>> springBeans() throws Exception {
 		KOutDTO<List<Map<String, String>>> outDTO = new KOutDTO<List<Map<String, String>>>();
 		List<Map<String, String>> outBody = new ArrayList<Map<String, String>>();
@@ -95,7 +95,7 @@ public class RuntimeController {
 	}
 	
 	@ApiOperation(value = "(실행환경) mybatis-mapper 목록 조회")
-	@RequestMapping(value = "/api/com/runtime/mybatis-mapper", method = RequestMethod.GET)
+	@RequestMapping(value = "/v1/runtime/mybatis-mapper", method = RequestMethod.GET)
 	public @ResponseBody KOutDTO<List<String>> mybatisMapper() throws Exception {
 		KOutDTO<List<String>> outDTO = new KOutDTO<List<String>>();
 
@@ -201,7 +201,7 @@ public class RuntimeController {
 	}
 
 	@ApiOperation(value = "(실행환경) mybatis-mapper-sqltext 조회")
-	@RequestMapping(value = "/api/com/runtime/mybatis-mapper-sqltext", method = RequestMethod.GET)
+	@RequestMapping(value = "/v1/runtime/mybatis-mapper-sqltext", method = RequestMethod.GET)
 	public @ResponseBody ResponseEntity<byte[]> mybatisMapperSqltext() throws Exception {
 		ResponseEntity<byte[]> resp = null;
 		
@@ -287,7 +287,7 @@ public class RuntimeController {
 	}
 
 	@ApiOperation(value = "(실행환경) spring-uri 목록 조회")
-	@RequestMapping(value = "/api/com/runtime/spring-uri", method = RequestMethod.GET)
+	@RequestMapping(value = "/v1/runtime/spring-uri", method = RequestMethod.GET)
 	public @ResponseBody KOutDTO<List<Map<String, String>>> springUri() throws Exception {
 		KOutDTO<List<Map<String, String>>> outDTO = new KOutDTO<List<Map<String, String>>>();
 		RequestMappingHandlerMapping requestMapping = springContext.getBean("requestMappingHandlerMapping", RequestMappingHandlerMapping.class);
@@ -321,7 +321,7 @@ public class RuntimeController {
 	}
 	
 	@ApiOperation(value = "(실행환경) spring-security-uri 목록 조회")
-	@RequestMapping(value = "/api/com/runtime/spring-security-uri", method = RequestMethod.GET)
+	@RequestMapping(value = "/v1/runtime/spring-security-uri", method = RequestMethod.GET)
 	public @ResponseBody KOutDTO<List<Map<String, Object>>> springSecurityUri() throws Exception {
 		KOutDTO<List<Map<String, Object>>> outDTO = new KOutDTO<List<Map<String, Object>>>();
 		DataSource dataSource = springContext.getBean(DataSource.class);
@@ -339,7 +339,7 @@ public class RuntimeController {
 	}
 	
 	@ApiOperation(value = "(실행환경) properties 목록 조회")
-	@RequestMapping(value = "/api/com/runtime/properties", method = RequestMethod.GET)
+	@RequestMapping(value = "/v1/runtime/properties", method = RequestMethod.GET)
 	public @ResponseBody KOutDTO<List<Map<String, Object>>> javaEnvVariable() throws Exception {
 		KOutDTO<List<Map<String, Object>>> outDTO = new KOutDTO<List<Map<String, Object>>>();
 		
@@ -374,7 +374,7 @@ public class RuntimeController {
 	}
 	
 	@ApiOperation(value = "(실행환경) jdbc-datasource 목록 조회")
-	@RequestMapping(value = "/api/com/runtime/jdbc-datasource", method = RequestMethod.GET)
+	@RequestMapping(value = "/v1/runtime/jdbc-datasource", method = RequestMethod.GET)
 	public @ResponseBody KOutDTO<List<Map<String, String>>> jdbcDatasource() throws Exception {
 		KOutDTO<List<Map<String, String>>> outDTO = new KOutDTO<List<Map<String, String>>>();
 		BasicDataSource dataSource = springContext.getBean(BasicDataSource.class);
