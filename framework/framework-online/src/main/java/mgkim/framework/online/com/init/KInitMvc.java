@@ -22,7 +22,6 @@ import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.builders.RequestParameterBuilder;
-import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.AuthorizationScope;
 import springfox.documentation.service.ParameterType;
@@ -112,26 +111,17 @@ public class KInitMvc extends WebMvcConfigurationSupport {
 				
 				.ignoredParameterTypes(KRequestMap.class)
 				.useDefaultResponseMessages(false)
-				.securityContexts(Arrays.asList(securityContext()))
-				.securitySchemes(Arrays.asList(apiKey()))
-				.apiInfo(apiInfo())
+				.securityContexts(Arrays.asList(SecurityContext.builder()
+												.securityReferences(defaultAuth())
+												.build()))
+				.securitySchemes(Arrays.asList(new ApiKey(AUTHORIZATION_DESC, KConstant.HK_AUTHORIZATION, "header")))
+				.apiInfo(new ApiInfoBuilder()
+							.title("mgkim pilot api")
+							.build())
 				.select()
 				.apis(RequestHandlerSelectors.basePackage(KProfile.BASE_PACKAGE))
 				.paths(PathSelectors.regex("/api/.*|/public/.*|/v1/.*")).build();
 		return docket;
-	}
-
-	private ApiInfo apiInfo() {
-		return new ApiInfoBuilder()
-				.title("mgkim pilot api")
-				.build();
-	}
-
-	// io.springfox:3.0.0
-	private SecurityContext securityContext() {
-		return SecurityContext.builder()
-				.securityReferences(defaultAuth())
-				.build();
 	}
 
 	List<SecurityReference> defaultAuth() {
@@ -139,10 +129,6 @@ public class KInitMvc extends WebMvcConfigurationSupport {
 		AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
 		authorizationScopes[0] = authorizationScope;
 		return Collections.singletonList(new SecurityReference(AUTHORIZATION_DESC, authorizationScopes));
-	}
-
-	ApiKey apiKey() {
-		return new ApiKey(AUTHORIZATION_DESC, KConstant.HK_AUTHORIZATION, "header");
 	}
 
 	@Bean
