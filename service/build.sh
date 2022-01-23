@@ -10,11 +10,27 @@ verboss="false"
 function build() {
   echo "+++ [func] ${BASEDIR}/${0##*/}:$FUNCNAME: build maven project +++"
   
+  local mvn_goals=()
+  case "$1" in
+    d*)
+      mvn_goals+=("snapshot")
+      ;;
+    s*)
+      mvn_goals+=("release")
+      ;;
+    *)
+      mvn_goals+=("snapshot")
+      mvn_goals+=("release")
+      ;;
+  esac
   case "$1" in
     all)
       read -ra app_name_arr <<< $(GetSvrInfo "app_name" "ALL")
       ;;
-    @(w|a)?(ww|dm))
+    @(d|s)@(w|a)*)
+      read -ra app_name_arr <<< $(GetSvrInfo "app_name" "app_id" "$1")
+      ;;
+    @(w|a)*)
       read -ra app_name_arr <<< $(GetSvrInfo "app_name" "app_name" "$1")
       ;;
   esac
@@ -31,37 +47,20 @@ function build() {
     mvn_args="${mvn_args} --batch-mode"
     mvn_args="${mvn_args} --quiet"
     
-    local mvn_cmd="mvn ${mvn_args} clean package spring-boot:repackage"
-    echo -e "## \e[36m[${idx}/${tot}] ${app_name}:\e[m \e[30;42m${mvn_cmd}\e[m"
-    eval "${mvn_cmd}"
-    
-    local jar_file=$(xmlstarlet sel -N x="http://maven.apache.org/POM/4.0.0" \
-      -t -v \
-      "concat(x:project/x:artifactId, '-', x:project/x:version, '.', x:project/x:packaging)" \
-      ${BASEDIR}/${app_name}/pom.xml)
-    Log $verboss "jar_file=${jar_file}"
-    
-    # jar 파일명에 "-SNAPSHOT" 이 있으면 snapshot 저장소에 deploy 되어야 합니다.
-    local nx_repo_id 
-    if [[ "${jar_file}" = *"-SNAPSHOT"* ]]; then
-      nx_repo_id="maven-snapshot"
-    else
-      nx_repo_id="maven-release"
-    fi
-    
-    ## deploy-nexus
-    mvn_args=""
-    mvn_args="${mvn_args} -DpomFile=${BASEDIR}/${app_name}/pom.xml"
-    mvn_args="${mvn_args} -Dfile=${BASEDIR}/${app_name}/target/${jar_file}"
-    mvn_args="${mvn_args} --quiet"
-    mvn_args="${mvn_args} -DrepositoryId=${nx_repo_id}"
-    mvn_args="${mvn_args} -Durl=https://nexus/repository/${nx_repo_id}/"
-    
-    mvn_cmd="mvn ${mvn_args} deploy:deploy-file"
-    echo -e "## \e[36m[${idx}/${tot}] ${app_name}:\e[m \e[30;42m${mvn_cmd}\e[m"
-    eval "${mvn_cmd}"
-    idx=$(( $idx + 1 ))
-    echo "-----------"
+    for mvn_goal in ${mvn_goals[@]}
+    do
+      local mvn_cmd="mvn ${mvn_args} "
+      if [ "${mvn_goal}" == "snapshot" ]; then
+        mvn_cmd="${mvn_cmd} clean deploy"
+      elif [ "${mvn_goal}" == "release" ]; then
+        mvn_cmd="${mvn_cmd} clean release:clean release:prepare release:perform"
+        git_push_cmd="git push"
+        echo "## ${git_push_cmd}"
+        eval "${git_push_cmd}"
+      fi
+      echo -e "## \e[36m ${app_name}:\e[m \e[30;42m${mvn_cmd}\e[m"
+      eval "${mvn_cmd}"
+    done
   done
 }
 
@@ -70,10 +69,12 @@ function build() {
 case "$1" in
   all)
     ;;
-  @(w|a)?(ww|dm))
+  @(d|s)@(w|a)*)
+    ;;
+  @(w|a)*)
     ;;
   *)
-    echo "Usage: ${0##*/} [all|w|a]"
+    echo "Usage: ${0##*/} [all|dw|sw|w|a]"
     exit 0;
     ;;
 esac
