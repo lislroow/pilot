@@ -47,42 +47,53 @@
     <finalName>${project.artifactId}-${project.version}</finalName>
     <plugins>
       <plugin>
-         <groupId>org.apache.maven.plugins</groupId>
-         <artifactId>maven-deploy-plugin</artifactId>
-         <configuration>
-            <skip>true</skip>
-         </configuration>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>default-install</id>
+            <phase>install</phase>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
+      <!--
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <configuration>
+           <skip>true</skip>
+        </configuration>
+      </plugin>
+      -->
+      <!--
       <plugin>
         <groupId>org.sonatype.plugins</groupId>
         <artifactId>nexus-staging-maven-plugin</artifactId>
         <version>1.6.8</version>
         <executions>
-           <execution>
-              <id>default-deploy</id>
-              <phase>deploy</phase>
-              <goals>
-                 <goal>deploy</goal>
-              </goals>
-           </execution>
+          <execution>
+            <id>default-deploy</id>
+            <phase>deploy</phase>
+            <goals>
+              <goal>deploy</goal>
+            </goals>
+          </execution>
         </executions>
-        <!--
-        -->
         <configuration>
            <skipStaging>true</skipStaging>
         </configuration>
-        <!--
-           <serverId>nexus</serverId>
-           <nexusUrl>https://nexus/</nexusUrl>
-        -->
       </plugin>
+      -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
         <configuration>
           <autoVersionSubmodules>false</autoVersionSubmodules>
           <goals>deploy</goals>
-          <scmCommentPrefix>[jenkins]</scmCommentPrefix>
+          <scmCommentPrefix>[build]</scmCommentPrefix>
         </configuration>
       </plugin>
     </plugins>
