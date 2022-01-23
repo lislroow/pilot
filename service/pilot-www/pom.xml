@@ -80,8 +80,7 @@
         <configuration>
           <autoVersionSubmodules>false</autoVersionSubmodules>
           <goals>
-            <goal>package spring-boot:repackage</goal>
-            <goal>deploy</goal>
+            <goal>package spring-boot:repackage deploy</goal>
           </goals>
           <scmCommentPrefix>[jenkins]</scmCommentPrefix>
         </configuration>

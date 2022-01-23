@@ -1,7 +1,6 @@
 /target
 /.settings
 /.externalToolBuilders
-/pom.xml.versionsBackup
 /bin
 /**/target
 /**/.settings
@@ -11,3 +10,4 @@
 /**/hs_err_pid*
 /.svn
 /**/release.properties
+/**/pom.xml.releaseBackup
