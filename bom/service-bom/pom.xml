@@ -45,7 +45,7 @@
     -->
     <!-- for snapshot
     -->
-    <framework-bom.version>[,4.0)</framework-bom.version>
+    <framework-bom.version>[0.0,]</framework-bom.version>
     
     <!-- for release
     <framework-core.version>3.0</framework-core.version>
@@ -55,17 +55,17 @@
     -->
     <!-- for snapshot
     -->
-    <framework-core.version>[,4.0)</framework-core.version>
-    <framework-online.version>[,4.0)</framework-online.version>
-    <framework-batch.version>[,4.0)</framework-batch.version>
-    <framework-daemon.version>[,4.0)</framework-daemon.version>
+    <framework-core.version>[0.0,]</framework-core.version>
+    <framework-online.version>[0.0,]</framework-online.version>
+    <framework-batch.version>[0.0,]</framework-batch.version>
+    <framework-daemon.version>[0.0,]</framework-daemon.version>
     
     <!-- for release
     <service-lib.version>3.0</service-lib.version>
     -->
     <!-- for snapshot
     -->
-    <service-lib.version>[,4.0)</service-lib.version>
+    <service-lib.version>[0.0,]</service-lib.version>
   </properties>
   
   <dependencyManagement>
@@ -223,11 +223,6 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-release-plugin</artifactId>
           <version>3.0.0-M1</version>
-          <configuration>
-            <autoVersionSubmodules>false</autoVersionSubmodules>
-            <goals>deploy</goals>
-            <scmCommentPrefix>[jenkins]</scmCommentPrefix>
-          </configuration>
         </plugin>
         <plugin>
           <groupId>org.springframework.boot</groupId>
