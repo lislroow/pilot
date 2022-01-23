@@ -103,6 +103,10 @@ public class ComUriListMgr {
 	}
 
 	public HandlerMethod getHandlerMethod(HttpServletRequest request) throws Exception {
+		if (requestMapping == null) {
+			log.warn("RequestMappingHandlerMapping bean 이 초기화되지 않았습니다.");
+			return null;
+		}
 		HandlerExecutionChain handler = requestMapping.getHandler(request);
 		if (handler == null) {
 			return null;
