@@ -79,9 +79,7 @@
         <artifactId>maven-release-plugin</artifactId>
         <configuration>
           <autoVersionSubmodules>false</autoVersionSubmodules>
-          <goals>
-            <goal>package spring-boot:repackage deploy</goal>
-          </goals>
+          <goals>package spring-boot:repackage deploy</goals>
           <scmCommentPrefix>[jenkins]</scmCommentPrefix>
         </configuration>
       </plugin>
