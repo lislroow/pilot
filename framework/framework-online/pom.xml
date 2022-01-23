@@ -31,7 +31,7 @@
     -->
     <!-- for snapshot
     -->
-    <framework-core.version>[,4.0)</framework-core.version>
+    <framework-core.version>[0.0,]</framework-core.version>
   </properties>
   
   <dependencies>
