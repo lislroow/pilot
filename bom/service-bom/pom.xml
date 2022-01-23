@@ -265,16 +265,16 @@
         <groupId>org.sonatype.plugins</groupId>
         <artifactId>nexus-staging-maven-plugin</artifactId>
         <executions>
-           <execution>
-              <id>default-deploy</id>
-              <phase>deploy</phase>
-              <goals>
-                 <goal>deploy</goal>
-              </goals>
-           </execution>
+          <execution>
+            <id>default-deploy</id>
+            <phase>deploy</phase>
+            <goals>
+              <goal>deploy</goal>
+            </goals>
+          </execution>
         </executions>
         <configuration>
-           <skipStaging>true</skipStaging>
+          <skipStaging>true</skipStaging>
         </configuration>
       </plugin>
       <plugin>
