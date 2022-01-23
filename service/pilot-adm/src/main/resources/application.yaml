@@ -32,3 +32,10 @@ schedule:
     enabled: false
   sqlmapReload:
     enabled: false
+
+# file 설정
+file:
+  upload:
+    dirpath: "/data/pilot/%1$tY/%1$tm"
+    filename: "%1$tY%1$tm%1$td_%2$s_%3$s.%4$s"
+
