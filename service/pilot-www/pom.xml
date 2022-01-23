@@ -62,6 +62,8 @@
               <id>default-deploy</id>
               <phase>deploy</phase>
               <goals>
+                 <goal>package</goal>
+                 <goal>spring-boot:repackage</goal>
                  <goal>deploy</goal>
               </goals>
            </execution>
@@ -79,7 +81,7 @@
         <artifactId>maven-release-plugin</artifactId>
         <configuration>
           <autoVersionSubmodules>false</autoVersionSubmodules>
-          <goals>package spring-boot:repackage</goals>
+          <goals>deploy</goals>
           <scmCommentPrefix>[jenkins]</scmCommentPrefix>
         </configuration>
       </plugin>
