@@ -18,10 +18,10 @@ public class CmmSessionStatusVO extends KCmmVO {
 	private String symKey = null;
 	private String dloginAlowYn;
 
-	public String getAppCd() {
+	public String get_appCd() {
 		return appCd;
 	}
-	public void setAppCd(String appCd) {
+	public void set_appCd(String appCd) {
 		this.appCd = appCd;
 	}
 	public String getUserId() {
@@ -30,16 +30,16 @@ public class CmmSessionStatusVO extends KCmmVO {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	public String getAumthTpcd() {
+	public String get_aumthTpcd() {
 		return aumthTpcd;
 	}
-	public void setAumthTpcd(String aumthTpcd) {
+	public void set_aumthTpcd(String aumthTpcd) {
 		this.aumthTpcd = aumthTpcd;
 	}
-	public String getSsid() {
+	public String get_ssid() {
 		return ssid;
 	}
-	public void setSsid(String ssid) {
+	public void set_ssid(String ssid) {
 		this.ssid = ssid;
 	}
 	public String getLoginDttm() {

@@ -7,20 +7,20 @@
       MGCB151TS /* MGCB_사용자세션상태 */ SET
            PRIVATE_KEY = #{privateKey}
          , PUBLIC_KEY = #{publicKey}
-     WHERE APP_CD = #{appCd}
-       AND USER_ID = #{ssuserId}
-       AND AUMTH_TPCD = #{aumthTpcd}
-       AND SSID = #{ssid}
+     WHERE APP_CD = #{_appCd}
+       AND USER_ID = #{_ssuserId}
+       AND AUMTH_TPCD = #{_aumthTpcd}
+       AND SSID = #{_ssid}
   </insert>
 
   <insert id="saveSymKey" parameterType="CmmFieldCryptoVO">
     UPDATE
       MGCB151TS /* MGCB_사용자세션상태 */ SET
            SYM_KEY = #{symKey}
-     WHERE APP_CD = #{appCd}
-       AND USER_ID = #{ssuserId}
-       AND AUMTH_TPCD = #{aumthTpcd}
-       AND SSID = #{ssid}
+     WHERE APP_CD = #{_appCd}
+       AND USER_ID = #{_ssuserId}
+       AND AUMTH_TPCD = #{_aumthTpcd}
+       AND SSID = #{_ssid}
   </insert>
 
   <select id="selectFieldCryptoKey" parameterType="java.util.Map" resultType="CmmFieldCryptoVO">
@@ -28,9 +28,9 @@
            PRIVATE_KEY
          , SYM_KEY
       FROM MGCB151TS /* MGCB_사용자세션상태 */
-     WHERE APP_CD = #{appCd}
-       AND USER_ID = #{ssuserId}
-       AND AUMTH_TPCD = #{aumthTpcd}
-       AND SSID = #{ssid}
+     WHERE APP_CD = #{_appCd}
+       AND USER_ID = #{_ssuserId}
+       AND AUMTH_TPCD = #{_aumthTpcd}
+       AND SSID = #{_ssid}
   </select>
 </mapper>

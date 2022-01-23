@@ -15,6 +15,8 @@ import io.jsonwebtoken.SignatureException;
 import mgkim.framework.core.annotation.KBean;
 import mgkim.framework.core.dto.KOAuthToken;
 import mgkim.framework.core.env.KConstant;
+import mgkim.framework.core.exception.KMessage;
+import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.core.type.KType.UuidType;
 import mgkim.framework.core.util.KStringUtil;
 
@@ -72,11 +74,11 @@ public class ComUserTokenMgr {
 		try {
 			jwtAccessToken = parse(accessToken);
 		} catch (MalformedJwtException e) {
-			//
+			throw new KSysException(KMessage.E6013, e, "accessToken");
 		} catch (SignatureException e) {
-			//
+			throw new KSysException(KMessage.E6013, e, "accessToken");
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new KSysException(KMessage.E6013, e, "accessToken");
 		}
 		Map headerAccessToken = (Map) jwtAccessToken.getHeader();
 		
@@ -109,10 +111,14 @@ public class ComUserTokenMgr {
 		try {
 			jwtRefreshToken = parse(refreshToken);
 		} catch (MalformedJwtException e) {
-			//
+			throw new KSysException(KMessage.E6013, e, "refreshToken");
 		} catch (SignatureException e) {
-			//
+			throw new KSysException(KMessage.E6013, e, "refreshToken");
+		} catch (Exception e) {
+			throw new KSysException(KMessage.E6013, e, "refreshToken");
 		}
+		
+		
 		Map headerRefreshToken = (Map) jwtRefreshToken.getHeader();
 		Map claims = (Map) jwtRefreshToken.getBody();
 		

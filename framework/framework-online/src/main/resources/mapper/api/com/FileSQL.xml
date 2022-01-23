@@ -22,7 +22,7 @@
         , LAST_MODFR_NO
         , LAST_MODF_DTTM
       ) VALUES (
-          #{appCd}
+          #{_appCd}
         , #{fileId}
         , #{orgFilenm}
         , #{saveFilenm}
@@ -34,9 +34,9 @@
         , #{crptYn}
         , #{zipYn}
         , 'Y'
-        , #{ssuserId}
+        , #{_ssuserId}
         , SYSDATE
-        , #{ssuserId}
+        , #{_ssuserId}
         , SYSDATE
       )
   </insert>
@@ -45,8 +45,7 @@
     SELECT 
            A.*
       FROM MGCB404TM A /* MGCB_파일정보 */
-     WHERE A.APP_CD = #{appCd}
-       AND A.USE_YN = 'Y'
+     WHERE A.USE_YN = 'Y'
        AND A.FILE_ID = #{fileId}
   </select>
 
@@ -55,8 +54,7 @@
            A.*
       FROM MGCB404TM A /* MGCB_파일정보 */
          , MGCB405TR B /* MGCB_파일그룹정보 */
-     WHERE A.APP_CD = #{appCd}
-       AND A.USE_YN = 'Y'
+     WHERE A.USE_YN = 'Y'
        AND A.APP_CD = B.APP_CD
        AND A.FILE_ID = B.FILE_ID
        AND B.FGRP_ID = #{fgrpId}
@@ -73,12 +71,12 @@
         , LAST_MODFR_NO
         , LAST_MODF_DTTM
       ) VALUES (
-          #{appCd}
+          #{_appCd}
         , #{fgrpId}
         , #{fileId}
-        , #{ssuserId}
+        , #{_ssuserId}
         , SYSDATE
-        , #{ssuserId}
+        , #{_ssuserId}
         , SYSDATE
       )
   </insert>

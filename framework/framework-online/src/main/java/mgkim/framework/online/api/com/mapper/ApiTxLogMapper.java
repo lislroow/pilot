@@ -5,16 +5,16 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import mgkim.framework.cmm.online.vo.CmmApiTxLogVO;
-import mgkim.framework.core.dto.KCmmVO;
-
 @Mapper
 public interface ApiTxLogMapper {
 	
-	public List<CmmApiTxLogVO> selectLogList(KCmmVO vo) throws Exception;
+	public int insertLog_map(Map<String, Object> map) throws Exception;
 	
-	public List<CmmApiTxLogVO> selectLogList_map(Map<String, Object> inMap) throws Exception;
+	public List<Map<String, Object>> selectLogList_map(Map<String, Object> inMap) throws Exception;
 	
-	public CmmApiTxLogVO selectLogByTxid_map(Map<String, Object> inMap) throws Exception;
+	public Map<String, Object> selectLogByTxid_map(Map<String, Object> inMap) throws Exception;
 	
+	public int insertLogForArchive_map(Map<String, Object> inMap) throws Exception;
+	
+	public int deleteLogForArchive_map(Map<String, Object> inMap) throws Exception;
 }

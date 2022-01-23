@@ -3,8 +3,11 @@ package mgkim.framework.online.com.handler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
@@ -12,6 +15,7 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import mgkim.framework.core.annotation.KBean;
@@ -72,16 +76,27 @@ public class KRequestMapHandler {
 			} else if (param.getAnnotation(PathVariable.class) != null) {
 				((Map)args[0]).put(param.getAnnotation(PathVariable.class).name(), args[paramIdx]);
 			} else if (param.getAnnotation(KRequestMap.class) != null) {
-				String querystrings = KStringUtil.nvl(KHttpUtil.getRequest().getQueryString());
-				Map<String, Object> m = Arrays.stream(querystrings.split("&"))
+				HttpServletRequest request = KHttpUtil.getRequest();
+				Map<String, Object> paramMap = null;
+				if (HttpMethod.resolve(request.getMethod()) == HttpMethod.POST) {
+					paramMap = Collections.list(request.getParameterNames()).stream()
 						.collect(HashMap<String, Object>::new,
-								(map, qs) -> {
-									if (qs.split("=").length == 2 ) {
-										map.put(qs.split("=")[0], qs.split("=")[1]);
-									}
+								(map, pname) -> {
+									map.put(pname, request.getParameter(pname));
 								},
 								HashMap<String, Object>::putAll);
-				((Map)args[0]).putAll(m);
+				} else {
+					String querystrings = KStringUtil.nvl(request.getQueryString());
+					paramMap = Arrays.stream(querystrings.split("&"))
+							.collect(HashMap<String, Object>::new,
+									(map, qs) -> {
+										if (qs.split("=").length == 2 ) {
+											map.put(qs.split("=")[0], qs.split("=")[1]);
+										}
+									},
+									HashMap<String, Object>::putAll);
+				}
+				((Map)args[0]).putAll(paramMap);
 			}
 		}
 		

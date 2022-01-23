@@ -89,13 +89,13 @@ public class CmmSessionStatusMngImpl implements CmmSessionStatusMng {
 			SsStcdType ssStcdType = SsStcdType.get(list.get(i).getSsStcd());
 
 			if (ssStcdType == SsStcdType.LOGIN) { // LOGIN 인 경우에는 DUPL_LOGIN 으로 변경
-				String aumthTpcd = KStringUtil.nvl(list.get(i).getAumthTpcd());
+				String aumthTpcd = KStringUtil.nvl(list.get(i).get_aumthTpcd());
 				// `기존 session` 의 `인증 방식` 확인
 				if (!aumthTpcd.equals(claims.get("aumthTpcd"))) {
 					continue; // 다를 경우 `다중 session 상태` 허용 않음
 				}
 
-				duplList.add(list.get(i).getSsid());
+				duplList.add(list.get(i).get_ssid());
 			}
 		}
 		CmmSessionMngListVO vo = new CmmSessionMngListVO();

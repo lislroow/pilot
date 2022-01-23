@@ -6,7 +6,7 @@
     MERGE
      INTO MGCB151TS /* MGCB_사용자세션상태 */
     USING DUAL
-       ON (APP_CD = #{appCd}
+       ON (APP_CD = #{_appCd}
           AND SSID = #{ssid}
           AND USER_ID = #{userId}
           AND AUMTH_TPCD = #{aumthTpcd}
@@ -35,7 +35,7 @@
          , IP
          , LAST_MODF_DTTM
        ) VALUES (
-           #{appCd}
+           #{_appCd}
          , #{userId}
          , #{aumthTpcd}
          , #{ssid}
@@ -101,7 +101,7 @@
       <otherwise>
         SSID IN
         <foreach collection="sessionList" item="ssid" separator="," open="(" close=")">
-          #{ssid}
+          #{_ssid}
         </foreach>
       </otherwise>
     </choose>
@@ -117,7 +117,7 @@
       <when test='sessionList != null and sessionList.size() > 0'>
        AND SSID IN
         <foreach collection="sessionList" item="ssid" separator="," open="(" close=")">
-          #{ssid}
+          #{_ssid}
         </foreach>
       </when>
       <otherwise>

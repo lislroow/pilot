@@ -10,7 +10,7 @@
          , USER_NM
          , EMAIL
       FROM MGCB101TM /* MGCB_사용자정보 */
-     WHERE APP_CD = #{appCd}
+     WHERE APP_CD = #{_appCd}
        AND USER_ID = #{userId}
   ]]>
   </select>
@@ -23,7 +23,7 @@
          , MGCB231TR B /* MGCB_사용자권한그룹매핑 */
          , MGCB221TR C /* MGCB_권한그룹설정 */
          , MGCB202TM D /* MGCB_권한정보 */
-     WHERE A.APP_CD = #{appCd}
+     WHERE A.APP_CD = #{_appCd}
        AND A.USER_ID = #{userId}
        AND A.USER_ID = B.USER_ID
        AND B.RGRP_ID = C.RGRP_ID

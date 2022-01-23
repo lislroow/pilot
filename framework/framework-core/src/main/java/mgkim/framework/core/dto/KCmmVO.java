@@ -8,11 +8,11 @@ import io.swagger.annotations.ApiModelProperty;
 @JsonSerialize
 public class KCmmVO {
 
-	private String appCd;
-	private String ssuserId;
-	private String aumthTpcd;
-	private String ssid;
-	private String txid;
+	private String _appCd;
+	private String _ssuserId;
+	private String _aumthTpcd;
+	private String _ssid;
+	private String _txid;
 
 	private Integer _rowcount;
 	private Integer _startrow;
@@ -20,47 +20,47 @@ public class KCmmVO {
 
 	@JsonIgnore
 	@ApiModelProperty(hidden = true)
-	public String getAppCd() {
-		return appCd;
+	public String get_appCd() {
+		return this._appCd;
 	}
-	public void setAppCd(String appCd) {
-		this.appCd = appCd;
-	}
-
-	@JsonIgnore
-	@ApiModelProperty(hidden = true)
-	public String getSsuserId() {
-		return ssuserId;
-	}
-	public void setSsuserId(String ssuserId) {
-		this.ssuserId = ssuserId;
+	public void set_appCd(String _appCd) {
+		this._appCd = _appCd;
 	}
 
 	@JsonIgnore
 	@ApiModelProperty(hidden = true)
-	public String getAumthTpcd() {
-		return aumthTpcd;
+	public String get_ssuserId() {
+		return this._ssuserId;
 	}
-	public void setAumthTpcd(String aumthTpcd) {
-		this.aumthTpcd = aumthTpcd;
-	}
-
-	@JsonIgnore
-	@ApiModelProperty(hidden = true)
-	public String getSsid() {
-		return ssid;
-	}
-	public void setSsid(String ssid) {
-		this.ssid = ssid;
+	public void set_ssuserId(String _ssuserId) {
+		this._ssuserId = _ssuserId;
 	}
 
 	@JsonIgnore
 	@ApiModelProperty(hidden = true)
-	public String getTxid() {
-		return txid;
+	public String get_aumthTpcd() {
+		return this._aumthTpcd;
 	}
-	public void setTxid(String txid) {
-		this.txid = txid;
+	public void set_aumthTpcd(String _aumthTpcd) {
+		this._aumthTpcd = _aumthTpcd;
+	}
+
+	@JsonIgnore
+	@ApiModelProperty(hidden = true)
+	public String get_ssid() {
+		return this._ssid;
+	}
+	public void set_ssid(String _ssid) {
+		this._ssid = _ssid;
+	}
+
+	@JsonIgnore
+	@ApiModelProperty(hidden = true)
+	public String get_txid() {
+		return this._txid;
+	}
+	public void set_txid(String _txid) {
+		this._txid = _txid;
 	}
 
 	@JsonIgnore

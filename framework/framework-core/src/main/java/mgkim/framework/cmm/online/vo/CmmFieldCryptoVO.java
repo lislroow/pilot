@@ -12,10 +12,10 @@ public class CmmFieldCryptoVO extends KCmmVO {
 	private String publicKey;
 	private String symKey;
 
-	public String getAppCd() {
+	public String get_appCd() {
 		return appCd;
 	}
-	public void setAppCd(String appCd) {
+	public void set_appCd(String appCd) {
 		this.appCd = appCd;
 	}
 	public String getPrivateKey() {
