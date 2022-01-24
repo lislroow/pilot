@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>mgkim.framework</groupId>
   <artifactId>framework-online</artifactId>
-  <version>4.3-SNAPSHOT</version><!-- -SNAPSHOT -->
+  <version>4.3-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>${project.groupId}:${project.artifactId}</name>
   <url>https://github.com/lislroow/pilot.git</url>
@@ -12,10 +12,6 @@
     <repository>
       <id>nexus-snapshot</id>
       <url>https://nexus/repository/maven-snapshot/</url>
-    </repository>
-    <repository>
-      <id>nexus-release</id>
-      <url>https://nexus/repository/maven-release/</url>
     </repository>
   </repositories>
   
