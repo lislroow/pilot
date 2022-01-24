@@ -6,7 +6,6 @@
     <artifactId>framework-bom</artifactId>
     <version>7.7-SNAPSHOT</version>
   </parent>
-  <groupId>mgkim.framework</groupId>
   <artifactId>framework-core</artifactId>
   <packaging>jar</packaging>
   <name>${project.groupId}:${project.artifactId}</name>
