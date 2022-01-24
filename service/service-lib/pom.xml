@@ -3,15 +3,19 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>mgkim.service</groupId>
   <artifactId>service-lib</artifactId>
-  <version>4.0</version>
+  <version>4.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>${project.groupId}:${project.artifactId}</name>
   <url>https://github.com/lislroow/pilot.git</url>
   
   <repositories>
     <repository>
-      <id>maven-group</id>
-      <url>https://nexus/repository/maven-group-snapshot/</url>
+      <id>maven-snapshot</id>
+      <url>https://nexus/repository/maven-snapshot/</url>
+    </repository>
+    <repository>
+      <id>maven-release</id>
+      <url>https://nexus/repository/maven-release/</url>
     </repository>
   </repositories>
   

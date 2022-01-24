@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>mgkim.bom</groupId>
-    <artifactId>framework-bom</artifactId>
-    <version>4</version><!-- -SNAPSHOT -->
-  </parent>
   <groupId>mgkim.framework</groupId>
   <artifactId>framework-online</artifactId>
-  <version>4.0</version><!-- -SNAPSHOT -->
+  <version>4.3-SNAPSHOT</version><!-- -SNAPSHOT -->
   <packaging>jar</packaging>
   <name>${project.groupId}:${project.artifactId}</name>
   <url>https://github.com/lislroow/pilot.git</url>
   
   <repositories>
     <repository>
-      <id>maven-group</id>
-      <url>https://nexus/repository/maven-group-snapshot/</url>
+      <id>maven-snapshot</id>
+      <url>https://nexus/repository/maven-snapshot/</url>
+    </repository>
+    <repository>
+      <id>maven-release</id>
+      <url>https://nexus/repository/maven-release/</url>
     </repository>
   </repositories>
   
@@ -26,11 +25,6 @@
   </scm>
   
   <properties>
-    <!-- for release
-    <framework-core.version>3.0</framework-core.version>
-    -->
-    <!-- for snapshot
-    -->
     <framework-core.version>[0.0,]</framework-core.version>
   </properties>
   

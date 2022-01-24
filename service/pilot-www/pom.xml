@@ -9,9 +9,15 @@
   <url>https://github.com/lislroow/pilot.git</url>
   
   <repositories>
+    <!--
+    -->
     <repository>
-      <id>maven-group</id>
-      <url>https://nexus/repository/maven-group-snapshot/</url>
+      <id>maven-snapshot</id>
+      <url>https://nexus/repository/maven-snapshot/</url>
+    </repository>
+    <repository>
+      <id>maven-release</id>
+      <url>https://nexus/repository/maven-release/</url>
     </repository>
   </repositories>
   
@@ -70,17 +76,6 @@
       <!-- service -->
       
       <!-- framework -->
-      <dependency>
-        <groupId>mgkim.bom</groupId>
-        <artifactId>framework-bom</artifactId>
-        <version>${framework-bom.version}</version>
-        <type>pom</type>
-      </dependency>
-      <dependency>
-        <groupId>mgkim.framework</groupId>
-        <artifactId>framework-core</artifactId>
-        <version>${framework-core.version}</version>
-      </dependency>
       <dependency>
         <groupId>mgkim.framework</groupId>
         <artifactId>framework-online</artifactId>
