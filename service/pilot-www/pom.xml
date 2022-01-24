@@ -20,7 +20,7 @@
     <profile>
       <id>snapshot</id>
       <properties>
-        <framework-online.version>[0.0,]</framework-online.version>
+        <framework.version>[0.0,]</framework.version>
         <service-lib.version>[0.0,]</service-lib.version>
       </properties>
       <activation>
@@ -30,7 +30,7 @@
     <profile>
       <id>release</id>
       <properties>
-        <framework-online.version>7.0</framework-online.version>
+        <framework.version>7.0</framework.version>
         <service-lib.version>7.0</service-lib.version>
       </properties>
     </profile>
@@ -41,7 +41,7 @@
     <dependency>
       <groupId>mgkim.framework</groupId>
       <artifactId>framework-online</artifactId>
-      <version>${framework-online.version}</version>
+      <version>${framework.version}</version>
     </dependency>
     <!-- //framework -->
     

@@ -20,7 +20,7 @@
     <profile>
       <id>snapshot</id>
       <properties>
-        <framework-core.version>[0.0,]</framework-core.version>
+        <framework.version>[0.0,]</framework.version>
       </properties>
       <activation>
         <activeByDefault>true</activeByDefault>
@@ -29,7 +29,7 @@
     <profile>
       <id>release</id>
       <properties>
-        <framework-core.version>7.0</framework-core.version>
+        <framework.version>7.0</framework.version>
       </properties>
     </profile>
   </profiles>
@@ -55,7 +55,7 @@
     <dependency>
       <groupId>mgkim.framework</groupId>
       <artifactId>framework-core</artifactId>
-      <version>${framework-core.version}</version>
+      <version>${framework.version}</version>
     </dependency>
     <!-- //framework -->
   </dependencies>
