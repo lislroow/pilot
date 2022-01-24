@@ -47,12 +47,18 @@ function build() {
     mvn_args="${mvn_args} --batch-mode"
     #mvn_args="${mvn_args} --quiet"
     
+    local nx_repo_id="maven-release"
+    local nx_group_id="mgkim/framework"
+    local nx_artifact_id="framework-bom"
+    read -ra framework_ver <<< $(GetFrameworkVer "${nx_repo_id}" "${nx_group_id}" "${nx_artifact_id}")
+    
     for mvn_goal in ${mvn_goals[@]}
     do
-      local mvn_cmd="mvn ${mvn_args} "
       if [ "${mvn_goal}" == "snapshot" ]; then
+        local mvn_cmd="mvn ${mvn_args} "
         mvn_cmd="${mvn_cmd} clean deploy"
       elif [ "${mvn_goal}" == "release" ]; then
+        local mvn_cmd="mvn ${mvn_args} -Darguments=\"-Dframework.version=${framework_ver}\""
         mvn_cmd="${mvn_cmd} clean release:clean release:prepare release:perform"
         git_push_cmd="git push"
         echo "## ${git_push_cmd}"
@@ -63,8 +69,6 @@ function build() {
     done
   done
 }
-
-
 
 case "$1" in
   all)

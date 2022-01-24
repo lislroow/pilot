@@ -87,6 +87,39 @@ function GetSvrInfo() {
   echo "${ulist[@]}"
 }
 
+function GetFrameworkVer() {
+  local nx_repo_id="$1"
+  local nx_group_id="$2"
+  local nx_artifact_id="$3"
+  
+  local nexus_url="${NX_REPO_URL}/${nx_repo_id}/${nx_group_id}/${nx_artifact_id}"
+  
+  case "${nx_repo_id}" in
+    maven-snapshot)
+      local metadata_url="${nexus_url}/maven-metadata.xml"
+      local version=$(curl -s ${metadata_url} | xmllint --xpath "//version[last()]/text()" -)
+      local snap_metadata_url="${nexus_url}/${version}/maven-metadata.xml"
+      
+      local snap_ver=$(curl -s ${snap_metadata_url} | xmllint --xpath "//snapshotVersion[1]/value/text()" -)
+      local snap_timestamp=$(curl -s ${snap_metadata_url} | xmllint --xpath "//timestamp/text()" -)
+      local snap_buildNumber=$(curl -s ${snap_metadata_url} | xmllint --xpath "//buildNumber/text()" -)
+      
+      local download_url="${nexus_url}/${version}/${nx_artifact_id}-${snap_ver}.jar"
+      local jar_file="${nx_artifact_id}-${version}-${snap_timestamp}-${snap_buildNumber}.jar"
+      ;;
+    maven-release)
+      local metadata_url="${nexus_url}/maven-metadata.xml"
+      
+      local version=$(curl -s ${metadata_url} | xmllint --xpath "//version[last()]/text()" -)
+      
+      local download_url="${nexus_url}/${version}/${nx_artifact_id}-${version}.jar"
+      local jar_file="${nx_artifact_id}-${version}.jar"
+      ;;
+  esac
+  
+  echo "${version}"
+}
+
 function GetLatestArtifact() {
   local nx_repo_id="$1"
   local nx_group_id="$2"

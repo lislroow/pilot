@@ -37,14 +37,10 @@ function install() {
 
 
 ALL_PROJECTS=(
-  'framework/framework-batch' 
-  'framework/framework-daemon'
-  'bom/service-bom'
 )
+
 PROJECTS=(
-  'bom/framework-bom'
-  'framework/framework-core'
-  'framework/framework-online'
+  'framework'
   'service/service-lib'
 )
 
