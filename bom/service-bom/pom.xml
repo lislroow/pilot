@@ -39,32 +39,9 @@
     <downloadSources>true</downloadSources>
     <downloadJavadocs>true</downloadJavadocs>
     <java.version>11</java.version>
-    
-    <!-- for release
-    <framework-bom.version>3.0</framework-bom.version>
-    -->
-    <!-- for snapshot
-    -->
     <framework-bom.version>[0.0,]</framework-bom.version>
-    
-    <!-- for release
-    <framework-core.version>3.0</framework-core.version>
-    <framework-online.version>3.0</framework-online.version>
-    <framework-batch.version>3.0</framework-batch.version>
-    <framework-daemon.version>3.0</framework-daemon.version>
-    -->
-    <!-- for snapshot
-    -->
     <framework-core.version>[0.0,]</framework-core.version>
     <framework-online.version>[0.0,]</framework-online.version>
-    <framework-batch.version>[0.0,]</framework-batch.version>
-    <framework-daemon.version>[0.0,]</framework-daemon.version>
-    
-    <!-- for release
-    <service-lib.version>3.0</service-lib.version>
-    -->
-    <!-- for snapshot
-    -->
     <service-lib.version>[0.0,]</service-lib.version>
   </properties>
   
@@ -94,16 +71,6 @@
         <groupId>mgkim.framework</groupId>
         <artifactId>framework-online</artifactId>
         <version>${framework-online.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>mgkim.framework</groupId>
-        <artifactId>framework-batch</artifactId>
-        <version>${framework-batch.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>mgkim.framework</groupId>
-        <artifactId>framework-daemon</artifactId>
-        <version>${framework-daemon.version}</version>
       </dependency>
       <!-- //framework -->
     </dependencies>
