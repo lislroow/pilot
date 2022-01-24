@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>mgkim.framework</groupId>
   <artifactId>framework-online</artifactId>
-  <version>4.5-SNAPSHOT</version>
+  <version>4.5</version>
   <packaging>jar</packaging>
   <name>${project.groupId}:${project.artifactId}</name>
   <url>https://github.com/lislroow/pilot.git</url>
@@ -19,7 +19,7 @@
   
   <scm>
     <connection>scm:git:git@github.com:lislroow/pilot.git</connection>
-    <tag>HEAD</tag>
+    <tag>framework-online-4.5</tag>
   </scm>
   
   <distributionManagement>
@@ -32,13 +32,13 @@
       <url>https://nexus/repository/maven-release/</url>
     </repository>
   </distributionManagement>
-    
+  
   <properties>
     <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
     <downloadSources>true</downloadSources>
     <downloadJavadocs>true</downloadJavadocs>
     <java.version>11</java.version>
-    <framework-core.version>[0.0,]</framework-core.version>
+    <framework-core.version>5.2</framework-core.version>
   </properties>
   
   <dependencies>
@@ -46,7 +46,7 @@
     <dependency>
       <groupId>mgkim.framework</groupId>
       <artifactId>framework-core</artifactId>
-      <version>${framework-core.version}</version>
+      <version>5.2</version>
     </dependency>
     <!-- //framework -->
   </dependencies>
@@ -194,8 +194,11 @@
         <artifactId>maven-release-plugin</artifactId>
         <configuration>
           <autoVersionSubmodules>false</autoVersionSubmodules>
-          <goals>versions:resolve-ranges deploy</goals>
+          <goals>deploy</goals>
           <scmCommentPrefix>[build]</scmCommentPrefix>
+          <checkModificationExcludes>
+            <checkModificationExclude>pom.xml</checkModificationExclude>
+          </checkModificationExcludes>
         </configuration>
       </plugin>
       <plugin>
