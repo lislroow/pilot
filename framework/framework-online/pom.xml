@@ -194,7 +194,7 @@
         <artifactId>maven-release-plugin</artifactId>
         <configuration>
           <autoVersionSubmodules>false</autoVersionSubmodules>
-          <goals>deploy</goals>
+          <goals>versions:resolve-ranges deploy</goals>
           <scmCommentPrefix>[build]</scmCommentPrefix>
         </configuration>
       </plugin>
