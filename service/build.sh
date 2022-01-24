@@ -45,7 +45,7 @@ function build() {
     mvn_args="${mvn_args} -Dmaven.test.skip=true"
     mvn_args="${mvn_args} --update-snapshots"
     mvn_args="${mvn_args} --batch-mode"
-    mvn_args="${mvn_args} --quiet"
+    #mvn_args="${mvn_args} --quiet"
     
     for mvn_goal in ${mvn_goals[@]}
     do

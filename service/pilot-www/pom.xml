@@ -10,11 +10,11 @@
   
   <repositories>
     <!--
+    -->
     <repository>
       <id>nexus-snapshot</id>
       <url>https://nexus/repository/maven-snapshot/</url>
     </repository>
-    -->
     <repository>
       <id>nexus-release</id>
       <url>https://nexus/repository/maven-release/</url>
