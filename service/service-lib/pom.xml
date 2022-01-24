@@ -29,7 +29,7 @@
     <profile>
       <id>release</id>
       <properties>
-        <framework.version>7.0</framework.version>
+        <framework.version>7.5</framework.version>
       </properties>
     </profile>
   </profiles>

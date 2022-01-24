@@ -30,8 +30,8 @@
     <profile>
       <id>release</id>
       <properties>
-        <framework.version>7.0</framework.version>
-        <service-lib.version>7.0</service-lib.version>
+        <framework.version>7.5</framework.version>
+        <service-lib.version>7.5</service-lib.version>
       </properties>
     </profile>
   </profiles>
