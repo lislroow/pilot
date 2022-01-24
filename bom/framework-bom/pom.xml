@@ -472,6 +472,11 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
+        <configuration>
+          <autoVersionSubmodules>false</autoVersionSubmodules>
+          <goals>deploy</goals>
+          <scmCommentPrefix>[build]</scmCommentPrefix>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.springframework.boot</groupId>
