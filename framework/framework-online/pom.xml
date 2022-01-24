@@ -38,14 +38,30 @@
     <downloadSources>true</downloadSources>
     <downloadJavadocs>true</downloadJavadocs>
     <java.version>11</java.version>
+    <env>snapshot</env>
   </properties>
+  
+  <profiles>
+    <profile>
+      <id>release</id>
+      <properties>
+        <framework-core.version>5.2</framework-core.version>
+      </properties>
+    </profile>
+    <profile>
+      <id>snapshot</id>
+      <properties>
+        <framework-core.version>[0.0,]</framework-core.version>
+      </properties>
+    </profile>
+  </profiles>
   
   <dependencies>
     <!-- framework -->
     <dependency>
       <groupId>mgkim.framework</groupId>
       <artifactId>framework-core</artifactId>
-      <version>[0.0,]</version>
+      <version>${framework-core.version}</version>
     </dependency>
     <!-- //framework -->
   </dependencies>
@@ -195,9 +211,7 @@
           <autoVersionSubmodules>false</autoVersionSubmodules>
           <goals>deploy</goals>
           <scmCommentPrefix>[build]</scmCommentPrefix>
-          <checkModificationExcludes>
-            <checkModificationExclude>pom.xml</checkModificationExclude>
-          </checkModificationExcludes>
+          <releaseProfiles>release</releaseProfiles>
         </configuration>
       </plugin>
       <plugin>
