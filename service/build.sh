@@ -52,13 +52,18 @@ function build() {
     local nx_artifact_id="framework-bom"
     read -ra framework_ver <<< $(GetFrameworkVer "${nx_repo_id}" "${nx_group_id}" "${nx_artifact_id}")
     
+    nx_repo_id="maven-release"
+    nx_group_id="mgkim/service"
+    nx_artifact_id="service-lib"
+    read -ra service_ver <<< $(GetFrameworkVer "${nx_repo_id}" "${nx_group_id}" "${nx_artifact_id}")
+    
     for mvn_goal in ${mvn_goals[@]}
     do
       if [ "${mvn_goal}" == "snapshot" ]; then
         local mvn_cmd="mvn ${mvn_args} "
         mvn_cmd="${mvn_cmd} clean deploy"
       elif [ "${mvn_goal}" == "release" ]; then
-        local mvn_cmd="mvn ${mvn_args} -Darguments=\"-Dframework.version=${framework_ver}\""
+        local mvn_cmd="mvn ${mvn_args} -Prelease -Darguments=\"-Dframework.version=${framework_ver} -Dservice-lib.version=${service_ver}\""
         mvn_cmd="${mvn_cmd} clean release:clean release:prepare release:perform"
         git_push_cmd="git push"
         echo "## ${git_push_cmd}"
