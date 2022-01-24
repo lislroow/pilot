@@ -3,14 +3,14 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>mgkim.framework</groupId>
   <artifactId>framework-core</artifactId>
-  <version>5.2</version><!-- -SNAPSHOT -->
+  <version>5.3-SNAPSHOT</version><!-- -SNAPSHOT -->
   <packaging>jar</packaging>
   <name>${project.groupId}:${project.artifactId}</name>
   <url>https://github.com/lislroow/pilot.git</url>
   
   <scm>
     <connection>scm:git:git@github.com:lislroow/pilot.git</connection>
-    <tag>framework-core-5.2</tag>
+    <tag>HEAD</tag>
   </scm>
   
   <!-- only from bom project -->
