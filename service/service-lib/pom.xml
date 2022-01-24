@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>mgkim.service</groupId>
   <artifactId>service-lib</artifactId>
-  <version>7.2-SNAPSHOT</version>
+  <version>7.2</version>
   <packaging>jar</packaging>
   <name>${project.groupId}:${project.artifactId}</name>
   <url>https://github.com/lislroow/pilot.git</url>
@@ -36,7 +36,7 @@
   
   <scm>
     <connection>scm:git:git@github.com:lislroow/pilot.git</connection>
-    <tag>HEAD</tag>
+    <tag>service-lib-7.2</tag>
   </scm>
   
   <distributionManagement>
