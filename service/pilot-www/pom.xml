@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>mgkim.service</groupId>
   <artifactId>pilot-www</artifactId>
-  <version>4.19</version><!-- -SNAPSHOT -->
+  <version>4.20-SNAPSHOT</version><!-- -SNAPSHOT -->
   <packaging>jar</packaging>
   <name>${project.groupId}:${project.artifactId}</name>
   <url>https://github.com/lislroow/pilot.git</url>
@@ -23,7 +23,7 @@
   
   <scm>
     <connection>scm:git:git@github.com:lislroow/pilot.git</connection>
-    <tag>pilot-www-4.19</tag>
+    <tag>HEAD</tag>
   </scm>
   
   <distributionManagement>
