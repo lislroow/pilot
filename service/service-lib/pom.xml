@@ -39,7 +39,6 @@
     <downloadSources>true</downloadSources>
     <downloadJavadocs>true</downloadJavadocs>
     <java.version>11</java.version>
-    <framework-bom.version>[0.0,]</framework-bom.version>
     <framework-core.version>[0.0,]</framework-core.version>
     <framework-online.version>[0.0,]</framework-online.version>
     <service-lib.version>[0.0,]</service-lib.version>
@@ -56,22 +55,10 @@
   
   <dependencyManagement>
     <dependencies>
-      <!-- framework -->
-      <dependency>
-        <groupId>mgkim.bom</groupId>
-        <artifactId>framework-bom</artifactId>
-        <version>${framework-bom.version}</version>
-        <type>pom</type>
-      </dependency>
       <dependency>
         <groupId>mgkim.framework</groupId>
         <artifactId>framework-core</artifactId>
         <version>${framework-core.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>mgkim.framework</groupId>
-        <artifactId>framework-online</artifactId>
-        <version>${framework-online.version}</version>
       </dependency>
       <!-- //framework -->
     </dependencies>
