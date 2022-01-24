@@ -38,7 +38,7 @@
     <downloadSources>true</downloadSources>
     <downloadJavadocs>true</downloadJavadocs>
     <java.version>11</java.version>
-    <framework-core.version>[0.0,]</framework-core.version>
+    <framework-core.version>5.2</framework-core.version>
   </properties>
   
   <dependencies>
@@ -46,7 +46,7 @@
     <dependency>
       <groupId>mgkim.framework</groupId>
       <artifactId>framework-core</artifactId>
-      <version>${framework-core.version}</version>
+      <version>5.2</version>
     </dependency>
     <!-- //framework -->
   </dependencies>
