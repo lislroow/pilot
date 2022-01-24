@@ -35,7 +35,7 @@
   
   <scm>
     <connection>scm:git:git@github.com:lislroow/pilot.git</connection>
-    <tag>HEAD</tag>
+    <tag>framework-online-4.8</tag>
   </scm>
   
   <distributionManagement>
