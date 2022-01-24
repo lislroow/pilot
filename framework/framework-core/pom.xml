@@ -13,7 +13,6 @@
     <tag>HEAD</tag>
   </scm>
   
-  <!-- only from bom project -->
   <distributionManagement>
     <snapshotRepository>
       <id>nexus-snapshot</id>
@@ -24,7 +23,6 @@
       <url>https://nexus/repository/maven-release/</url>
     </repository>
   </distributionManagement>
-  <!-- //only from bom project -->
   
   <properties>
     <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>

@@ -20,6 +20,17 @@
     <tag>HEAD</tag>
   </scm>
   
+  <distributionManagement>
+    <snapshotRepository>
+      <id>nexus-snapshot</id>
+      <url>https://nexus/repository/maven-snapshot/</url>
+    </snapshotRepository>
+    <repository>
+      <id>nexus-release</id>
+      <url>https://nexus/repository/maven-release/</url>
+    </repository>
+  </distributionManagement>
+  
   <properties>
     <framework-core.version>[0.0,]</framework-core.version>
   </properties>
