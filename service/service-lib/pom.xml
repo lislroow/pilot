@@ -54,15 +54,13 @@
   </distributionManagement>
   
   <dependencies>
-    <dependencies>
-      <!-- framework -->
-      <dependency>
-        <groupId>mgkim.framework</groupId>
-        <artifactId>framework-core</artifactId>
-        <version>${framework-core.version}</version>
-      </dependency>
-      <!-- //framework -->
-    </dependencies>
+    <!-- framework -->
+    <dependency>
+      <groupId>mgkim.framework</groupId>
+      <artifactId>framework-core</artifactId>
+      <version>${framework-core.version}</version>
+    </dependency>
+    <!-- //framework -->
   </dependencies>
   
   <build>

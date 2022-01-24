@@ -39,23 +39,21 @@
   </profiles>
   
   <dependencies>
-    <dependencies>
-      <!-- framework -->
-      <dependency>
-        <groupId>mgkim.framework</groupId>
-        <artifactId>framework-online</artifactId>
-        <version>${framework-online.version}</version>
-      </dependency>
-      <!-- //framework -->
-      
-      <!-- service -->
-      <dependency>
-        <groupId>mgkim.service</groupId>
-        <artifactId>service-lib</artifactId>
-        <version>${service-lib.version}</version>
-      </dependency>
-      <!-- service -->
-    </dependencies>
+    <!-- framework -->
+    <dependency>
+      <groupId>mgkim.framework</groupId>
+      <artifactId>framework-online</artifactId>
+      <version>${framework-online.version}</version>
+    </dependency>
+    <!-- //framework -->
+    
+    <!-- service -->
+    <dependency>
+      <groupId>mgkim.service</groupId>
+      <artifactId>service-lib</artifactId>
+      <version>${service-lib.version}</version>
+    </dependency>
+    <!-- service -->
   </dependencies>
   
   <scm>
