@@ -38,7 +38,7 @@
     <downloadSources>true</downloadSources>
     <downloadJavadocs>true</downloadJavadocs>
     <java.version>11</java.version>
-    <framework-core.version>[0.0,]</framework-core.version>
+    <framework-core.version>5.3-SNAPSHOT</framework-core.version>
   </properties>
   
   <dependencies>
