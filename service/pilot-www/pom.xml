@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>mgkim.service</groupId>
   <artifactId>pilot-www</artifactId>
-  <version>4.23-SNAPSHOT</version><!-- -SNAPSHOT -->
+  <version>7.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>${project.groupId}:${project.artifactId}</name>
   <url>https://github.com/lislroow/pilot.git</url>
@@ -14,8 +14,6 @@
     <downloadSources>true</downloadSources>
     <downloadJavadocs>true</downloadJavadocs>
     <java.version>11</java.version>
-    <framework-online.version>[0.0,]</framework-online.version>
-    <service-lib.version>[0.0,]</service-lib.version>
   </properties>
   
   <profiles>
@@ -32,8 +30,8 @@
     <profile>
       <id>release</id>
       <properties>
-        <framework-online.version>4.8</framework-online.version>
-        <service-lib.version>4.2</service-lib.version>
+        <framework-online.version>7.0</framework-online.version>
+        <service-lib.version>7.0</service-lib.version>
       </properties>
     </profile>
   </profiles>
