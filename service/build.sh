@@ -65,7 +65,7 @@ function build() {
       elif [ "${mvn_goal}" == "release" ]; then
         local mvn_cmd="mvn ${mvn_args} -Prelease -Darguments=\"-Dframework.version=${framework_ver} -Dservice-lib.version=${service_ver}\""
         mvn_cmd="${mvn_cmd} clean release:clean release:prepare release:perform"
-        git_push_cmd="git push"
+        git_push_cmd="git push origin"
         echo "## ${git_push_cmd}"
         eval "${git_push_cmd}"
       fi
