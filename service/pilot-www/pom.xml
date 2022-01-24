@@ -8,14 +8,55 @@
   <name>${project.groupId}:${project.artifactId}</name>
   <url>https://github.com/lislroow/pilot.git</url>
   
-  <!--
-  <repositories>
-    <repository>
-      <id>nexus-snapshot</id>
-      <url>https://nexus/repository/maven-snapshot/</url>
-    </repository>
-  </repositories>
-  -->
+  <properties>
+    <m2eclipse.wtp.contextRoot>/</m2eclipse.wtp.contextRoot>
+    <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
+    <downloadSources>true</downloadSources>
+    <downloadJavadocs>true</downloadJavadocs>
+    <java.version>11</java.version>
+    <framework-online.version>[0.0,]</framework-online.version>
+    <service-lib.version>[0.0,]</service-lib.version>
+  </properties>
+  
+  <profiles>
+    <profile>
+      <id>snapshot</id>
+      <properties>
+        <framework-core.version>[0.0,]</framework-core.version>
+        <service-lib.version>[0.0,]</service-lib.version>
+      </properties>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+    </profile>
+    <profile>
+      <id>release</id>
+      <properties>
+        <framework-core.version>5.2</framework-core.version>
+        <service-lib.version>4.2</service-lib.version>
+      </properties>
+    </profile>
+  </profiles>
+  
+  <dependencies>
+    <dependencies>
+      <!-- framework -->
+      <dependency>
+        <groupId>mgkim.framework</groupId>
+        <artifactId>framework-online</artifactId>
+        <version>${framework-online.version}</version>
+      </dependency>
+      <!-- //framework -->
+      
+      <!-- service -->
+      <dependency>
+        <groupId>mgkim.service</groupId>
+        <artifactId>service-lib</artifactId>
+        <version>${service-lib.version}</version>
+      </dependency>
+      <!-- service -->
+    </dependencies>
+  </dependencies>
   
   <scm>
     <connection>scm:git:git@github.com:lislroow/pilot.git</connection>
@@ -32,54 +73,6 @@
       <url>https://nexus/repository/maven-release/</url>
     </repository>
   </distributionManagement>
-  
-  <properties>
-    <m2eclipse.wtp.contextRoot>/</m2eclipse.wtp.contextRoot>
-    <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
-    <downloadSources>true</downloadSources>
-    <downloadJavadocs>true</downloadJavadocs>
-    <java.version>11</java.version>
-    <framework-bom.version>[0.0,]</framework-bom.version>
-    <framework-core.version>[0.0,]</framework-core.version>
-    <framework-online.version>[0.0,]</framework-online.version>
-    <service-lib.version>[0.0,]</service-lib.version>
-  </properties>
-  
-  <dependencies>
-    <!-- service -->
-    <dependency>
-      <groupId>mgkim.service</groupId>
-      <artifactId>service-lib</artifactId>
-    </dependency>
-    <!-- //service -->
-    
-    <!-- framework -->
-    <dependency>
-      <groupId>mgkim.framework</groupId>
-      <artifactId>framework-online</artifactId>
-    </dependency>
-    <!-- //framework -->
-  </dependencies>
-  
-  <dependencyManagement>
-    <dependencies>
-      <!-- service -->
-      <dependency>
-        <groupId>mgkim.service</groupId>
-        <artifactId>service-lib</artifactId>
-        <version>${service-lib.version}</version>
-      </dependency>
-      <!-- service -->
-      
-      <!-- framework -->
-      <dependency>
-        <groupId>mgkim.framework</groupId>
-        <artifactId>framework-online</artifactId>
-        <version>${framework-online.version}</version>
-      </dependency>
-      <!-- //framework -->
-    </dependencies>
-  </dependencyManagement>
   
   <build>
     <defaultGoal>install</defaultGoal>

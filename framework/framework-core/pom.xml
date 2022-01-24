@@ -8,6 +8,19 @@
   <name>${project.groupId}:${project.artifactId}</name>
   <url>https://github.com/lislroow/pilot.git</url>
   
+  <properties>
+    <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
+    <downloadSources>true</downloadSources>
+    <downloadJavadocs>true</downloadJavadocs>
+    <java.version>11</java.version>
+    <org.springframework.boot.version>2.6.3</org.springframework.boot.version>
+    <org.apache.tomcat.version>9.0.56</org.apache.tomcat.version>
+    <ch.qos.logback.version>1.2.10</ch.qos.logback.version>
+    <io.springfox.version>3.0.0</io.springfox.version>
+    <io.swagger.parser.v3.version>2.0.27</io.swagger.parser.v3.version>
+    <io.swagger.core.v3.version>2.1.10</io.swagger.core.v3.version>
+  </properties>
+  
   <scm>
     <connection>scm:git:git@github.com:lislroow/pilot.git</connection>
     <tag>HEAD</tag>
@@ -23,19 +36,6 @@
       <url>https://nexus/repository/maven-release/</url>
     </repository>
   </distributionManagement>
-  
-  <properties>
-    <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
-    <downloadSources>true</downloadSources>
-    <downloadJavadocs>true</downloadJavadocs>
-    <java.version>11</java.version>
-    <org.springframework.boot.version>2.6.3</org.springframework.boot.version>
-    <org.apache.tomcat.version>9.0.56</org.apache.tomcat.version>
-    <ch.qos.logback.version>1.2.10</ch.qos.logback.version>
-    <io.springfox.version>3.0.0</io.springfox.version>
-    <io.swagger.parser.v3.version>2.0.27</io.swagger.parser.v3.version>
-    <io.swagger.core.v3.version>2.1.10</io.swagger.core.v3.version>
-  </properties>
     
   <dependencies>
     <dependency>

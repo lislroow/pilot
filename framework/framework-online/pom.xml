@@ -8,14 +8,30 @@
   <name>${project.groupId}:${project.artifactId}</name>
   <url>https://github.com/lislroow/pilot.git</url>
   
-  <!--
-  <repositories>
-    <repository>
-      <id>nexus-snapshot</id>
-      <url>https://nexus/repository/maven-snapshot/</url>
-    </repository>
-  </repositories>
-  -->
+  <properties>
+    <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
+    <downloadSources>true</downloadSources>
+    <downloadJavadocs>true</downloadJavadocs>
+    <java.version>11</java.version>
+  </properties>
+  
+  <profiles>
+    <profile>
+      <id>snapshot</id>
+      <properties>
+        <framework-core.version>[0.0,]</framework-core.version>
+      </properties>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+    </profile>
+    <profile>
+      <id>release</id>
+      <properties>
+        <framework-core.version>5.2</framework-core.version>
+      </properties>
+    </profile>
+  </profiles>
   
   <scm>
     <connection>scm:git:git@github.com:lislroow/pilot.git</connection>
@@ -32,32 +48,6 @@
       <url>https://nexus/repository/maven-release/</url>
     </repository>
   </distributionManagement>
-  
-  <properties>
-    <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
-    <downloadSources>true</downloadSources>
-    <downloadJavadocs>true</downloadJavadocs>
-    <java.version>11</java.version>
-    <env>snapshot</env>
-  </properties>
-  
-  <profiles>
-    <profile>
-      <id>release</id>
-      <properties>
-        <framework-core.version>5.2</framework-core.version>
-      </properties>
-    </profile>
-    <profile>
-      <id>snapshot</id>
-      <properties>
-        <framework-core.version>[0.0,]</framework-core.version>
-      </properties>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-    </profile>
-  </profiles>
   
   <dependencies>
     <!-- framework -->
