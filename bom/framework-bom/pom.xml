@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>mgkim.bom</groupId>
   <artifactId>framework-bom</artifactId>
-  <version>6</version><!-- -SNAPSHOT -->
+  <version>7-SNAPSHOT</version><!-- -SNAPSHOT -->
   <packaging>pom</packaging>
   <name>${project.groupId}:${project.artifactId}</name>
   <url>https://github.com/lislroow/pilot.git</url>
@@ -17,7 +17,7 @@
   
   <scm>
     <connection>scm:git:git@github.com:lislroow/pilot.git</connection>
-    <tag>framework-bom-6</tag>
+    <tag>HEAD</tag>
   </scm>
   
   <!-- only from bom project -->
