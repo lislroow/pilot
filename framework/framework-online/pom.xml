@@ -53,6 +53,9 @@
       <properties>
         <framework-core.version>[0.0,]</framework-core.version>
       </properties>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
     </profile>
   </profiles>
   
