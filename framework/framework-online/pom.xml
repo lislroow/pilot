@@ -28,7 +28,7 @@
     <profile>
       <id>release</id>
       <properties>
-        <framework-core.version>5.2</framework-core.version>
+        <framework-core.version>5.3</framework-core.version>
       </properties>
     </profile>
   </profiles>
