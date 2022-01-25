@@ -62,15 +62,17 @@ function build() {
       if [ "${mvn_goal}" == "snapshot" ]; then
         local mvn_cmd="mvn ${mvn_args} "
         mvn_cmd="${mvn_cmd} clean deploy"
+        echo -e "## \e[36m ${app_name}:\e[m \e[30;42m${mvn_cmd}\e[m"
+        eval "${mvn_cmd}"
       elif [ "${mvn_goal}" == "release" ]; then
         local mvn_cmd="mvn ${mvn_args} -Prelease -Darguments=\"-Dframework.version=${framework_ver} -Dservice-lib.version=${service_ver}\""
         mvn_cmd="${mvn_cmd} clean release:clean release:prepare release:perform"
+        echo -e "## \e[36m ${app_name}:\e[m \e[30;42m${mvn_cmd}\e[m"
+        eval "${mvn_cmd}"
         git_push_cmd="git push origin"
         echo "## ${git_push_cmd}"
         eval "${git_push_cmd}"
       fi
-      echo -e "## \e[36m ${app_name}:\e[m \e[30;42m${mvn_cmd}\e[m"
-      eval "${mvn_cmd}"
     done
   done
 }
