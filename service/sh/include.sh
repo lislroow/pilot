@@ -43,7 +43,7 @@ LOG_BASEDIR="/outlog/pilot"
 
 NX_REPO_URL="https://nexus/repository"
 
-readonly SVR_INFO=(
+SVR_INFO=(
   'pilot-www|dwww11|/app/pilot-dev|dev|172.28.200.30|7100'
   'pilot-www|dwww12|/app/pilot-dev|dev|172.28.200.30|7101'
   'pilot-adm|dadm11|/app/pilot-dev|dev|172.28.200.30|7200'
@@ -87,40 +87,13 @@ function GetSvrInfo() {
   echo "${ulist[@]}"
 }
 
-function GetReleaseVer() {
-  local nx_repo_id="$1"
-  local nx_group_id="$2"
-  local nx_artifact_id="$3"
-  
-  local nexus_url="${NX_REPO_URL}/${nx_repo_id}/${nx_group_id}/${nx_artifact_id}"
-  
-  case "${nx_repo_id}" in
-    maven-snapshot)
-      local metadata_url="${nexus_url}/maven-metadata.xml"
-      local version=$(curl -s ${metadata_url} | xmllint --xpath "//version[last()]/text()" -)
-      local snap_metadata_url="${nexus_url}/${version}/maven-metadata.xml"
-      
-      local snap_ver=$(curl -s ${snap_metadata_url} | xmllint --xpath "//snapshotVersion[1]/value/text()" -)
-      local snap_timestamp=$(curl -s ${snap_metadata_url} | xmllint --xpath "//timestamp/text()" -)
-      local snap_buildNumber=$(curl -s ${snap_metadata_url} | xmllint --xpath "//buildNumber/text()" -)
-      
-      local download_url="${nexus_url}/${version}/${nx_artifact_id}-${snap_ver}.jar"
-      local jar_file="${nx_artifact_id}-${version}-${snap_timestamp}-${snap_buildNumber}.jar"
-      ;;
-    maven-release)
-      local metadata_url="${nexus_url}/maven-metadata.xml"
-      
-      local version=$(curl -s ${metadata_url} | xmllint --xpath "//version[last()]/text()" -)
-      
-      local download_url="${nexus_url}/${version}/${nx_artifact_id}-${version}.jar"
-      local jar_file="${nx_artifact_id}-${version}.jar"
-      ;;
-  esac
-  
+function GetVer() {
+  local url="$1/maven-metadata.xml"
+  local version=$(curl -s ${url} | xmllint --xpath "//version[last()]/text()" -)
   echo "${version}"
 }
 
-function GetArtifactDnUrl() {
+function GetDownloadInfo() {
   local nx_repo_id="$1"
   local nx_group_id="$2"
   local nx_artifact_id="$3"

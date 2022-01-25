@@ -47,15 +47,8 @@ function build() {
     mvn_args="${mvn_args} --batch-mode"
     mvn_args="${mvn_args} --quiet"
     
-    local nx_repo_id="maven-release"
-    local nx_group_id="mgkim/framework"
-    local nx_artifact_id="framework-bom"
-    read -r  framework_ver <<< $(GetReleaseVer "${nx_repo_id}" "${nx_group_id}" "${nx_artifact_id}")
-    
-    nx_repo_id="maven-release"
-    nx_group_id="mgkim/service"
-    nx_artifact_id="service-lib"
-    read -r  service_ver <<< $(GetReleaseVer "${nx_repo_id}" "${nx_group_id}" "${nx_artifact_id}")
+    local framework_ver=$(GetVer "https://nexus/repository/maven-release/mgkim/framework/framework-bom")
+    local service_lib_ver=$(GetVer "https://nexus/repository/maven-release/mgkim/service/service-lib")
     
     for mvn_goal in ${mvn_goals[@]}
     do
@@ -65,7 +58,7 @@ function build() {
         echo -e "## \e[36m ${app_name}:\e[m \e[30;42m${mvn_cmd}\e[m"
         eval "${mvn_cmd}"
       elif [ "${mvn_goal}" == "release" ]; then
-        local mvn_cmd="mvn ${mvn_args} -Prelease -Darguments=\"-Dframework.version=${framework_ver} -Dservice-lib.version=${service_ver}\""
+        local mvn_cmd="mvn ${mvn_args} -Prelease -Darguments=\"-Dframework.version=${framework_ver} -Dservice-lib.version=${service_lib_ver}\""
         mvn_cmd="${mvn_cmd} clean release:clean release:prepare release:perform"
         echo -e "## \e[36m ${app_name}:\e[m \e[30;42m${mvn_cmd}\e[m"
         eval "${mvn_cmd}"
