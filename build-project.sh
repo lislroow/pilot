@@ -12,7 +12,7 @@ PROJECT_BASE="$( cd ${BASEDIR}/.. && pwd -P)"
 
 function build_snapshot() {
   echo "+++ [func] ${BASEDIR}/${0##*/}:$FUNCNAME: build_snapshot +++"
-  project=$1
+  local project=$1
   
   local mvn_args=""
   mvn_args="${mvn_args} --file ${BASEDIR}/${project}/pom.xml"
@@ -22,14 +22,14 @@ function build_snapshot() {
   mvn_args="${mvn_args} --batch-mode"
   #mvn_args="${mvn_args} --quiet"
   
-  mvn_cmd="mvn $mvn_args clean deploy"
+  local mvn_cmd="mvn $mvn_args clean deploy"
   echo "${mvn_cmd}"
   eval "${mvn_cmd}"
 }
 
 function build_release() {
   echo "+++ [func] ${BASEDIR}/${0##*/}:$FUNCNAME: build_release +++"
-  project=$1
+  local project=$1
   
   local mvn_args=""
   mvn_args="${mvn_args} --file ${BASEDIR}/${project}/pom.xml"
@@ -40,7 +40,7 @@ function build_release() {
   #mvn_args="${mvn_args} --quiet"
   local framework_ver=$(GetNxVer "https://nexus/repository/maven-release/mgkim/framework/framework-bom")
   
-  mvn_cmd="mvn $mvn_args -Prelease clean release:clean release:prepare release:perform -Darguments=\"-Dframework.version=${framework_ver}\""
+  local mvn_cmd="mvn $mvn_args -Prelease clean release:clean release:prepare release:perform -Darguments=\"-Dframework.version=${framework_ver}\""
   echo "${mvn_cmd}"
   eval "${mvn_cmd}"
 }
@@ -65,7 +65,7 @@ function build_project() {
       ;;
   esac
   
-  for project in ${PROJECTS[*]}
+  for project in ${BUILD_PROJECTS[*]}
   do
     for mvn_goal in ${mvn_goals[*]}
     do
@@ -75,18 +75,16 @@ function build_project() {
         ;;
         release)
           build_release "${project}"
+          git_push="$(cd ${BASEDIR} && git push origin main)"
+          echo "${git_push}"
+          eval "${git_push}"
         ;;
       esac
-      #if [ "${mvn_goal}" == "snapshot" ]; then
-      #elif [ "${mvn_goal}" == "release" ]; then
-      #  build_release "${project}"
-      #  #GIT_PUSH="git push origin ${PROJECT_BASE}"
-      #  #echo "${mvn_cmd}"
-      #  #eval "${mvn_cmd}"
-      #fi
     done
   done
 }
+
+BUILD_PROJECTS=()
 
 PROJECTS=(
   'framework'
@@ -99,7 +97,22 @@ argv=("$@")
 if [ "${argv[*]}" == "-h" ]; then
   echo "Usage: ${0##*/} [all|d|s]"
   exit 0;
+elif [ "${argv[*]}" == "" ]; then
+  BUILD_PROJECTS=(${PROJECTS[@]})
+else
+  for ((i=0; i<argc; i++)); do
+    echo "argv[$i]=${argv[$i]}"
+    case "${argv[$i]}" in
+      *f*)
+        BUILD_PROJECTS+=("framework")
+        ;;
+      *l*)
+        BUILD_PROJECTS+=("service/service-lib")
+        ;;
+    esac
+  done
 fi
+
 
 build_project "$1";
 
