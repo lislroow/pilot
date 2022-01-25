@@ -42,10 +42,10 @@ SVR_INFO=(
   'service|pilot-www|dwww12|/app/pilot-dev|dev|172.28.200.30|7101'
   'service|pilot-adm|dadm11|/app/pilot-dev|dev|172.28.200.30|7200'
   'service|pilot-adm|dadm12|/app/pilot-dev|dev|172.28.200.30|7201'
-  'service|pilot-www|swww11|/app/pilot-sta|sta|172.28.200.30|9100'
-  'service|pilot-www|swww12|/app/pilot-sta|sta|172.28.200.30|9101'
-  'service|pilot-adm|sadm11|/app/pilot-sta|sta|172.28.200.30|9200'
-  'service|pilot-adm|sadm12|/app/pilot-sta|sta|172.28.200.30|9201'
+  'service|pilot-www|swww11|/app/pilot-sta|sta|172.28.200.30|6100'
+  'service|pilot-www|swww12|/app/pilot-sta|sta|172.28.200.30|6101'
+  'service|pilot-adm|sadm11|/app/pilot-sta|sta|172.28.200.30|6200'
+  'service|pilot-adm|sadm12|/app/pilot-sta|sta|172.28.200.30|6201'
 )
 
 function GetSvrInfo() {
