@@ -47,8 +47,8 @@ function build() {
     mvn_args="${mvn_args} --batch-mode"
     mvn_args="${mvn_args} --quiet"
     
-    local framework_ver=$(GetVer "https://nexus/repository/maven-release/mgkim/framework/framework-bom")
-    local service_lib_ver=$(GetVer "https://nexus/repository/maven-release/mgkim/service/service-lib")
+    local framework_ver=$(GetNxVer "https://nexus/repository/maven-release/mgkim/framework/framework-bom")
+    local service_lib_ver=$(GetNxVer "https://nexus/repository/maven-release/mgkim/service/service-lib")
     
     for mvn_goal in ${mvn_goals[@]}
     do
