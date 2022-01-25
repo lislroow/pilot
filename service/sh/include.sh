@@ -93,14 +93,14 @@ function GetNxVer() {
   echo "${version}"
 }
 
-function GetReleaseJarNxUrl() {
+function GetNxUrlRelease() {
   local version=$(curl -s "$1/maven-metadata.xml" | xmllint --xpath "//version[last()]/text()" -)
   local artifactId=$(curl -s "$1/maven-metadata.xml" | xmllint --xpath "//artifactId[last()]/text()" -)
   local download_url="$1/${version}/${artifactId}-${version}.jar"
   echo "${download_url} ${artifactId}-${version}.jar"
 }
 
-function GetSnapshotJarNxUrl() {
+function GetNxUrlSnapshot() {
   local version=$(curl -s "$1/maven-metadata.xml" | xmllint --xpath "//version[last()]/text()" -)
   local artifactId=$(curl -s "$1/maven-metadata.xml" | xmllint --xpath "//artifactId[last()]/text()" -)
   local snap_ver=$(curl -s "$1/${version}/maven-metadata.xml" | xmllint --xpath "//snapshotVersion[1]/value/text()" -)
@@ -110,14 +110,14 @@ function GetSnapshotJarNxUrl() {
   echo "${download_url} ${artifactId}-${version}-${snap_timestamp}-${snap_buildNumber}.jar"
 }
 
-function GetJarNxUrl() {
+function GetNxUrl() {
   local result
   case $1 in
   *'maven-snapshot'*)
-    read -r result <<< $(GetSnapshotJarNxUrl $1)
+    read -r result <<< $(GetNxUrlSnapshot $1)
     ;;
   *'maven-release'*)
-    read -r result <<< $(GetReleaseJarNxUrl $1)
+    read -r result <<< $(GetNxUrlRelease $1)
     ;;
   esac
   echo "${result}"

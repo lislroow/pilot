@@ -36,7 +36,7 @@ function deploy() {
       @(s)*) nx_repo_id="maven-release" ;;
     esac
     
-    read -ra nx_info <<< $(GetJarNxUrl "https://nexus/repository/${nx_repo_id}/${nx_group_id}/${nx_artifact_id}")
+    read -ra nx_info <<< $(GetNxUrl "https://nexus/repository/${nx_repo_id}/${nx_group_id}/${nx_artifact_id}")
     Log $verboss "nx_info=${nx_info[@]}"
     local download_url="${nx_info[0]}"
     local jar_file="${nx_info[1]}"
