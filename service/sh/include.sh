@@ -120,7 +120,7 @@ function GetReleaseVer() {
   echo "${version}"
 }
 
-function GetLatestArtifact() {
+function GetArtifactDnUrl() {
   local nx_repo_id="$1"
   local nx_group_id="$2"
   local nx_artifact_id="$3"
