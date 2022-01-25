@@ -24,6 +24,7 @@ import mgkim.framework.core.dto.KOutDTO;
 import mgkim.framework.core.env.KConstant;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
+import mgkim.framework.core.env.KProfile;
 import mgkim.framework.core.env.KSqlContext;
 import mgkim.framework.core.logging.KLogMarker;
 import mgkim.framework.core.type.KType.RespType;
@@ -76,6 +77,7 @@ public class KExceptionHandler extends ExceptionHandlerExceptionResolver {
 			headerMap.put(KConstant.RESULT_CODE, code);
 			headerMap.put(KConstant.RESULT_MESSAGE, message);
 			headerMap.put(KConstant.RESULT_TEXT, text);
+			headerMap.put(KConstant.APP_VER, KProfile.APP_VER);
 			outDTO.setHeader(headerMap);
 		}
 		

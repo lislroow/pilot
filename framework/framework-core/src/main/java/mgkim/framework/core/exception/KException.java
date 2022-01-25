@@ -48,22 +48,22 @@ public class KException extends Exception {
 	// -- `exception` 포함
 
 	// `exception` KExceptionMapper 클래스에서 생성
-	KException(KMessage object) {
+	public KException(KMessage object) {
 		super(String.format("[%s] %s", object.name(), object.text()));
 		this.id = object.name();
 		this.text = object.text();
 	}
-	KException(KMessage object, Object ... args) {
+	public KException(KMessage object, Object ... args) {
 		super(String.format("[%s] %s", object.name(), MessageFormat.format(object.text(), args)));
 		this.id = object.name();
 		this.text = MessageFormat.format(object.text(), args);
 	}
-	KException(KMessage object, Exception ex) {
+	public KException(KMessage object, Exception ex) {
 		super(String.format("[%s] %s", object.name(), object.text()), ex);
 		this.id = object.name();
 		this.text = object.text();
 	}
-	KException(KMessage object, Exception ex, Object ... args) {
+	public KException(KMessage object, Exception ex, Object ... args) {
 		super(String.format("[%s] %s", object.name(), MessageFormat.format(object.text(), args)), ex);
 		this.id = object.name();
 		this.text = MessageFormat.format(object.text(), args);

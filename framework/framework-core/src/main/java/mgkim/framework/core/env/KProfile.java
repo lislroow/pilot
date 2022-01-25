@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import mgkim.framework.core.type.KType.OSType;
 import mgkim.framework.core.type.KType.SysType;
+import mgkim.framework.core.util.KFileUtil;
 
 public class KProfile {
 
@@ -23,6 +24,7 @@ public class KProfile {
 	public static String APP_CD;
 	public static String APP_NM;
 	public static String APP_NAME;
+	public static String APP_VER;
 	public static SysType SYS;
 	public static OSType OSType;
 	public static List<String> profiles = new ArrayList<String>();
@@ -43,9 +45,12 @@ public class KProfile {
 			}
 			HOSTNAME = hostname;
 		}
+		
+		// os.name
 		String osName = System.getProperty(KConstant.VM_OS_NAME);
 		KProfile.OSType = OSType.get(osName);
 		
+		// app.id
 		String appId = System.getProperty(KConstant.VM_APP_ID);
 		if (appId == null) {
 			KProfile.SYS = SysType.LOC;
@@ -54,6 +59,15 @@ public class KProfile {
 			KProfile.SYS = SysType.get(appId_c1);
 		}
 		KProfile.addProfile(KProfile.SYS.label());
+		
+		// app.ver
+		String sunJavaCommand = System.getProperty(KConstant.VM_SUN_JAVA_COMMAND);
+		if (KProfile.SYS == SysType.LOC) {
+			KProfile.APP_VER = "*develop*";
+		} else {
+			String jarname = KFileUtil.removeExtension(KFileUtil.filename(sunJavaCommand));
+			KProfile.APP_VER = jarname;
+		}
 	}
 	
 	private static void addProfile(String addVal) {

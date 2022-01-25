@@ -10,6 +10,7 @@ public class KConstant {
 	public static final String VM_OS_NAME = "os.name";
 	public static final String VM_APP_ID = "app.id";
 	public static final String VM_APP_NAME = "app.name";
+	public static final String VM_SUN_JAVA_COMMAND = "sun.java.command";
 	
 	public static final String EMPTY = "";
 	public static final String LINE = System.getProperty("line.separator");
@@ -27,6 +28,8 @@ public class KConstant {
 	public static final String USER_ID = "userId";
 	public static final String IP = "ip";
 	public static final String URI = "uri";
+	
+	public static final String APP_VER = "app.ver";
 	
 	public static final String RESULT_CODE = "code";
 	public static final String RESULT_MESSAGE = "message";
