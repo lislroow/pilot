@@ -46,8 +46,6 @@ PROJECTS=(
 
 argc=$#
 argv=("$@")
-#echo "argc=${argc}"
-#echo "argv=${argv[*]}"
 
 if [ "${argv[*]}" == "-h" ]; then
   echo "Usage: ${0##*/} [core|online|lib]"

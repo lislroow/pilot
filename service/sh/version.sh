@@ -20,12 +20,9 @@ function artifact() {
     for app_name in ${app_name_arr[@]}
     do
       local nx_artifact_id="${app_name}"
-      
       read -ra nx_info <<< $(GetNxUrl "https://nexus/repository/${nx_repo_id}/${nx_group_id}/${nx_artifact_id}")
       local download_url="${nx_info[0]}"
       local jar_file="${nx_info[1]}"
-      Log $verboss "nx_info=${nx_info[@]}"
-      
       echo -e "## \e[32m${nx_repo_id}\e[m ${nx_artifact_id} \e[36m${jar_file}\e[m"
     done
   done

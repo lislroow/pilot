@@ -49,14 +49,8 @@ function deploy() {
     echo -e "## \e[36mdownloaded from nexus:\e[m ${BASEDIR}/${jar_file}"
     
     # final_name
-    #local md5str=$(md5sum ${BASEDIR}/${jar_file} | awk '{ print substr($1, 1, 4) }')
-    #local final_name=${jar_file%.*}_${md5str}.${jar_file##*.}
-    #echo "final_name=${final_name}"
     local final_name=${jar_file}
     Log $verboss "final_name=${final_name}"
-    #local mv_cmd="mv ${BASEDIR}/${jar_file} ${BASEDIR}/${final_name}"
-    #echo "mv_cmd=${mv_cmd}"
-    #ExecCmd ${mv_cmd}
     
     
     # stop / start
