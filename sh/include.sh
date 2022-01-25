@@ -38,14 +38,14 @@ LOG_BASEDIR="/outlog/pilot"
 NX_REPO_URL="https://nexus/repository"
 
 SVR_INFO=(
-  'pilot-www|dwww11|/app/pilot-dev|dev|172.28.200.30|7100'
-  'pilot-www|dwww12|/app/pilot-dev|dev|172.28.200.30|7101'
-  'pilot-adm|dadm11|/app/pilot-dev|dev|172.28.200.30|7200'
-  'pilot-adm|dadm12|/app/pilot-dev|dev|172.28.200.30|7201'
-  'pilot-www|swww11|/app/pilot-sta|sta|172.28.200.30|9100'
-  'pilot-www|swww12|/app/pilot-sta|sta|172.28.200.30|9101'
-  'pilot-adm|sadm11|/app/pilot-sta|sta|172.28.200.30|9200'
-  'pilot-adm|sadm12|/app/pilot-sta|sta|172.28.200.30|9201'
+  'service|pilot-www|dwww11|/app/pilot-dev|dev|172.28.200.30|7100'
+  'service|pilot-www|dwww12|/app/pilot-dev|dev|172.28.200.30|7101'
+  'service|pilot-adm|dadm11|/app/pilot-dev|dev|172.28.200.30|7200'
+  'service|pilot-adm|dadm12|/app/pilot-dev|dev|172.28.200.30|7201'
+  'service|pilot-www|swww11|/app/pilot-sta|sta|172.28.200.30|9100'
+  'service|pilot-www|swww12|/app/pilot-sta|sta|172.28.200.30|9101'
+  'service|pilot-adm|sadm11|/app/pilot-sta|sta|172.28.200.30|9200'
+  'service|pilot-adm|sadm12|/app/pilot-sta|sta|172.28.200.30|9201'
 )
 
 function GetSvrInfo() {
@@ -57,8 +57,8 @@ function GetSvrInfo() {
   local list=()
   for row in ${SVR_INFO[@]}
   do
-    local app_name app_id app_home profile_sys ip port
-    IFS=$'|'; read -r app_name app_id app_home profile_sys ip port <<< "$row"
+    local app_group app_name app_id app_home profile_sys ip port
+    IFS=$'|'; read -r app_group app_name app_id app_home profile_sys ip port <<< "$row"
     if [ "${key2}" == "" ]; then
       if [[ "${key1}" == "ALL" || "${!key1}" == *"${val1}"* ]]; then
         list+=("${!field}")

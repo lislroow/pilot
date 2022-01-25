@@ -20,6 +20,7 @@ function send_conf() {
       do
         for app_name in ${app_name_arr[@]}
         do
+          read -r  app_group <<< $(GetSvrInfo "app_group" "app_name" "${app_name}")
           read -r  app_home <<< $(GetSvrInfo "app_home" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
           read -ra ip_arr <<< $(GetSvrInfo "ip" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
           Log $verboss "ip_arr=${ip_arr[@]}, cnt=${#ip_arr[@]}"
@@ -27,7 +28,7 @@ function send_conf() {
           for ip in ${ip_arr[@]}
           do
             ## [actual-code]
-            local files=("${BASEDIR}/${app_name}/src/main/resources/.logback-${app_name##*-}-${app_home##*-}.xml")
+            local files=("${BASEDIR}/${app_group}/${app_name}/src/main/resources/.logback-${app_name##*-}-${app_home##*-}.xml")
             Log $verboss "files=${files[@]}"
             local scp_cmd="scp ${files[@]} ${EXEC_USER}@${ip}:${app_home}"
             echo -e "## \e[30;42m${scp_cmd}\e[m"
@@ -43,6 +44,7 @@ function send_conf() {
       read -ra app_name_arr <<< $(GetSvrInfo "app_name" "profile_sys" "$1")
       for app_name in ${app_name_arr[@]}
       do
+        read -r  app_group <<< $(GetSvrInfo "app_group" "app_name" "${app_name}")
         read -r  app_home <<< $(GetSvrInfo "app_home" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
         read -ra ip_arr <<< $(GetSvrInfo "ip" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
         Log $verboss "ip_arr=${ip_arr[@]}, cnt=${#ip_arr[@]}"
@@ -50,7 +52,7 @@ function send_conf() {
         for ip in ${ip_arr[@]}
         do
           ## [actual-code]
-          local files=("${BASEDIR}/${app_name}/src/main/resources/.logback-${app_name##*-}-${app_home##*-}.xml")
+          local files=("${BASEDIR}/${app_group}/${app_name}/src/main/resources/.logback-${app_name##*-}-${app_home##*-}.xml")
           Log $verboss "files=${files[@]}"
           local scp_cmd="scp ${files[@]} ${EXEC_USER}@${ip}:${app_home}"
           echo -e "## \e[30;42m${scp_cmd}\e[m"
@@ -65,6 +67,7 @@ function send_conf() {
       read -ra profile_sys_arr <<< $(GetSvrInfo "profile_sys" "app_name" "$1")
       for profile_sys in ${profile_sys_arr[@]}
       do
+        read -r  app_group <<< $(GetSvrInfo "app_group" "app_name" "${app_name}")
         read -r  app_home <<< $(GetSvrInfo "app_home" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
         read -ra ip_arr <<< $(GetSvrInfo "ip" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
         Log $verboss "ip_arr=${ip_arr[@]}, cnt=${#ip_arr[@]}"
@@ -72,7 +75,7 @@ function send_conf() {
         for ip in ${ip_arr[@]}
         do
           ## [actual-code]
-          local files=("${BASEDIR}/${app_name}/src/main/resources/.logback-${app_name##*-}-${app_home##*-}.xml")
+          local files=("${BASEDIR}/${app_group}/${app_name}/src/main/resources/.logback-${app_name##*-}-${app_home##*-}.xml")
           Log $verboss "files=${files[@]}"
           local scp_cmd="scp ${files[@]} ${EXEC_USER}@${ip}:${app_home}"
           echo -e "## \e[30;42m${scp_cmd}\e[m"
@@ -84,6 +87,7 @@ function send_conf() {
     @(d|s)@(w|a)?(ww|dm))
       # dw > d, w > ip
       read -r  app_name <<< $(GetSvrInfo "app_name" "app_id" "$1")
+      read -r  app_group <<< $(GetSvrInfo "app_group" "app_name" "${app_name}")
       read -r  profile_sys <<< $(GetSvrInfo "profile_sys" "app_id" "$1")
       read -r  app_home <<< $(GetSvrInfo "app_home" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
       read -ra ip_arr <<< $(GetSvrInfo "ip" "profile_sys" "${profile_sys}" "app_name" "${app_name}")
@@ -92,7 +96,7 @@ function send_conf() {
       for ip in ${ip_arr[@]}
       do
         ## [actual-code]
-        local files=("${BASEDIR}/${app_name}/src/main/resources/.logback-${app_name##*-}-${app_home##*-}.xml")
+        local files=("${BASEDIR}/${app_group}/${app_name}/src/main/resources/.logback-${app_name##*-}-${app_home##*-}.xml")
         Log $verboss "files=${files[@]}"
         local scp_cmd="scp ${files[@]} ${EXEC_USER}@${ip}:${app_home}"
         echo -e "## \e[30;42m${scp_cmd}\e[m"

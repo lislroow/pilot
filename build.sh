@@ -40,7 +40,8 @@ function build() {
   for app_name in ${app_name_arr[@]}
   do
     local mvn_args=""
-    mvn_args="${mvn_args} --file ${BASEDIR}/${app_name}/pom.xml"
+    read -r  app_group <<< $(GetSvrInfo "app_group" "app_name" "${app_name}")
+    mvn_args="${mvn_args} --file ${BASEDIR}/${app_group}/${app_name}/pom.xml"
     mvn_args="${mvn_args} -Dfile.encoding=utf-8"
     mvn_args="${mvn_args} -Dmaven.test.skip=true"
     mvn_args="${mvn_args} --update-snapshots"
