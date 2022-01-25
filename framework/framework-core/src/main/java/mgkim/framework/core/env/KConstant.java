@@ -20,16 +20,15 @@ public class KConstant {
 	public static final String REFERER_SWAGGER = "/swagger-ui.html";
 	
 	public static final String SYS = "sys";
-	public static final String APP_ID = "appId";
 	public static final String APP_NAME = "appName";
+	public static final String APP_ID = "appId";
+	public static final String APP_VER = "appVer";
 	public static final String SSID = "ssid";
 	public static final String GUID = "guid";
 	public static final String TXID = "txid";
 	public static final String USER_ID = "userId";
 	public static final String IP = "ip";
 	public static final String URI = "uri";
-	
-	public static final String APP_VER = "app.ver";
 	
 	public static final String RESULT_CODE = "code";
 	public static final String RESULT_MESSAGE = "message";
