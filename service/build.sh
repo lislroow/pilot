@@ -50,12 +50,12 @@ function build() {
     local nx_repo_id="maven-release"
     local nx_group_id="mgkim/framework"
     local nx_artifact_id="framework-bom"
-    read -ra framework_ver <<< $(GetFrameworkVer "${nx_repo_id}" "${nx_group_id}" "${nx_artifact_id}")
+    read -ra framework_ver <<< $(GetReleaseVer "${nx_repo_id}" "${nx_group_id}" "${nx_artifact_id}")
     
     nx_repo_id="maven-release"
     nx_group_id="mgkim/service"
     nx_artifact_id="service-lib"
-    read -ra service_ver <<< $(GetFrameworkVer "${nx_repo_id}" "${nx_group_id}" "${nx_artifact_id}")
+    read -ra service_ver <<< $(GetReleaseVer "${nx_repo_id}" "${nx_group_id}" "${nx_artifact_id}")
     
     for mvn_goal in ${mvn_goals[@]}
     do
