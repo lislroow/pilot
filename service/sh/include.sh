@@ -93,6 +93,25 @@ function GetVer() {
   echo "${version}"
 }
 
+function GetReleaseJarUrl() {
+  local version=$(curl -s "$1/maven-metadata.xml" | xmllint --xpath "//version[last()]/text()" -)
+  local artifactId=$(curl -s "$1/maven-metadata.xml" | xmllint --xpath "//artifactId[last()]/text()" -)
+  local download_url="$1/${version}/${artifactId}-${version}.jar"
+  echo "${download_url} ${artifactId}-${version}.jar"
+}
+
+function GetSnapshotJarUrl() {
+  local version=$(curl -s "$1/maven-metadata.xml" | xmllint --xpath "//version[last()]/text()" -)
+  local artifactId=$(curl -s "$1/maven-metadata.xml" | xmllint --xpath "//artifactId[last()]/text()" -)
+  
+  local snap_ver=$(curl -s "$1/${version}/maven-metadata.xml" | xmllint --xpath "//snapshotVersion[1]/value/text()" -)
+  local snap_timestamp=$(curl -s "$1/${version}/maven-metadata.xml" | xmllint --xpath "//timestamp/text()" -)
+  local snap_buildNumber=$(curl -s "$1/${version}/maven-metadata.xml" | xmllint --xpath "//buildNumber/text()" -)
+  
+  local download_url="$1/${version}/${artifactId}-${snap_ver}.jar"
+  echo "${download_url} ${artifactId}-${version}-${snap_timestamp}-${snap_buildNumber}.jar"
+}
+
 function GetDownloadInfo() {
   local nx_repo_id="$1"
   local nx_group_id="$2"
@@ -102,22 +121,15 @@ function GetDownloadInfo() {
   
   case "${nx_repo_id}" in
     maven-snapshot)
-      local metadata_url="${nexus_url}/maven-metadata.xml"
-      local version=$(curl -s ${metadata_url} | xmllint --xpath "//version[last()]/text()" -)
-      local snap_metadata_url="${nexus_url}/${version}/maven-metadata.xml"
-      
-      local snap_ver=$(curl -s ${snap_metadata_url} | xmllint --xpath "//snapshotVersion[1]/value/text()" -)
-      local snap_timestamp=$(curl -s ${snap_metadata_url} | xmllint --xpath "//timestamp/text()" -)
-      local snap_buildNumber=$(curl -s ${snap_metadata_url} | xmllint --xpath "//buildNumber/text()" -)
-      
+      local version=$(curl -s "${nexus_url}/maven-metadata.xml" | xmllint --xpath "//version[last()]/text()" -)
+      local snap_ver=$(curl -s "${nexus_url}/${version}/maven-metadata.xml" | xmllint --xpath "//snapshotVersion[1]/value/text()" -)
+      local snap_timestamp=$(curl -s "${nexus_url}/${version}/maven-metadata.xml" | xmllint --xpath "//timestamp/text()" -)
+      local snap_buildNumber=$(curl -s "${nexus_url}/${version}/maven-metadata.xml" | xmllint --xpath "//buildNumber/text()" -)
       local download_url="${nexus_url}/${version}/${nx_artifact_id}-${snap_ver}.jar"
       local jar_file="${nx_artifact_id}-${version}-${snap_timestamp}-${snap_buildNumber}.jar"
       ;;
     maven-release)
-      local metadata_url="${nexus_url}/maven-metadata.xml"
-      
-      local version=$(curl -s ${metadata_url} | xmllint --xpath "//version[last()]/text()" -)
-      
+      local version=$(curl -s "${nexus_url}/maven-metadata.xml" | xmllint --xpath "//version[last()]/text()" -)
       local download_url="${nexus_url}/${version}/${nx_artifact_id}-${version}.jar"
       local jar_file="${nx_artifact_id}-${version}.jar"
       ;;
