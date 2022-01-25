@@ -69,9 +69,6 @@ function build() {
         mvn_cmd="${mvn_cmd} clean release:clean release:prepare release:perform"
         echo -e "## \e[36m ${app_name}:\e[m \e[30;42m${mvn_cmd}\e[m"
         eval "${mvn_cmd}"
-        git_push_cmd="git push origin"
-        echo "## ${git_push_cmd}"
-        eval "${git_push_cmd}"
       fi
     done
   done
