@@ -84,9 +84,7 @@ function build_project() {
   done
 }
 
-BUILD_PROJECTS=()
-
-PROJECTS=(
+BUILD_PROJECTS=(
   'framework'
   'service/service-lib'
 )
