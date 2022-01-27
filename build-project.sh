@@ -97,20 +97,6 @@ argv=("$@")
 if [ "${argv[*]}" == "-h" ]; then
   echo "Usage: ${0##*/} [all|d|s]"
   exit 0;
-elif [ "${argv[*]}" == "" ]; then
-  BUILD_PROJECTS=(${PROJECTS[@]})
-else
-  for ((i=0; i<argc; i++)); do
-    echo "argv[$i]=${argv[$i]}"
-    case "${argv[$i]}" in
-      *f*)
-        BUILD_PROJECTS+=("framework")
-        ;;
-      *l*)
-        BUILD_PROJECTS+=("service/service-lib")
-        ;;
-    esac
-  done
 fi
 
 
