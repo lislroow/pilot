@@ -26,7 +26,7 @@ public abstract class KTask implements Runnable {
 			this.execute(execId);
 		} catch(Exception e) {
 			KException exception = KExceptionHandler.translate(e);
-			log.error(KLogMarker.ERROR, "{} {}", exception.getId(), exception.getText(), e);
+			log.error(KLogMarker.error, "{} {}", exception.getId(), exception.getText(), e);
 		} finally {
 			lastExecutedTime = KDateUtil.now(KConstant.FMT_YYYY_MM_DD_HH_MM_SS_SSS);
 		}

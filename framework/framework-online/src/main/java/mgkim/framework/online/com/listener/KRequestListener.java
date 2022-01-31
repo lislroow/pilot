@@ -48,9 +48,9 @@ public class KRequestListener extends RequestContextListener {
 				}
 				body = new KReadableRequest(request).getBodyString();
 			} catch (IOException e) {
-				log.error(KLogMarker.ERROR, "\nrequest-header = {}\nrequest-body = {}", header, body, e);
+				log.error(KLogMarker.error, "\nrequest-header = {}\nrequest-body = {}", header, body, e);
 			}
-			log.error(KLogMarker.ERROR, "{} {}\nrequest-header = {}\nrequest-body = {}", ke.getId(), ke.getText(), ke.getCause());
+			log.error(KLogMarker.error, "{} {}\nrequest-header = {}\nrequest-body = {}", ke.getId(), ke.getText(), ke.getCause());
 		} catch(Exception e) {
 			try {
 				if (header == null) {
@@ -59,9 +59,9 @@ public class KRequestListener extends RequestContextListener {
 					header = KStringUtil.toJson(headerMap);
 				}
 				body = new KReadableRequest(request).getBodyString();
-				log.error(KLogMarker.ERROR, "\nrequest-header = {}\nrequest-body = {}", header, body, e);
+				log.error(KLogMarker.error, "\nrequest-header = {}\nrequest-body = {}", header, body, e);
 			} catch (IOException e1) {
-				log.error(KLogMarker.ERROR, "\nrequest-header = {}\nrequest-body = {}", header, body, e);
+				log.error(KLogMarker.error, "\nrequest-header = {}\nrequest-body = {}", header, body, e);
 			}
 		}
 	}

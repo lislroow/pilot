@@ -43,7 +43,7 @@ public class KPublicFilter extends KFilter {
 			}
 		} catch (Exception e) {
 			KException ke = new KSysException(KMessage.E7007, e, "public");
-			log.error(KLogMarker.ERROR, "{} {}", ke.getId(), ke.getText(), e);
+			log.error(KLogMarker.error, "{} {}", ke.getId(), ke.getText(), e);
 			KExceptionHandler.response(response, ke);
 			return;
 		}

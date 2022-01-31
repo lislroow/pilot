@@ -62,7 +62,7 @@ public class KSqlException extends KException {
 		this.sqlId = KStringUtil.nvl(this.sqlId, "* 확인 불가* ");
 		// sqlText 를 생성하기 전에 발생된 오류는 exception 객체로부터 메시지를 출력함
 		this.sqlText = KStringUtil.nvl(this.sqlText, KExceptionUtil.getTrace(super.getCause(), true));
-		return String.format("[ *** SQL-ERROR *** ] `%s`\r`%s`\r%s", this.sqlFile, this.sqlId, this.sqlText);  // `KSqlException`에서는 `Throwable` 객체가 아닌 `sqlText`을 반환
+		return String.format("[ *** sql-error *** ] `%s`\r`%s`\r%s", this.sqlFile, this.sqlId, this.sqlText);  // `KSqlException`에서는 `Throwable` 객체가 아닌 `sqlText`을 반환
 	}
 	public String getSqlId() {
 		return sqlId;

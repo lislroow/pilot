@@ -47,10 +47,12 @@ public class V1ApiTxLogController {
 	
 	@ApiOperation(value = "(apitxlog) 로그 데이터 조회")
 	@RequestMapping(value = "/v1/apitxlog/{txid}", method = RequestMethod.GET)
-	public @ResponseBody KOutDTO<Map<String, Object>> apitxlog(
+	public @ResponseBody KOutDTO<Map<String, Object>> apitxlogByTxid(
 			@KRequestMap HashMap<String, Object> inMap,
 			@PathVariable(name = "txid") String txid) throws Exception {
 		KOutDTO<Map<String, Object>> outDTO = new KOutDTO<Map<String, Object>>();
+		//int a = 1/0;
+		log.info("test");
 		Map<String, Object> outData = apiTxLogService.selectLogByTxid_map(inMap);
 		outDTO.setBody(outData);
 		return outDTO;

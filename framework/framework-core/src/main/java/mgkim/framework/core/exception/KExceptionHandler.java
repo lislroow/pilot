@@ -47,7 +47,7 @@ public class KExceptionHandler extends ExceptionHandlerExceptionResolver {
 		} else {
 			ke = KExceptionHandler.translate(e);
 		}
-		log.error(KLogMarker.ERROR, "{} {}", ke.getId(), ke.getText(), e);
+		log.error(KLogMarker.error, "[{}] {}", ke.getId(), ke.getText(), e);
 		response(response, ke);
 		return new ModelAndView();
 		//return null;	// 2022.01.20 null 일 경우 

@@ -131,12 +131,12 @@ public class V1RuntimeController {
 							sbuf.append(KConstant.LINE);
 						} else if (ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.ForEachSqlNode) {
 							//ForEachSqlNode node = (ForEachSqlNode)ls.get(k);
-							sbuf.append("  *** FOREACHE SQL ***  ");
+							sbuf.append("  *** FOREACHE sql ***  ");
 						} else if (ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.IfSqlNode) {
 							//IfSqlNode node = (IfSqlNode)ls.get(k);
-							sbuf.append("  *** IF SQL ***  ");
+							sbuf.append("  *** IF sql ***  ");
 						} else {
-							sbuf.append("  *** OTHER SQL ***  ");
+							sbuf.append("  *** OTHER sql ***  ");
 						}
 					}
 					//System.err.println(String.format("%sSQLTEXT=%s", KLogSysLayout.lineSeparator, sbuf.toString()));
@@ -152,12 +152,12 @@ public class V1RuntimeController {
 							sbuf.append(KConstant.LINE);
 						} else if (ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.ForEachSqlNode) {
 							//ForEachSqlNode node = (ForEachSqlNode)ls.get(k);
-							sbuf.append("  *** FOREACH SQL ***  ");
+							sbuf.append("  *** FOREACH sql ***  ");
 						} else if (ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.IfSqlNode) {
 							//IfSqlNode node = (IfSqlNode)ls.get(k);
-							sbuf.append("  *** IF SQL ***  ");
+							sbuf.append("  *** IF sql ***  ");
 						} else {
-							sbuf.append("  *** OTHER SQL ***  ");
+							sbuf.append("  *** OTHER sql ***  ");
 						}
 					}
 					//System.err.println(String.format("%sSQLTEXT=%s", KLogSysLayout.lineSeparator, sbuf.toString()));
@@ -240,12 +240,12 @@ public class V1RuntimeController {
 						sbuf.append(KConstant.LINE);
 					} else if (ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.ForEachSqlNode) {
 						//ForEachSqlNode node = (ForEachSqlNode)ls.get(k);
-						sbuf.append("  *** FOREACHE SQL ***  ");
+						sbuf.append("  *** FOREACHE sql ***  ");
 					} else if (ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.IfSqlNode) {
 						//IfSqlNode node = (IfSqlNode)ls.get(k);
-						sbuf.append("  *** IF SQL ***  ");
+						sbuf.append("  *** IF sql ***  ");
 					} else {
-						sbuf.append("  *** OTHER SQL ***  ");
+						sbuf.append("  *** OTHER sql ***  ");
 					}
 				}
 				respText.append(String.format("%sSQLTEXT=%s", KConstant.LINE, sbuf.toString())+KConstant.LINE);
@@ -261,17 +261,17 @@ public class V1RuntimeController {
 						buf.append(KConstant.LINE);
 					} else if (ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.ForEachSqlNode) {
 						//ForEachSqlNode node = (ForEachSqlNode)ls.get(k);
-						buf.append("  *** FOREACH SQL ***  ");
+						buf.append("  *** FOREACH sql ***  ");
 					} else if (ls.get(k) instanceof org.apache.ibatis.scripting.xmltags.IfSqlNode) {
 						//IfSqlNode node = (IfSqlNode)ls.get(k);
-						buf.append("  *** IF SQL ***  ");
+						buf.append("  *** IF sql ***  ");
 					} else {
-						buf.append("  *** OTHER SQL ***  ");
+						buf.append("  *** OTHER sql ***  ");
 					}
 				}
 				respText.append(String.format("%sSQLTEXT=%s", KConstant.LINE, buf.toString())+KConstant.LINE);
 			} catch (Exception e) {
-				respText.append(""+KConstant.LINE+"[ ERROR ]");
+				respText.append(""+KConstant.LINE+"[ error ]");
 			}
 			seq++;
 			respText.append(""+KConstant.LINE);

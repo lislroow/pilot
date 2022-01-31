@@ -68,6 +68,7 @@ public class KProfile {
 			String jarname = KFileUtil.removeExtension(KFileUtil.filename(sunJavaCommand));
 			KProfile.APP_VER = jarname;
 		}
+		System.setProperty(KConstant.VM_APP_VER, KProfile.APP_VER);
 	}
 	
 	private static void addProfile(String addVal) {

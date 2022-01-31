@@ -83,8 +83,8 @@ public class KAspect implements InitializingBean {
 			log.debug(KLogMarker.aop, "{}.{}", pkg, shortStr);
 			
 			// 전처리
-			// `full-package 명` == `SQL namespace`
-			// `method 명` == `SQL id`
+			// `full-package 명` == `sql namespace`
+			// `method 명` == `sql id`
 			{
 				if (cmmMapperAspect != null) {
 					cmmMapperAspect.preProcess(clazzName, methodName, args);

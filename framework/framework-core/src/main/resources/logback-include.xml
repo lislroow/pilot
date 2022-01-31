@@ -3,27 +3,27 @@
   
   <!-- FILTER-MARKER -->
   <turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
-    <Marker>[sql-cmm]</Marker>
+    <Marker>sql-cmm</Marker>
     <OnMatch>${FILTER-MARKER-sql-cmm}</OnMatch>
   </turboFilter>
   <turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
-    <Marker>[sql-table]</Marker>
+    <Marker>sql-table</Marker>
     <OnMatch>${FILTER-MARKER-sql-table}</OnMatch>
   </turboFilter>
   <turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">
-    <Marker>[aop]</Marker>
+    <Marker>aop</Marker>
     <OnMatch>${FILTER-MARKER-aop}</OnMatch>
   </turboFilter>
   
   <!-- FILTER-MDC -->
   <turboFilter class="ch.qos.logback.classic.turbo.MDCFilter">
     <MDCKey>exec_type</MDCKey>
-    <value>[SCHEDULE]</value>
+    <value>SCHEDULE</value>
     <OnMatch>${FILTER-MDC-exec_type-SCHEDULE}</OnMatch>
   </turboFilter>
   <turboFilter class="ch.qos.logback.classic.turbo.MDCFilter">
     <MDCKey>debug</MDCKey>
-    <value>[true]</value>
+    <value>true</value>
     <OnMatch>${FILTER-MDC-debug-true}</OnMatch>
   </turboFilter>
   

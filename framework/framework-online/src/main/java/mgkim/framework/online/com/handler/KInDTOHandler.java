@@ -86,7 +86,7 @@ public class KInDTOHandler extends RequestBodyAdviceAdapter implements Initializ
 						cmmDtoLog.logging(inDTO);
 					} catch(Exception e) {
 						KException exception = KExceptionHandler.translate(e);
-						log.error(KLogMarker.ERROR, "{} {}", exception.getId(), exception.getText(), e);
+						log.error(KLogMarker.error, "{} {}", exception.getId(), exception.getText(), e);
 					}
 				}
 			}
@@ -105,7 +105,7 @@ public class KInDTOHandler extends RequestBodyAdviceAdapter implements Initializ
 					}
 				} catch(Exception e) {
 					KException exception = KExceptionHandler.translate(e);
-					log.error(KLogMarker.ERROR, "{} {}", exception.getId(), exception.getText(), e);
+					log.error(KLogMarker.error, "{} {}", exception.getId(), exception.getText(), e);
 				}
 			}
 
@@ -117,7 +117,7 @@ public class KInDTOHandler extends RequestBodyAdviceAdapter implements Initializ
 					}
 				} catch(Exception e) {
 					KException exception = KExceptionHandler.translate(e);
-					log.error(KLogMarker.ERROR, "{} {}", exception.getId(), exception.getText(), e);
+					log.error(KLogMarker.error, "{} {}", exception.getId(), exception.getText(), e);
 				}
 			}
 		}

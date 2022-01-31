@@ -94,15 +94,15 @@ public class KAuthenticateFilter extends KFilter {
 		} catch (HttpMediaTypeNotSupportedException e) {
 			String contentType = request.getHeader("Content-Type");
 			KException ke = new KSysException(KMessage.E7002, e, contentType);
-			log.error(KLogMarker.ERROR, "{} {}", ke.getId(), ke.getText(), e);
+			log.error(KLogMarker.error, "{} {}", ke.getId(), ke.getText(), e);
 			KExceptionHandler.response(response, ke);
 		} catch (KException ke) {
-			log.error(KLogMarker.ERROR, "{} {}", ke.getId(), ke.getText(), ke.getCause());
+			log.error(KLogMarker.error, "{} {}", ke.getId(), ke.getText(), ke.getCause());
 			KExceptionHandler.response(response, ke);
 			return;
 		} catch (Exception e) {
 			KException ke = new KSysException(KMessage.E7007, e, "resolve-uri");
-			log.error(KLogMarker.ERROR, "{} {}", ke.getId(), ke.getText(), e);
+			log.error(KLogMarker.error, "{} {}", ke.getId(), ke.getText(), e);
 			KExceptionHandler.response(response, ke);
 			return;
 		}
@@ -120,7 +120,7 @@ public class KAuthenticateFilter extends KFilter {
 			}
 		} catch (Exception e) {
 			KException ke = new KSysException(KMessage.E7007, e, "preflight");
-			log.error(KLogMarker.ERROR, "{} {}", ke.getId(), ke.getText(), e);
+			log.error(KLogMarker.error, "{} {}", ke.getId(), ke.getText(), e);
 			KExceptionHandler.response(response, ke);
 			return;
 		}
@@ -149,12 +149,12 @@ public class KAuthenticateFilter extends KFilter {
 				}
 			}
 		} catch (KException ke) {
-			log.error(KLogMarker.ERROR, "{} {}", ke.getId(), ke.getText(), ke.getCause());
+			log.error(KLogMarker.error, "{} {}", ke.getId(), ke.getText(), ke.getCause());
 			KExceptionHandler.response(response, ke);
 			return;
 		} catch (Exception e) {
 			KException ke = new KSysException(KMessage.E7007, e, "debug");
-			log.error(KLogMarker.ERROR, "{} {}", ke.getId(), ke.getText(), e);
+			log.error(KLogMarker.error, "{} {}", ke.getId(), ke.getText(), e);
 			KExceptionHandler.response(response, ke);
 			return;
 		}
@@ -190,7 +190,7 @@ public class KAuthenticateFilter extends KFilter {
 			}
 		} catch (Exception e) {
 			KException ke = new KSysException(KMessage.E7008, e, "request-logging", "요청");
-			log.error(KLogMarker.ERROR, "{} {}", ke.getId(), ke.getText(), e);
+			log.error(KLogMarker.error, "{} {}", ke.getId(), ke.getText(), e);
 			KExceptionHandler.response(response, ke);
 			return;
 		}
@@ -226,13 +226,13 @@ public class KAuthenticateFilter extends KFilter {
 			KContext.initToken(token);
 		} catch (KException ke) {
 			String header = KStringUtil.toJson(KHttpUtil.getHeaders());
-			log.error(KLogMarker.ERROR, "{} {}\nrequest-header = {}", ke.getId(), ke.getText(), header, ke.getCause());
+			log.error(KLogMarker.error, "{} {}\nrequest-header = {}", ke.getId(), ke.getText(), header, ke.getCause());
 			KExceptionHandler.response(response, ke);
 			return;
 		} catch (Exception e) {
 			KException ke = new KSysException(KMessage.E7007, e, "decode-token");
 			String header = KStringUtil.toJson(KHttpUtil.getHeaders());
-			log.error(KLogMarker.ERROR, "{} {}\nrequest-header = {}", ke.getId(), ke.getText(), header, e);
+			log.error(KLogMarker.error, "{} {}\nrequest-header = {}", ke.getId(), ke.getText(), header, e);
 			KExceptionHandler.response(response, ke);
 			return;
 		}
@@ -248,12 +248,12 @@ public class KAuthenticateFilter extends KFilter {
 				}
 			}
 		} catch (KException ke) {
-			log.error(KLogMarker.ERROR, "{} {}", ke.getId(), ke.getText(), ke.getCause());
+			log.error(KLogMarker.error, "{} {}", ke.getId(), ke.getText(), ke.getCause());
 			KExceptionHandler.response(response, ke);
 			return;
 		} catch (Exception e) {
 			KException ke = new KSysException(KMessage.E7008, e, "verify-session", "세션상태체크");
-			log.error(KLogMarker.ERROR, "{} {}", ke.getId(), ke.getText(), e);
+			log.error(KLogMarker.error, "{} {}", ke.getId(), ke.getText(), e);
 			KExceptionHandler.response(response, ke);
 			return;
 		}
@@ -268,12 +268,12 @@ public class KAuthenticateFilter extends KFilter {
 				comUserTokenMgr.parsetoken(bearer);
 			}
 		} catch (KException ke) {
-			log.error(KLogMarker.ERROR, "{} {}", ke.getId(), ke.getText(), ke.getCause());
+			log.error(KLogMarker.error, "{} {}", ke.getId(), ke.getText(), ke.getCause());
 			KExceptionHandler.response(response, ke);
 			return;
 		} catch (Exception e) {
 			KException ke = new KSysException(KMessage.E7008, e, "verify-token", "token 체크");
-			log.error(KLogMarker.ERROR, "{} {}", ke.getId(), ke.getText(), e);
+			log.error(KLogMarker.error, "{} {}", ke.getId(), ke.getText(), e);
 			KExceptionHandler.response(response, ke);
 			return;
 		}
@@ -284,12 +284,12 @@ public class KAuthenticateFilter extends KFilter {
 			Map<String, Object> claims = (Map<String, Object>)token.getBody();
 			comUserSessionMgr.createUserSession(claims);
 		} catch (KException ke) {
-			log.error(KLogMarker.ERROR, "{} {}", ke.getId(), ke.getText(), ke.getCause());
+			log.error(KLogMarker.error, "{} {}", ke.getId(), ke.getText(), ke.getCause());
 			KExceptionHandler.response(response, ke);
 			return;
 		} catch (Exception e) {
 			KException ke = new KSysException(KMessage.E7008, e, "create-user-session", "session 생성");
-			log.error(KLogMarker.ERROR, "{} {}", ke.getId(), ke.getText(), e);
+			log.error(KLogMarker.error, "{} {}", ke.getId(), ke.getText(), e);
 			KExceptionHandler.response(response, ke);
 			return;
 		}
@@ -301,7 +301,7 @@ public class KAuthenticateFilter extends KFilter {
 			}
 		} catch (Exception e) {
 			KException ke = new KSysException(KMessage.E7008, e, BEAN_NAME, "갱신대상추가");
-			log.error(KLogMarker.ERROR, "{} {}", ke.getId(), ke.getText(), e);
+			log.error(KLogMarker.error, "{} {}", ke.getId(), ke.getText(), e);
 			KExceptionHandler.response(response, ke);
 			return;
 		}
@@ -317,17 +317,17 @@ public class KAuthenticateFilter extends KFilter {
 			}
 		} catch (AuthenticationCredentialsNotFoundException | AccessDeniedException e) {
 			KException ke = new KSysException(KMessage.E6011, e);
-			log.error(KLogMarker.ERROR, "{} {}", ke.getId(), ke.getText(), e);
+			log.error(KLogMarker.error, "{} {}", ke.getId(), ke.getText(), e);
 			KExceptionHandler.response(response, ke);
 			return;
 		} catch (MultipartException e) {
 			KException ke = new KSysException(KMessage.E7005, e);
-			log.error(KLogMarker.ERROR, "{} {}", ke.getId(), ke.getText(), e);
+			log.error(KLogMarker.error, "{} {}", ke.getId(), ke.getText(), e);
 			KExceptionHandler.response(response, ke);
 			return;
 		} catch (Exception e) {
 			KException ke = new KSysException(KMessage.E6011, e);
-			log.error(KLogMarker.ERROR, "{} {}", ke.getId(), ke.getText(), e);
+			log.error(KLogMarker.error, "{} {}", ke.getId(), ke.getText(), e);
 			KExceptionHandler.response(response, ke);
 			return;
 		}
@@ -371,7 +371,7 @@ public class KAuthenticateFilter extends KFilter {
 			}
 		} catch (Exception e) {
 			KException ke = new KSysException(KMessage.E7008, e, "reponse-logging", "응답");
-			log.error(KLogMarker.ERROR, "{} {}", ke.getId(), ke.getText(), e);
+			log.error(KLogMarker.error, "{} {}", ke.getId(), ke.getText(), e);
 			KExceptionHandler.response(response, ke);
 			return;
 		} finally {

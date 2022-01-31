@@ -7,7 +7,8 @@ import mgkim.framework.core.env.KContext.AttrKey;
 public class KLogMDC {
 	
 	public static final void put(AttrKey key, String val) {
-		MDC.put(key.name().toLowerCase(), String.format("[%s]", val));
+		//MDC.put(key.name().toLowerCase(), String.format("[%s]", val));
+		MDC.put(key.name().toLowerCase(), String.format("%s", val));
 	}
 	
 	public static final String get(String key) {
