@@ -4,7 +4,7 @@
   <parent>
     <groupId>mgkim.framework</groupId>
     <artifactId>framework-bom</artifactId>
-    <version>7.31</version>
+    <version>7.32-SNAPSHOT</version>
   </parent>
   <artifactId>framework-online</artifactId>
   <packaging>jar</packaging>
@@ -13,7 +13,7 @@
   
   <scm>
     <connection>scm:git:git@github.com:lislroow/pilot.git</connection>
-    <tag>framework-bom-7.31</tag>
+    <tag>HEAD</tag>
   </scm>
   
   <properties>
