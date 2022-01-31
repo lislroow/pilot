@@ -72,7 +72,7 @@ function curl_user_idlogin() {
     echo -e "## \e[36m[${idx}/${tot}] app_id=${app_id} port=${port}\e[m"
     ## [actual-code]
     response=$(curl --location --request POST ${CURL_OPTS} 'http://'${ip}':'${port}'/public/cmm/user/id-login' \
-    --header 'debug: Y' \
+    --header 'debug: N' \
     --form 'userId="1000000001"')
     ## //[actual-code]
     echo "   ${response}"
