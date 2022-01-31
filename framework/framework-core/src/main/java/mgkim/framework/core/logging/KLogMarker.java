@@ -9,8 +9,8 @@ public class KLogMarker {
 	
 	public static final Marker error = MarkerFactory.getMarker("error");
 	public static final Marker sql = MarkerFactory.getMarker("sql");
-	public static final Marker sql_cmm = MarkerFactory.getMarker("sql-cmm");
-	public static final Marker sql_table = MarkerFactory.getMarker("sql-table");
+	public static final Marker sql_cmm = MarkerFactory.getMarker("cmm");
+	public static final Marker sql_table = MarkerFactory.getMarker("table");
 	public static final Marker request = MarkerFactory.getMarker("request");
 	public static final Marker response = MarkerFactory.getMarker("response");
 	public static final Marker security = MarkerFactory.getMarker("security");
