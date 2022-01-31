@@ -55,7 +55,7 @@
           <fileFieldName>file</fileFieldName>
         </callerData>
       </providers>
-      <customFields>{"appName": "${app.name}", "appId": "${app.id}", "appVer": "${app.ver}"}</customFields>
+      <customFields>{"fields": {"server_name": "${hostname}", "log_type": "pilot_was"}, "appName": "${app.name}", "appId": "${app.id}", "appVer": "${app.ver}"}</customFields>
     </encoder>
   </appender>
   

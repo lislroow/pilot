@@ -44,6 +44,7 @@ public class KProfile {
 				}
 			}
 			HOSTNAME = hostname;
+			System.setProperty(KConstant.VM_HOSTNAME, HOSTNAME);
 		}
 		
 		// os.name
