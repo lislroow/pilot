@@ -100,7 +100,7 @@
       </when>
       <otherwise>
         SSID IN
-        <foreach collection="sessionList" item="ssid" separator="," open="(" close=")">
+        <foreach collection="sessionList" item="_ssid" separator="," open="(" close=")">
           #{_ssid}
         </foreach>
       </otherwise>
