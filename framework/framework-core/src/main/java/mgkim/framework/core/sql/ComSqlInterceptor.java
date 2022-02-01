@@ -38,6 +38,7 @@ import mgkim.framework.core.dto.KInPageVO;
 import mgkim.framework.core.env.KContext;
 import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.env.KProfile;
+import mgkim.framework.core.logging.KLogElastic;
 import mgkim.framework.core.logging.KLogMarker;
 import mgkim.framework.core.type.KType.ExecType;
 import mgkim.framework.core.type.KType.SqlType;
@@ -238,6 +239,7 @@ public class ComSqlInterceptor implements Interceptor {
 				if (true && KProfile.SYS == SysType.LOC) {
 					KSqlUtil.resolveTables(sqlFile, sqlId, paramSql);
 				}
+				KLogElastic.sqlLog(sqlId, sqlFile, paramSql, resultCount, elapsed);
 				break;
 			case SCHEDULE:
 			case SYSTEM:

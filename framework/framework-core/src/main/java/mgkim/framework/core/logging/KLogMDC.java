@@ -11,6 +11,10 @@ public class KLogMDC {
 		MDC.put(key.name().toLowerCase(), String.format("%s", val));
 	}
 	
+	public static final void remove(AttrKey key) {
+		MDC.remove(key.name().toLowerCase());
+	}
+	
 	public static final String get(String key) {
 		String val = MDC.get(key);
 		if (val == null) {

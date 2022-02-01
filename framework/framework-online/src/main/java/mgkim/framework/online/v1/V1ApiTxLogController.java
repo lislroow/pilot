@@ -52,7 +52,7 @@ public class V1ApiTxLogController {
 			@PathVariable(name = "txid") String txid) throws Exception {
 		KOutDTO<Map<String, Object>> outDTO = new KOutDTO<Map<String, Object>>();
 		//int a = 1/0;
-		log.info("test");
+		//log.info("test");
 		Map<String, Object> outData = apiTxLogService.selectLogByTxid_map(inMap);
 		outDTO.setBody(outData);
 		return outDTO;

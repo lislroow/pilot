@@ -31,6 +31,7 @@ import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
 import mgkim.framework.core.logging.KLogMarker;
+import mgkim.framework.core.logging.KLogElastic;
 import mgkim.framework.core.request.KReadableRequest;
 import mgkim.framework.core.stereo.KFilter;
 import mgkim.framework.core.type.KType.ReqType;
@@ -191,6 +192,7 @@ public class KV1Filter extends KFilter {
 						br.close();
 					}
 				}
+				KLogElastic.responseLog(resultCode, resultMessage);
 			} else if (respType == RespType.FILE) {
 				String filename = KContext.getT(AttrKey.DOWN_FILE);
 				log.info(KLogMarker.response, "download file=`{}` (elapsed={}, bytes={})", filename, elapsed, contentSize);

@@ -1,5 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <included>
+
+  <logger name="net.logstash.logback.appender.LogstashTcpSocketAppender" level="ERROR" additivity="false">
+  </logger>
+  
+  <appender name="APPENDER-logstash-sys-response" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+    <destination>${LOGSTASH_HOST:-develop:11002}</destination>
+    <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+      <includeCallerData>true</includeCallerData>
+      <providers>
+        <timestamp />
+        <mdc />
+        <context />
+        <threadName />
+        <logLevel />
+        <message />
+        <loggerName />
+        <logstashMarkers />
+        <stackTrace />
+        <callerData>
+          <classFieldName>class</classFieldName>
+          <methodFieldName>method</methodFieldName>
+          <lineFieldName>line</lineFieldName>
+          <fileFieldName>file</fileFieldName>
+        </callerData>
+      </providers>
+      <customFields>{"fields": {"server_name": "${hostname}", "log_type": "pilot_was-sys_response"}, "appName": "${app.name}", "appId": "${app.id}", "appVer": "${app.ver}"}</customFields>
+    </encoder>
+  </appender>
+  
+  <appender name="APPENDER-logstash-sys-sql" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+    <destination>${LOGSTASH_HOST:-develop:11002}</destination>
+    <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+      <includeCallerData>true</includeCallerData>
+      <providers>
+        <timestamp />
+        <mdc />
+        <context />
+        <threadName />
+        <logLevel />
+        <message />
+        <loggerName />
+        <logstashMarkers />
+        <stackTrace />
+        <callerData>
+          <classFieldName>class</classFieldName>
+          <methodFieldName>method</methodFieldName>
+          <lineFieldName>line</lineFieldName>
+          <fileFieldName>file</fileFieldName>
+        </callerData>
+      </providers>
+      <customFields>{"fields": {"server_name": "${hostname}", "log_type": "pilot_was-sys_sql"}, "appName": "${app.name}", "appId": "${app.id}", "appVer": "${app.ver}"}</customFields>
+    </encoder>
+  </appender>
+  
+  <logger name="sys-response" level="${LEVEL-sys-response:-debug}" additivity="false">
+    <appender-ref ref="APPENDER-logstash-sys-response" />
+  </logger>
+  <logger name="sys-sql" level="${LEVEL-sys-sql:-debug}" additivity="false">
+    <appender-ref ref="APPENDER-logstash-sys-sql" />
+  </logger>
   
   <!-- FILTER-MARKER -->
   <turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">

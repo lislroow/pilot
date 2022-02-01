@@ -75,8 +75,7 @@
   <include resource="logback-include.xml" />
   
   
-  <property name="LEVEL-root" value="info" />
-  <root level="${LEVEL-root}">
+  <root level="${LEVEL-root:-info}">
     <appender-ref ref="APPENDER-console" />
     <appender-ref ref="APPENDER-logstash" />
   </root>

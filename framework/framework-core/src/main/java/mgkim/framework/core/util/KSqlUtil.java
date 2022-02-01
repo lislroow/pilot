@@ -260,6 +260,12 @@ public class KSqlUtil {
 		//if (false && KStringUtil.isEmpty(referer)) {
 		//	return;
 		//}
+		String sqlTables = resolveTables(sqlText);
+		//String txt = String.format("%s|%s|%s|%s", uri, sqlFile, sqlId, sqlTables);
+		log.debug(KLogMarker.sql_table, "\nsqlId = {}\ntables = {}", sqlId, sqlTables);
+	}
+	
+	public static String resolveTables(String sqlText) {
 		String sqlTables = null;
 		Matcher m = Pattern.compile("("+TABLE_PATTERN+")").matcher(sqlText);
 		List<String> tableNames = new ArrayList<String>();
@@ -270,8 +276,6 @@ public class KSqlUtil {
 			}
 		}
 		sqlTables = tableNames.toString().replaceAll("\\[", "").replaceAll("\\]", "").replaceAll(" ", "");
-		//String txt = String.format("%s|%s|%s|%s", uri, sqlFile, sqlId, sqlTables);
-		
-		log.debug(KLogMarker.sql_table, "\nsqlId = {}\ntables = {}", sqlId, sqlTables);
+		return sqlTables;
 	}
 }
