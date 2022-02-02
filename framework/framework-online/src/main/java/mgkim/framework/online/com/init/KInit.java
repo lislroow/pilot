@@ -1,26 +1,19 @@
 package mgkim.framework.online.com.init;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
-import java.util.List;
-import java.util.Properties;
 
 import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.sql.DataSource;
 
 import org.apache.catalina.Context;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.tomcat.util.descriptor.web.ContextResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.aop.aspectj.AspectJExpressionPointcut;
-import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
@@ -35,19 +28,15 @@ import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
-import org.springframework.transaction.interceptor.RollbackRuleAttribute;
-import org.springframework.transaction.interceptor.RuleBasedTransactionAttribute;
-import org.springframework.transaction.interceptor.TransactionInterceptor;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import mgkim.framework.core.env.KContext;
 
 @EnableAsync
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @Configuration
+@EnableTransactionManagement
 public class KInit implements ServletContextInitializer, BeanFactoryPostProcessor {
 
 	private static final Logger log = LoggerFactory.getLogger(KInit.class);
@@ -78,9 +67,7 @@ public class KInit implements ServletContextInitializer, BeanFactoryPostProcesso
 	
 	
 	public static final String TRANSACTION_POINTCUT = ""
-			+ "     execution(* mgkim..*Service*.*(..))"
-			+ " && !execution(* mgkim..*NonTx.*(..))"
-			+ " && !execution(* mgkim..*.*NonTx(..))";
+			+ "     execution(* mgkim..*Service*.*(..))";
 
 	
 	@Bean
@@ -116,53 +103,50 @@ public class KInit implements ServletContextInitializer, BeanFactoryPostProcesso
 	}
 
 
-	@Bean("txManager")
-	public DataSourceTransactionManager createDataSourceTransactionManager(@Autowired DataSource dataSource) {
-		DataSourceTransactionManager bean = new DataSourceTransactionManager();
-		bean.setDataSource(dataSource);
-		bean.setGlobalRollbackOnParticipationFailure(false);
-		bean.setDefaultTimeout(-1);
-		return bean;
-	}
-
-	@Bean("txAdvice")
-	public TransactionInterceptor createTransactionInterceptor(DataSourceTransactionManager dataSourceTransactionManager) {
-		TransactionInterceptor bean = new TransactionInterceptor();
-
-		// 주요 설정
-		String READONLY_PATTERN = "select*";
-		String WRITE_PATTERN = "*";
-		int TX_READONLY_TIMEOUT;
-		int TX_WRITE_TIMEOUT;
-		{
-			TX_READONLY_TIMEOUT = 15;
-			TX_WRITE_TIMEOUT = 15;
-		}
-
-		DefaultTransactionAttribute readOnly = new DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRED);
-		readOnly.setReadOnly(true);
-		readOnly.setTimeout(TX_READONLY_TIMEOUT);
-
-		List<RollbackRuleAttribute> rollbackRules = new ArrayList<RollbackRuleAttribute>();
-		rollbackRules.add(new RollbackRuleAttribute(Exception.class));
-		RuleBasedTransactionAttribute write = new RuleBasedTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRED, rollbackRules);
-		write.setTimeout(TX_WRITE_TIMEOUT);
-
-		Properties txAttributes = new Properties();
-		txAttributes.setProperty(READONLY_PATTERN, readOnly.toString());
-		txAttributes.setProperty(WRITE_PATTERN, write.toString());
-		bean.setTransactionAttributes(txAttributes);
-		bean.setTransactionManager(dataSourceTransactionManager);
-		return bean;
-	}
-
-	@Bean("requiredTx")
-	public DefaultPointcutAdvisor createAdvisor(TransactionInterceptor transactionInterceptor) {
-		AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
-		pointcut.setExpression(TRANSACTION_POINTCUT);
-		DefaultPointcutAdvisor bean = new DefaultPointcutAdvisor(pointcut, transactionInterceptor);
-		return bean;
-	}
+	//@Bean("txManager")
+	//public DataSourceTransactionManager createDataSourceTransactionManager(@Autowired DataSource dataSource) {
+	//	DataSourceTransactionManager bean = new DataSourceTransactionManager();
+	//	bean.setDataSource(dataSource);
+	//	bean.setGlobalRollbackOnParticipationFailure(false);
+	//	bean.setDefaultTimeout(-1);
+	//	return bean;
+	//}
+	//
+	//@Bean("txAdvice")
+	//public TransactionInterceptor createTransactionInterceptor(DataSourceTransactionManager dataSourceTransactionManager) {
+	//	TransactionInterceptor bean = new TransactionInterceptor();
+	//	// 주요 설정
+	//	String READONLY_PATTERN = "select*";
+	//	String WRITE_PATTERN = "*";
+	//	int TX_READONLY_TIMEOUT;
+	//	int TX_WRITE_TIMEOUT;
+	//	{
+	//		TX_READONLY_TIMEOUT = 15;
+	//		TX_WRITE_TIMEOUT = 15;
+	//	}
+	//	DefaultTransactionAttribute readOnly = new DefaultTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRED);
+	//	readOnly.setReadOnly(true);
+	//	readOnly.setTimeout(TX_READONLY_TIMEOUT);
+	//	List<RollbackRuleAttribute> rollbackRules = new ArrayList<RollbackRuleAttribute>();
+	//	rollbackRules.add(new RollbackRuleAttribute(Exception.class));
+	//	RuleBasedTransactionAttribute write = new RuleBasedTransactionAttribute(TransactionDefinition.PROPAGATION_REQUIRED, rollbackRules);
+	//	write.setTimeout(TX_WRITE_TIMEOUT);
+	//	Properties txAttributes = new Properties();
+	//	txAttributes.setProperty(READONLY_PATTERN, readOnly.toString());
+	//	txAttributes.setProperty(WRITE_PATTERN, write.toString());
+	//	bean.setTransactionAttributes(txAttributes);
+	//	bean.setTransactionManager(dataSourceTransactionManager);
+	//	return bean;
+	//}
+	//
+	//@Bean("requiredTx")
+	//public DefaultPointcutAdvisor createAdvisor(TransactionInterceptor transactionInterceptor) {
+	//	AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
+	//	//pointcut.setExpression(TRANSACTION_POINTCUT);
+	//	pointcut.setExpression("execution(* mgkim..*Service*.*(..))");
+	//	DefaultPointcutAdvisor bean = new DefaultPointcutAdvisor(pointcut, transactionInterceptor);
+	//	return bean;
+	//}
 
 
 

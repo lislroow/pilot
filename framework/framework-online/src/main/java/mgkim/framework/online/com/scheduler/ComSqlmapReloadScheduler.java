@@ -69,6 +69,9 @@ public class ComSqlmapReloadScheduler extends KScheduler {
 
 	@Override
 	protected KTask task() throws Exception {
+		if (!enabled) {
+			return null;
+		}
 		KTask task = new KTask() {
 			Map<Resource, Long> map = new HashMap<Resource, Long>();
 			@Override

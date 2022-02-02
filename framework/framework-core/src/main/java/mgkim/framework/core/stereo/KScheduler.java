@@ -67,6 +67,9 @@ public abstract class KScheduler implements InitializingBean, DisposableBean {
 		// scheduler 실행
 		try {
 			task = task();
+			if (task == null) {
+				return;
+			}
 			interval = KObjectUtil.interval(this.getClass());
 			log.warn(KMessage.get(KMessage.E5011, KObjectUtil.name(this.getClass()), interval));
 			

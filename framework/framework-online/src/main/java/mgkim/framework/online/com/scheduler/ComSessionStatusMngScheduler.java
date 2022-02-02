@@ -49,6 +49,9 @@ public class ComSessionStatusMngScheduler extends KScheduler {
 
 	@Override
 	protected KTask task() throws Exception {
+		if (!enabled) {
+			return null;
+		}
 		KTask task = new KTask() {
 			@Override
 			protected void execute(String execId) throws Exception {

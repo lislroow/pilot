@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.sql.DataSource;
+
 import org.apache.ibatis.executor.statement.PreparedStatementHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
@@ -61,6 +63,7 @@ public class ComSqlPagingCount {
 		Object parameterObject = statementHandler.getParameterHandler().getParameterObject();
 		
 		// closable 객체
+		DataSource datasource = null;
 		Connection connection = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -74,8 +77,8 @@ public class ComSqlPagingCount {
 		try {
 			// count-sql 실행
 			{
-				connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
-				
+				datasource = mappedStatement.getConfiguration().getEnvironment().getDataSource();
+				connection = org.springframework.jdbc.datasource.DataSourceUtils.getConnection(datasource);
 				// prepareStatment 생성
 				{
 					String sql = KSqlUtil.removeForeachIndex(boundSql);
@@ -105,14 +108,10 @@ public class ComSqlPagingCount {
 			// (주의) 반드시 finally 에서 originSql 을 boundSql 에 set 할 것
 			sHandlerMetaObject.setValue("delegate.boundSql.sql", originSql);
 			
-			if (rs != null) {
-				rs.close();
-			}
-			if (pstmt != null) {
-				pstmt.close();
-			}
 			if (connection != null) {
-				connection.close();
+				if (!org.springframework.jdbc.datasource.DataSourceUtils.isConnectionTransactional(connection, datasource)) {
+					connection.close();
+				}
 			}
 		}
 		return count;
@@ -131,6 +130,7 @@ public class ComSqlPagingCount {
 		Object parameterObject = statementHandler.getParameterHandler().getParameterObject();
 		
 		// closable 객체
+		DataSource datasource = null;
 		Connection connection = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -183,7 +183,8 @@ public class ComSqlPagingCount {
 					sHandlerMetaObject.setValue("delegate.mappedStatement", countMappedStatement);
 					
 					List<ParameterMapping> parameterMappings = countMappedStatement.getBoundSql(parameterObject).getParameterMappings();
-					connection = countMappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
+					datasource = mappedStatement.getConfiguration().getEnvironment().getDataSource();
+					connection = org.springframework.jdbc.datasource.DataSourceUtils.getConnection(datasource);
 					boundSql = new BoundSql(configuration, countSql, parameterMappings, parameterObject);
 					
 					// prepareStatment 생성
@@ -216,14 +217,10 @@ public class ComSqlPagingCount {
 			// (주의) 반드시 finally 에서 mappedStatement 을 mappedStatement 에 set 할 것
 			sHandlerMetaObject.setValue("delegate.mappedStatement", mappedStatement);
 			
-			if (rs != null) {
-				rs.close();
-			}
-			if (pstmt != null) {
-				pstmt.close();
-			}
 			if (connection != null) {
-				connection.close();
+				if (!org.springframework.jdbc.datasource.DataSourceUtils.isConnectionTransactional(connection, datasource)) {
+					connection.close();
+				}
 			}
 		}
 		return count;

@@ -1,6 +1,7 @@
 package mgkim.framework.online.v1;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,20 +20,20 @@ public class InitialController {
 	private InitialService initialService;
 
 
+	@Transactional
 	@ApiOperation(value = "(초기화) 데이터")
 	@RequestMapping(value = "/v1/initial/data", method = RequestMethod.POST)
-	public @ResponseBody KOutDTO<String> data() throws Exception {
-		KOutDTO<String> outDTO = new KOutDTO<String>();
-//		initialService.loadRole();
-//		initialService.loadRgrp();
-//		initialService.loadRoleRgrp();
+	public @ResponseBody KOutDTO<?> data() throws Exception {
+		KOutDTO<?> outDTO = new KOutDTO<>();
+		initialService.loadRole();
+		initialService.loadRgrp();
+		initialService.loadRoleRgrp();
 		initialService.loadUriRaw();
-//		initialService.loadUri();
-//		initialService.loadUriRgrp();
-//		initialService.loadUserRaw();
-//		initialService.loadUser();
-//		initialService.loadUserRpgr();
-		outDTO.setBody("successful");
+		initialService.loadUri();
+		initialService.loadUriRgrp();
+		initialService.loadUserRaw();
+		initialService.loadUser();
+		initialService.loadUserRpgr();
 		return outDTO;
 	}
 

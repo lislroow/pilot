@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.sql.DataSource;
+
 import org.apache.ibatis.executor.statement.PreparedStatementHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
@@ -70,8 +72,9 @@ public class ComSqlPagingList {
 		KInPageVO inPageVO = KContext.getT(AttrKey.IN_PAGE);
 
 		// closable 객체
-		PreparedStatement pstmt = null;
+		DataSource datasource = null;
 		java.sql.Connection connection = null;
+		PreparedStatement pstmt = null;
 		
 		// 로깅 준비
 		double elapsedTime = -1;
@@ -108,7 +111,8 @@ public class ComSqlPagingList {
 		
 		// paging-sql pstmt 생성
 		try {
-			connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
+			datasource = mappedStatement.getConfiguration().getEnvironment().getDataSource();
+			connection = org.springframework.jdbc.datasource.DataSourceUtils.getConnection(datasource);
 			DefaultParameterHandler parameterHandler = (DefaultParameterHandler)statementHandler.getParameterHandler();
 			Object parameterObject = parameterHandler.getParameterObject();
 			ParameterMapping _parameter = null;
@@ -175,11 +179,10 @@ public class ComSqlPagingList {
 				throw new KSysException(KMessage.E8102, KCmmVO.class.getName());
 			}
 		} catch (Exception e) {
-			if (pstmt != null) {
-				pstmt.close();
-			}
 			if (connection != null) {
-				connection.close();
+				if (!org.springframework.jdbc.datasource.DataSourceUtils.isConnectionTransactional(connection, datasource)) {
+					connection.close();
+				}
 			}
 			throw e;
 		}

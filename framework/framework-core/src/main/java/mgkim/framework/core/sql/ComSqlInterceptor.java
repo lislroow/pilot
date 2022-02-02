@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.sql.DataSource;
+
 import org.apache.ibatis.executor.resultset.ResultSetHandler;
 import org.apache.ibatis.executor.statement.BaseStatementHandler;
 import org.apache.ibatis.executor.statement.PreparedStatementHandler;
@@ -94,6 +96,7 @@ public class ComSqlInterceptor implements Interceptor {
 		Object parameterObject = statementHandler.getParameterHandler().getParameterObject();
 		
 		// closable 객체
+		DataSource datasource = null;
 		Connection connection = null;
 		PreparedStatement pstmt = null;
 		
@@ -146,7 +149,8 @@ public class ComSqlInterceptor implements Interceptor {
 					
 					// prepareStatment 생성
 					if (!isPaging) {
-						connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
+						datasource = mappedStatement.getConfiguration().getEnvironment().getDataSource();
+						connection = org.springframework.jdbc.datasource.DataSourceUtils.getConnection(datasource);
 						{
 							String sql = KSqlUtil.removeForeachIndex(boundSql);
 							String comment = String.format("/* (%s) %s::%s */", KContext.getT(AttrKey.TXID), sqlFile, sqlId);
@@ -167,7 +171,8 @@ public class ComSqlInterceptor implements Interceptor {
 				default:
 					// prepareStatment 생성
 					{
-						connection = mappedStatement.getConfiguration().getEnvironment().getDataSource().getConnection();
+						datasource = mappedStatement.getConfiguration().getEnvironment().getDataSource();
+						connection = org.springframework.jdbc.datasource.DataSourceUtils.getConnection(datasource);
 						{
 							String sql = KSqlUtil.removeForeachIndex(boundSql);
 							String comment = String.format("/* %s::%s */", sqlFile, sqlId);
@@ -211,13 +216,11 @@ public class ComSqlInterceptor implements Interceptor {
 			isOnError = true;
 			throw e;
 		} finally {
-			if (pstmt != null) {
-				pstmt.close();
-			}
 			if (connection != null) {
-				connection.close();
+				if (!org.springframework.jdbc.datasource.DataSourceUtils.isConnectionTransactional(connection, datasource)) {
+					connection.close();
+				}
 			}
-			
 			// param-sql 로깅
 			switch(execType) {
 			case REQUEST:

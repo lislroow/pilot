@@ -31,7 +31,7 @@ schedule:
   sessionStatusMng:
     enabled: false
   sqlmapReload:
-    enabled: false
+    enabled: true
 
 # file 설정
 file:

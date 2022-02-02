@@ -50,7 +50,6 @@ public class ComApiTxLogScheduler extends KScheduler {
 		if (!enabled) {
 			return null;
 		}
-		
 		KTask task = new KTask() {
 			@Override
 			protected void execute(String execId) throws Exception {
