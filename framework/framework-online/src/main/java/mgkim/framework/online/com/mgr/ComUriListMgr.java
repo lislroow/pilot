@@ -2,7 +2,6 @@ package mgkim.framework.online.com.mgr;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -16,7 +15,6 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerExecutionChain;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
@@ -47,8 +45,8 @@ public class ComUriListMgr {
 		if (requestMapping == null) {
 			return;
 		}
+		uriList.clear();
 		Map<RequestMappingInfo, HandlerMethod> map = requestMapping.getHandlerMethods();
-
 		map.forEach((key, value) -> {
 			CmmUriVO uriVO = new CmmUriVO.Builder().build();
 			{
@@ -70,9 +68,6 @@ public class ComUriListMgr {
 				Annotation item = list[i];
 				if (org.springframework.web.bind.annotation.RequestMapping.class.isInstance(item)) {
 					RequestMapping annotations = (RequestMapping)item;
-					if (!Arrays.asList(annotations.method()).contains(RequestMethod.POST)) {
-						return;
-					}
 					if (annotations.value().length == 0) {
 						return;
 					}
@@ -89,13 +84,13 @@ public class ComUriListMgr {
 					} else {
 						uriVO.setUriPtrnYn("Y");
 					}
+					uriList.add(uriVO);
 				}
 				//else if (ApiOperation.class.isInstance(item)) {
 				//	ApiOperation annotations = (ApiOperation)item;
 				//	uriVO.setUriNm(annotations.value());
 				//}
 			};
-			uriList.add(uriVO);
 		});
 
 		log.debug("api 목록 = {} ", KStringUtil.toJson(uriList).replaceAll(",", KConstant.LINE).replaceAll("\"", "").replaceAll("\\[", "").replaceAll("\\]", ""));

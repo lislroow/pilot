@@ -1,8 +1,8 @@
-package mgkim.framework.online.api.com.vo;
+package mgkim.framework.online.v1;
 
 import mgkim.framework.core.dto.KCmmVO;
 
-public class InitLoadMockVO extends KCmmVO {
+public class InitialVO extends KCmmVO {
 
 	private String roleId;
 	private String roleNm;
@@ -101,14 +101,14 @@ public class InitLoadMockVO extends KCmmVO {
 			return this;
 		}
 
-		public InitLoadMockVO build() {
-			return new InitLoadMockVO(roleId, roleNm, rgrpId, rgrpNm, userId, userNm, email,
+		public InitialVO build() {
+			return new InitialVO(roleId, roleNm, rgrpId, rgrpNm, userId, userNm, email,
 					aumthTpcdList, dloginAlowYn, inactvYn, lockYn, loginFailCnt, pwchgDt, ssvaldSec,
 					uriId);
 		}
 	}
 
-	public InitLoadMockVO(String roleId, String roleNm, String rgrpId, String rgrpNm, String userId, String userNm,
+	public InitialVO(String roleId, String roleNm, String rgrpId, String rgrpNm, String userId, String userNm,
 			String email, String aumthTpcdList, String dloginAlowYn, String inactvYn, String lockYn, int loginFailCnt, String pwchgDt,
 			int ssvaldSec, String uriId) {
 		super();

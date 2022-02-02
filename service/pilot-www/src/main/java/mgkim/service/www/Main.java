@@ -26,7 +26,7 @@ import mgkim.service.lib.env.CmmProfile;
 		@ComponentScan.Filter(type = FilterType.ANNOTATION, value = mgkim.framework.core.annotation.KTaskSchedule.class)
 	}
 )
-@MapperScan(basePackages = "mgkim.**.mapper", annotationClass = org.apache.ibatis.annotations.Mapper.class)
+@MapperScan(basePackages = "mgkim", annotationClass = org.apache.ibatis.annotations.Mapper.class)
 @SpringBootApplication
 public class Main extends SpringBootServletInitializer {
 	

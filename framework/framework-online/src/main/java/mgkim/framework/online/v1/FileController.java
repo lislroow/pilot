@@ -45,11 +45,10 @@ import mgkim.framework.core.type.KType.UuidType;
 import mgkim.framework.core.util.KFileUtil;
 import mgkim.framework.core.util.KHttpUtil;
 import mgkim.framework.core.util.KStringUtil;
-import mgkim.framework.online.api.com.service.FileService;
 
 @Api( tags = { KConstant.SWG_V1 } )
 @RestController
-public class V1FileController {
+public class FileController {
 
 	@Autowired
 	private FileService fileService;

@@ -56,9 +56,9 @@ import mgkim.framework.online.com.mgr.ComUriAuthorityMgr;
 
 @Api( tags = { KConstant.SWG_V1 } )
 @RestController
-public class V1RuntimeController {
+public class RuntimeController {
 
-	private static final Logger log = LoggerFactory.getLogger(V1RuntimeController.class);
+	private static final Logger log = LoggerFactory.getLogger(RuntimeController.class);
 	
 	@Autowired
 	private ApplicationContext springContext;

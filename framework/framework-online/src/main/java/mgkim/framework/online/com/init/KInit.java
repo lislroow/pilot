@@ -78,9 +78,9 @@ public class KInit implements ServletContextInitializer, BeanFactoryPostProcesso
 	
 	
 	public static final String TRANSACTION_POINTCUT = ""
-			+ "     execution(* mgkim..service.*Service*.*(..))"
-			+ " && !execution(* mgkim..service.*NonTx.*(..))"
-			+ " && !execution(* mgkim..service.*.*NonTx(..))";
+			+ "     execution(* mgkim..*Service*.*(..))"
+			+ " && !execution(* mgkim..*NonTx.*(..))"
+			+ " && !execution(* mgkim..*.*NonTx(..))";
 
 	
 	@Bean

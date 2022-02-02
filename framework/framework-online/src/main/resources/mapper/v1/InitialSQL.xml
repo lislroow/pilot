@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mgkim.framework.online.api.com.mapper.InitDataLoadMapper">
+<mapper namespace="mgkim.framework.online.v1.InitialMapper">
 
 
   <!-- 1.1) 권한 -->
-  <delete id="deleteRoleAll" parameterType="InitLoadMockVO">
+  <delete id="deleteRoleAll" parameterType="InitialVO">
     DELETE 
       FROM MGCB202TM /* MGCB_권한정보 */
-     WHERE APP_CD = #{appCd}
+     WHERE APP_CD = #{_appCd}
   </delete>
 
-  <insert id="insertRole" parameterType="InitLoadMockVO">
+  <insert id="insertRole" parameterType="InitialVO">
     MERGE
      INTO MGCB202TM /* MGCB_권한정보 */
     USING DUAL
-       ON (APP_CD = #{appCd}
+       ON (APP_CD = #{_appCd}
           AND ROLE_ID = #{roleId})
      WHEN MATCHED THEN
        UPDATE SET
@@ -31,7 +31,7 @@
         , LAST_MODFR_NO
         , LAST_MODF_DTTM
       ) VALUES (
-          #{appCd}
+          #{_appCd}
         , #{roleId}
         , #{roleNm}
         , 'Y'
@@ -45,17 +45,17 @@
 
 
   <!-- 1.2) 권한그룹 -->
-  <delete id="deleteRgrpAll" parameterType="InitLoadMockVO">
+  <delete id="deleteRgrpAll" parameterType="InitialVO">
     DELETE
       FROM MGCB201TM /* MGCB_권한그룹정보 */
-     WHERE APP_CD = #{appCd}
+     WHERE APP_CD = #{_appCd}
   </delete>
 
-  <insert id="insertRgrp" parameterType="InitLoadMockVO">
+  <insert id="insertRgrp" parameterType="InitialVO">
     MERGE
      INTO MGCB201TM /* MGCB_권한그룹정보 */
     USING DUAL
-       ON (APP_CD = #{appCd}
+       ON (APP_CD = #{_appCd}
           AND RGRP_ID = #{rgrpId})
      WHEN MATCHED THEN
        UPDATE SET
@@ -72,7 +72,7 @@
         , LAST_MODFR_NO
         , LAST_MODF_DTTM
       ) VALUES (
-          #{appCd}
+          #{_appCd}
         , #{rgrpId}
         , #{rgrpNm}
         , 'Y'
@@ -86,17 +86,17 @@
 
 
   <!-- 1.3) 권한그룹설정 -->
-  <delete id="deleteRoleRpgrAll" parameterType="InitLoadMockVO">
+  <delete id="deleteRoleRpgrAll" parameterType="InitialVO">
     DELETE
       FROM MGCB221TR /* MGCB_권한그룹설정 */
-     WHERE APP_CD = #{appCd}
+     WHERE APP_CD = #{_appCd}
   </delete>
 
-  <insert id="insertRoleRpgr" parameterType="InitLoadMockVO">
+  <insert id="insertRoleRpgr" parameterType="InitialVO">
     MERGE
      INTO MGCB221TR /* MGCB_권한그룹설정 */
     USING DUAL
-       ON (APP_CD = #{appCd}
+       ON (APP_CD = #{_appCd}
           AND RGRP_ID = #{rgrpId}
           AND ROLE_ID = #{roleId})
      WHEN MATCHED THEN
@@ -113,7 +113,7 @@
         , LAST_MODFR_NO
         , LAST_MODF_DTTM
       ) VALUES (
-          #{appCd}
+          #{_appCd}
         , #{rgrpId}
         , #{roleId}
         , 'SYSTEM'
@@ -129,14 +129,14 @@
   <delete id="deleteUriRawAll" parameterType="CmmUriVO">
     DELETE
     FROM    MGCB302TT /* MGCB_uri기본정보 */
-    WHERE    APP_CD = #{appCd}
+    WHERE    APP_CD = #{_appCd}
   </delete>
 
   <insert id="insertUriRaw" parameterType="CmmUriVO">
     MERGE
      INTO MGCB302TT /* MGCB_uri정보raw */
     USING DUAL
-       ON (APP_CD = #{appCd}
+       ON (APP_CD = #{_appCd}
           AND URI_VAL = #{uriVal})
      WHEN MATCHED THEN
       UPDATE SET
@@ -155,7 +155,7 @@
         , LAST_MODFR_NO
         , LAST_MODF_DTTM
       ) VALUES (
-          #{appCd}
+          #{_appCd}
         , #{uriVal}
         , #{uriNm}
         , #{uriPtrnYn}
@@ -169,13 +169,13 @@
   <!-- // 2.1) uri(raw) -->
 
   <!-- 2.2) uri -->
-  <delete id="deleteUriAll" parameterType="InitLoadMockVO">
+  <delete id="deleteUriAll" parameterType="InitialVO">
     DELETE
       FROM MGCB301TM /* MGCB_uri기본정보 */
-     WHERE APP_CD = #{appCd}
+     WHERE APP_CD = #{_appCd}
   </delete>
 
-  <insert id="insertUri" parameterType="InitLoadMockVO">
+  <insert id="insertUri" parameterType="InitialVO">
   <![CDATA[
     INSERT
       INTO MGCB301TM /* MGCB_uri기본정보 */ (
@@ -216,7 +216,7 @@
                    , A.LAST_MODFR_NO
                    , A.LAST_MODF_DTTM
               FROM MGCB302TT A /* MGCB_uri정보raw */
-             WHERE A.APP_CD = #{appCd}
+             WHERE A.APP_CD = #{_appCd}
                AND NOT EXISTS (SELECT 1
                                  FROM MGCB301TM B /* MGCB_uri기본정보 */
                                 WHERE A.APP_CD = B.APP_CD
@@ -229,13 +229,13 @@
 
 
   <!-- 2.3) uri권한 -->
-  <delete id="deleteUriRpgrAll" parameterType="InitLoadMockVO">
+  <delete id="deleteUriRpgrAll" parameterType="InitialVO">
     DELETE
       FROM MGCB241TR /* MGCB_uri권한그룹매핑 */
-     WHERE APP_CD = #{appCd}
+     WHERE APP_CD = #{_appCd}
   </delete>
 
-  <insert id="insertUriRpgr" parameterType="InitLoadMockVO">
+  <insert id="insertUriRpgr" parameterType="InitialVO">
     INSERT
       INTO MGCB241TR /* MGCB_uri권한그룹매핑 */ (
           APP_CD
@@ -254,7 +254,7 @@
            , 'SYSTEM'
            , SYSDATE
         FROM MGCB301TM A /* MGCB_uri기본정보 */
-       WHERE A.APP_CD = #{appCd}
+       WHERE A.APP_CD = #{_appCd}
          AND A.URI_PTRN_YN = 'N'
          AND A.URI_VAL NOT LIKE '/public/%'
          AND A.URI_VAL NOT LIKE '/api/adm/initdata/loadAll'
@@ -263,17 +263,17 @@
 
 
   <!-- 3.1) 사용자(raw) -->
-  <delete id="deleteUserRawAll" parameterType="InitLoadMockVO">
+  <delete id="deleteUserRawAll" parameterType="InitialVO">
     DELETE
       FROM MGCB102TT /* MGCB_사용자정보raw */
-     WHERE APP_CD = #{appCd}
+     WHERE APP_CD = #{_appCd}
   </delete>
 
-  <insert id="insertUserRaw" parameterType="InitLoadMockVO">
+  <insert id="insertUserRaw" parameterType="InitialVO">
     MERGE
      INTO MGCB102TT /* MGCB_사용자정보raw */
     USING DUAL
-       ON (APP_CD = #{appCd}
+       ON (APP_CD = #{_appCd}
           AND USER_ID = #{userId})
      WHEN MATCHED THEN
       UPDATE SET
@@ -297,7 +297,7 @@
         , LAST_MODFR_NO
         , LAST_MODF_DTTM
       ) VALUES (
-          #{appCd}
+          #{_appCd}
         , #{userId}
         , #{userNm}
         , #{email}
@@ -318,13 +318,13 @@
 
 
   <!-- 3.2) 사용자 -->
-  <delete id="deleteUserAll" parameterType="InitLoadMockVO">
+  <delete id="deleteUserAll" parameterType="InitialVO">
     DELETE
       FROM MGCB101TM /* MGCB_사용자정보 */
-     WHERE APP_CD = #{appCd}
+     WHERE APP_CD = #{_appCd}
   </delete>
 
-  <insert id="insertUser" parameterType="InitLoadMockVO">
+  <insert id="insertUser" parameterType="InitialVO">
   <![CDATA[
     INSERT
       INTO MGCB101TM /* MGCB_사용자정보 */ (
@@ -346,7 +346,7 @@
            , A.LAST_MODFR_NO
            , A.LAST_MODF_DTTM
         FROM MGCB102TT A /* MGCB_사용자정보raw */
-       WHERE A.APP_CD = #{appCd}
+       WHERE A.APP_CD = #{_appCd}
          AND NOT EXISTS (SELECT 1
                            FROM MGCB101TM B /* MGCB_uri기본정보 */
                           WHERE A.APP_CD = B.APP_CD
@@ -355,7 +355,7 @@
   ]]>
   </insert>
 
-  <insert id="insertLoginPolicy" parameterType="InitLoadMockVO">
+  <insert id="insertLoginPolicy" parameterType="InitialVO">
   <![CDATA[
     INSERT
       INTO MGCB121TM /* MGCB_사용자로그인정책정보 */ (
@@ -387,7 +387,7 @@
            , A.LAST_MODFR_NO
            , A.LAST_MODF_DTTM
         FROM MGCB102TT A /* MGCB_사용자정보raw */
-       WHERE A.APP_CD = #{appCd}
+       WHERE A.APP_CD = #{_appCd}
          AND NOT EXISTS (SELECT 1
                            FROM MGCB121TM B /* MGCB_사용자로그인정책정보 */
                           WHERE A.APP_CD = B.APP_CD
@@ -400,17 +400,17 @@
 
 
   <!-- 3.3) 사용자권한 -->
-  <delete id="deleteUserRpgrAll" parameterType="InitLoadMockVO">
+  <delete id="deleteUserRpgrAll" parameterType="InitialVO">
     DELETE
       FROM MGCB231TR /* MGCB_사용자권한그룹매핑 */
-     WHERE APP_CD = #{appCd}
+     WHERE APP_CD = #{_appCd}
   </delete>
 
-  <insert id="insertUserRpgr" parameterType="InitLoadMockVO">
+  <insert id="insertUserRpgr" parameterType="InitialVO">
     MERGE
      INTO MGCB231TR /* MGCB_사용자권한그룹매핑 */
     USING DUAL
-       ON (APP_CD = #{appCd}
+       ON (APP_CD = #{_appCd}
           AND RGRP_ID = #{rgrpId}
           AND USER_ID = #{userId})
      WHEN MATCHED THEN
@@ -427,7 +427,7 @@
         , LAST_MODFR_NO
         , LAST_MODF_DTTM
       ) VALUES (
-          #{appCd}
+          #{_appCd}
         , #{rgrpId}
         , #{userId}
         , 'SYSTEM'

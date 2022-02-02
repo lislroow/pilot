@@ -1,4 +1,4 @@
-package mgkim.framework.online.api.com.service;
+package mgkim.framework.online.v1;
 
 import java.util.List;
 import java.util.Map;
@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import mgkim.framework.core.exception.KMessage;
-import mgkim.framework.online.api.com.mapper.ApiTxLogMapper;
 
 @Service
 public class ApiTxLogService {

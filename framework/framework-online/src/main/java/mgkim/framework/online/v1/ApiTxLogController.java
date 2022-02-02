@@ -22,13 +22,12 @@ import mgkim.framework.core.annotation.KRowUnit;
 import mgkim.framework.core.dto.KOutDTO;
 import mgkim.framework.core.dto.KOutPageDTO;
 import mgkim.framework.core.env.KConstant;
-import mgkim.framework.online.api.com.service.ApiTxLogService;
 
 @Api( tags = { KConstant.SWG_V1 } )
 @RestController
-public class V1ApiTxLogController {
+public class ApiTxLogController {
 	
-	private static final Logger log = LoggerFactory.getLogger(V1ApiTxLogController.class);
+	private static final Logger log = LoggerFactory.getLogger(ApiTxLogController.class);
 
 	@Autowired(required = false)
 	private ApiTxLogService apiTxLogService;

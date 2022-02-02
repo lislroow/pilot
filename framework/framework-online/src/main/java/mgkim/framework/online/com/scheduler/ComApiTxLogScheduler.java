@@ -20,7 +20,7 @@ import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.stereo.KScheduler;
 import mgkim.framework.core.stereo.KTask;
 import mgkim.framework.core.util.KObjectUtil;
-import mgkim.framework.online.api.com.service.ApiTxLogService;
+import mgkim.framework.online.v1.ApiTxLogService;
 
 @KTaskSchedule(name = "api처리로그 관리", interval = 1000, manage = true)
 public class ComApiTxLogScheduler extends KScheduler {
