@@ -22,15 +22,15 @@ server:
   max-http-header-size: 8KB
 
 security:
-  rejectPublicInvocations: false
+  reject-public-invocations: false
 
 # schedule 설정
 schedule:
   apitxlog:
     enabled: false
-  sessionStatusMng:
+  session-status-mng:
     enabled: false
-  sqlmapReload:
+  sqlmap-reload:
     enabled: true
 
 # file 설정

@@ -43,7 +43,7 @@ public class KInitSecurity extends WebSecurityConfigurerAdapter {
 	// [중요] api에 권한이 등록되지 않은 상태에서 호출 가능 여부를 설정합니다.
 	//   true: 호출이 불가능함
 	//   false: 호출이 가능함
-	@Value("${security.rejectPublicInvocations:false}")
+	@Value("${security.reject-public-invocations:false}")
 	boolean rejectPublicInvocations;
 	
 	@Bean("springSecurityFilterChain")

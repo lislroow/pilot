@@ -32,7 +32,7 @@ import mgkim.framework.core.util.KSqlUtil;
 @KTaskSchedule(name = "sqlmap-file-reload 스케줄러", interval = 500, manage = false)
 public class ComSqlmapReloadScheduler extends KScheduler {
 
-	@Value("${schedule.sqlmapReload.enabled:true}")
+	@Value("${schedule.sqlmap-reload.enabled:true}")
 	private boolean enabled;
 	
 	private static final Logger log = LoggerFactory.getLogger(ComSqlmapReloadScheduler.class);

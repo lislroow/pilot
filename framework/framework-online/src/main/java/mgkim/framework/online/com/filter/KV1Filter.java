@@ -30,8 +30,8 @@ import mgkim.framework.core.exception.KException;
 import mgkim.framework.core.exception.KExceptionHandler;
 import mgkim.framework.core.exception.KMessage;
 import mgkim.framework.core.exception.KSysException;
-import mgkim.framework.core.logging.KLogMarker;
 import mgkim.framework.core.logging.KLogElastic;
+import mgkim.framework.core.logging.KLogMarker;
 import mgkim.framework.core.request.KReadableRequest;
 import mgkim.framework.core.stereo.KFilter;
 import mgkim.framework.core.type.KType.ReqType;
@@ -67,15 +67,15 @@ public class KV1Filter extends KFilter {
 		} catch (HttpMediaTypeNotSupportedException e) {
 			String contentType = request.getHeader("Content-Type");
 			KException ke = new KSysException(KMessage.E7002, e, contentType);
-			log.error(KLogMarker.error, "{} {}", ke.getId(), ke.getText(), e);
+			log.error(KLogMarker.error, "[{}] {}", ke.getId(), ke.getText(), e);
 			KExceptionHandler.response(response, ke);
 		} catch (KException ke) {
-			log.error(KLogMarker.error, "{} {}", ke.getId(), ke.getText(), ke.getCause());
+			log.error(KLogMarker.error, "[{}] {}", ke.getId(), ke.getText(), ke.getCause());
 			KExceptionHandler.response(response, ke);
 			return;
 		} catch (Exception e) {
 			KException ke = new KSysException(KMessage.E7007, e, "resolve-uri");
-			log.error(KLogMarker.error, "{} {}", ke.getId(), ke.getText(), e);
+			log.error(KLogMarker.error, "[{}] {}", ke.getId(), ke.getText(), e);
 			KExceptionHandler.response(response, ke);
 			return;
 		}
@@ -93,7 +93,7 @@ public class KV1Filter extends KFilter {
 			}
 		} catch (Exception e) {
 			KException ke = new KSysException(KMessage.E7007, e, "preflight");
-			log.error(KLogMarker.error, "{} {}", ke.getId(), ke.getText(), e);
+			log.error(KLogMarker.error, "[{}] {}", ke.getId(), ke.getText(), e);
 			KExceptionHandler.response(response, ke);
 			return;
 		}
@@ -133,7 +133,7 @@ public class KV1Filter extends KFilter {
 			log.info(KLogMarker.request, "\ncontroller = {}", method);
 		} catch (Exception e) {
 			KException ke = new KSysException(KMessage.E7008, e, "request-logging", "요청");
-			log.error(KLogMarker.error, "{} {}", ke.getId(), ke.getText(), e);
+			log.error(KLogMarker.error, "[{}] {}", ke.getId(), ke.getText(), e);
 			KExceptionHandler.response(response, ke);
 			return;
 		}
@@ -149,17 +149,17 @@ public class KV1Filter extends KFilter {
 			}
 		} catch (AuthenticationCredentialsNotFoundException | AccessDeniedException e) {
 			KException ke = new KSysException(KMessage.E6011, e);
-			log.error(KLogMarker.error, "{} {}", ke.getId(), ke.getText(), e);
+			log.error(KLogMarker.error, "[{}] {}", ke.getId(), ke.getText(), e);
 			KExceptionHandler.response(response, ke);
 			return;
 		} catch (MultipartException e) {
 			KException ke = new KSysException(KMessage.E7005, e);
-			log.error(KLogMarker.error, "{} {}", ke.getId(), ke.getText(), e);
+			log.error(KLogMarker.error, "[{}] {}", ke.getId(), ke.getText(), e);
 			KExceptionHandler.response(response, ke);
 			return;
 		} catch (Exception e) {
 			KException ke = new KSysException(KMessage.E6011, e);
-			log.error(KLogMarker.error, "{} {}", ke.getId(), ke.getText(), e);
+			log.error(KLogMarker.error, "[{}] {}", ke.getId(), ke.getText(), e);
 			KExceptionHandler.response(response, ke);
 			return;
 		}
@@ -202,7 +202,7 @@ public class KV1Filter extends KFilter {
 			}
 		} catch (Exception e) {
 			KException ke = new KSysException(KMessage.E7008, e, "reponse-logging", "응답");
-			log.error(KLogMarker.error, "{} {}", ke.getId(), ke.getText(), e);
+			log.error(KLogMarker.error, "[{}] {}", ke.getId(), ke.getText(), e);
 			KExceptionHandler.response(response, ke);
 			return;
 		} finally {

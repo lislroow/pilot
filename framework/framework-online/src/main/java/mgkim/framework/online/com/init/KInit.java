@@ -66,10 +66,6 @@ public class KInit implements ServletContextInitializer, BeanFactoryPostProcesso
 	
 	
 	
-	public static final String TRANSACTION_POINTCUT = ""
-			+ "     execution(* mgkim..*Service*.*(..))";
-
-	
 	@Bean
 	public TomcatServletWebServerFactory tomcatFactory() {
 		log.info("tomcat server 생성");
@@ -142,7 +138,6 @@ public class KInit implements ServletContextInitializer, BeanFactoryPostProcesso
 	//@Bean("requiredTx")
 	//public DefaultPointcutAdvisor createAdvisor(TransactionInterceptor transactionInterceptor) {
 	//	AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
-	//	//pointcut.setExpression(TRANSACTION_POINTCUT);
 	//	pointcut.setExpression("execution(* mgkim..*Service*.*(..))");
 	//	DefaultPointcutAdvisor bean = new DefaultPointcutAdvisor(pointcut, transactionInterceptor);
 	//	return bean;

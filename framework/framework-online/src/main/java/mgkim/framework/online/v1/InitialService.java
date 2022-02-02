@@ -2,11 +2,14 @@ package mgkim.framework.online.v1;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import mgkim.framework.cmm.online.vo.CmmUriVO;
+import mgkim.framework.core.env.KContext;
+import mgkim.framework.core.env.KContext.AttrKey;
 import mgkim.framework.core.util.KDateUtil;
 import mgkim.framework.online.com.mgr.ComUriListMgr;
 
@@ -95,15 +98,14 @@ public class InitialService {
 	public void loadUriRaw() throws Exception {
 		{
 			List<CmmUriVO> list = new ArrayList<CmmUriVO>();
-			list.add(new CmmUriVO.Builder().uriRespTpcd("01").uriPtrnYn("N").uriVal("/api/cmm/user/logout").uriNm("로그아웃").build());
-			list.add(new CmmUriVO.Builder().uriRespTpcd("01").uriPtrnYn("Y").uriVal("/openapi/**").uriNm("openapi 전체").build());
-			list.add(new CmmUriVO.Builder().uriRespTpcd("01").uriPtrnYn("Y").uriVal("/orgapi/**").uriNm("orgapi 전체").build());
-			list.add(new CmmUriVO.Builder().uriRespTpcd("01").uriPtrnYn("Y").uriVal("/interapi/**").uriNm("interapi 전체").build());
-			list.add(new CmmUriVO.Builder().uriRespTpcd("01").uriPtrnYn("Y").uriVal("/public/**").uriNm("public 전체").build());
-			list.add(new CmmUriVO.Builder().uriRespTpcd("01").uriPtrnYn("Y").uriVal("/api/cmm/file/**").uriNm("파일 uri").build());
-			list.add(new CmmUriVO.Builder().uriRespTpcd("01").uriPtrnYn("Y").uriVal("/api/**").uriNm("api 전체").build());
-			list.add(new CmmUriVO.Builder().uriRespTpcd("01").uriPtrnYn("Y").uriVal("/**").uriNm("모든 uri 전체").build());
-			list.addAll(comUriListMgr.getUriList());
+			list.add(new CmmUriVO.Builder().uriPtrnYn("Y").uriVal("/v1/**").uriNm("v1 전체").build());
+			list.add(new CmmUriVO.Builder().uriPtrnYn("Y").uriVal("/api/**").uriNm("api 전체").build());
+			List<CmmUriVO> requestMappingList = comUriListMgr.getUriList();
+			requestMappingList = requestMappingList.stream()
+					.filter(item -> item.getUriVal() != null && !item.getUriVal().contains("{"))
+					.filter(item -> !KContext.getT(AttrKey.URI).equals(item.getUriVal()))
+					.collect(Collectors.toList());
+			list.addAll(requestMappingList);
 
 			// 기존 데이터 삭제
 			initialMapper.deleteUriRawAll(new CmmUriVO.Builder().build());
