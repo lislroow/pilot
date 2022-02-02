@@ -40,27 +40,26 @@ import mgkim.framework.core.util.KStringUtil;
 public class ComUriAuthorityMgr implements FilterInvocationSecurityMetadataSource {
 	
 	private static final Logger log = LoggerFactory.getLogger(ComUriAuthorityMgr.class);
-
+	
 	final String BEAN_NAME = KObjectUtil.name(ComUriAuthorityMgr.class);
-
+	
 	public static final String CONFIG_SQL = ""
-			+ "	SELECT /* mgkim.framework.online.com.mgr.ComUriAuthorityMgr.CONFIG_SQL */  "
-			+ "			  A.URI_VAL   AS URI                                        "
-			+ "			, C.ROLE_ID   AS AUTHORITY                                  "
-			+ "	FROM	  MGCB301TM A /* MGCB_uri기본정보 */                        "
-			+ "			, MGCB241TR B /* MGCB_uri권한그룹매핑 */                    "
-			+ "			, MGCB221TR C /* MGCB_권한그룹설정 */                       "
-			+ "	WHERE   A.APP_CD = :appCd                                         "
-			+ "		AND A.APP_CD = B.APP_CD                                   "
-			+ "		AND A.APP_CD = C.APP_CD                                   "
-			+ "		AND A.USE_YN = 'Y'                                              "
-			+ "		AND A.URI_ID = B.URI_ID                                         "
-			+ "		AND B.RGRP_ID = C.RGRP_ID                                       "
-			+ "	ORDER BY URI_PTRN_YN ASC                                            "
-			+ "";
-
+		+ "  SELECT /* mgkim.framework.online.com.mgr.ComUriAuthorityMgr.CONFIG_SQL */  "
+		+ "        A.URI_VAL   AS URI                                                   "
+		+ "      , C.ROLE_ID   AS AUTHORITY                                             "
+		+ "  FROM   MGCB301TM A /* MGCB_uri기본정보 */                                  "
+		+ "       , MGCB241TR B /* MGCB_uri권한그룹매핑 */                              "
+		+ "       , MGCB221TR C /* MGCB_권한그룹설정 */                                 "
+		+ "  WHERE A.APP_CD = :appCd                                                    "
+		+ "    AND A.APP_CD = B.APP_CD                                                  "
+		+ "    AND A.APP_CD = C.APP_CD                                                  "
+		+ "    AND A.USE_YN = 'Y'                                                       "
+		+ "    AND A.URI_ID = B.URI_ID                                                  "
+		+ "    AND B.RGRP_ID = C.RGRP_ID                                                "
+		+ "  ORDER BY URI_PTRN_YN ASC                                                   ";
+	
 	private Map<RequestMatcher, List<ConfigAttribute>> uriAuthorityMap;
-
+	
 	@Autowired(required = true)
 	public void setDataSource(DataSource dataSource) {
 		this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);

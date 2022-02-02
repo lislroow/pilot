@@ -210,13 +210,16 @@
                    , A.URI_NM
                    , A.URI_PTRN_YN
                    , A.URI_RESP_TPCD
-                   , 'Y' AS USE_YN
+                   , DECODE(A.URI_PTRN_YN, 'Y', 'N', 'Y') AS USE_YN
                    , A.FIRST_REGIR_NO
                    , A.FIRST_REGI_DTTM
                    , A.LAST_MODFR_NO
                    , A.LAST_MODF_DTTM
               FROM MGCB302TT A /* MGCB_uri정보raw */
              WHERE A.APP_CD = #{_appCd}
+               AND A.URI_VAL NOT LIKE '%{%}%'
+               AND A.URI_VAL NOT LIKE '/public%'
+               AND A.URI_VAL NOT LIKE '/v1%'
                AND NOT EXISTS (SELECT 1
                                  FROM MGCB301TM B /* MGCB_uri기본정보 */
                                 WHERE A.APP_CD = B.APP_CD
@@ -255,7 +258,6 @@
            , SYSDATE
         FROM MGCB301TM A /* MGCB_uri기본정보 */
        WHERE A.APP_CD = #{_appCd}
-         AND A.URI_PTRN_YN = 'N'
   </insert>
   <!-- // 2.3) uri권한 -->
 

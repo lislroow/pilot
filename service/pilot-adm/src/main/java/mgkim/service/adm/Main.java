@@ -16,7 +16,7 @@ import mgkim.service.lib.env.CmmProfile;
 	basePackages = {
 		"mgkim.framework.core",
 		"mgkim.framework.online",
-		"mgkim.service.cmm.online",
+		"mgkim.service.online",
 		"mgkim.service.www",
 	},
 	includeFilters = {

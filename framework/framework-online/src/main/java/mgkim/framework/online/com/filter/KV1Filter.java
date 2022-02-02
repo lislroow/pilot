@@ -130,7 +130,7 @@ public class KV1Filter extends KFilter {
 			} else if (reqType == ReqType.FILE) {
 			} else {
 			}
-			log.info(KLogMarker.request, "\ncontroller = {}", method);
+			log.info(KLogMarker.request, "\nuri        = {}\ncontroller = {}", uri, method);
 		} catch (Exception e) {
 			KException ke = new KSysException(KMessage.E7008, e, "request-logging", "요청");
 			log.error(KLogMarker.error, "[{}] {}", ke.getId(), ke.getText(), e);

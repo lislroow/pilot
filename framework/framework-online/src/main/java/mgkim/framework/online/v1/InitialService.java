@@ -98,8 +98,10 @@ public class InitialService {
 	public void loadUriRaw() throws Exception {
 		{
 			List<CmmUriVO> list = new ArrayList<CmmUriVO>();
-			list.add(new CmmUriVO.Builder().uriPtrnYn("Y").uriVal("/v1/**").uriNm("v1 전체").build());
-			list.add(new CmmUriVO.Builder().uriPtrnYn("Y").uriVal("/api/**").uriNm("api 전체").build());
+			list.add(new CmmUriVO.Builder().uriPtrnYn("Y").uriVal("/v1/.*").uriNm("v1 전체").build());
+			list.add(new CmmUriVO.Builder().uriPtrnYn("Y").uriVal("/public/.*").uriNm("public 전체").build());
+			list.add(new CmmUriVO.Builder().uriPtrnYn("Y").uriVal("/api/.*").uriNm("api 전체").build());
+			list.add(new CmmUriVO.Builder().uriPtrnYn("N").uriVal(KContext.getT(AttrKey.URI)).uriNm("(초기화) 데이터").build());
 			List<CmmUriVO> requestMappingList = comUriListMgr.getUriList();
 			requestMappingList = requestMappingList.stream()
 					.filter(item -> item.getUriVal() != null && !item.getUriVal().contains("{"))

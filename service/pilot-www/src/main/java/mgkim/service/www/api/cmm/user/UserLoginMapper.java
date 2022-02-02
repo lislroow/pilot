@@ -1,10 +1,10 @@
-package mgkim.service.www.api.cmm.user.mapper;
+package mgkim.service.www.api.cmm.user;
 
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import mgkim.service.cmm.online.vo.CmmUserLoginPolicyVO;
+import mgkim.service.online.cmm.CmmUserLoginPolicyVO;
 
 @Mapper
 public interface UserLoginMapper {
