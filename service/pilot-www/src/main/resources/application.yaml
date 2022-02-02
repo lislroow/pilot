@@ -9,8 +9,8 @@ spring:
       enabled: always
 
 logging:
-  level:
-    root: info
+  #config: classpath:logback-spring.xml
+  #config: classpath:logback.xml
 
 server:
   shutdown: graceful

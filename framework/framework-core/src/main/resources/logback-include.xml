@@ -6,9 +6,13 @@
   
   <appender name="APPENDER-logstash-sys-response" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
     <destination>${LOGSTASH_HOST:-develop:11002}</destination>
-    <encoder class="net.logstash.logback.encoder.LogstashEncoder">
-      <includeCallerData>true</includeCallerData>
+    <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
       <providers>
+        <pattern>
+          <pattern>
+            {"fields": {"server_name": "${hostname}", "log_type": "pilot_was-sys_response"}, "appName": "${app.name}", "appId": "${app.id}", "appVer": "${app.ver}"}
+          </pattern>
+        </pattern>
         <timestamp />
         <mdc />
         <context />
@@ -25,15 +29,19 @@
           <fileFieldName>file</fileFieldName>
         </callerData>
       </providers>
-      <customFields>{"fields": {"server_name": "${hostname}", "log_type": "pilot_was-sys_response"}, "appName": "${app.name}", "appId": "${app.id}", "appVer": "${app.ver}"}</customFields>
+      <!-- <customFields>{"fields": {"server_name": "${hostname}", "log_type": "pilot_was-sys_response"}, "appName": "${app.name}", "appId": "${app.id}", "appVer": "${app.ver}"}</customFields> -->
     </encoder>
   </appender>
   
   <appender name="APPENDER-logstash-sys-sql" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
     <destination>${LOGSTASH_HOST:-develop:11002}</destination>
-    <encoder class="net.logstash.logback.encoder.LogstashEncoder">
-      <includeCallerData>true</includeCallerData>
+    <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
       <providers>
+        <pattern>
+          <pattern>
+            {"fields": {"server_name": "${hostname}", "log_type": "pilot_was-sys_sql"}, "appName": "${app.name}", "appId": "${app.id}", "appVer": "${app.ver}"}
+          </pattern>
+        </pattern>
         <timestamp />
         <mdc />
         <context />
@@ -50,7 +58,6 @@
           <fileFieldName>file</fileFieldName>
         </callerData>
       </providers>
-      <customFields>{"fields": {"server_name": "${hostname}", "log_type": "pilot_was-sys_sql"}, "appName": "${app.name}", "appId": "${app.id}", "appVer": "${app.ver}"}</customFields>
     </encoder>
   </appender>
   

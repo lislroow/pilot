@@ -34,11 +34,15 @@
     </rollingPolicy>
   </appender>
   
-  <appender name="APPENDER-logstash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+  <appender name="APPENDER-root-logstash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
     <destination>${LOGSTASH_HOST:-develop:11002}</destination>
-    <encoder class="net.logstash.logback.encoder.LogstashEncoder">
-      <includeCallerData>true</includeCallerData>
+    <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
       <providers>
+        <pattern>
+          <pattern>
+            {"fields": {"server_name": "${hostname}", "log_type": "pilot_was-root"}, "appName": "${app.name}", "appId": "${app.id}", "appVer": "${app.ver}"}
+          </pattern>
+        </pattern>
         <timestamp />
         <mdc />
         <context />
@@ -55,7 +59,6 @@
           <fileFieldName>file</fileFieldName>
         </callerData>
       </providers>
-      <customFields>{"fields": {"server_name": "${hostname}", "log_type": "pilot_was"}, "appName": "${app.name}", "appId": "${app.id}", "appVer": "${app.ver}"}</customFields>
     </encoder>
   </appender>
   
@@ -75,10 +78,9 @@
   <include resource="logback-include.xml" />
   
   
-  <property name="LEVEL-root" value="info" />
-  <root level="${LEVEL-root}">
+  <root level="${LEVEL-root:-info}">
     <appender-ref ref="APPENDER-console" />
-    <appender-ref ref="APPENDER-logstash" />
+    <appender-ref ref="APPENDER-root-logstash" />
   </root>
   
 </configuration>
