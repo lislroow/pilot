@@ -1,6 +1,7 @@
 package mgkim.framework.core.logging;
 
 import org.slf4j.MDC;
+import org.springframework.jdbc.support.JdbcUtils;
 
 import mgkim.framework.core.env.KContext.AttrKey;
 
@@ -8,14 +9,16 @@ public class KLogMDC {
 	
 	public static final void put(AttrKey key, String val) {
 		//MDC.put(key.name().toLowerCase(), String.format("[%s]", val));
-		MDC.put(key.name().toLowerCase(), String.format("%s", val));
+		String mdcKey = JdbcUtils.convertUnderscoreNameToPropertyName(key.name());
+		MDC.put(mdcKey, String.format("%s", val));
 	}
 	
 	public static final void remove(AttrKey key) {
-		MDC.remove(key.name().toLowerCase());
+		String mdcKey = JdbcUtils.convertUnderscoreNameToPropertyName(key.name());
+		MDC.remove(mdcKey);
 	}
 	
-	public static final String get(String key) {
+	/*private static final String get(String key) {
 		String val = MDC.get(key);
 		if (val == null) {
 			return "";
@@ -25,5 +28,5 @@ public class KLogMDC {
 				val.substring(1, val.length()-1) : 
 				val;
 		return val;
-	}
+	}*/
 }

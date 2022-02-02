@@ -38,26 +38,43 @@
     <destination>${LOGSTASH_HOST:-develop:11002}</destination>
     <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
       <providers>
+        <timestamp />
         <pattern>
           <pattern>
-            {"fields": {"server_name": "${hostname}", "log_type": "pilot_was-root"}, "appName": "${app.name}", "appId": "${app.id}", "appVer": "${app.ver}"}
+            {
+              "app": {
+                "indexName": "pilot_was-root",
+                "hostname": "${hostname}",
+                "appName": "${app.name}",
+                "appId": "${app.id}",
+                "appVer": "${app.ver}"  
+              },
+              "mdc": {
+                "execType": "%X{execType}",
+                "debug": "%X{debug}",
+                "uri": "%X{uri}",
+                "ip": "%X{ip}",
+                "txid": "%X{txid}",
+                "guid": "%X{guid}",
+                "ssid": "%X{ssid}",
+                "userId": "%X{userId}",
+                "referer": "%X{referer}"
+              },
+              "std": {
+                "marker": "%marker",
+                "file": "%file",
+                "class": "%class",
+                "line": "%line",
+                "method": "%method",
+                "message": "%msg",
+                "threadName": "%thread"
+              },
+              "ex": {
+                "exception": "%ex{2}"
+              }
+            }
           </pattern>
         </pattern>
-        <timestamp />
-        <mdc />
-        <context />
-        <threadName />
-        <logLevel />
-        <message />
-        <loggerName />
-        <logstashMarkers />
-        <stackTrace />
-        <callerData>
-          <classFieldName>class</classFieldName>
-          <methodFieldName>method</methodFieldName>
-          <lineFieldName>line</lineFieldName>
-          <fileFieldName>file</fileFieldName>
-        </callerData>
       </providers>
     </encoder>
   </appender>
