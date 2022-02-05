@@ -15,6 +15,7 @@ public class KConstant {
 	public static final String VM_SUN_JAVA_COMMAND = "sun.java.command";
 	
 	public static final String EMPTY = "";
+	public static final String SPACE = " ";
 	public static final String LINE = System.getProperty("line.separator");
 	
 	public static final File TMPDIR = new File(System.getProperty("java.io.tmpdir")); 

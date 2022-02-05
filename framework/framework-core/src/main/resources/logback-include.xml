@@ -108,6 +108,16 @@
   <logger name="sys-sql" level="${LEVEL-sys-sql:-debug}" additivity="false">
     <appender-ref ref="APPENDER-logstash-sql" />
   </logger>
+  <appender name="APPENDER-console-klog" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <pattern>[%X{clazzname}] %-8X{label}: %msg%n</pattern>
+    </encoder>
+  </appender>
+  <logger name="klog" level="${LEVEL-klog:-debug}" additivity="false">
+    <appender-ref ref="APPENDER-console-klog" />
+  </logger>
+  
+  
   
   <!-- FILTER-MARKER -->
   <turboFilter class="ch.qos.logback.classic.turbo.MarkerFilter">

@@ -8,8 +8,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
 import org.springframework.security.crypto.codec.Base64;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -90,7 +88,7 @@ public class KStringUtil {
 			} else {
 				json = mapper.writer().writeValueAsString(obj);
 				json = json.replaceAll("\\\\r|\\\\n|\\\\|\\t", "");
-				json = json.substring(1, json.length()-1);
+				//json = json.substring(1, json.length()-1);
 			}
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
@@ -105,16 +103,6 @@ public class KStringUtil {
 
 	public static String toJsonNoPretty(Object obj) {
 		String json = toJson(obj, false);
-		return json;
-	}
-
-	public static String toJson2(Object obj) {
-		String json = null;
-		try {
-			json = new JSONObject(obj+"").toString(2); // pretty json string, indent size 2
-		} catch (JSONException e) {
-			return obj+"";
-		}
 		return json;
 	}
 

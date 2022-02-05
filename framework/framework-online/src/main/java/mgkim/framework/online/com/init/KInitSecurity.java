@@ -58,7 +58,7 @@ public class KInitSecurity extends WebSecurityConfigurerAdapter {
 		// 2) v1
 		Filter[] v1Filter = new Filter[] { ctx.getBean(SecurityContextPersistenceFilter.class), ctx.getBean(KV1Filter.class)};
 		filterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher(KConstant.V1_URI), v1Filter));
-
+		
 		// 3) public
 		KConstant.PUBLIC_URI.stream().forEach(item -> filterChains.add(new DefaultSecurityFilterChain(new AntPathRequestMatcher(item), ctx.getBean(KPublicFilter.class))));
 		
