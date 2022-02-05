@@ -23,7 +23,16 @@ public class KLoggerFactory {
 		return ProxyFactory.getProxy(klog,
 				(MethodInterceptor) invocation -> {
 					Object[] argv = invocation.getArguments();
-					if (argv == null || argv.length < 2) {
+					if (argv == null) {
+						return null;
+					}
+					
+					if (argv.length == 1) {
+						MDC.put("clazzname", clazz.getSimpleName());
+						MDC.put("label", "");
+						logger.debug(KStringUtil.nvl(argv[0]));
+						MDC.remove("clazzname");
+						MDC.remove("label");
 						return null;
 					}
 					
@@ -37,7 +46,7 @@ public class KLoggerFactory {
 					}
 					String msg_format = KStringUtil.nvl(argv[1]);
 					MDC.put("clazzname", clazz.getSimpleName());
-					MDC.put("label", mdc_label);
+					MDC.put("label", mdc_label + " :");
 					Object[] msgv = null;
 					if (argv.length == 3) {
 						msgv = Arrays.stream((Object[])argv[2]).collect(Collectors.toList()).toArray();

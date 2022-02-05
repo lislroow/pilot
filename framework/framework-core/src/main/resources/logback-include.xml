@@ -110,7 +110,7 @@
   </logger>
   <appender name="APPENDER-console-klog" class="ch.qos.logback.core.ConsoleAppender">
     <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-      <pattern>[%X{clazzname}] %-8X{label}: %msg%n</pattern>
+      <pattern>[%X{clazzname}] %X{label} %msg%n</pattern>
     </encoder>
   </appender>
   <logger name="klog" level="${LEVEL-klog:-debug}" additivity="false">
