@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
@@ -30,9 +29,9 @@ public class ExamController {
 	
 	@ApiOperation(value = "(exam)")
 	@RequestMapping(value = "/v1/exam", method = RequestMethod.POST)
-	public void exam(
-			@KRequestMap HashMap<String, Object> inMap,
-			@RequestParam(required = true) String param1) throws Exception {
-		
+	public void exam(@KRequestMap HashMap<String, Object> inMap) throws Exception {
+		System.out.println();
+		{
+		}
 	}
 }
